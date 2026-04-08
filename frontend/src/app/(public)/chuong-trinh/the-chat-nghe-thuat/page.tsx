@@ -1,5 +1,14 @@
+import { Metadata } from 'next';
 import PageBanner from '@/components/public/PageBanner';
 import { Dumbbell, Music, Palette, Trophy, Heart, Sparkles } from 'lucide-react';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Thể chất & Nghệ thuật',
+  description:
+    'Chương trình Thể chất và Nghệ thuật tại Trường Tiểu học Lê Quý Đôn - Bóng đá, bơi lội, âm nhạc, mỹ thuật và nhiều bộ môn phát triển toàn diện.',
+  path: '/chuong-trinh/the-chat-nghe-thuat',
+});
 
 const sports = [
   { title: 'Bóng đá', desc: 'Sân bóng mini tiêu chuẩn, huấn luyện viên chuyên nghiệp' },

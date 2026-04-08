@@ -1,5 +1,14 @@
+import { Metadata } from 'next';
 import PageBanner from '@/components/public/PageBanner';
 import { Shield, MessageCircle, Lightbulb, HandHeart, Brain, Leaf } from 'lucide-react';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Kỹ năng sống',
+  description:
+    'Chương trình Kỹ năng sống tại Trường Tiểu học Lê Quý Đôn - Rèn luyện tự tin, giao tiếp, tư duy sáng tạo và kỹ năng xã hội cho học sinh.',
+  path: '/chuong-trinh/ky-nang-song',
+});
 
 const skills = [
   {

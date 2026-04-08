@@ -1,5 +1,14 @@
+import { Metadata } from 'next';
 import PageBanner from '@/components/public/PageBanner';
 import ArticleCard from '@/components/public/ArticleCard';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Hoạt động ngoại khóa',
+  description:
+    'Hoạt động ngoại khóa phong phú tại Trường Tiểu học Lê Quý Đôn - Dã ngoại, tham quan, câu lạc bộ và các chương trình trải nghiệm thực tế.',
+  path: '/tin-tuc/ngoai-khoa',
+});
 
 const articles = [
   { title: 'Chuyến dã ngoại tại Vườn quốc gia Ba Vì', description: 'Học sinh lớp 4-5 có chuyến trải nghiệm thiên nhiên đầy ý nghĩa tại Ba Vì.', category: 'Ngoại khóa', date: '05/03/2026', slug: 'da-ngoai-ba-vi-2026' },

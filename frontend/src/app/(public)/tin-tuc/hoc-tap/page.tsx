@@ -1,5 +1,14 @@
+import { Metadata } from 'next';
 import PageBanner from '@/components/public/PageBanner';
 import ArticleCard from '@/components/public/ArticleCard';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Hoạt động học tập',
+  description:
+    'Hoạt động học tập tại Trường Tiểu học Lê Quý Đôn - Thành tích học sinh, cuộc thi học thuật, dự án nghiên cứu và phương pháp giảng dạy sáng tạo.',
+  path: '/tin-tuc/hoc-tap',
+});
 
 const articles = [
   { title: 'Học sinh lớp 5 đạt giải Nhất Olympic Toán cấp Quận', description: 'Em Nguyễn Minh Anh xuất sắc giành giải Nhất Olympic Toán cấp Quận Nam Từ Liêm.', category: 'Học tập', date: '10/03/2026', slug: 'giai-nhat-olympic-toan' },

@@ -1,4 +1,14 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Trường Tiểu học Lê Quý Đôn - Hà Nội',
+  description:
+    'Trường Tiểu học Lê Quý Đôn - Hệ thống giáo dục liên cấp hàng đầu tại Nam Từ Liêm, Hà Nội. Chương trình Quốc gia nâng cao, Tiếng Anh tăng cường, hợp tác PLC Sydney.',
+  path: '/',
+  type: 'website',
+});
 
 /* Banner slide data (placeholder — se lay tu API sau) */
 const banners = [

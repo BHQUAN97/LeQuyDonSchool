@@ -1,5 +1,14 @@
+import { Metadata } from 'next';
 import PageBanner from '@/components/public/PageBanner';
 import { Eye, Target, Heart, Star, Users, BookOpen } from 'lucide-react';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Tầm nhìn & Sứ mệnh',
+  description:
+    'Tầm nhìn và sứ mệnh của Trường Tiểu học Lê Quý Đôn - Phát triển toàn diện trí tuệ, thể chất, tinh thần và nhân cách cho mỗi học sinh.',
+  path: '/tong-quan/tam-nhin-su-menh',
+});
 
 const visionItems = [
   {

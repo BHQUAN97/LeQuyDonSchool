@@ -20,6 +20,9 @@ import { ContactsModule } from './modules/contacts/contacts.module';
 import { EventsModule } from './modules/events/events.module';
 import { AdmissionsModule } from './modules/admissions/admissions.module';
 import { NavigationModule } from './modules/navigation/navigation.module';
+import { LogsModule } from './modules/logs/logs.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -51,6 +54,9 @@ import { NavigationModule } from './modules/navigation/navigation.module';
     // Rate limiting — 100 req/min chung
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 100 }]),
 
+    // Scheduler — cron jobs (analytics aggregation)
+    ScheduleModule.forRoot(),
+
     // Feature modules
     AuthModule,
     UsersModule,
@@ -63,6 +69,8 @@ import { NavigationModule } from './modules/navigation/navigation.module';
     EventsModule,
     AdmissionsModule,
     NavigationModule,
+    LogsModule,
+    AnalyticsModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },

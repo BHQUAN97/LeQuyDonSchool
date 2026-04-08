@@ -1,4 +1,13 @@
+import { Metadata } from 'next';
 import PageBanner from '@/components/public/PageBanner';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Sắc màu Lê Quý Đôn',
+  description:
+    'Thư viện hình ảnh và khoảnh khắc đáng nhớ tại Trường Tiểu học Lê Quý Đôn - Học tập, ngoại khóa, sự kiện, thể thao và nghệ thuật.',
+  path: '/tong-quan/sac-mau-le-quy-don',
+});
 
 const categories = ['Tất cả', 'Học tập', 'Ngoại khóa', 'Sự kiện', 'Thể thao', 'Nghệ thuật'];
 

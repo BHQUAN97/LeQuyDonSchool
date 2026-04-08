@@ -1,4 +1,13 @@
+import { Metadata } from 'next';
 import PageBanner from '@/components/public/PageBanner';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Gia đình Doners',
+  description:
+    'Đội ngũ lãnh đạo, giáo viên và nhân viên tận tâm tại Trường Tiểu học Lê Quý Đôn - Gia đình Doners luôn đồng hành cùng học sinh.',
+  path: '/tong-quan/gia-dinh-doners',
+});
 
 const leaders = [
   { name: 'Nguyễn Văn A', role: 'Hiệu trưởng', desc: 'Thạc sĩ Quản lý Giáo dục, 20 năm kinh nghiệm' },

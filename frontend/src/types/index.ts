@@ -190,6 +190,24 @@ export interface AdmissionRegistration {
 
 // ─── NAVIGATION / MENU ───────────────────────────────────
 
+// ─── APP LOG ─────────────────────────────────────────────
+
+export interface AppLog {
+  id: string;
+  level: 'error' | 'warn' | 'info' | 'debug';
+  message: string;
+  stack_trace: string | null;
+  endpoint: string | null;
+  status_code: number | null;
+  ip: string | null;
+  user_id: string | null;
+  user_agent: string | null;
+  context: Record<string, unknown> | null;
+  created_at: string;
+}
+
+// ─── NAVIGATION / MENU ───────────────────────────────────
+
 export interface MenuItem {
   id: string;
   label: string;

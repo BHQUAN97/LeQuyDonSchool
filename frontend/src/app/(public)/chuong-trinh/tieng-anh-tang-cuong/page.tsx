@@ -1,5 +1,14 @@
+import { Metadata } from 'next';
 import PageBanner from '@/components/public/PageBanner';
 import { Globe, BookOpen, Mic, Award, Users, Video } from 'lucide-react';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Tiếng Anh tăng cường',
+  description:
+    'Chương trình Tiếng Anh tăng cường với giáo viên bản ngữ từ Anh, Úc, Mỹ tại Trường Tiểu học Lê Quý Đôn. Phát triển 4 kỹ năng nghe - nói - đọc - viết.',
+  path: '/chuong-trinh/tieng-anh-tang-cuong',
+});
 
 const features = [
   { icon: Globe, title: 'Giáo viên bản ngữ', desc: 'Đội ngũ giáo viên nước ngoài đến từ Anh, Úc, Mỹ trực tiếp giảng dạy.' },

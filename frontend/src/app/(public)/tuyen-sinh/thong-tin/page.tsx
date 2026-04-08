@@ -1,6 +1,15 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 import PageBanner from '@/components/public/PageBanner';
 import { Calendar, FileText, Users, Phone } from 'lucide-react';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Thông tin tuyển sinh',
+  description:
+    'Thông tin tuyển sinh Trường Tiểu học Lê Quý Đôn - Lịch tuyển sinh, hồ sơ nhập học, học phí và quy trình đăng ký năm học 2026-2027.',
+  path: '/tuyen-sinh/thong-tin',
+});
 
 const announcements = [
   {

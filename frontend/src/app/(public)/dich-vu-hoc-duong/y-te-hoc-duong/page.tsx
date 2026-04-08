@@ -1,5 +1,14 @@
+import { Metadata } from 'next';
 import PageBanner from '@/components/public/PageBanner';
 import { Heart, Stethoscope, Shield, Activity, Eye, Smile } from 'lucide-react';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Y tế học đường',
+  description:
+    'Dịch vụ Y tế học đường tại Trường Tiểu học Lê Quý Đôn - Phòng y tế đạt chuẩn, khám sức khỏe định kỳ, chăm sóc sức khỏe toàn diện cho học sinh.',
+  path: '/dich-vu-hoc-duong/y-te-hoc-duong',
+});
 
 const services = [
   {

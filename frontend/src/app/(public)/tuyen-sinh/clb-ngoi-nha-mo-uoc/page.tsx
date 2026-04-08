@@ -1,5 +1,14 @@
+import { Metadata } from 'next';
 import PageBanner from '@/components/public/PageBanner';
 import { Home, Heart, Users, Calendar, Star, Gift } from 'lucide-react';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'CLB Ngôi nhà mơ ước',
+  description:
+    'CLB Ngôi nhà mơ ước - Chương trình trải nghiệm dành cho học sinh mới tại Trường Tiểu học Lê Quý Đôn. Hoạt động vui chơi, học tập và kết bạn.',
+  path: '/tuyen-sinh/clb-ngoi-nha-mo-uoc',
+});
 
 const activities = [
   {

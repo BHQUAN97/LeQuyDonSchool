@@ -1,5 +1,14 @@
+import { Metadata } from 'next';
 import PageBanner from '@/components/public/PageBanner';
 import { MapPin, Ruler, TreePine, BookOpen, Dumbbell, Music } from 'lucide-react';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Ngôi nhà Lê Quý Đôn',
+  description:
+    'Khám phá khuôn viên 6000m² của Trường Tiểu học Lê Quý Đôn tại Nam Từ Liêm, Hà Nội - Cơ sở vật chất hiện đại, không gian xanh an toàn.',
+  path: '/tong-quan/ngoi-nha-le-quy-don',
+});
 
 const facilities = [
   { icon: BookOpen, title: 'Phòng học thông minh', desc: '30 phòng học tiêu chuẩn quốc tế, trang bị bảng tương tác, máy chiếu và điều hòa.' },

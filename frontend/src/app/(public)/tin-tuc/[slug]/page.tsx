@@ -1,8 +1,49 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 import PageBanner from '@/components/public/PageBanner';
 import ArticleCard from '@/components/public/ArticleCard';
 import SafeHtml from '@/components/public/SafeHtml';
 import { Calendar, User, Tag, Share2 } from 'lucide-react';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+
+/**
+ * generateMetadata — lay title/description tu API cho bai viet.
+ * Fallback ve placeholder neu API chua san sang.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  try {
+    const res = await fetch(`${API_URL}/articles/${params.slug}`, {
+      next: { revalidate: 600 },
+    });
+    if (res.ok) {
+      const json = await res.json();
+      const item = json.data || json;
+      return buildPageMetadata({
+        title: item.title || 'Bài viết',
+        description: item.description || item.excerpt || `Đọc bài viết ${item.title} tại Trường Tiểu học Lê Quý Đôn.`,
+        path: `/tin-tuc/${params.slug}`,
+        ogImage: item.coverImage || item.cover_image || undefined,
+        type: 'article',
+        publishedTime: item.publishedAt || item.published_at || undefined,
+      });
+    }
+  } catch {
+    // API chua san sang — dung fallback
+  }
+
+  return buildPageMetadata({
+    title: 'Bài viết',
+    description: 'Đọc tin tức và bài viết mới nhất tại Trường Tiểu học Lê Quý Đôn.',
+    path: `/tin-tuc/${params.slug}`,
+    type: 'article',
+  });
+}
 
 /* Placeholder data — se lay tu API theo slug */
 const article = {

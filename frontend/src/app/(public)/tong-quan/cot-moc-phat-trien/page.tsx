@@ -1,4 +1,13 @@
+import { Metadata } from 'next';
 import PageBanner from '@/components/public/PageBanner';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Cột mốc phát triển',
+  description:
+    'Hành trình phát triển của Trường Tiểu học Lê Quý Đôn qua các cột mốc quan trọng từ ngày thành lập đến nay.',
+  path: '/tong-quan/cot-moc-phat-trien',
+});
 
 const milestones = [
   { year: '2005', title: 'Thành lập trường', desc: 'Trường Tiểu học Lê Quý Đôn chính thức được thành lập tại quận Nam Từ Liêm, Hà Nội.' },

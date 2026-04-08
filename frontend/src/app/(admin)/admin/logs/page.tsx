@@ -1,9 +1,539 @@
-export default function PlaceholderPage() {
-  const name = typeof window !== 'undefined' ? window.location.pathname.split('/').pop() : '';
+'use client';
+
+import { useEffect, useState, useCallback } from 'react';
+import { api } from '@/lib/api';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+// ─── TYPES ───────────────────────────────────────────────
+
+interface AppLog {
+  id: string;
+  level: 'error' | 'warn' | 'info' | 'debug';
+  message: string;
+  stack_trace: string | null;
+  endpoint: string | null;
+  status_code: number | null;
+  ip: string | null;
+  user_id: string | null;
+  user_agent: string | null;
+  context: Record<string, unknown> | null;
+  created_at: string;
+}
+
+interface LogsResponse {
+  success: boolean;
+  data: AppLog[];
+  pagination: { page: number; limit: number; total: number; totalPages: number };
+}
+
+interface StatsResponse {
+  success: boolean;
+  data: { error: number; warn: number; info: number; debug: number; totalToday: number };
+}
+
+// ─── CONFIG ──────────────────────────────────────────────
+
+const LEVEL_CONFIG: Record<string, { text: string; class: string }> = {
+  error: { text: 'Error', class: 'bg-red-100 text-red-800' },
+  warn: { text: 'Warning', class: 'bg-yellow-100 text-yellow-800' },
+  info: { text: 'Info', class: 'bg-blue-100 text-blue-800' },
+  debug: { text: 'Debug', class: 'bg-gray-100 text-gray-800' },
+};
+
+const LEVEL_TABS = [
+  { key: '', label: 'Tất cả' },
+  { key: 'error', label: 'Error' },
+  { key: 'warn', label: 'Warning' },
+  { key: 'info', label: 'Info' },
+  { key: 'debug', label: 'Debug' },
+];
+
+const TAB_MAIN = [
+  { key: 'access', label: 'Access Logs' },
+  { key: 'actions', label: 'Admin Actions' },
+];
+
+// ─── PAGE ────────────────────────────────────────────────
+
+export default function LogsAdminPage() {
+  const [activeTab, setActiveTab] = useState('access');
+
+  return (
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold text-slate-900">Nhật ký hệ thống</h1>
+
+      {/* Main tabs */}
+      <div className="flex gap-1 bg-slate-100 rounded-lg p-1 w-fit">
+        {TAB_MAIN.map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key)}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              activeTab === tab.key
+                ? 'bg-white text-slate-900 shadow-sm'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {activeTab === 'access' ? <AccessLogsTab /> : <AdminActionsTab />}
+    </div>
+  );
+}
+
+// ─── ACCESS LOGS TAB ─────────────────────────────────────
+
+function AccessLogsTab() {
+  const [logs, setLogs] = useState<AppLog[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({ error: 0, warn: 0, info: 0, debug: 0, totalToday: 0 });
+
+  // Filters
+  const [levelFilter, setLevelFilter] = useState('');
+  const [search, setSearch] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  // Detail modal
+  const [selectedLog, setSelectedLog] = useState<AppLog | null>(null);
+
+  // Bulk delete
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+
+  // Fetch stats
+  const fetchStats = useCallback(async () => {
+    try {
+      const res = await api<StatsResponse>('/logs/stats');
+      if (res.success) setStats(res.data);
+    } catch (err) {
+      console.error('Loi tai stats:', err);
+    }
+  }, []);
+
+  // Fetch logs
+  const fetchLogs = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams({ page: String(page), limit: '20' });
+      if (levelFilter) params.set('level', levelFilter);
+      if (search) params.set('search', search);
+      if (startDate) params.set('startDate', startDate);
+      if (endDate) params.set('endDate', endDate);
+
+      const res = await api<LogsResponse>(`/logs?${params}`);
+      if (res.success) {
+        setLogs(res.data);
+        setTotalPages(res.pagination.totalPages);
+      }
+    } catch (err) {
+      console.error('Loi tai logs:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [page, levelFilter, search, startDate, endDate]);
+
+  useEffect(() => {
+    fetchLogs();
+    fetchStats();
+  }, [fetchLogs, fetchStats]);
+
+  /** Xem chi tiet log */
+  const handleView = async (id: string) => {
+    try {
+      const res = await api<{ success: boolean; data: AppLog }>(`/logs/${id}`);
+      if (res.success) setSelectedLog(res.data);
+    } catch (err) {
+      console.error('Loi tai chi tiet log:', err);
+    }
+  };
+
+  /** Xoa nhieu log da chon */
+  const handleBulkDelete = async () => {
+    if (selectedIds.size === 0) return;
+    if (!confirm(`Xoa ${selectedIds.size} log da chon?`)) return;
+    try {
+      await api('/logs/bulk', {
+        method: 'DELETE',
+        body: JSON.stringify({ ids: Array.from(selectedIds) }),
+      });
+      setSelectedIds(new Set());
+      fetchLogs();
+      fetchStats();
+    } catch (err: any) {
+      alert(err.message || 'Loi khi xoa');
+    }
+  };
+
+  /** Xoa tat ca log */
+  const handleDeleteAll = async () => {
+    const msg = levelFilter
+      ? `Xoa tat ca log level "${levelFilter}"?`
+      : 'Xoa TAT CA log? Hanh dong nay khong the hoan tac.';
+    if (!confirm(msg)) return;
+    try {
+      const params = levelFilter ? `?level=${levelFilter}` : '';
+      await api(`/logs/all${params}`, { method: 'DELETE' });
+      fetchLogs();
+      fetchStats();
+    } catch (err: any) {
+      alert(err.message || 'Loi khi xoa');
+    }
+  };
+
+  /** Toggle chon 1 log */
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  /** Toggle chon tat ca */
+  const toggleSelectAll = () => {
+    if (selectedIds.size === logs.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(logs.map((l) => l.id)));
+    }
+  };
+
+  const formatDate = (d: string) =>
+    new Date(d).toLocaleDateString('vi-VN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+  const truncate = (text: string, max: number) =>
+    text.length > max ? text.substring(0, max) + '...' : text;
+
+  /** Badge mau cho status code */
+  const statusBadge = (code: number | null) => {
+    if (!code) return null;
+    const cls =
+      code >= 500
+        ? 'bg-red-100 text-red-700'
+        : code >= 400
+          ? 'bg-yellow-100 text-yellow-700'
+          : code >= 300
+            ? 'bg-blue-100 text-blue-700'
+            : 'bg-green-100 text-green-700';
+    return (
+      <span className={`inline-block px-1.5 py-0.5 rounded text-xs font-mono ${cls}`}>
+        {code}
+      </span>
+    );
+  };
+
+  return (
+    <>
+      {/* Stats cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+        <StatsCard label="Errors" value={stats.error} color="text-red-600 bg-red-50" />
+        <StatsCard label="Warnings" value={stats.warn} color="text-yellow-600 bg-yellow-50" />
+        <StatsCard label="Info" value={stats.info} color="text-blue-600 bg-blue-50" />
+        <StatsCard label="Debug" value={stats.debug} color="text-gray-600 bg-gray-50" />
+        <StatsCard label="Hom nay" value={stats.totalToday} color="text-slate-900 bg-slate-100" />
+      </div>
+
+      {/* Filter bar */}
+      <div className="flex flex-col lg:flex-row gap-3 items-start lg:items-center justify-between">
+        <div className="flex flex-wrap gap-2 items-center">
+          {/* Level tabs */}
+          <div className="flex gap-1 bg-slate-100 rounded-lg p-1">
+            {LEVEL_TABS.map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => {
+                  setLevelFilter(tab.key);
+                  setPage(1);
+                }}
+                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                  levelFilter === tab.key
+                    ? 'bg-white text-slate-900 shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Date range */}
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => {
+              setStartDate(e.target.value);
+              setPage(1);
+            }}
+            className="border border-slate-200 rounded-md px-2 py-1.5 text-sm"
+          />
+          <span className="text-slate-400 text-sm">-</span>
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => {
+              setEndDate(e.target.value);
+              setPage(1);
+            }}
+            className="border border-slate-200 rounded-md px-2 py-1.5 text-sm"
+          />
+        </div>
+
+        <div className="flex gap-2 items-center">
+          <Input
+            placeholder="Tim theo message, endpoint..."
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
+            className="max-w-xs"
+          />
+        </div>
+      </div>
+
+      {/* Bulk actions */}
+      <div className="flex gap-2 items-center">
+        {selectedIds.size > 0 && (
+          <Button variant="destructive" size="sm" onClick={handleBulkDelete}>
+            Xoa {selectedIds.size} log da chon
+          </Button>
+        )}
+        <Button variant="outline" size="sm" onClick={handleDeleteAll}>
+          {levelFilter ? `Xoa tat ca ${levelFilter}` : 'Xoa tat ca'}
+        </Button>
+      </div>
+
+      {/* Detail modal */}
+      {selectedLog && (
+        <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-slate-900">Chi tiet log</h2>
+            <button
+              onClick={() => setSelectedLog(null)}
+              className="text-slate-400 hover:text-slate-600 text-lg"
+            >
+              x
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              <span className="font-medium text-slate-600">Level:</span>{' '}
+              <span
+                className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${LEVEL_CONFIG[selectedLog.level]?.class}`}
+              >
+                {LEVEL_CONFIG[selectedLog.level]?.text}
+              </span>
+            </div>
+            <div>
+              <span className="font-medium text-slate-600">Thoi gian:</span>{' '}
+              <span className="text-slate-900">{formatDate(selectedLog.created_at)}</span>
+            </div>
+            <div>
+              <span className="font-medium text-slate-600">Endpoint:</span>{' '}
+              <span className="text-slate-900 font-mono text-xs">
+                {selectedLog.endpoint || 'N/A'}
+              </span>
+            </div>
+            <div>
+              <span className="font-medium text-slate-600">Status:</span>{' '}
+              {statusBadge(selectedLog.status_code) || (
+                <span className="text-slate-500">N/A</span>
+              )}
+            </div>
+            <div>
+              <span className="font-medium text-slate-600">IP:</span>{' '}
+              <span className="text-slate-900 font-mono text-xs">{selectedLog.ip || 'N/A'}</span>
+            </div>
+            <div>
+              <span className="font-medium text-slate-600">User ID:</span>{' '}
+              <span className="text-slate-900 font-mono text-xs">
+                {selectedLog.user_id || 'N/A'}
+              </span>
+            </div>
+            <div className="md:col-span-2">
+              <span className="font-medium text-slate-600">User Agent:</span>{' '}
+              <span className="text-slate-500 text-xs">{selectedLog.user_agent || 'N/A'}</span>
+            </div>
+          </div>
+
+          {/* Message */}
+          <div>
+            <span className="block font-medium text-slate-600 text-sm mb-1">Message:</span>
+            <div className="bg-slate-50 rounded-lg p-4 text-sm text-slate-800">
+              {selectedLog.message}
+            </div>
+          </div>
+
+          {/* Stack trace */}
+          {selectedLog.stack_trace && (
+            <div>
+              <span className="block font-medium text-slate-600 text-sm mb-1">Stack trace:</span>
+              <pre className="bg-slate-900 text-green-400 rounded-lg p-4 text-xs overflow-x-auto whitespace-pre-wrap">
+                {selectedLog.stack_trace}
+              </pre>
+            </div>
+          )}
+
+          {/* Context JSON */}
+          {selectedLog.context && (
+            <div>
+              <span className="block font-medium text-slate-600 text-sm mb-1">Context:</span>
+              <pre className="bg-slate-50 rounded-lg p-4 text-xs overflow-x-auto">
+                {JSON.stringify(selectedLog.context, null, 2)}
+              </pre>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Bang danh sach */}
+      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 border-b border-slate-200">
+              <tr>
+                <th className="text-left px-4 py-3 w-10">
+                  <input
+                    type="checkbox"
+                    checked={logs.length > 0 && selectedIds.size === logs.length}
+                    onChange={toggleSelectAll}
+                    className="rounded border-slate-300"
+                  />
+                </th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Level</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Message</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Endpoint</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Status</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">IP</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Thoi gian</th>
+                <th className="text-right px-4 py-3 font-medium text-slate-600">Chi tiet</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan={8} className="text-center py-8 text-slate-500">
+                    Dang tai...
+                  </td>
+                </tr>
+              ) : logs.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="text-center py-8 text-slate-500">
+                    Khong co log nao
+                  </td>
+                </tr>
+              ) : (
+                logs.map((log) => {
+                  const lv = LEVEL_CONFIG[log.level] || LEVEL_CONFIG.info;
+                  return (
+                    <tr
+                      key={log.id}
+                      className={`border-b border-slate-100 hover:bg-slate-50 ${
+                        log.level === 'error' ? 'bg-red-50/30' : ''
+                      }`}
+                    >
+                      <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.has(log.id)}
+                          onChange={() => toggleSelect(log.id)}
+                          className="rounded border-slate-300"
+                        />
+                      </td>
+                      <td className="px-4 py-3">
+                        <span
+                          className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${lv.class}`}
+                        >
+                          {lv.text}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-slate-700 max-w-[250px]">
+                        {truncate(log.message, 60)}
+                      </td>
+                      <td className="px-4 py-3 text-slate-500 font-mono text-xs">
+                        {log.endpoint ? truncate(log.endpoint, 30) : '-'}
+                      </td>
+                      <td className="px-4 py-3">{statusBadge(log.status_code) || '-'}</td>
+                      <td className="px-4 py-3 text-slate-500 font-mono text-xs">
+                        {log.ip || '-'}
+                      </td>
+                      <td className="px-4 py-3 text-slate-500 text-xs">
+                        {formatDate(log.created_at)}
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        <button
+                          onClick={() => handleView(log.id)}
+                          className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                        >
+                          Xem
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Phan trang */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-2 py-4 border-t border-slate-200">
+            <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage(page - 1)}>
+              Truoc
+            </Button>
+            <span className="text-sm text-slate-600">
+              Trang {page} / {totalPages}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={page >= totalPages}
+              onClick={() => setPage(page + 1)}
+            >
+              Sau
+            </Button>
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
+// ─── ADMIN ACTIONS TAB (placeholder) ────────────────────
+
+function AdminActionsTab() {
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-8 text-center">
-      <h1 className="text-xl font-bold text-slate-900 mb-2 capitalize">{name || 'Module'}</h1>
-      <p className="text-slate-500">Trang này đang được phát triển</p>
+      <h2 className="text-lg font-semibold text-slate-900 mb-2">Admin Actions</h2>
+      <p className="text-slate-500">
+        Nhat ky hanh dong quan tri — dang phat trien. Du lieu tu ActionLogger se hien thi o day.
+      </p>
+    </div>
+  );
+}
+
+// ─── STATS CARD ──────────────────────────────────────────
+
+function StatsCard({ label, value, color }: { label: string; value: number; color: string }) {
+  return (
+    <div className={`rounded-xl p-4 ${color}`}>
+      <div className="text-2xl font-bold">{value.toLocaleString('vi-VN')}</div>
+      <div className="text-sm font-medium opacity-80">{label}</div>
     </div>
   );
 }

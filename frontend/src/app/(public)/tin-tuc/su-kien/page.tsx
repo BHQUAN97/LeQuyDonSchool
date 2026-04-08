@@ -1,5 +1,14 @@
+import { Metadata } from 'next';
 import PageBanner from '@/components/public/PageBanner';
 import ArticleCard from '@/components/public/ArticleCard';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Tin tức sự kiện',
+  description:
+    'Tin tức và sự kiện mới nhất tại Trường Tiểu học Lê Quý Đôn - Lễ hội, hội thao, ngày hội sách và các hoạt động nổi bật.',
+  path: '/tin-tuc/su-kien',
+});
 
 const articles = [
   { title: 'Lễ khai giảng năm học 2025-2026 đầy ấn tượng', description: 'Buổi lễ khai giảng diễn ra trang trọng với sự tham gia của hơn 1000 học sinh và phụ huynh.', category: 'Sự kiện', date: '01/09/2025', slug: 'le-khai-giang-2025-2026' },

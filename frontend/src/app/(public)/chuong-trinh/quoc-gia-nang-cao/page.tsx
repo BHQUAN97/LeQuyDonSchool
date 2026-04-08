@@ -1,5 +1,14 @@
+import { Metadata } from 'next';
 import PageBanner from '@/components/public/PageBanner';
 import { BookOpen, Award, Users, Clock, CheckCircle, TrendingUp } from 'lucide-react';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Giáo dục Quốc gia nâng cao',
+  description:
+    'Chương trình giáo dục Quốc gia nâng cao tại Trường Tiểu học Lê Quý Đôn - Tuân thủ 100% chương trình GDPT 2018, bổ sung kiến thức chuyên sâu.',
+  path: '/chuong-trinh/quoc-gia-nang-cao',
+});
 
 const highlights = [
   { icon: BookOpen, title: 'Chương trình chuẩn BGDĐT', desc: 'Tuân thủ 100% chương trình giáo dục phổ thông 2018 của Bộ Giáo dục & Đào tạo.' },

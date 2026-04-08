@@ -1,5 +1,14 @@
+import { Metadata } from 'next';
 import PageBanner from '@/components/public/PageBanner';
 import { UtensilsCrossed, Apple, Leaf, Clock } from 'lucide-react';
+import { buildPageMetadata } from '@/lib/seo-helpers';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Thực đơn học đường',
+  description:
+    'Thực đơn dinh dưỡng hàng tuần tại Trường Tiểu học Lê Quý Đôn - Bữa ăn cân bằng, an toàn vệ sinh thực phẩm, phù hợp lứa tuổi tiểu học.',
+  path: '/dich-vu-hoc-duong/thuc-don',
+});
 
 const weekDays = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6'];
 
