@@ -1,0 +1,79 @@
+import PageBanner from '@/components/public/PageBanner';
+
+const categories = ['Tất cả', 'Học tập', 'Ngoại khóa', 'Sự kiện', 'Thể thao', 'Nghệ thuật'];
+
+const photos = [
+  { label: 'Lễ khai giảng 2025-2026', category: 'Sự kiện', size: 'large' },
+  { label: 'Giờ học STEM', category: 'Học tập', size: 'normal' },
+  { label: 'CLB Tiếng Anh', category: 'Ngoại khóa', size: 'normal' },
+  { label: 'Hội thao mùa xuân', category: 'Thể thao', size: 'normal' },
+  { label: 'Biểu diễn văn nghệ', category: 'Nghệ thuật', size: 'large' },
+  { label: 'Tham quan dã ngoại', category: 'Ngoại khóa', size: 'normal' },
+  { label: 'Giờ thể dục buổi sáng', category: 'Thể thao', size: 'normal' },
+  { label: 'Phòng thí nghiệm', category: 'Học tập', size: 'normal' },
+  { label: 'Ngày hội sách', category: 'Sự kiện', size: 'normal' },
+  { label: 'Lớp vẽ sáng tạo', category: 'Nghệ thuật', size: 'normal' },
+  { label: 'Cuộc thi Toán học', category: 'Học tập', size: 'normal' },
+  { label: 'Trại hè 2025', category: 'Ngoại khóa', size: 'large' },
+];
+
+export default function SacMauLQDPage() {
+  return (
+    <div>
+      <PageBanner
+        title="Sắc màu Lê Quý Đôn"
+        description="Khoảnh khắc đáng nhớ tại ngôi trường thân yêu"
+        breadcrumbItems={[
+          { label: 'Tổng quan', href: '/tong-quan/tam-nhin-su-menh' },
+          { label: 'Sắc màu Lê Quý Đôn' },
+        ]}
+      />
+
+      {/* Category filter tabs */}
+      <section className="border-b border-slate-200 bg-white sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex gap-2 overflow-x-auto py-3 scrollbar-hide">
+            {categories.map((cat, i) => (
+              <button
+                key={cat}
+                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                  i === 0
+                    ? 'bg-green-700 text-white'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Photo gallery grid */}
+      <section className="max-w-7xl mx-auto px-4 py-8 lg:py-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
+          {photos.map((photo, i) => (
+            <div
+              key={i}
+              className={`bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 text-xs lg:text-sm text-center p-4 cursor-pointer hover:opacity-80 transition-opacity ${
+                photo.size === 'large' ? 'col-span-2 h-48 lg:h-64' : 'h-36 lg:h-48'
+              }`}
+            >
+              <div>
+                <p>{photo.label}</p>
+                <p className="text-xs text-slate-300 mt-1">{photo.category}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Load more */}
+        <div className="text-center mt-8">
+          <button className="px-6 py-2.5 border border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">
+            Xem thêm ảnh
+          </button>
+        </div>
+      </section>
+    </div>
+  );
+}

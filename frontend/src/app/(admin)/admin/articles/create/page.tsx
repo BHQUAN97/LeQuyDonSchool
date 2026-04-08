@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
+import RichTextEditor from '@/components/admin/RichTextEditor';
 
 interface ApiResponse {
   success: boolean;
@@ -147,17 +148,15 @@ export default function CreateArticlePage() {
               )}
             </div>
 
-            {/* Content */}
+            {/* Content — Rich text editor */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Nội dung <span className="text-red-500">*</span>
               </label>
-              <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
+              <RichTextEditor
+                content={content}
+                onChange={setContent}
                 placeholder="Nhập nội dung bài viết..."
-                rows={16}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent resize-y"
               />
             </div>
 

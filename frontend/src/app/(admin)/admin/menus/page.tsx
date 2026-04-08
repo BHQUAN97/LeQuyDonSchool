@@ -1,9 +1,21 @@
-export default function PlaceholderPage() {
-  const name = typeof window !== 'undefined' ? window.location.pathname.split('/').pop() : '';
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
+/**
+ * Menus page — redirect sang /admin/navigation vi backend dung chung module.
+ */
+export default function MenusPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace('/admin/navigation');
+  }, [router]);
+
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-8 text-center">
-      <h1 className="text-xl font-bold text-slate-900 mb-2 capitalize">{name || 'Module'}</h1>
-      <p className="text-slate-500">Trang này đang được phát triển</p>
+      <p className="text-slate-500">Đang chuyển hướng đến trang quản lý menu...</p>
     </div>
   );
 }
