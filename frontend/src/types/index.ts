@@ -29,3 +29,18 @@ export interface LoginResponse {
   user: User;
   accessToken: string;
 }
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  parent_id: string | null;
+  description: string | null;
+  display_order: number;
+  status: 'active' | 'inactive';
+  created_by: string | null;
+  updated_by: string | null;
+  created_at: string;
+  updated_at: string;
+  children?: Category[];
+}

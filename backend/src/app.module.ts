@@ -8,8 +8,18 @@ import { appConfig } from './config/app.config';
 import { databaseConfig } from './config/database.config';
 import { jwtConfig } from './config/jwt.config';
 
+// Feature modules
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { CategoriesModule } from './modules/categories/categories.module';
+import { ArticlesModule } from './modules/articles/articles.module';
+import { MediaModule } from './modules/media/media.module';
+import { PagesModule } from './modules/pages/pages.module';
+import { SettingsModule } from './modules/settings/settings.module';
+import { ContactsModule } from './modules/contacts/contacts.module';
+import { EventsModule } from './modules/events/events.module';
+import { AdmissionsModule } from './modules/admissions/admissions.module';
+import { NavigationModule } from './modules/navigation/navigation.module';
 
 @Module({
   imports: [
@@ -44,9 +54,17 @@ import { UsersModule } from './modules/users/users.module';
     // Feature modules
     AuthModule,
     UsersModule,
+    CategoriesModule,
+    ArticlesModule,
+    MediaModule,
+    PagesModule,
+    SettingsModule,
+    ContactsModule,
+    EventsModule,
+    AdmissionsModule,
+    NavigationModule,
   ],
   providers: [
-    // Throttler guard global
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],
 })
