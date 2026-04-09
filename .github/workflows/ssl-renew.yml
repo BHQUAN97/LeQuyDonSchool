@@ -1,0 +1,77 @@
+name: SSL Renew
+
+on:
+  workflow_dispatch:
+
+env:
+  APP_DIR: /opt/lqd
+  WEBPHOTO_DIR: /opt/webphoto
+
+jobs:
+  ssl:
+    name: "Renew SSL cert"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Load config/env
+        run: |
+          while IFS= read -r line; do
+            [[ -z "$line" || "$line" == \#* ]] && continue
+            [[ "$line" == *=* ]] && echo "$line" >> $GITHUB_ENV
+          done < config/env
+          PASS=$(sed -n 's/^VPS_PASSWORD=//p' config/env)
+          echo "SSHPASS=${PASS}" >> $GITHUB_ENV
+
+      - name: Setup SSH
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq sshpass > /dev/null
+          mkdir -p ~/.ssh
+          ssh-keyscan -p ${{ env.VPS_PORT }} -H ${{ env.VPS_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Get SSL cert for lqd.bhquan.store
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+
+          echo "=== Current cert status ==="
+          sshpass -e ssh -p $PORT $VPS "
+            ls -la /etc/letsencrypt/live/lqd.bhquan.store/ 2>&1 || echo 'No cert dir found'
+            echo '--- Nginx status ---'
+            docker exec shared-nginx nginx -t 2>&1
+          "
+
+          echo ""
+          echo "=== Removing old/placeholder cert ==="
+          sshpass -e ssh -p $PORT $VPS "
+            rm -rf /etc/letsencrypt/live/lqd.bhquan.store*
+            rm -rf /etc/letsencrypt/archive/lqd.bhquan.store*
+            rm -rf /etc/letsencrypt/renewal/lqd.bhquan.store*.conf
+          "
+
+          echo ""
+          echo "=== Running certbot ==="
+          sshpass -e ssh -p $PORT $VPS "
+            docker run --rm \
+              -v /etc/letsencrypt:/etc/letsencrypt \
+              -v /var/lib/letsencrypt:/var/lib/letsencrypt \
+              -p 80:80 \
+              certbot/certbot certonly --standalone \
+              --non-interactive \
+              --cert-name lqd.bhquan.store \
+              --email admin@bhquan.site \
+              --agree-tos --no-eff-email \
+              -d lqd.bhquan.store \
+              2>&1
+          "
+
+          echo ""
+          echo "=== Verify cert ==="
+          sshpass -e ssh -p $PORT $VPS "
+            ls -la /etc/letsencrypt/live/lqd.bhquan.store/
+            openssl x509 -in /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem -noout -subject -dates 2>&1
+          "
+
+          echo ""
+          echo "=== Reload nginx ==="
+          sshpass -e ssh -p $PORT $VPS "docker exec shared-nginx nginx -s reload 2>&1"
