@@ -93,7 +93,9 @@ export class MediaService {
         fs.mkdirSync(uploadsDir, { recursive: true });
       }
       const newPath = path.join(uploadsDir, filename);
-      fs.renameSync(file.path, newPath);
+      // copyFile + unlink thay vi rename de tranh EXDEV khi khac o dia
+      fs.copyFileSync(file.path, newPath);
+      this.cleanupTempFile(file.path);
 
       url = `/uploads/${filename}`;
     }
