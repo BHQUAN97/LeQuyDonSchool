@@ -1,0 +1,93 @@
+# ============================================
+# LeQuyDon — PRODUCTION
+# Chay cung VPS voi VietNet (bhquan.store) va WebPhoto (bhquan.site)
+# Dung chung MySQL (shared-mysql), Redis (shared-redis), Nginx (shared-nginx)
+# Domain: lqd.bhquan.store
+# ============================================
+
+services:
+
+  # ─── NestJS API Server ──────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: lqd-api
+    restart: always
+    ports:
+      - '4200:4000'
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DB_HOST: shared-mysql
+      DB_PORT: 3306
+      DB_USERNAME: lqd
+      DB_PASSWORD: ${LQD_DB_PASSWORD}
+      DB_NAME: lqd
+      REDIS_HOST: shared-redis
+      REDIS_PORT: 6379
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: 3600
+      REFRESH_TOKEN_EXPIRATION: 604800
+      ALLOWED_ORIGINS: https://${DOMAIN:-lqd.bhquan.store}
+      ADMIN_EMAIL: admin@lequydon.edu.vn
+      REVALIDATE_SECRET: ${REVALIDATE_SECRET}
+      NEXT_REVALIDATE_URL: http://lqd-frontend:3000
+    volumes:
+      - lqd_uploads:/app/uploads
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://localhost:4000/api/health || exit 1']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - webphoto_backend
+      - lqd_frontend
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+
+  # ─── Next.js SSR Frontend ───────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: lqd-frontend
+    restart: always
+    ports:
+      - '3200:3000'
+    environment:
+      NEXT_PUBLIC_API_URL: /api
+      NEXT_PUBLIC_SITE_URL: https://${DOMAIN:-lqd.bhquan.store}
+      INTERNAL_API_URL: http://backend:4000/api
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - lqd_frontend
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+
+volumes:
+  lqd_uploads:
+    name: lqd_uploads
+
+networks:
+  # Dung chung network voi WebPhoto (MySQL, Redis)
+  webphoto_backend:
+    name: webphoto_backend
+    external: true
+  # Network rieng — shared-nginx cung join network nay
+  lqd_frontend:
+    name: lqd_frontend
+    external: true

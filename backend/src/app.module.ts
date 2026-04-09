@@ -7,6 +7,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { appConfig } from './config/app.config';
 import { databaseConfig } from './config/database.config';
 import { jwtConfig } from './config/jwt.config';
+import { r2Config } from './config/r2.config';
 
 // Feature modules
 import { AuthModule } from './modules/auth/auth.module';
@@ -22,6 +23,8 @@ import { AdmissionsModule } from './modules/admissions/admissions.module';
 import { NavigationModule } from './modules/navigation/navigation.module';
 import { LogsModule } from './modules/logs/logs.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { HealthModule } from './modules/health/health.module';
+import { SearchModule } from './modules/search/search.module';
 import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
@@ -29,7 +32,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     // Config — global, doc tu .env
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, databaseConfig, jwtConfig],
+      load: [appConfig, databaseConfig, jwtConfig, r2Config],
       envFilePath: ['.env'],
     }),
 
@@ -71,6 +74,8 @@ import { ScheduleModule } from '@nestjs/schedule';
     NavigationModule,
     LogsModule,
     AnalyticsModule,
+    HealthModule,
+    SearchModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },

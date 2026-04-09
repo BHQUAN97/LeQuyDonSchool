@@ -7,6 +7,8 @@ interface ArticleCardProps {
   date: string;
   slug: string;
   imageLabel?: string;
+  /** Override URL — dung cho search results voi cac loai khac nhau */
+  href?: string;
 }
 
 /** Card bai viet dung chung cho cac trang tin tuc / su kien / ngoai khoa / hoc tap */
@@ -17,9 +19,10 @@ export default function ArticleCard({
   date,
   slug,
   imageLabel = 'Hình ảnh bài viết',
+  href,
 }: ArticleCardProps) {
   return (
-    <Link href={`/tin-tuc/${slug}`} className="group">
+    <Link href={href || `/tin-tuc/${slug}`} className="group">
       <article className="bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow h-full flex flex-col">
         <div className="h-44 bg-slate-100 flex items-center justify-center text-slate-400 text-sm">
           {imageLabel}

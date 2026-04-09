@@ -1,0 +1,480 @@
+name: Auto Deploy
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
+      - 'ThietKe/**'
+      - '.sdd/**'
+
+# Cancel in-progress deploy khi co push moi
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+env:
+  APP_DIR: /opt/lqd
+  WEBPHOTO_DIR: /opt/webphoto
+
+jobs:
+  typecheck-fe:
+    name: Typecheck Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: cd frontend && npm ci && npx tsc --noEmit
+
+  typecheck-be:
+    name: Typecheck Backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: cd backend && npm ci && npx tsc --noEmit
+
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+    needs: [typecheck-fe, typecheck-be]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Load config/env
+        run: |
+          grep -v '^#' config/env | grep -v '^$' | grep '=' >> $GITHUB_ENV
+          PASS=$(grep '^VPS_PASSWORD=' config/env | cut -d= -f2-)
+          echo "SSHPASS=${PASS}" >> $GITHUB_ENV
+          echo "Config loaded"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Setup SSH with sshpass
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq sshpass > /dev/null
+          mkdir -p ~/.ssh
+          ssh-keyscan -p ${{ env.VPS_PORT }} -H ${{ env.VPS_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+
+      # Detect first-time vs update
+      - name: Detect deploy mode
+        id: detect
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+          if sshpass -e ssh -p $PORT $VPS "test -f ${APP_DIR}/docker-compose.prod.yml"; then
+            echo "mode=update" >> $GITHUB_OUTPUT
+            echo "Deploy mode: UPDATE"
+          else
+            echo "mode=init" >> $GITHUB_OUTPUT
+            echo "Deploy mode: INIT (first-time)"
+          fi
+
+      - name: Detect changes
+        id: changes
+        run: |
+          DIFF=$(git diff --name-only HEAD~1 2>/dev/null || echo "FULL")
+          echo "Changed files:"
+          echo "$DIFF" | head -20
+
+          fe_changed=false; be_changed=false; infra_changed=false; config_changed=false
+
+          if [ "$DIFF" = "FULL" ]; then
+            fe_changed=true; be_changed=true; infra_changed=true; config_changed=true
+          else
+            echo "$DIFF" | grep -qE '^frontend/' && fe_changed=true
+            echo "$DIFF" | grep -qE '^backend/' && be_changed=true
+            echo "$DIFF" | grep -qE '^(docker-compose|infra/|nginx/|.*/Dockerfile)' && infra_changed=true
+            echo "$DIFF" | grep -qE '^config/' && config_changed=true
+          fi
+
+          if [ "${{ steps.detect.outputs.mode }}" = "init" ]; then
+            fe_changed=true; be_changed=true; infra_changed=true; config_changed=true
+          fi
+
+          echo "fe=$fe_changed" >> $GITHUB_OUTPUT
+          echo "be=$be_changed" >> $GITHUB_OUTPUT
+          echo "infra=$infra_changed" >> $GITHUB_OUTPUT
+          echo "config=$config_changed" >> $GITHUB_OUTPUT
+          echo "Changes: fe=$fe_changed be=$be_changed infra=$infra_changed config=$config_changed"
+
+      - name: Build Backend
+        if: steps.changes.outputs.be == 'true'
+        run: |
+          cd backend
+          npm ci
+          npm run build
+
+      - name: Build Frontend
+        if: steps.changes.outputs.fe == 'true'
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+
+      # ══════════════════════════════════════════
+      # FIRST-TIME DEPLOYMENT
+      # ══════════════════════════════════════════
+      - name: '[INIT] Upload full project to VPS'
+        if: steps.detect.outputs.mode == 'init'
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+
+          sshpass -e ssh -p $PORT $VPS "mkdir -p ${APP_DIR}/backend ${APP_DIR}/frontend ${APP_DIR}/nginx/conf.d"
+
+          # Docker compose + env
+          sshpass -e scp -P $PORT docker-compose.prod.yml $VPS:${APP_DIR}/
+
+          # Backend: tar pipe
+          echo "  Uploading backend..."
+          tar czf - backend/src backend/dist backend/package.json backend/package-lock.json \
+            backend/Dockerfile backend/tsconfig.json \
+            backend/tsconfig.build.json backend/nest-cli.json 2>/dev/null | \
+            sshpass -e ssh -p $PORT $VPS "tar xzf - -C ${APP_DIR}/"
+
+          # Frontend: tar pipe
+          echo "  Uploading frontend..."
+          tar czf - frontend/src frontend/public frontend/package.json frontend/package-lock.json \
+            frontend/Dockerfile frontend/next.config.mjs frontend/tailwind.config.ts \
+            frontend/tsconfig.json frontend/postcss.config.mjs 2>/dev/null | \
+            sshpass -e ssh -p $PORT $VPS "tar xzf - -C ${APP_DIR}/"
+
+          # Nginx config
+          echo "  Uploading nginx config..."
+          sshpass -e ssh -p $PORT $VPS "mkdir -p ${WEBPHOTO_DIR}/nginx/conf.d"
+          sshpass -e scp -P $PORT nginx/conf.d/lqd.bhquan.store.conf $VPS:${WEBPHOTO_DIR}/nginx/conf.d/lqd.bhquan.store.conf
+
+          echo "[OK] Full project uploaded"
+
+      - name: '[INIT] Upload config/env as .env'
+        if: steps.detect.outputs.mode == 'init'
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+
+          sshpass -e ssh -p $PORT $VPS "mkdir -p ${APP_DIR}/config"
+          sshpass -e scp -P $PORT config/env $VPS:${APP_DIR}/config/env
+          sshpass -e ssh -p $PORT $VPS "cp ${APP_DIR}/config/env ${APP_DIR}/.env && chmod 600 ${APP_DIR}/.env"
+          echo "[OK] .env created from config/env"
+
+      - name: '[INIT] Create LQD network + DB'
+        if: steps.detect.outputs.mode == 'init'
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+
+          MYSQL_ROOT_PWD=$(grep '^MYSQL_ROOT_PASSWORD=' config/env | cut -d= -f2-)
+          LQD_DB_PWD=$(grep '^LQD_DB_PASSWORD=' config/env | cut -d= -f2-)
+
+          sshpass -e ssh -p $PORT $VPS "
+            docker network create lqd_frontend 2>/dev/null || true
+            docker network create webphoto_backend 2>/dev/null || true
+          "
+
+          echo "--- Creating DB + user ---"
+          sshpass -e ssh -p $PORT $VPS "docker exec -i shared-mysql mysql -u root -p'${MYSQL_ROOT_PWD}' <<EOSQL
+            CREATE DATABASE IF NOT EXISTS lqd CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+            CREATE USER IF NOT EXISTS 'lqd'@'%' IDENTIFIED BY '${LQD_DB_PWD}';
+            GRANT ALL PRIVILEGES ON lqd.* TO 'lqd'@'%';
+            FLUSH PRIVILEGES;
+            SELECT '[OK]' AS result;
+          EOSQL"
+          echo "[OK] DB lqd + user created"
+
+      - name: '[INIT] Generate placeholder SSL certs'
+        if: steps.detect.outputs.mode == 'init'
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+
+          HAS_WEBPHOTO=$(sshpass -e ssh -p $PORT $VPS "test -f ${WEBPHOTO_DIR}/docker-compose.prod.yml && echo yes || echo no")
+          if [ "$HAS_WEBPHOTO" = "yes" ]; then
+            sshpass -e ssh -p $PORT $VPS "
+              cd ${WEBPHOTO_DIR}
+              CERT_EXISTS=\$(docker compose -f docker-compose.prod.yml run --rm --entrypoint '' certbot \
+                test -f /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem 2>/dev/null && echo yes || echo no)
+              if [ \"\$CERT_EXISTS\" = 'no' ]; then
+                echo 'Generating placeholder cert for lqd.bhquan.store...'
+                docker compose -f docker-compose.prod.yml run --rm --entrypoint '' certbot sh -c '
+                  mkdir -p /etc/letsencrypt/live/lqd.bhquan.store
+                  openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
+                    -keyout /etc/letsencrypt/live/lqd.bhquan.store/privkey.pem \
+                    -out /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem \
+                    -subj /CN=lqd.bhquan.store 2>/dev/null
+                '
+                echo '  OK'
+              else
+                echo 'lqd.bhquan.store: cert exists'
+              fi
+            "
+            echo "[OK] SSL placeholders ready"
+          else
+            echo "WebPhoto not deployed — skipping placeholder certs"
+          fi
+
+      - name: '[INIT] Build & Start LQD services'
+        if: steps.detect.outputs.mode == 'init'
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+
+          echo "--- Building backend + frontend images ---"
+          BUILD_OUT=$(sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml build backend frontend 2>&1
+          ")
+          BUILD_EXIT=$?
+          if [ $BUILD_EXIT -ne 0 ]; then
+            echo "ERROR: Docker build failed (exit=$BUILD_EXIT)"
+            echo "$BUILD_OUT" | tail -30
+            exit 1
+          fi
+          echo "[OK] Images built"
+
+          echo "--- Starting all services ---"
+          START_OUT=$(sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml up -d 2>&1
+          ")
+          if [ $? -ne 0 ]; then
+            echo "ERROR: docker compose up failed"
+            echo "$START_OUT"
+            sshpass -e ssh -p $PORT $VPS "docker ps -a --format 'table {{.Names}}\t{{.Status}}' | grep -E 'lqd|shared'" 2>&1
+            sshpass -e ssh -p $PORT $VPS "docker logs lqd-api --tail 30 2>&1"
+            exit 1
+          fi
+
+          # Connect shared-nginx to lqd_frontend network
+          sshpass -e ssh -p $PORT $VPS "
+            if docker ps --filter name=shared-nginx --format '{{.Names}}' | grep -q shared-nginx; then
+              docker network connect lqd_frontend shared-nginx 2>/dev/null || true
+              docker exec shared-nginx nginx -s reload 2>/dev/null || true
+              echo 'shared-nginx connected to lqd_frontend'
+            else
+              echo 'shared-nginx not running yet'
+            fi
+          "
+
+          sshpass -e ssh -p $PORT $VPS "docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}' | head -15"
+          echo "[OK] All services started"
+
+      - name: '[INIT] Get real SSL certs + reload nginx'
+        if: steps.detect.outputs.mode == 'init'
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+
+          HAS_WEBPHOTO=$(sshpass -e ssh -p $PORT $VPS "test -f ${WEBPHOTO_DIR}/docker-compose.prod.yml && echo yes || echo no")
+          if [ "$HAS_WEBPHOTO" != "yes" ]; then
+            echo "WebPhoto not deployed — skipping SSL"
+            exit 0
+          fi
+
+          echo "--- Certbot: lqd.bhquan.store ---"
+          sshpass -e ssh -p $PORT $VPS "
+            DC='docker compose -f docker-compose.prod.yml'
+            cd ${WEBPHOTO_DIR}
+
+            echo '  Cleaning old certs for lqd.bhquan.store...'
+            \$DC run --rm --entrypoint '' certbot sh -c \
+              'rm -rf /etc/letsencrypt/live/lqd.bhquan.store* /etc/letsencrypt/archive/lqd.bhquan.store* /etc/letsencrypt/renewal/lqd.bhquan.store*.conf'
+
+            echo '  Requesting cert...'
+            timeout 120 \$DC run --rm --entrypoint '' certbot \
+              certbot certonly --webroot -w /var/www/certbot \
+              --non-interactive --cert-name lqd.bhquan.store \
+              --email admin@bhquan.site --agree-tos --no-eff-email \
+              -d lqd.bhquan.store
+
+            if [ \$? -ne 0 ]; then
+              echo '  FAILED — regenerating placeholder...'
+              \$DC run --rm --entrypoint '' certbot sh -c '
+                mkdir -p /etc/letsencrypt/live/lqd.bhquan.store
+                openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
+                  -keyout /etc/letsencrypt/live/lqd.bhquan.store/privkey.pem \
+                  -out /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem \
+                  -subj /CN=lqd.bhquan.store 2>/dev/null
+              '
+            fi
+          " && echo "[OK] lqd.bhquan.store cert" || echo "WARNING: cert failed"
+
+          sshpass -e ssh -p $PORT $VPS "
+            docker exec shared-nginx nginx -t 2>&1 && \
+            docker exec shared-nginx nginx -s reload && \
+            echo '[OK] Nginx reloaded with SSL' || \
+            echo 'WARNING: Nginx reload failed'
+          "
+
+      # ══════════════════════════════════════════
+      # UPDATE DEPLOYMENT
+      # ══════════════════════════════════════════
+      - name: '[UPDATE] Upload frontend'
+        if: steps.detect.outputs.mode == 'update' && steps.changes.outputs.fe == 'true'
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+          sshpass -e ssh -p $PORT $VPS "rm -rf ${APP_DIR}/frontend/src"
+          tar czf - frontend/src frontend/public frontend/package.json frontend/package-lock.json \
+            frontend/Dockerfile frontend/next.config.mjs frontend/tailwind.config.ts \
+            frontend/tsconfig.json frontend/postcss.config.mjs 2>/dev/null | \
+            sshpass -e ssh -p $PORT $VPS "tar xzf - -C ${APP_DIR}/"
+          echo "[OK] Frontend uploaded"
+
+      - name: '[UPDATE] Upload backend'
+        if: steps.detect.outputs.mode == 'update' && steps.changes.outputs.be == 'true'
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+          sshpass -e ssh -p $PORT $VPS "rm -rf ${APP_DIR}/backend/src ${APP_DIR}/backend/dist"
+          tar czf - backend/src backend/dist backend/package.json backend/package-lock.json \
+            backend/Dockerfile 2>/dev/null | \
+            sshpass -e ssh -p $PORT $VPS "tar xzf - -C ${APP_DIR}/"
+          echo "[OK] Backend uploaded"
+
+      - name: '[UPDATE] Sync deploy config'
+        if: steps.detect.outputs.mode == 'update'
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+          sshpass -e scp -P $PORT docker-compose.prod.yml $VPS:${APP_DIR}/
+          echo "[OK] Deploy config synced"
+
+      - name: '[UPDATE] Sync Nginx config'
+        if: steps.detect.outputs.mode == 'update'
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+          sshpass -e scp -P $PORT nginx/conf.d/lqd.bhquan.store.conf $VPS:${WEBPHOTO_DIR}/nginx/conf.d/lqd.bhquan.store.conf 2>/dev/null && {
+            sshpass -e ssh -p $PORT $VPS "
+              if [ -f ${WEBPHOTO_DIR}/docker-compose.prod.yml ]; then
+                cd ${WEBPHOTO_DIR}
+                CERT_EXISTS=\$(docker compose -f docker-compose.prod.yml run --rm --entrypoint '' certbot \
+                  test -f /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem 2>/dev/null && echo yes || echo no)
+                if [ \"\$CERT_EXISTS\" = 'no' ]; then
+                  echo 'Placeholder cert for lqd.bhquan.store...'
+                  docker compose -f docker-compose.prod.yml run --rm --entrypoint '' certbot sh -c '
+                    mkdir -p /etc/letsencrypt/live/lqd.bhquan.store
+                    openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
+                      -keyout /etc/letsencrypt/live/lqd.bhquan.store/privkey.pem \
+                      -out /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem \
+                      -subj /CN=lqd.bhquan.store 2>/dev/null
+                  '
+                fi
+              fi
+              docker exec shared-nginx nginx -t 2>&1 | tail -1 && docker exec shared-nginx nginx -s reload
+            "
+            echo "[OK] Nginx updated"
+          } || echo "Nginx unchanged (skip)"
+
+      - name: '[UPDATE] Rebuild backend'
+        if: steps.detect.outputs.mode == 'update' && (steps.changes.outputs.be == 'true' || steps.changes.outputs.infra == 'true')
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+          echo "--- Rebuilding backend ---"
+          BUILD_OUT=$(sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml build backend 2>&1
+          ")
+          if [ $? -ne 0 ]; then
+            echo "ERROR: Backend build failed"
+            echo "$BUILD_OUT" | tail -30
+            exit 1
+          fi
+          sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml up -d backend 2>&1
+          "
+          echo "[OK] Backend rebuilt"
+
+      - name: '[UPDATE] Rebuild frontend'
+        if: steps.detect.outputs.mode == 'update' && (steps.changes.outputs.fe == 'true' || steps.changes.outputs.infra == 'true')
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+          echo "--- Rebuilding frontend ---"
+          BUILD_OUT=$(sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml build frontend 2>&1
+          ")
+          if [ $? -ne 0 ]; then
+            echo "ERROR: Frontend build failed"
+            echo "$BUILD_OUT" | tail -30
+            exit 1
+          fi
+          sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml up -d frontend 2>&1
+          "
+          echo "[OK] Frontend rebuilt"
+
+      - name: '[UPDATE] Ensure nginx connected'
+        if: steps.detect.outputs.mode == 'update'
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+          sshpass -e ssh -p $PORT $VPS "
+            docker network connect lqd_frontend shared-nginx 2>/dev/null || true
+            docker exec shared-nginx nginx -s reload 2>/dev/null || true
+          "
+          sshpass -e ssh -p $PORT $VPS "docker ps --format 'table {{.Names}}\t{{.Status}}' | head -15"
+
+      # ══════════════════════════════════════════
+      # SHARED STEPS (both init and update)
+      # ══════════════════════════════════════════
+      - name: Sync config/env to .env on VPS
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+          sshpass -e ssh -p $PORT $VPS "mkdir -p ${APP_DIR}/config"
+          sshpass -e scp -P $PORT config/env $VPS:${APP_DIR}/config/env
+          sshpass -e ssh -p $PORT $VPS "cp ${APP_DIR}/config/env ${APP_DIR}/.env && chmod 600 ${APP_DIR}/.env"
+          echo "[OK] config/env synced to .env"
+
+      - name: Ensure DB + user exist
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+
+          MYSQL_ROOT_PWD=$(grep '^MYSQL_ROOT_PASSWORD=' config/env | cut -d= -f2-)
+          LQD_DB_PWD=$(grep '^LQD_DB_PASSWORD=' config/env | cut -d= -f2-)
+
+          echo "--- Checking shared-mysql container ---"
+          MYSQL_STATUS=$(sshpass -e ssh -p $PORT $VPS "docker ps --filter name=shared-mysql --format '{{.Names}} {{.Status}}'" 2>&1)
+          if [ -z "$MYSQL_STATUS" ]; then
+            echo "WARNING: shared-mysql container not running — skip DB check"
+            exit 0
+          fi
+          echo "  $MYSQL_STATUS"
+
+          echo "--- Creating DB + user ---"
+          sshpass -e ssh -p $PORT $VPS "docker exec -i shared-mysql mysql -u root -p'${MYSQL_ROOT_PWD}' <<EOSQL
+            CREATE DATABASE IF NOT EXISTS lqd CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+            CREATE USER IF NOT EXISTS 'lqd'@'%' IDENTIFIED BY '${LQD_DB_PWD}';
+            GRANT ALL PRIVILEGES ON lqd.* TO 'lqd'@'%';
+            FLUSH PRIVILEGES;
+            SELECT '[OK]' AS result;
+          EOSQL"
+          echo "[OK] DB lqd + user verified"
+
+      - name: Deploy summary
+        run: |
+          echo "=========================================="
+          echo "LeQuyDon deployed to lqd.bhquan.store"
+          echo "Mode: ${{ steps.detect.outputs.mode }}"
+          echo "=========================================="

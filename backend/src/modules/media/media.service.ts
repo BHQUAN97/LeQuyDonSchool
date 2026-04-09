@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, IsNull } from 'typeorm';
 import * as path from 'path';
@@ -6,13 +6,17 @@ import * as fs from 'fs';
 import { Media } from './entities/media.entity';
 import { QueryMediaDto } from './dto/query-media.dto';
 import { UpdateMediaDto } from './dto/update-media.dto';
+import { R2Service } from './r2.service';
 import { generateUlid } from '@/common/utils/ulid';
 import { paginated } from '@/common/helpers/response.helper';
 
 @Injectable()
 export class MediaService {
+  private readonly logger = new Logger(MediaService.name);
+
   constructor(
     @InjectRepository(Media) private readonly mediaRepo: Repository<Media>,
+    private readonly r2Service: R2Service,
   ) {}
 
   /**
@@ -57,32 +61,50 @@ export class MediaService {
   }
 
   /**
-   * Upload file — luu vao uploads/, tao record trong DB.
-   * Multer da luu file vao disk, day chi xu ly metadata.
+   * Upload file — neu R2 da config thi upload len R2, neu khong thi luu local.
+   * Multer da luu file vao temp disk, day xu ly metadata + storage.
    */
   async upload(file: Express.Multer.File, userId: string) {
     if (!file) throw new BadRequestException('Không có file được gửi');
 
-    // Tao ten file duy nhat voi ULID
-    const ext = path.extname(file.originalname);
-    const ulid = generateUlid();
-    const uniqueFilename = `${ulid}${ext}`;
+    let url: string;
+    let filename: string;
+    let ulid: string;
 
-    // Rename file tu ten Multer sang ten ULID
-    const uploadsDir = path.resolve(process.cwd(), 'uploads');
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir, { recursive: true });
+    if (this.r2Service.isEnabled()) {
+      // Upload len R2
+      const { key, ulid: id } = this.r2Service.generateKey(file.originalname);
+      ulid = id;
+      filename = key;
+
+      const buffer = fs.readFileSync(file.path);
+      url = await this.r2Service.upload(key, buffer, file.mimetype);
+
+      // Xoa file temp sau khi upload thanh cong
+      this.cleanupTempFile(file.path);
+    } else {
+      // Fallback: luu local nhu cu
+      const ext = path.extname(file.originalname);
+      ulid = generateUlid();
+      filename = `${ulid}${ext}`;
+
+      const uploadsDir = path.resolve(process.cwd(), 'uploads');
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+      const newPath = path.join(uploadsDir, filename);
+      fs.renameSync(file.path, newPath);
+
+      url = `/uploads/${filename}`;
     }
-    const newPath = path.join(uploadsDir, uniqueFilename);
-    fs.renameSync(file.path, newPath);
 
     const media = this.mediaRepo.create({
       id: ulid,
-      filename: uniqueFilename,
+      filename,
       original_name: file.originalname,
       mime_type: file.mimetype,
       size: file.size,
-      url: `/uploads/${uniqueFilename}`,
+      url,
       thumbnail_url: null,
       alt_text: null,
       width: null,
@@ -107,14 +129,29 @@ export class MediaService {
   }
 
   /**
-   * Soft delete — giu file tren disk, chi danh dau xoa trong DB.
-   * File se duoc don dep bang cron job sau.
+   * Soft delete — danh dau xoa trong DB va xoa file tren R2 (neu dung R2).
    */
   async remove(id: string) {
     const media = await this.mediaRepo.findOne({ where: { id, deleted_at: IsNull() } });
     if (!media) throw new NotFoundException('Không tìm thấy file');
 
+    // Xoa file tren R2 neu dang dung R2 (key = filename field)
+    if (this.r2Service.isEnabled() && media.filename.startsWith('media/')) {
+      await this.r2Service.delete(media.filename);
+    }
+
     await this.mediaRepo.update(id, { deleted_at: new Date() });
     return { message: 'Đã xóa file' };
+  }
+
+  /** Xoa file temp — best effort, khong throw */
+  private cleanupTempFile(filePath: string): void {
+    try {
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    } catch (error) {
+      this.logger.warn(`Failed to cleanup temp file: ${filePath}`);
+    }
   }
 }

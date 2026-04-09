@@ -1,12 +1,17 @@
 import { Controller, Get, Delete, Param, Query, Body } from '@nestjs/common';
 import { LogsService } from './logs.service';
+import { AdminActionsService } from './admin-actions.service';
 import { QueryLogDto } from './dto/query-log.dto';
+import { QueryActionDto } from './dto/query-action.dto';
 import { SuperAdminOnly } from '@/common/decorators/admin-only.decorator';
 
 @Controller('logs')
 @SuperAdminOnly()
 export class LogsController {
-  constructor(private readonly logsService: LogsService) {}
+  constructor(
+    private readonly logsService: LogsService,
+    private readonly adminActionsService: AdminActionsService,
+  ) {}
 
   /** Danh sach log voi phan trang + filter */
   @Get()
@@ -18,6 +23,18 @@ export class LogsController {
   @Get('stats')
   async getStats() {
     return this.logsService.getStats();
+  }
+
+  /** Danh sach admin actions voi phan trang + filter */
+  @Get('actions')
+  async findAllActions(@Query() query: QueryActionDto) {
+    return this.adminActionsService.findAll(query);
+  }
+
+  /** Thong ke admin actions */
+  @Get('actions/stats')
+  async getActionsStats() {
+    return this.adminActionsService.getStats();
   }
 
   /** Chi tiet 1 log */

@@ -48,8 +48,9 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
-  async logout(@CurrentUser('id') userId: string, @Res() res: Response) {
-    const result = await this.authService.logout(userId);
+  async logout(@CurrentUser('id') userId: string, @Req() req: Request, @Res() res: Response) {
+    const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0] || req.ip || '0.0.0.0';
+    const result = await this.authService.logout(userId, ip);
     res.clearCookie('refreshToken', { path: '/api/auth' });
     res.json({ success: true, data: null, message: result.message });
   }

@@ -16,6 +16,8 @@ import { LoginAttempt } from './entities/login-attempt.entity';
 import { LoginDto } from './dto/login.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { generateUlid } from '@/common/utils/ulid';
+import { AdminActionsService } from '@/modules/logs/admin-actions.service';
+import { ActionType } from '@/modules/logs/entities/admin-action.entity';
 
 // Gioi han dang nhap: 5 lan sai trong 30 phut
 const MAX_LOGIN_ATTEMPTS = 5;
@@ -29,6 +31,7 @@ export class AuthService {
     @InjectRepository(User) private readonly userRepo: Repository<User>,
     @InjectRepository(RefreshToken) private readonly refreshRepo: Repository<RefreshToken>,
     @InjectRepository(LoginAttempt) private readonly attemptRepo: Repository<LoginAttempt>,
+    private readonly adminActionsService: AdminActionsService,
   ) {}
 
   /**
@@ -65,6 +68,17 @@ export class AuthService {
 
     const tokens = await this.generateTokens(user, ip, userAgent);
     const { password_hash, ...safeUser } = user;
+
+    // Ghi log admin action — login
+    await this.adminActionsService.log({
+      action: ActionType.LOGIN,
+      entityType: 'auth',
+      entityId: user.id,
+      description: `Đăng nhập: ${user.email}`,
+      userId: user.id,
+      userName: user.full_name || user.email,
+      ip,
+    });
 
     return { user: safeUser, accessToken: tokens.accessToken, refreshToken: tokens.refreshToken };
   }
@@ -133,10 +147,24 @@ export class AuthService {
   }
 
   /**
-   * Dang xuat — xoa tat ca refresh tokens cua user.
+   * Dang xuat — xoa tat ca refresh tokens cua user, ghi log.
    */
-  async logout(userId: string) {
+  async logout(userId: string, ip?: string) {
+    // Lay ten user de ghi log
+    const user = await this.userRepo.findOne({ where: { id: userId } });
     await this.refreshRepo.delete({ user_id: userId });
+
+    // Ghi log admin action — logout
+    await this.adminActionsService.log({
+      action: ActionType.LOGOUT,
+      entityType: 'auth',
+      entityId: userId,
+      description: `Đăng xuất: ${user?.email || userId}`,
+      userId,
+      userName: user?.full_name || user?.email || undefined,
+      ip,
+    });
+
     return { message: 'Đăng xuất thành công' };
   }
 

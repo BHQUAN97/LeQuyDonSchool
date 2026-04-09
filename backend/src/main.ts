@@ -3,10 +3,14 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
 import * as cookieParser from 'cookie-parser';
+import * as express from 'express';
+import * as path from 'path';
 import { AppExceptionFilter } from './common/filters/app-exception.filter';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { AdminActionLogInterceptor } from './common/interceptors/admin-action-log.interceptor';
 import { globalValidationPipe } from './common/pipes/validation.pipe';
 import { validateEnv } from './config/env.validation';
+import { AdminActionsService } from './modules/logs/admin-actions.service';
 
 async function bootstrap() {
   validateEnv();
@@ -30,7 +34,15 @@ async function bootstrap() {
   // Global pipes, filters, interceptors
   app.useGlobalPipes(globalValidationPipe);
   app.useGlobalFilters(new AppExceptionFilter());
-  app.useGlobalInterceptors(new ResponseInterceptor());
+  const adminActionsService = app.get(AdminActionsService);
+  app.useGlobalInterceptors(
+    new ResponseInterceptor(),
+    new AdminActionLogInterceptor(adminActionsService),
+  );
+
+  // Serve static files tu /uploads
+  const uploadsPath = path.resolve(process.cwd(), 'uploads');
+  app.use('/uploads', express.static(uploadsPath, { maxAge: '30d' }));
 
   const port = config.get<number>('app.port', 4000);
   await app.listen(port);

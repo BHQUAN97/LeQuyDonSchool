@@ -29,5 +29,11 @@ yarn-error.log*
 # SDD (local artifacts)
 .sdd/
 
+# Test coverage
+coverage/
+
+# Lighthouse CI
+.lighthouseci/
+
 # Docker
 docker-compose.override.yml

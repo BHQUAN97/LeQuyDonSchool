@@ -1,0 +1,27 @@
+# ============================================
+# LeQuyDon Production — lqd.bhquan.store
+# File nay duoc deploy len VPS thanh .env
+# Sua truc tiep o day, commit + push de cap nhat
+# ============================================
+
+# -- VPS (SSH connection, chung voi WebPhoto + VietNet) --
+VPS_HOST=143.198.217.127
+VPS_PORT=22
+VPS_USER=root
+VPS_PASSWORD=12345678@Abc
+
+# -- Domain --
+DOMAIN=lqd.bhquan.store
+
+# -- API URL (cho cron jobs goi API tu ben ngoai) --
+API_URL=https://lqd.bhquan.store
+
+# -- MySQL (shared: shared-mysql container — /opt/infra/) --
+MYSQL_ROOT_PASSWORD=8bb34f47771a83d9ab543bc0f47d5e1a
+LQD_DB_PASSWORD=a3f2c8d91b47e650f8d24e19ca37b001
+
+# -- JWT --
+JWT_SECRET=e7c4f2d198a63b50d47c9e81f2a05b3d7c6e8f19a24d5b70c38e91f4d6a27b5c
+
+# -- ISR Revalidation --
+REVALIDATE_SECRET=d4f8e1c3a79b25064ed18c37f5a20e9b

@@ -514,16 +514,318 @@ function AccessLogsTab() {
   );
 }
 
-// ─── ADMIN ACTIONS TAB (placeholder) ────────────────────
+// ─── ADMIN ACTIONS TAB ──────────────────────────────────
+
+interface AdminActionLog {
+  id: string;
+  action: 'create' | 'update' | 'delete' | 'login' | 'logout' | 'upload';
+  entity_type: string;
+  entity_id: string | null;
+  description: string;
+  changes: Record<string, unknown> | null;
+  user_id: string;
+  user_name: string | null;
+  ip: string | null;
+  created_at: string;
+}
+
+interface ActionsResponse {
+  success: boolean;
+  data: AdminActionLog[];
+  pagination: { page: number; limit: number; total: number; totalPages: number };
+}
+
+interface ActionStatsResponse {
+  success: boolean;
+  data: Record<string, number>;
+}
+
+const ACTION_CONFIG: Record<string, { text: string; class: string }> = {
+  create: { text: 'Tao moi', class: 'bg-green-100 text-green-800' },
+  update: { text: 'Cap nhat', class: 'bg-blue-100 text-blue-800' },
+  delete: { text: 'Xoa', class: 'bg-red-100 text-red-800' },
+  login: { text: 'Dang nhap', class: 'bg-purple-100 text-purple-800' },
+  logout: { text: 'Dang xuat', class: 'bg-gray-100 text-gray-800' },
+  upload: { text: 'Upload', class: 'bg-orange-100 text-orange-800' },
+};
+
+const ACTION_TABS = [
+  { key: '', label: 'Tat ca' },
+  { key: 'create', label: 'Tao moi' },
+  { key: 'update', label: 'Cap nhat' },
+  { key: 'delete', label: 'Xoa' },
+  { key: 'login', label: 'Dang nhap' },
+  { key: 'upload', label: 'Upload' },
+];
 
 function AdminActionsTab() {
+  const [actions, setActions] = useState<AdminActionLog[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState<Record<string, number>>({});
+
+  const [actionFilter, setActionFilter] = useState('');
+  const [search, setSearch] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  // Detail view
+  const [selectedAction, setSelectedAction] = useState<AdminActionLog | null>(null);
+
+  const fetchStats = useCallback(async () => {
+    try {
+      const res = await api<ActionStatsResponse>('/logs/actions/stats');
+      if (res.success) setStats(res.data);
+    } catch (err) {
+      console.error('Loi tai stats:', err);
+    }
+  }, []);
+
+  const fetchActions = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams({ page: String(page), limit: '20' });
+      if (actionFilter) params.set('action', actionFilter);
+      if (search) params.set('search', search);
+      if (startDate) params.set('startDate', startDate);
+      if (endDate) params.set('endDate', endDate);
+
+      const res = await api<ActionsResponse>(`/logs/actions?${params}`);
+      if (res.success) {
+        setActions(res.data);
+        setTotalPages(res.pagination.totalPages);
+      }
+    } catch (err) {
+      console.error('Loi tai actions:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [page, actionFilter, search, startDate, endDate]);
+
+  useEffect(() => {
+    fetchActions();
+    fetchStats();
+  }, [fetchActions, fetchStats]);
+
+  const formatDate = (d: string) =>
+    new Date(d).toLocaleDateString('vi-VN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-8 text-center">
-      <h2 className="text-lg font-semibold text-slate-900 mb-2">Admin Actions</h2>
-      <p className="text-slate-500">
-        Nhat ky hanh dong quan tri — dang phat trien. Du lieu tu ActionLogger se hien thi o day.
-      </p>
-    </div>
+    <>
+      {/* Stats cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+        <StatsCard label="Hom nay" value={stats.totalToday || 0} color="text-slate-900 bg-slate-100" />
+        <StatsCard label="Tao moi" value={stats.create || 0} color="text-green-600 bg-green-50" />
+        <StatsCard label="Cap nhat" value={stats.update || 0} color="text-blue-600 bg-blue-50" />
+        <StatsCard label="Xoa" value={stats.delete || 0} color="text-red-600 bg-red-50" />
+        <StatsCard label="Dang nhap" value={stats.login || 0} color="text-purple-600 bg-purple-50" />
+      </div>
+
+      {/* Filter bar */}
+      <div className="flex flex-col lg:flex-row gap-3 items-start lg:items-center justify-between">
+        <div className="flex flex-wrap gap-2 items-center">
+          <div className="flex gap-1 bg-slate-100 rounded-lg p-1">
+            {ACTION_TABS.map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => { setActionFilter(tab.key); setPage(1); }}
+                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                  actionFilter === tab.key
+                    ? 'bg-white text-slate-900 shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => { setStartDate(e.target.value); setPage(1); }}
+            className="border border-slate-200 rounded-md px-2 py-1.5 text-sm"
+          />
+          <span className="text-slate-400 text-sm">-</span>
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => { setEndDate(e.target.value); setPage(1); }}
+            className="border border-slate-200 rounded-md px-2 py-1.5 text-sm"
+          />
+        </div>
+
+        <Input
+          placeholder="Tim theo mo ta, ten nguoi dung..."
+          value={search}
+          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+          className="max-w-xs"
+        />
+      </div>
+
+      {/* Detail modal */}
+      {selectedAction && (
+        <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-slate-900">Chi tiet hanh dong</h2>
+            <button
+              onClick={() => setSelectedAction(null)}
+              className="text-slate-400 hover:text-slate-600 text-lg"
+            >
+              x
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              <span className="font-medium text-slate-600">Hanh dong:</span>{' '}
+              <span
+                className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
+                  (ACTION_CONFIG[selectedAction.action] || ACTION_CONFIG.create).class
+                }`}
+              >
+                {(ACTION_CONFIG[selectedAction.action] || ACTION_CONFIG.create).text}
+              </span>
+            </div>
+            <div>
+              <span className="font-medium text-slate-600">Thoi gian:</span>{' '}
+              <span className="text-slate-900">{formatDate(selectedAction.created_at)}</span>
+            </div>
+            <div>
+              <span className="font-medium text-slate-600">Doi tuong:</span>{' '}
+              <span className="text-slate-900 font-mono text-xs">
+                {selectedAction.entity_type}
+                {selectedAction.entity_id && ` #${selectedAction.entity_id}`}
+              </span>
+            </div>
+            <div>
+              <span className="font-medium text-slate-600">Nguoi thuc hien:</span>{' '}
+              <span className="text-slate-900">
+                {selectedAction.user_name || selectedAction.user_id}
+              </span>
+            </div>
+            <div>
+              <span className="font-medium text-slate-600">IP:</span>{' '}
+              <span className="text-slate-900 font-mono text-xs">{selectedAction.ip || 'N/A'}</span>
+            </div>
+            <div>
+              <span className="font-medium text-slate-600">ID:</span>{' '}
+              <span className="text-slate-500 font-mono text-xs">{selectedAction.id}</span>
+            </div>
+          </div>
+
+          {/* Mo ta */}
+          <div>
+            <span className="block font-medium text-slate-600 text-sm mb-1">Mo ta:</span>
+            <div className="bg-slate-50 rounded-lg p-4 text-sm text-slate-800">
+              {selectedAction.description}
+            </div>
+          </div>
+
+          {/* Changes JSON */}
+          {selectedAction.changes && (
+            <div>
+              <span className="block font-medium text-slate-600 text-sm mb-1">Thay doi:</span>
+              <pre className="bg-slate-900 text-green-400 rounded-lg p-4 text-xs overflow-x-auto whitespace-pre-wrap">
+                {JSON.stringify(selectedAction.changes, null, 2)}
+              </pre>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Bang danh sach */}
+      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 border-b border-slate-200">
+              <tr>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Hanh dong</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Mo ta</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Doi tuong</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Nguoi thuc hien</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">IP</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Thoi gian</th>
+                <th className="text-right px-4 py-3 font-medium text-slate-600">Chi tiet</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan={7} className="text-center py-8 text-slate-500">
+                    Dang tai...
+                  </td>
+                </tr>
+              ) : actions.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="text-center py-8 text-slate-500">
+                    Chua co hanh dong nao
+                  </td>
+                </tr>
+              ) : (
+                actions.map((a) => {
+                  const cfg = ACTION_CONFIG[a.action] || ACTION_CONFIG.create;
+                  return (
+                    <tr key={a.id} className="border-b border-slate-100 hover:bg-slate-50">
+                      <td className="px-4 py-3">
+                        <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${cfg.class}`}>
+                          {cfg.text}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-slate-700 max-w-[300px]">
+                        {a.description}
+                      </td>
+                      <td className="px-4 py-3 text-slate-500 font-mono text-xs">
+                        {a.entity_type}
+                        {a.entity_id && <span className="text-slate-400"> #{a.entity_id.slice(0, 8)}</span>}
+                      </td>
+                      <td className="px-4 py-3 text-slate-700 text-xs">
+                        {a.user_name || a.user_id.slice(0, 8)}
+                      </td>
+                      <td className="px-4 py-3 text-slate-500 font-mono text-xs">
+                        {a.ip || '-'}
+                      </td>
+                      <td className="px-4 py-3 text-slate-500 text-xs">
+                        {formatDate(a.created_at)}
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        <button
+                          onClick={() => setSelectedAction(a)}
+                          className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                        >
+                          Xem
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-2 py-4 border-t border-slate-200">
+            <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage(page - 1)}>
+              Truoc
+            </Button>
+            <span className="text-sm text-slate-600">
+              Trang {page} / {totalPages}
+            </span>
+            <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage(page + 1)}>
+              Sau
+            </Button>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 

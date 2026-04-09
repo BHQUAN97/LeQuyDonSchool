@@ -73,51 +73,58 @@ export default function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const pathname = usePathname();
 
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm">
+    <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo */}
+        <div className="flex items-center justify-between h-16 lg:h-[72px]">
+          {/* Logo — emblem tron do + ten truong */}
           <Link href="/" className="flex items-center gap-3 shrink-0">
-            <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-green-700 flex items-center justify-center">
-              <span className="text-white font-bold text-xs lg:text-sm">LQĐ</span>
+            <div className="w-11 h-11 lg:w-12 lg:h-12 rounded-full bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center border-2 border-yellow-500 shadow-sm">
+              <span className="text-white font-bold text-[10px] lg:text-xs leading-none">LQĐ</span>
             </div>
             <div className="hidden sm:block">
-              <p className="text-[10px] text-green-700 font-medium uppercase leading-tight">
+              <p className="text-[10px] text-green-700 font-semibold uppercase tracking-wide leading-tight">
                 Hệ thống Trường liên cấp Lê Quý Đôn
               </p>
-              <p className="text-sm lg:text-base font-bold text-red-600 leading-tight">
+              <p className="text-sm lg:text-[15px] font-bold text-red-600 leading-tight tracking-tight">
                 Trường Tiểu học Lê Quý Đôn
               </p>
             </div>
           </Link>
 
-          {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          {/* Desktop nav — chu do, active xanh */}
+          <nav className="hidden lg:flex items-center gap-0.5">
             {navigation.map((item) => (
               <div key={item.href} className="relative group">
                 <Link
-                  href={item.href}
+                  href={item.children ? item.children[0].href : item.href}
                   className={cn(
-                    'flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors rounded-lg',
-                    pathname.startsWith(item.href)
+                    'flex items-center gap-1 px-3 xl:px-4 py-2 text-[13px] xl:text-sm font-bold uppercase tracking-wide transition-colors',
+                    isActive(item.href)
                       ? 'text-green-700'
-                      : 'text-slate-700 hover:text-green-700',
+                      : 'text-red-700 hover:text-green-700',
                   )}
                 >
                   {item.label}
-                  {item.children && <ChevronDown className="w-3.5 h-3.5" />}
+                  {item.children && <ChevronDown className="w-3 h-3 opacity-60" />}
                 </Link>
 
-                {/* Dropdown */}
+                {/* Dropdown — nen xanh dam */}
                 {item.children && (
-                  <div className="absolute top-full left-0 pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                    <div className="bg-green-800 rounded-lg shadow-lg py-2 min-w-[220px]">
+                  <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <div className="bg-[#1a5c2e] rounded-lg shadow-xl py-2 min-w-[240px]">
                       {item.children.map((child) => (
                         <Link
                           key={child.href}
                           href={child.href}
-                          className="block px-4 py-2.5 text-sm text-white hover:bg-green-700 transition-colors"
+                          className={cn(
+                            'block px-5 py-3 text-sm transition-colors',
+                            isActive(child.href)
+                              ? 'text-yellow-300 bg-green-900/50'
+                              : 'text-white hover:bg-white/10',
+                          )}
                         >
                           {child.label}
                         </Link>
@@ -128,23 +135,29 @@ export default function Header() {
               </div>
             ))}
 
-            {/* Search icon */}
-            <button className="ml-2 w-10 h-10 rounded-full bg-green-700 flex items-center justify-center text-white hover:bg-green-800 transition-colors">
+            {/* Search button — tron xanh */}
+            <Link
+              href="/tim-kiem"
+              className="ml-3 w-10 h-10 rounded-full bg-green-700 hover:bg-green-800 flex items-center justify-center text-white transition-colors shadow-sm"
+            >
               <Search className="w-4 h-4" />
-            </button>
+            </Link>
           </nav>
 
-          {/* Mobile: hamburger + search */}
+          {/* Mobile controls */}
           <div className="flex items-center gap-2 lg:hidden">
-            <button className="w-10 h-10 rounded-full bg-green-700 flex items-center justify-center text-white">
+            <Link
+              href="/tim-kiem"
+              className="w-9 h-9 rounded-full bg-green-700 flex items-center justify-center text-white"
+            >
               <Search className="w-4 h-4" />
-            </button>
+            </Link>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
               aria-label="Toggle menu"
             >
-              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileOpen ? <X className="w-6 h-6 text-gray-700" /> : <Menu className="w-6 h-6 text-gray-700" />}
             </button>
           </div>
         </div>
@@ -152,7 +165,7 @@ export default function Header() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden bg-white border-t border-slate-200 max-h-[calc(100vh-4rem)] overflow-y-auto">
+        <div className="lg:hidden bg-white border-t border-gray-200 max-h-[calc(100vh-4rem)] overflow-y-auto shadow-lg">
           <nav className="px-4 py-3 space-y-1">
             {navigation.map((item) => (
               <div key={item.href}>
@@ -164,7 +177,10 @@ export default function Header() {
                       setMobileOpen(false);
                     }
                   }}
-                  className="flex items-center justify-between w-full px-3 py-3 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-50"
+                  className={cn(
+                    'flex items-center justify-between w-full px-3 py-3 text-sm font-bold uppercase rounded-lg transition-colors',
+                    isActive(item.href) ? 'text-green-700 bg-green-50' : 'text-red-700 hover:bg-gray-50',
+                  )}
                 >
                   {item.children ? (
                     <>
@@ -179,13 +195,18 @@ export default function Header() {
                 </button>
 
                 {item.children && openDropdown === item.href && (
-                  <div className="ml-4 border-l-2 border-green-200 pl-3 space-y-1">
+                  <div className="ml-4 border-l-2 border-green-300 pl-3 space-y-1 mb-2">
                     {item.children.map((child) => (
                       <Link
                         key={child.href}
                         href={child.href}
                         onClick={() => setMobileOpen(false)}
-                        className="block px-3 py-2.5 text-sm text-slate-600 hover:text-green-700 rounded-lg"
+                        className={cn(
+                          'block px-3 py-2.5 text-sm rounded-lg transition-colors',
+                          isActive(child.href)
+                            ? 'text-green-700 font-medium bg-green-50'
+                            : 'text-gray-600 hover:text-green-700',
+                        )}
                       >
                         {child.label}
                       </Link>
