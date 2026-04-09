@@ -290,17 +290,17 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            {/* Trai: feature cards grid */}
-            <div className="grid grid-cols-2 gap-3">
+            {/* Trai: feature cards — white bg, horizontal layout */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {features.map((f) => (
                 <div
                   key={f.id}
-                  className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all cursor-pointer group"
+                  className="bg-white rounded-xl p-4 flex items-center justify-between gap-3 hover:shadow-lg transition-all cursor-pointer group"
                 >
-                  <p className="text-sm font-semibold mb-2 group-hover:text-yellow-200 transition-colors leading-snug">
+                  <p className="text-sm font-bold text-gray-800 uppercase leading-snug">
                     {f.title}
                   </p>
-                  <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-lg">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center text-2xl text-green-700 shrink-0">
                     {f.icon}
                   </div>
                 </div>

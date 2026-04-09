@@ -157,7 +157,7 @@ jobs:
           # Nginx config
           echo "  Uploading nginx config..."
           sshpass -e ssh -p $PORT $VPS "mkdir -p ${WEBPHOTO_DIR}/nginx/conf.d"
-          sshpass -e scp -P $PORT nginx/conf.d/lqd.bhquan.store.conf $VPS:${WEBPHOTO_DIR}/nginx/conf.d/lqd.bhquan.store.conf
+          sshpass -e scp -P $PORT nginx/conf.d/demo.remoteterminal.online.conf $VPS:${WEBPHOTO_DIR}/nginx/conf.d/demo.remoteterminal.online.conf
 
           echo "[OK] Full project uploaded"
 
@@ -207,19 +207,19 @@ jobs:
             sshpass -e ssh -p $PORT $VPS "
               cd ${WEBPHOTO_DIR}
               CERT_EXISTS=\$(docker compose -f docker-compose.prod.yml run --rm --entrypoint '' certbot \
-                test -f /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem 2>/dev/null && echo yes || echo no)
+                test -f /etc/letsencrypt/live/demo.remoteterminal.online/fullchain.pem 2>/dev/null && echo yes || echo no)
               if [ \"\$CERT_EXISTS\" = 'no' ]; then
-                echo 'Generating placeholder cert for lqd.bhquan.store...'
+                echo 'Generating placeholder cert for demo.remoteterminal.online...'
                 docker compose -f docker-compose.prod.yml run --rm --entrypoint '' certbot sh -c '
-                  mkdir -p /etc/letsencrypt/live/lqd.bhquan.store
+                  mkdir -p /etc/letsencrypt/live/demo.remoteterminal.online
                   openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
-                    -keyout /etc/letsencrypt/live/lqd.bhquan.store/privkey.pem \
-                    -out /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem \
-                    -subj /CN=lqd.bhquan.store 2>/dev/null
+                    -keyout /etc/letsencrypt/live/demo.remoteterminal.online/privkey.pem \
+                    -out /etc/letsencrypt/live/demo.remoteterminal.online/fullchain.pem \
+                    -subj /CN=demo.remoteterminal.online 2>/dev/null
                 '
                 echo '  OK'
               else
-                echo 'lqd.bhquan.store: cert exists'
+                echo 'demo.remoteterminal.online: cert exists'
               fi
             "
             echo "[OK] SSL placeholders ready"
@@ -285,33 +285,33 @@ jobs:
             exit 0
           fi
 
-          echo "--- Certbot: lqd.bhquan.store ---"
+          echo "--- Certbot: demo.remoteterminal.online ---"
           sshpass -e ssh -p $PORT $VPS "
             DC='docker compose -f docker-compose.prod.yml'
             cd ${WEBPHOTO_DIR}
 
-            echo '  Cleaning old certs for lqd.bhquan.store...'
+            echo '  Cleaning old certs for demo.remoteterminal.online...'
             \$DC run --rm --entrypoint '' certbot sh -c \
-              'rm -rf /etc/letsencrypt/live/lqd.bhquan.store* /etc/letsencrypt/archive/lqd.bhquan.store* /etc/letsencrypt/renewal/lqd.bhquan.store*.conf'
+              'rm -rf /etc/letsencrypt/live/demo.remoteterminal.online* /etc/letsencrypt/archive/demo.remoteterminal.online* /etc/letsencrypt/renewal/demo.remoteterminal.online*.conf'
 
             echo '  Requesting cert...'
             timeout 120 \$DC run --rm --entrypoint '' certbot \
               certbot certonly --webroot -w /var/www/certbot \
-              --non-interactive --cert-name lqd.bhquan.store \
+              --non-interactive --cert-name demo.remoteterminal.online \
               --email admin@bhquan.site --agree-tos --no-eff-email \
-              -d lqd.bhquan.store
+              -d demo.remoteterminal.online
 
             if [ \$? -ne 0 ]; then
               echo '  FAILED — regenerating placeholder...'
               \$DC run --rm --entrypoint '' certbot sh -c '
-                mkdir -p /etc/letsencrypt/live/lqd.bhquan.store
+                mkdir -p /etc/letsencrypt/live/demo.remoteterminal.online
                 openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
-                  -keyout /etc/letsencrypt/live/lqd.bhquan.store/privkey.pem \
-                  -out /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem \
-                  -subj /CN=lqd.bhquan.store 2>/dev/null
+                  -keyout /etc/letsencrypt/live/demo.remoteterminal.online/privkey.pem \
+                  -out /etc/letsencrypt/live/demo.remoteterminal.online/fullchain.pem \
+                  -subj /CN=demo.remoteterminal.online 2>/dev/null
               '
             fi
-          " && echo "[OK] lqd.bhquan.store cert" || echo "WARNING: cert failed"
+          " && echo "[OK] demo.remoteterminal.online cert" || echo "WARNING: cert failed"
 
           sshpass -e ssh -p $PORT $VPS "
             docker exec shared-nginx nginx -t 2>&1 && \
@@ -359,20 +359,20 @@ jobs:
         run: |
           VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
           PORT="${{ env.VPS_PORT }}"
-          sshpass -e scp -P $PORT nginx/conf.d/lqd.bhquan.store.conf $VPS:${WEBPHOTO_DIR}/nginx/conf.d/lqd.bhquan.store.conf 2>/dev/null && {
+          sshpass -e scp -P $PORT nginx/conf.d/demo.remoteterminal.online.conf $VPS:${WEBPHOTO_DIR}/nginx/conf.d/demo.remoteterminal.online.conf 2>/dev/null && {
             sshpass -e ssh -p $PORT $VPS "
               if [ -f ${WEBPHOTO_DIR}/docker-compose.prod.yml ]; then
                 cd ${WEBPHOTO_DIR}
                 CERT_EXISTS=\$(docker compose -f docker-compose.prod.yml run --rm --entrypoint '' certbot \
-                  test -f /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem 2>/dev/null && echo yes || echo no)
+                  test -f /etc/letsencrypt/live/demo.remoteterminal.online/fullchain.pem 2>/dev/null && echo yes || echo no)
                 if [ \"\$CERT_EXISTS\" = 'no' ]; then
-                  echo 'Placeholder cert for lqd.bhquan.store...'
+                  echo 'Placeholder cert for demo.remoteterminal.online...'
                   docker compose -f docker-compose.prod.yml run --rm --entrypoint '' certbot sh -c '
-                    mkdir -p /etc/letsencrypt/live/lqd.bhquan.store
+                    mkdir -p /etc/letsencrypt/live/demo.remoteterminal.online
                     openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
-                      -keyout /etc/letsencrypt/live/lqd.bhquan.store/privkey.pem \
-                      -out /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem \
-                      -subj /CN=lqd.bhquan.store 2>/dev/null
+                      -keyout /etc/letsencrypt/live/demo.remoteterminal.online/privkey.pem \
+                      -out /etc/letsencrypt/live/demo.remoteterminal.online/fullchain.pem \
+                      -subj /CN=demo.remoteterminal.online 2>/dev/null
                   '
                 fi
               fi
@@ -475,6 +475,6 @@ jobs:
       - name: Deploy summary
         run: |
           echo "=========================================="
-          echo "LeQuyDon deployed to lqd.bhquan.store"
+          echo "LeQuyDon deployed to demo.remoteterminal.online"
           echo "Mode: ${{ steps.detect.outputs.mode }}"
           echo "=========================================="

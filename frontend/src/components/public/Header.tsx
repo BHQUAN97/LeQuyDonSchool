@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Menu, X, Search, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -71,18 +71,48 @@ const navigation: NavItem[] = [
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const pathname = usePathname();
+  const router = useRouter();
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+
+  // Focus input khi mo search
+  useEffect(() => {
+    if (searchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [searchOpen]);
+
+  // Xu ly submit search
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/tim-kiem?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchOpen(false);
+      setSearchQuery('');
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16 lg:h-[72px]">
-          {/* Logo — emblem tron do + ten truong */}
-          <Link href="/" className="flex items-center gap-3 shrink-0">
+          {/* Mobile: hamburger trai */}
+          <button
+            onClick={() => { setMobileOpen(!mobileOpen); setSearchOpen(false); }}
+            className="p-2 rounded-lg hover:bg-gray-100 transition-colors lg:hidden"
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X className="w-6 h-6 text-gray-700" /> : <Menu className="w-6 h-6 text-gray-700" />}
+          </button>
+
+          {/* Logo — mobile: giua, desktop: trai */}
+          <Link href="/" className="flex items-center gap-3 shrink-0 lg:mr-auto">
             <div className="w-11 h-11 lg:w-12 lg:h-12 rounded-full bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center border-2 border-yellow-500 shadow-sm">
-              <span className="text-white font-bold text-[10px] lg:text-xs leading-none">LQĐ</span>
+              <span className="text-white font-bold text-[10px] lg:text-xs leading-none">LQD</span>
             </div>
             <div className="hidden sm:block">
               <p className="text-[10px] text-green-700 font-semibold uppercase tracking-wide leading-tight">
@@ -94,17 +124,17 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* Desktop nav — chu do, active xanh */}
+          {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-0.5">
             {navigation.map((item) => (
               <div key={item.href} className="relative group">
                 <Link
                   href={item.children ? item.children[0].href : item.href}
                   className={cn(
-                    'flex items-center gap-1 px-3 xl:px-4 py-2 text-[13px] xl:text-sm font-bold uppercase tracking-wide transition-colors',
+                    'flex items-center gap-1 px-3 xl:px-4 py-2 text-[13px] xl:text-sm font-bold uppercase tracking-wide transition-colors border-b-2',
                     isActive(item.href)
-                      ? 'text-green-700'
-                      : 'text-red-700 hover:text-green-700',
+                      ? 'text-green-700 border-green-700'
+                      : 'text-red-700 hover:text-green-700 border-transparent',
                   )}
                 >
                   {item.label}
@@ -135,33 +165,51 @@ export default function Header() {
               </div>
             ))}
 
-            {/* Search button — tron xanh */}
-            <Link
-              href="/tim-kiem"
+            {/* Search toggle — tron xanh */}
+            <button
+              onClick={() => setSearchOpen(!searchOpen)}
               className="ml-3 w-10 h-10 rounded-full bg-green-700 hover:bg-green-800 flex items-center justify-center text-white transition-colors shadow-sm"
+              aria-label="Tìm kiếm"
             >
               <Search className="w-4 h-4" />
-            </Link>
+            </button>
           </nav>
 
-          {/* Mobile controls */}
-          <div className="flex items-center gap-2 lg:hidden">
-            <Link
-              href="/tim-kiem"
-              className="w-9 h-9 rounded-full bg-green-700 flex items-center justify-center text-white"
-            >
-              <Search className="w-4 h-4" />
-            </Link>
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-              aria-label="Toggle menu"
-            >
-              {mobileOpen ? <X className="w-6 h-6 text-gray-700" /> : <Menu className="w-6 h-6 text-gray-700" />}
-            </button>
-          </div>
+          {/* Mobile: search phai */}
+          <button
+            onClick={() => { setSearchOpen(!searchOpen); setMobileOpen(false); }}
+            className="w-9 h-9 rounded-full bg-green-700 flex items-center justify-center text-white lg:hidden"
+            aria-label="Tìm kiếm"
+          >
+            <Search className="w-4 h-4" />
+          </button>
         </div>
       </div>
+
+      {/* Inline search dropdown — hien khi click search icon */}
+      {searchOpen && (
+        <div className="bg-white border-t border-gray-100 shadow-lg">
+          <div className="max-w-7xl mx-auto px-4 py-3">
+            <form onSubmit={handleSearch} className="flex items-center gap-3 max-w-md ml-auto">
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Gõ từ khóa tìm kiếm..."
+                className="flex-1 px-4 py-2.5 rounded-full border border-gray-300 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none text-sm"
+              />
+              <button
+                type="submit"
+                className="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:text-green-700 transition-colors"
+                aria-label="Tìm"
+              >
+                <Search className="w-5 h-5" />
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Mobile menu */}
       {mobileOpen && (

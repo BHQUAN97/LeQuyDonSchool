@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  allowedDevOrigins: ['demo.remoteterminal.online'],
   images: {
     remotePatterns: [
+      { protocol: 'https', hostname: 'demo.remoteterminal.online' },
       { protocol: 'https', hostname: 'lqd.bhquan.store' },
       { protocol: 'http', hostname: 'localhost' },
       { protocol: 'http', hostname: 'backend' },

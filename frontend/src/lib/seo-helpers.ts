@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://lequydonhanoi.edu.vn';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://demo.remoteterminal.online';
 const SITE_NAME = 'Trường Tiểu học Lê Quý Đôn';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description:
     'Trường Tiểu học Lê Quý Đôn - Hệ thống giáo dục liên cấp hàng đầu tại Hà Nội. Chương trình Quốc gia nâng cao, Tiếng Anh tăng cường, phát triển toàn diện cho học sinh.',
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || 'https://lequydonhanoi.edu.vn',
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://demo.remoteterminal.online',
   ),
   openGraph: {
     type: 'website',

@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://lequydonhanoi.edu.vn';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://demo.remoteterminal.online';
 
 export default function robots(): MetadataRoute.Robots {
   return {

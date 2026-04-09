@@ -1,5 +1,5 @@
 # ============================================
-# LeQuyDon Production — lqd.bhquan.store
+# LeQuyDon Production — demo.remoteterminal.online
 # File nay duoc deploy len VPS thanh .env
 # Sua truc tiep o day, commit + push de cap nhat
 # ============================================
@@ -11,10 +11,10 @@ VPS_USER=root
 VPS_PASSWORD=12345678@Abc
 
 # -- Domain --
-DOMAIN=lqd.bhquan.store
+DOMAIN=demo.remoteterminal.online
 
 # -- API URL (cho cron jobs goi API tu ben ngoai) --
-API_URL=https://lqd.bhquan.store
+API_URL=https://demo.remoteterminal.online
 
 # -- MySQL (shared: shared-mysql container — /opt/infra/) --
 MYSQL_ROOT_PASSWORD=8bb34f47771a83d9ab543bc0f47d5e1a
