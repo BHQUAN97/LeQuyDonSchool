@@ -2,13 +2,13 @@ const isProd = process.env.NODE_ENV === 'production' && process.env.BUILD_MODE !
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  allowedDevOrigins: ['demo.remoteterminal.online'],
+  allowedDevOrigins: ['lqd.bhquan.store'],
   // Skip TS/ESLint during build — chay rieng trong CI/dev
   typescript: { ignoreBuildErrors: false },
   eslint: { ignoreDuringBuilds: false },
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: 'demo.remoteterminal.online' },
+      { protocol: 'https', hostname: 'lqd.bhquan.store' },
       { protocol: 'https', hostname: 'lqd.bhquan.store' },
       { protocol: 'http', hostname: 'localhost' },
       { protocol: 'http', hostname: 'backend' },

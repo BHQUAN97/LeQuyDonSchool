@@ -2,7 +2,7 @@
 # LeQuyDon — PRODUCTION
 # Chay cung VPS voi VietNet (bhquan.store) va WebPhoto (bhquan.site)
 # Dung chung MySQL (shared-mysql), Redis (shared-redis), Nginx (shared-nginx)
-# Domain: demo.remoteterminal.online
+# Domain: lqd.bhquan.store
 # ============================================
 
 services:
@@ -29,7 +29,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION: 3600
       REFRESH_TOKEN_EXPIRATION: 604800
-      ALLOWED_ORIGINS: https://${DOMAIN:-demo.remoteterminal.online}
+      ALLOWED_ORIGINS: https://${DOMAIN:-lqd.bhquan.store}
       ADMIN_EMAIL: admin@lequydon.edu.vn
       REVALIDATE_SECRET: ${REVALIDATE_SECRET}
       NEXT_REVALIDATE_URL: http://lqd-frontend:3000
@@ -60,7 +60,7 @@ services:
       - '3200:3000'
     environment:
       NEXT_PUBLIC_API_URL: /api
-      NEXT_PUBLIC_SITE_URL: https://${DOMAIN:-demo.remoteterminal.online}
+      NEXT_PUBLIC_SITE_URL: https://${DOMAIN:-lqd.bhquan.store}
       INTERNAL_API_URL: http://backend:4000/api
     depends_on:
       backend:
