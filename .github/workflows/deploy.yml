@@ -2,7 +2,7 @@ name: Auto Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
     paths-ignore:
       - '*.md'
       - 'docs/**'
