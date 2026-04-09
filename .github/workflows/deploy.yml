@@ -289,19 +289,48 @@ jobs:
           VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
           PORT="${{ env.VPS_PORT }}"
 
-          BUILD_OUT=$(sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml build backend frontend 2>&1")
+          echo "=== VPS diagnostics ==="
+          sshpass -e ssh -p $PORT $VPS "
+            echo '--- Memory ---'
+            free -h
+            echo '--- Disk ---'
+            df -h /
+            echo '--- Docker disk ---'
+            docker system df
+            echo '--- Running containers ---'
+            docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Size}}'
+          "
+
+          echo ""
+          echo "=== Building backend ==="
+          sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml build --no-cache backend 2>&1"
           if [ $? -ne 0 ]; then
-            echo "::error::Docker build failed"
-            echo "$BUILD_OUT" | tail -30
+            echo "::error::Backend build failed"
+            sshpass -e ssh -p $PORT $VPS "free -h; dmesg | grep -i 'oom\|killed' | tail -5" 2>&1 || true
             exit 1
           fi
 
-          START_OUT=$(sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml up -d 2>&1")
+          echo ""
+          echo "=== Building frontend ==="
+          sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml build --no-cache frontend 2>&1"
+          if [ $? -ne 0 ]; then
+            echo "::error::Frontend build failed"
+            sshpass -e ssh -p $PORT $VPS "free -h; dmesg | grep -i 'oom\|killed' | tail -5" 2>&1 || true
+            exit 1
+          fi
+
+          echo ""
+          echo "=== Starting services ==="
+          sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml up -d 2>&1"
           if [ $? -ne 0 ]; then
             echo "::error::Docker start failed"
-            echo "$START_OUT"
-            sshpass -e ssh -p $PORT $VPS "docker ps -a --format 'table {{.Names}}\t{{.Status}}' | grep -E 'lqd|shared'" 2>&1
-            sshpass -e ssh -p $PORT $VPS "docker logs lqd-api --tail 30 2>&1"
+            sshpass -e ssh -p $PORT $VPS "
+              docker ps -a --format 'table {{.Names}}\t{{.Status}}' | grep -E 'lqd|shared'
+              echo '--- Backend logs ---'
+              docker logs lqd-api --tail 30 2>&1
+              echo '--- Frontend logs ---'
+              docker logs lqd-frontend --tail 30 2>&1
+            "
             exit 1
           fi
 
@@ -440,10 +469,13 @@ jobs:
         run: |
           VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
           PORT="${{ env.VPS_PORT }}"
-          BUILD_OUT=$(sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml build backend 2>&1")
+          echo "=== VPS resources before backend build ==="
+          sshpass -e ssh -p $PORT $VPS "free -h; df -h /" 2>&1
+          echo ""
+          sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml build backend 2>&1"
           if [ $? -ne 0 ]; then
             echo "::error::Backend build failed"
-            echo "$BUILD_OUT" | tail -30
+            sshpass -e ssh -p $PORT $VPS "free -h; dmesg | grep -i 'oom\|killed' | tail -5" 2>&1 || true
             exit 1
           fi
           sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml up -d backend 2>&1"
@@ -453,10 +485,13 @@ jobs:
         run: |
           VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
           PORT="${{ env.VPS_PORT }}"
-          BUILD_OUT=$(sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml build frontend 2>&1")
+          echo "=== VPS resources before frontend build ==="
+          sshpass -e ssh -p $PORT $VPS "free -h; df -h /" 2>&1
+          echo ""
+          sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml build frontend 2>&1"
           if [ $? -ne 0 ]; then
             echo "::error::Frontend build failed"
-            echo "$BUILD_OUT" | tail -30
+            sshpass -e ssh -p $PORT $VPS "free -h; dmesg | grep -i 'oom\|killed' | tail -5" 2>&1 || true
             exit 1
           fi
           sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml up -d frontend 2>&1"
