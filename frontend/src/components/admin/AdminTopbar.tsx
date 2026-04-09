@@ -103,10 +103,10 @@ export default function AdminTopbar({ onMenuClick }: Props) {
               {user?.email}
             </div>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => router.push('/admin/settings')}>
+            <DropdownMenuItem onClick={() => router.push('/admin/profile')}>
               <User className="w-4 h-4 mr-2" /> Thông tin tài khoản
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => router.push('/admin/settings')}>
+            <DropdownMenuItem onClick={() => router.push('/admin/profile?tab=password')}>
               <KeyRound className="w-4 h-4 mr-2" /> Đổi mật khẩu
             </DropdownMenuItem>
             <DropdownMenuSeparator />

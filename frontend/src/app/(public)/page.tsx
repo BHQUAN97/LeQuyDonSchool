@@ -1,7 +1,33 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { buildPageMetadata } from '@/lib/seo-helpers';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
+const UPLOADS_BASE = INTERNAL_API.replace(/\/api\/?$/, '');
+const PUBLIC_UPLOADS = process.env.NEXT_PUBLIC_SITE_URL || '';
+
+/** URL day du cho anh — dung public URL cho <img> */
+function imageUrl(url?: string | null): string | null {
+  if (!url) return null;
+  if (url.startsWith('http')) return url;
+  return `${PUBLIC_UPLOADS}${url}`;
+}
+
+/** Fetch bai viet moi nhat tu API (server-side) */
+async function getLatestArticles() {
+  try {
+    const res = await fetch(`${INTERNAL_API}/articles/public?limit=4&sort=published_at&order=DESC`, {
+      next: { revalidate: 300 },
+    });
+    if (!res.ok) return [];
+    const json = await res.json();
+    return json.data || [];
+  } catch {
+    return [];
+  }
+}
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Trường Tiểu học Lê Quý Đôn - Hà Nội',
@@ -60,13 +86,14 @@ const testimonials = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const articles = await getLatestArticles();
   return (
     <div>
       {/* ============================================ */}
       {/* HERO BANNER — gradient do + typography lon */}
       {/* ============================================ */}
-      <section className="relative bg-gradient-to-r from-[#c62828] via-[#d32f2f] to-[#e53935] overflow-hidden">
+      <section className="relative bg-gradient-to-r from-[#b71c5a] via-[#c2185b] to-[#e91e63] overflow-hidden">
         {/* Huy hieu + 20 nam phia tren trai */}
         <div className="absolute top-4 left-4 lg:top-6 lg:left-8 flex items-center gap-3 z-10">
           <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white/10 border border-yellow-500/50 flex items-center justify-center">
@@ -156,24 +183,36 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow group">
-              <div className="h-44 bg-gray-100 flex items-center justify-center text-gray-400 text-sm overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-br from-green-50 to-red-50 flex items-center justify-center group-hover:scale-105 transition-transform">
-                  Hình ảnh bài viết
+          {(articles.length > 0 ? articles : [1, 2, 3, 4]).map((item: any, i: number) => {
+            const isReal = typeof item === 'object';
+            const title = isReal ? item.title : `Tiêu đề bài viết mẫu số ${item}`;
+            const desc = isReal ? (item.excerpt || item.description || '') : 'Mô tả ngắn của bài viết sẽ hiển thị ở đây...';
+            const date = isReal ? new Date(item.published_at || item.created_at).toLocaleDateString('vi-VN') : '03/04/2026';
+            const category = isReal ? (item.category?.name || 'Tin tức') : 'Tin tức';
+            const slug = isReal ? item.slug : `bai-viet-${item}`;
+            const cover = isReal ? imageUrl(item.cover_image) : null;
+
+            return (
+              <Link key={slug || i} href={`/tin-tuc/${slug}`} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow group block">
+                <div className="h-44 bg-gray-100 flex items-center justify-center text-gray-400 text-sm overflow-hidden relative">
+                  {cover ? (
+                    <img src={cover} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-green-50 to-red-50 flex items-center justify-center group-hover:scale-105 transition-transform">
+                      Hình ảnh
+                    </div>
+                  )}
                 </div>
-              </div>
-              <div className="p-4">
-                <p className="text-xs text-green-700 font-medium mb-2">Tin tức • 03/04/2026</p>
-                <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 mb-2 group-hover:text-green-700 transition-colors">
-                  Tiêu đề bài viết mẫu số {i}
-                </h3>
-                <p className="text-xs text-gray-500 line-clamp-2">
-                  Mô tả ngắn của bài viết sẽ hiển thị ở đây...
-                </p>
-              </div>
-            </div>
-          ))}
+                <div className="p-4">
+                  <p className="text-xs text-green-700 font-medium mb-2">{category} • {date}</p>
+                  <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 mb-2 group-hover:text-green-700 transition-colors">
+                    {title}
+                  </h3>
+                  <p className="text-xs text-gray-500 line-clamp-2">{desc}</p>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </section>
 

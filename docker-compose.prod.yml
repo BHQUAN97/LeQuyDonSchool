@@ -18,7 +18,7 @@ services:
       - '4200:4000'
     environment:
       NODE_ENV: production
-      PORT: 4000
+      LQD_PORT: 4000
       DB_HOST: shared-mysql
       DB_PORT: 3306
       DB_USERNAME: lqd

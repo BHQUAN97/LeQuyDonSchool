@@ -36,8 +36,9 @@ export default function NavigationPage() {
   const fetchMenu = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await api<MenuNode[]>('/navigation/menu/all');
-      setMenuTree(Array.isArray(data) ? data : []);
+      const res = await api<{ success: boolean; data: MenuNode[] }>('/navigation/menu/all');
+      const items = res?.data;
+      setMenuTree(Array.isArray(items) ? items : []);
     } catch (err) {
       console.error('Loi khi tai menu:', err);
     } finally {

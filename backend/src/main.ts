@@ -8,9 +8,11 @@ import * as path from 'path';
 import { AppExceptionFilter } from './common/filters/app-exception.filter';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { AdminActionLogInterceptor } from './common/interceptors/admin-action-log.interceptor';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { globalValidationPipe } from './common/pipes/validation.pipe';
 import { validateEnv } from './config/env.validation';
 import { AdminActionsService } from './modules/logs/admin-actions.service';
+import { LogsService } from './modules/logs/logs.service';
 
 async function bootstrap() {
   validateEnv();
@@ -35,9 +37,11 @@ async function bootstrap() {
   app.useGlobalPipes(globalValidationPipe);
   app.useGlobalFilters(new AppExceptionFilter());
   const adminActionsService = app.get(AdminActionsService);
+  const logsService = app.get(LogsService);
   app.useGlobalInterceptors(
     new ResponseInterceptor(),
     new AdminActionLogInterceptor(adminActionsService),
+    new LoggingInterceptor(logsService),
   );
 
   // Serve static files tu /uploads

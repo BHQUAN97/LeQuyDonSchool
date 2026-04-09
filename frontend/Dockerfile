@@ -12,8 +12,10 @@ RUN npm ci --ignore-scripts
 # Build args cho Next.js NEXT_PUBLIC_* (bake at build time)
 ARG NEXT_PUBLIC_API_URL=/api
 ARG NEXT_PUBLIC_SITE_URL=
+ARG INTERNAL_API_URL=http://backend:4000/api
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+ENV INTERNAL_API_URL=$INTERNAL_API_URL
 
 # Copy source and build
 COPY . .

@@ -10,16 +10,36 @@ export const metadata: Metadata = buildPageMetadata({
   path: '/tin-tuc/ngoai-khoa',
 });
 
-const articles = [
+const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
+
+async function getArticles() {
+  try {
+    const res = await fetch(`${INTERNAL_API}/articles/public?limit=12&sort=published_at&order=DESC`, {
+      next: { revalidate: 300 },
+    });
+    if (!res.ok) return [];
+    const json = await res.json();
+    return (json.data || []).map((a: any) => ({
+      title: a.title,
+      description: a.excerpt || a.description || '',
+      category: a.category?.name || 'Ngoại khóa',
+      date: new Date(a.published_at || a.created_at).toLocaleDateString('vi-VN'),
+      slug: a.slug,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+const placeholderArticles = [
   { title: 'Chuyến dã ngoại tại Vườn quốc gia Ba Vì', description: 'Học sinh lớp 4-5 có chuyến trải nghiệm thiên nhiên đầy ý nghĩa tại Ba Vì.', category: 'Ngoại khóa', date: '05/03/2026', slug: 'da-ngoai-ba-vi-2026' },
   { title: 'CLB Robotics giành giải Nhất cuộc thi STEM', description: 'Đội tuyển Robotics đạt giải Nhất cuộc thi STEM cấp Thành phố lần thứ 3 liên tiếp.', category: 'Ngoại khóa', date: '28/02/2026', slug: 'clb-robotics-giai-nhat' },
   { title: 'Chương trình trao đổi học sinh với PLC Sydney', description: '20 học sinh tham gia chương trình trao đổi 2 tuần tại PLC Sydney, Australia.', category: 'Ngoại khóa', date: '15/01/2026', slug: 'trao-doi-plc-sydney' },
-  { title: 'Trại hè tiếng Anh "English Summer Camp 2025"', description: 'Trại hè tiếng Anh kéo dài 1 tuần với nhiều hoạt động sáng tạo cùng giáo viên bản ngữ.', category: 'Ngoại khóa', date: '01/07/2025', slug: 'trai-he-tieng-anh-2025' },
-  { title: 'Ngày hội "Em yêu khoa học" lần thứ 3', description: 'Học sinh trưng bày các dự án khoa học sáng tạo với hơn 50 sản phẩm ấn tượng.', category: 'Ngoại khóa', date: '20/12/2025', slug: 'ngay-hoi-khoa-hoc-lan-3' },
-  { title: 'Hoạt động tình nguyện tại Trung tâm bảo trợ', description: 'Học sinh lớp 5 tham gia hoạt động tình nguyện, trao quà tại Trung tâm bảo trợ xã hội.', category: 'Ngoại khóa', date: '10/12/2025', slug: 'tinh-nguyen-bao-tro' },
 ];
 
-export default function NgoaiKhoaPage() {
+export default async function NgoaiKhoaPage() {
+  const apiArticles = await getArticles();
+  const articles = apiArticles.length > 0 ? apiArticles : placeholderArticles;
   return (
     <div>
       <PageBanner
@@ -35,7 +55,7 @@ export default function NgoaiKhoaPage() {
       {/* Articles grid */}
       <section className="max-w-7xl mx-auto px-4 py-8 lg:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {articles.map((a) => (
+          {articles.map((a: any) => (
             <ArticleCard key={a.slug} {...a} />
           ))}
         </div>

@@ -10,7 +10,24 @@ export const metadata: Metadata = buildPageMetadata({
   path: '/tin-tuc/su-kien',
 });
 
-const articles = [
+const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
+
+/** Fetch bai viet tu API */
+async function getArticles() {
+  try {
+    const res = await fetch(`${INTERNAL_API}/articles/public?limit=12&sort=published_at&order=DESC`, {
+      next: { revalidate: 300 },
+    });
+    if (!res.ok) return [];
+    const json = await res.json();
+    return json.data || [];
+  } catch {
+    return [];
+  }
+}
+
+/** Placeholder khi chua co bai viet tu API */
+const placeholderArticles = [
   { title: 'Lễ khai giảng năm học 2025-2026 đầy ấn tượng', description: 'Buổi lễ khai giảng diễn ra trang trọng với sự tham gia của hơn 1000 học sinh và phụ huynh.', category: 'Sự kiện', date: '01/09/2025', slug: 'le-khai-giang-2025-2026' },
   { title: 'Hội thao mùa xuân 2026 - Ngày hội của tình thân', description: 'Hội thao quy tụ học sinh từ lớp 1 đến lớp 5 với nhiều nội dung thi đấu hấp dẫn.', category: 'Sự kiện', date: '15/03/2026', slug: 'hoi-thao-mua-xuan-2026' },
   { title: 'Ngày hội sách Lê Quý Đôn lần thứ 5', description: 'Chương trình khuyến đọc với nhiều hoạt động: trao đổi sách, giao lưu tác giả, vẽ tranh.', category: 'Sự kiện', date: '20/03/2026', slug: 'ngay-hoi-sach-lan-5' },
@@ -21,7 +38,18 @@ const articles = [
 
 const categories = ['Tất cả', 'Sự kiện', 'Thông báo', 'Khen thưởng'];
 
-export default function SuKienPage() {
+export default async function SuKienPage() {
+  const apiArticles = await getArticles();
+  const articles = apiArticles.length > 0
+    ? apiArticles.map((a: any) => ({
+        title: a.title,
+        description: a.excerpt || a.description || '',
+        category: a.category?.name || 'Sự kiện',
+        date: new Date(a.published_at || a.created_at).toLocaleDateString('vi-VN'),
+        slug: a.slug,
+        coverImage: a.cover_image,
+      }))
+    : placeholderArticles;
   return (
     <div>
       <PageBanner
@@ -54,7 +82,7 @@ export default function SuKienPage() {
       {/* Articles grid */}
       <section className="max-w-7xl mx-auto px-4 py-8 lg:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {articles.map((a) => (
+          {articles.map((a: any) => (
             <ArticleCard key={a.slug} {...a} />
           ))}
         </div>
