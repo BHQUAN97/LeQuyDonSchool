@@ -85,6 +85,11 @@ function ChangePassword() {
       return;
     }
 
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(form.newPassword)) {
+      setMessage({ type: 'error', text: 'Mật khẩu phải có chữ hoa, chữ thường và số' });
+      return;
+    }
+
     setSaving(true);
     try {
       await api('/auth/change-password', {

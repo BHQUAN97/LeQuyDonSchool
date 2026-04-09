@@ -8,6 +8,7 @@ export class CreatePageDto {
   title!: string;
 
   @IsString()
+  @MaxLength(500000)
   content!: string;
 
   @IsOptional()
@@ -21,5 +22,6 @@ export class CreatePageDto {
 
   @IsOptional()
   @IsString()
+  @MaxLength(500)
   seoDescription?: string;
 }

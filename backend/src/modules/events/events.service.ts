@@ -9,6 +9,7 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { QueryEventDto } from './dto/query-event.dto';
 import { generateUlid } from '@/common/utils/ulid';
+import { escapeLike } from '@/common/utils/query.utils';
 import { paginated } from '@/common/helpers/response.helper';
 
 @Injectable()
@@ -27,7 +28,7 @@ export class EventsService {
 
     if (search) {
       qb.andWhere('(e.title LIKE :search OR e.location LIKE :search)', {
-        search: `%${search}%`,
+        search: `%${escapeLike(search)}%`,
       });
     }
     if (status) {

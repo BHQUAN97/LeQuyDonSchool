@@ -161,7 +161,8 @@ function PostsTab() {
 
   const handleEdit = async (id: string) => {
     try {
-      const post = await api<AdmissionPost>(`/admissions/posts/${id}`);
+      const res = await api<{ success: boolean; data: AdmissionPost }>(`/admissions/posts/${id}`);
+      const post = res.data;
       setForm({
         title: post.title,
         content: post.content,

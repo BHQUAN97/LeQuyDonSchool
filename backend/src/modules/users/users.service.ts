@@ -12,6 +12,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { QueryUserDto } from './dto/query-user.dto';
 import { generateUlid } from '@/common/utils/ulid';
+import { escapeLike } from '@/common/utils/query.utils';
 import { paginated } from '@/common/helpers/response.helper';
 
 @Injectable()
@@ -30,7 +31,7 @@ export class UsersService {
 
     if (search) {
       qb.andWhere('(u.full_name LIKE :search OR u.email LIKE :search)', {
-        search: `%${search}%`,
+        search: `%${escapeLike(search)}%`,
       });
     }
     if (role) qb.andWhere('u.role = :role', { role });

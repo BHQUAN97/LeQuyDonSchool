@@ -7,16 +7,19 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, IsNull, Not } from 'typeorm';
 import { Category, CategoryStatus } from './entities/category.entity';
+import { Article } from '../articles/entities/article.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { QueryCategoryDto } from './dto/query-category.dto';
 import { generateUlid } from '@/common/utils/ulid';
+import { escapeLike } from '@/common/utils/query.utils';
 import { paginated, ok } from '@/common/helpers/response.helper';
 
 @Injectable()
 export class CategoriesService {
   constructor(
     @InjectRepository(Category) private readonly categoryRepo: Repository<Category>,
+    @InjectRepository(Article) private readonly articleRepo: Repository<Article>,
   ) {}
 
   /**
@@ -34,7 +37,7 @@ export class CategoriesService {
 
     if (search) {
       qb.andWhere('(c.name LIKE :search OR c.slug LIKE :search)', {
-        search: `%${search}%`,
+        search: `%${escapeLike(search)}%`,
       });
     }
     if (status) qb.andWhere('c.status = :status', { status });
@@ -137,13 +140,9 @@ export class CategoriesService {
     });
     if (!category) throw new NotFoundException('Không tìm thấy danh mục');
 
-    // Kiem tra khong tu tham chieu chinh minh
-    if (dto.parentId && dto.parentId === id) {
-      throw new BadRequestException('Danh mục không thể là con của chính nó');
-    }
-
-    // Kiem tra parent ton tai (neu co)
+    // Kiem tra vong tham chieu (truc tiep va gian tiep)
     if (dto.parentId) {
+      await this.checkCircularReference(id, dto.parentId);
       await this.ensureParentExists(dto.parentId);
     }
 
@@ -186,6 +185,12 @@ export class CategoriesService {
       );
     }
 
+    // Go lien ket bai viet thuoc danh muc nay — set category_id = null
+    await this.articleRepo.update(
+      { category_id: id },
+      { category_id: null },
+    );
+
     await this.categoryRepo.update(id, { deleted_at: new Date() });
     return ok({ message: 'Đã xóa danh mục' });
   }
@@ -216,6 +221,32 @@ export class CategoriesService {
     const existing = await this.categoryRepo.findOne({ where });
     if (existing) {
       throw new ConflictException(`Slug "${slug}" đã được sử dụng`);
+    }
+  }
+
+  /**
+   * Kiem tra vong tham chieu — duyet nguoc parent chain,
+   * dam bao newParentId khong phai la hau due cua categoryId.
+   */
+  private async checkCircularReference(categoryId: string, newParentId: string): Promise<void> {
+    if (newParentId === categoryId) {
+      throw new BadRequestException('Danh mục không thể là con của chính nó');
+    }
+
+    let currentId: string | null = newParentId;
+    const visited = new Set<string>();
+
+    while (currentId) {
+      if (currentId === categoryId) {
+        throw new BadRequestException('Phát hiện tham chiếu vòng — danh mục cha là hậu duệ của danh mục hiện tại');
+      }
+      if (visited.has(currentId)) break; // Da gap roi, tranh loop vo han
+      visited.add(currentId);
+
+      const parent = await this.categoryRepo.findOne({
+        where: { id: currentId, deleted_at: IsNull() },
+      });
+      currentId = parent?.parent_id ?? null;
     }
   }
 

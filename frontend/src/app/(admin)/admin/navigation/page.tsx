@@ -119,7 +119,7 @@ export default function NavigationPage() {
       } else {
         // Them node moi
         const newNode: MenuNode = {
-          id: '', // Server se generate
+          id: Date.now().toString(), // Temp ID — server se generate ID that
           label: form.label,
           url: form.url,
           target: form.target,

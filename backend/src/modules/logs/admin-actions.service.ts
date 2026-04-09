@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { AdminAction, ActionType } from './entities/admin-action.entity';
 import { QueryActionDto } from './dto/query-action.dto';
 import { generateUlid } from '@/common/utils/ulid';
+import { escapeLike } from '@/common/utils/query.utils';
 import { paginated, ok } from '@/common/helpers/response.helper';
 
 @Injectable()
@@ -68,7 +69,7 @@ export class AdminActionsService {
 
     if (search) {
       qb.andWhere('(a.description LIKE :search OR a.user_name LIKE :search)', {
-        search: `%${search}%`,
+        search: `%${escapeLike(search)}%`,
       });
     }
 

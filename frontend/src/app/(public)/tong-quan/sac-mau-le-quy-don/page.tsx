@@ -9,8 +9,6 @@ export const metadata: Metadata = buildPageMetadata({
   path: '/tong-quan/sac-mau-le-quy-don',
 });
 
-const categories = ['Tất cả', 'Học tập', 'Ngoại khóa', 'Sự kiện', 'Thể thao', 'Nghệ thuật'];
-
 const photos = [
   { label: 'Lễ khai giảng 2025-2026', category: 'Sự kiện', size: 'large' },
   { label: 'Giờ học STEM', category: 'Học tập', size: 'normal' },
@@ -38,22 +36,13 @@ export default function SacMauLQDPage() {
         ]}
       />
 
-      {/* Category filter tabs */}
+      {/* Category label */}
       <section className="border-b border-slate-200 bg-white sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex gap-2 overflow-x-auto py-3 scrollbar-hide">
-            {categories.map((cat, i) => (
-              <button
-                key={cat}
-                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                  i === 0
-                    ? 'bg-green-700 text-white'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+            <span className="px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-green-700 text-white">
+              Tất cả
+            </span>
           </div>
         </div>
       </section>
@@ -76,12 +65,7 @@ export default function SacMauLQDPage() {
           ))}
         </div>
 
-        {/* Load more */}
-        <div className="text-center mt-8">
-          <button className="px-6 py-2.5 border border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">
-            Xem thêm ảnh
-          </button>
-        </div>
+        {/* Tat ca anh da hien thi */}
       </section>
     </div>
   );

@@ -6,6 +6,7 @@ import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { QueryPageDto } from './dto/query-page.dto';
 import { generateUlid } from '@/common/utils/ulid';
+import { escapeLike } from '@/common/utils/query.utils';
 import { paginated } from '@/common/helpers/response.helper';
 
 @Injectable()
@@ -24,7 +25,7 @@ export class PagesService {
 
     if (search) {
       qb.andWhere('(p.title LIKE :search OR p.slug LIKE :search)', {
-        search: `%${search}%`,
+        search: `%${escapeLike(search)}%`,
       });
     }
     if (status) qb.andWhere('p.status = :status', { status });

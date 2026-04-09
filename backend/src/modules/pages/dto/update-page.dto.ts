@@ -10,6 +10,7 @@ export class UpdatePageDto {
 
   @IsOptional()
   @IsString()
+  @MaxLength(500000)
   content?: string;
 
   @IsOptional()
@@ -23,5 +24,6 @@ export class UpdatePageDto {
 
   @IsOptional()
   @IsString()
+  @MaxLength(500)
   seoDescription?: string;
 }

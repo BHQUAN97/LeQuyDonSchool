@@ -1,10 +1,11 @@
 import { IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class UpdateMediaDto {
+  /** Ten hien thi (khong phai storage key) */
   @IsOptional()
   @IsString()
   @MaxLength(255)
-  filename?: string;
+  original_name?: string;
 
   @IsOptional()
   @IsString()

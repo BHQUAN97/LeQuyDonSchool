@@ -1,4 +1,4 @@
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
 import { RegistrationStatus } from '../entities/admission-registration.entity';
 
 export class UpdateRegistrationStatusDto {
@@ -7,5 +7,6 @@ export class UpdateRegistrationStatusDto {
 
   @IsOptional()
   @IsString()
+  @MaxLength(5000)
   note?: string;
 }

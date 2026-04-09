@@ -1,6 +1,11 @@
+const isProd = process.env.NODE_ENV === 'production' && process.env.BUILD_MODE !== 'fast';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   allowedDevOrigins: ['demo.remoteterminal.online'],
+  // Skip TS/ESLint during build — chay rieng trong CI/dev
+  typescript: { ignoreBuildErrors: false },
+  eslint: { ignoreDuringBuilds: false },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'demo.remoteterminal.online' },
@@ -12,10 +17,19 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 604800,
   },
-  // Enable standalone output for smaller Docker images
-  output: 'standalone',
+  // Standalone chi can cho Docker production
+  ...(isProd ? { output: 'standalone' } : {}),
   // Compression handled by Nginx in production
   compress: false,
+  // Bo minify + optimization khi build:fast
+  ...(!isProd ? {
+    swcMinify: false,
+    productionBrowserSourceMaps: false,
+    webpack: (config) => {
+      config.optimization.minimize = false;
+      return config;
+    },
+  } : {}),
   // Proxy API requests to backend (local dev without Nginx)
   rewrites: async () => [
     {

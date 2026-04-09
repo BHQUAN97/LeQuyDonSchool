@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import PageBanner from '@/components/public/PageBanner';
-import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
+import { api } from '@/lib/api';
 
 const contactInfo = [
   { icon: MapPin, title: 'Địa chỉ', lines: ['Khu đô thị Mỹ Đình - Mễ Trì,', 'Quận Nam Từ Liêm, Hà Nội'] },
@@ -19,11 +20,34 @@ export default function LienHePage() {
     subject: '',
     message: '',
   });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Se xu ly gui form sau khi ket noi API
-    alert('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.');
+    setLoading(true);
+    setError('');
+    setSuccess(false);
+    try {
+      // Gui form lien he len backend POST /api/contacts
+      await api('/contacts', {
+        method: 'POST',
+        body: JSON.stringify({
+          fullName: formData.name,
+          email: formData.email,
+          phone: formData.phone || undefined,
+          content: formData.message,
+        }),
+      });
+      setSuccess(true);
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Có lỗi xảy ra, vui lòng thử lại.';
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -57,6 +81,17 @@ export default function LienHePage() {
           {/* Contact form */}
           <div className="bg-white rounded-xl border border-slate-200 p-6 lg:p-8">
             <h2 className="text-lg font-bold text-slate-900 mb-6">Gửi tin nhắn cho chúng tôi</h2>
+            {success && (
+              <div className="flex items-center gap-2 p-4 mb-4 bg-green-50 border border-green-200 rounded-lg text-green-800 text-sm">
+                <CheckCircle className="w-5 h-5 shrink-0" />
+                <span>Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.</span>
+              </div>
+            )}
+            {error && (
+              <div className="p-4 mb-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                {error}
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -122,10 +157,11 @@ export default function LienHePage() {
               </div>
               <button
                 type="submit"
-                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-green-700 text-white font-semibold rounded-lg hover:bg-green-800 transition-colors text-sm"
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-green-700 text-white font-semibold rounded-lg hover:bg-green-800 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send className="w-4 h-4" />
-                Gửi tin nhắn
+                {loading ? 'Đang gửi...' : 'Gửi tin nhắn'}
               </button>
             </form>
           </div>

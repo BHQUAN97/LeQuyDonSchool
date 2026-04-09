@@ -5,7 +5,6 @@ import { buildPageMetadata } from '@/lib/seo-helpers';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
-const UPLOADS_BASE = INTERNAL_API.replace(/\/api\/?$/, '');
 const PUBLIC_UPLOADS = process.env.NEXT_PUBLIC_SITE_URL || '';
 
 /** URL day du cho anh — dung public URL cho <img> */
@@ -190,13 +189,13 @@ export default async function HomePage() {
             const date = isReal ? new Date(item.published_at || item.created_at).toLocaleDateString('vi-VN') : '03/04/2026';
             const category = isReal ? (item.category?.name || 'Tin tức') : 'Tin tức';
             const slug = isReal ? item.slug : `bai-viet-${item}`;
-            const cover = isReal ? imageUrl(item.cover_image) : null;
+            const cover = isReal ? imageUrl(item.thumbnail_url) : null;
 
             return (
               <Link key={slug || i} href={`/tin-tuc/${slug}`} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow group block">
                 <div className="h-44 bg-gray-100 flex items-center justify-center text-gray-400 text-sm overflow-hidden relative">
                   {cover ? (
-                    <img src={cover} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                    <Image src={cover} alt={title} fill className="object-cover group-hover:scale-105 transition-transform" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-green-50 to-red-50 flex items-center justify-center group-hover:scale-105 transition-transform">
                       Hình ảnh

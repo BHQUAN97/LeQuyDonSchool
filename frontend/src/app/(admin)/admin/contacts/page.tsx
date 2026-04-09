@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -38,8 +38,20 @@ const STATUS_TABS = [
 export default function ContactsAdminPage() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const searchTimeout = useRef<ReturnType<typeof setTimeout>>();
+
+  /** Debounce search — cap nhat search state sau 400ms */
+  const handleSearchChange = (value: string) => {
+    setSearchInput(value);
+    if (searchTimeout.current) clearTimeout(searchTimeout.current);
+    searchTimeout.current = setTimeout(() => {
+      setSearch(value);
+      setPage(1);
+    }, 400);
+  };
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -140,8 +152,8 @@ export default function ContactsAdminPage() {
         </div>
         <Input
           placeholder="Tìm theo tên, email, SĐT..."
-          value={search}
-          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+          value={searchInput}
+          onChange={(e) => handleSearchChange(e.target.value)}
           className="max-w-xs"
         />
       </div>

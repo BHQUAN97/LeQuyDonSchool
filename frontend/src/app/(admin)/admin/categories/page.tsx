@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
 import type { Category, PaginatedResponse, ApiResponse } from '@/types';
 import { Plus, Pencil, Trash2, ChevronLeft, ChevronRight, X, Search } from 'lucide-react';
+import { generateSlug } from '@/lib/slug';
 
 interface CategoryForm {
   name: string;
@@ -21,27 +22,12 @@ const emptyForm: CategoryForm = {
   displayOrder: 0,
 };
 
-/**
- * Tao slug tu ten — bo dau tieng Viet, lowercase, thay khoang trang bang dau gach.
- */
-function generateSlug(name: string): string {
-  return name
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/đ/g, 'd')
-    .replace(/Đ/g, 'D')
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-}
-
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [pagination, setPagination] = useState({ page: 1, limit: 20, total: 0, totalPages: 0 });
   const [search, setSearch] = useState('');
+  const [searchInput, setSearchInput] = useState('');
   const [loading, setLoading] = useState(true);
 
   // Form state
@@ -86,10 +72,20 @@ export default function CategoriesPage() {
     }
   }, []);
 
+  // Debounce search input
   useEffect(() => {
-    fetchCategories();
+    const timer = setTimeout(() => { setSearch(searchInput); }, 400);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
+
+  // Fetch khi search thay doi
+  useEffect(() => {
+    fetchCategories(1, search);
+  }, [fetchCategories, search]);
+
+  useEffect(() => {
     fetchAllCategories();
-  }, [fetchCategories, fetchAllCategories]);
+  }, [fetchAllCategories]);
 
   // Flatten tree de hien thi trong dropdown
   function flattenTree(cats: Category[], level = 0): (Category & { _level: number })[] {
@@ -202,11 +198,6 @@ export default function CategoriesPage() {
     }
   }
 
-  // Tim kiem
-  function handleSearch() {
-    fetchCategories(1, search);
-  }
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -228,19 +219,12 @@ export default function CategoriesPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Tìm kiếm danh mục..."
               className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
             />
           </div>
-          <button
-            onClick={handleSearch}
-            className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors text-sm font-medium"
-          >
-            Tìm
-          </button>
         </div>
       </div>
 

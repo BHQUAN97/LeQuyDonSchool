@@ -48,6 +48,13 @@ export default function PagesAdminPage() {
     seoDescription: '',
   });
   const [saving, setSaving] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
+
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => { setSearch(searchInput); setPage(1); }, 400);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   const fetchPages = useCallback(async () => {
     setLoading(true);
@@ -101,10 +108,17 @@ export default function PagesAdminPage() {
   const handleSave = async () => {
     setSaving(true);
     try {
+      const body = {
+        title: formData.title,
+        content: formData.content,
+        status: formData.status,
+        seoTitle: formData.seoTitle,
+        seoDescription: formData.seoDescription,
+      };
       if (editingId) {
-        await api(`/pages/${editingId}`, { method: 'PUT', body: JSON.stringify(formData) });
+        await api(`/pages/${editingId}`, { method: 'PUT', body: JSON.stringify(body) });
       } else {
-        await api('/pages', { method: 'POST', body: JSON.stringify(formData) });
+        await api('/pages', { method: 'POST', body: JSON.stringify(body) });
       }
       setShowForm(false);
       fetchPages();
@@ -141,8 +155,8 @@ export default function PagesAdminPage() {
       <div className="flex gap-3">
         <Input
           placeholder="Tìm kiếm theo tiêu đề, slug..."
-          value={search}
-          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
           className="max-w-sm"
         />
       </div>

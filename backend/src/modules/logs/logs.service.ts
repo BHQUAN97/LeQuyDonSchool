@@ -4,6 +4,7 @@ import { Repository, In, LessThan } from 'typeorm';
 import { AppLog, LogLevel } from './entities/app-log.entity';
 import { QueryLogDto } from './dto/query-log.dto';
 import { generateUlid } from '@/common/utils/ulid';
+import { escapeLike } from '@/common/utils/query.utils';
 import { paginated, ok } from '@/common/helpers/response.helper';
 
 /**
@@ -56,7 +57,7 @@ export class LogsService {
 
     if (search) {
       qb.andWhere('(l.message LIKE :search OR l.endpoint LIKE :search)', {
-        search: `%${search}%`,
+        search: `%${escapeLike(search)}%`,
       });
     }
 

@@ -41,7 +41,9 @@ export class AppExceptionFilter implements ExceptionFilter {
     response.status(status).json({
       success: false,
       message,
-      ...(isDev && exception instanceof Error && { stack: exception.stack }),
+      statusCode: status,
+      timestamp: new Date().toISOString(),
+      path: request.url,
     });
   }
 }

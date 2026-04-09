@@ -10,6 +10,7 @@ export class UpdateFaqDto {
   @IsOptional()
   @IsString()
   @MinLength(1, { message: 'Câu trả lời không được để trống' })
+  @MaxLength(50000)
   answer?: string;
 
   @IsOptional()

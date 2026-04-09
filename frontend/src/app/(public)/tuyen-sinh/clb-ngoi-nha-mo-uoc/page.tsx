@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import PageBanner from '@/components/public/PageBanner';
 import { Home, Heart, Users, Calendar, Star, Gift } from 'lucide-react';
 import { buildPageMetadata } from '@/lib/seo-helpers';
@@ -108,9 +109,12 @@ export default function CLBNgoiNhaMoUocPage() {
                     </p>
                   </div>
                 </div>
-                <button className="px-4 py-2 bg-rose-600 text-white text-sm font-medium rounded-lg hover:bg-rose-700 transition-colors self-start sm:self-center">
+                <Link
+                  href="/lien-he"
+                  className="px-4 py-2 bg-rose-600 text-white text-sm font-medium rounded-lg hover:bg-rose-700 transition-colors self-start sm:self-center"
+                >
                   Đăng ký
-                </button>
+                </Link>
               </div>
             ))}
           </div>

@@ -20,6 +20,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
 
+  // Trust proxy — lay IP chinh xac tu reverse proxy (nginx)
+  const expressApp = app.getHttpAdapter().getInstance();
+  expressApp.set('trust proxy', 1);
+
   // Global prefix — tat ca routes bat dau voi /api
   app.setGlobalPrefix('api');
 
@@ -44,9 +48,25 @@ async function bootstrap() {
     new LoggingInterceptor(logsService),
   );
 
-  // Serve static files tu /uploads
+  // Serve static files tu /uploads — voi security headers
   const uploadsPath = path.resolve(process.cwd(), 'uploads');
-  app.use('/uploads', express.static(uploadsPath, { maxAge: '30d' }));
+  // MIME types duoc phep hien thi inline (images)
+  const INLINE_MIMES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+  app.use('/uploads', express.static(uploadsPath, {
+    maxAge: '30d',
+    setHeaders: (res, filePath) => {
+      // Chong MIME sniffing attack
+      res.setHeader('X-Content-Type-Options', 'nosniff');
+
+      // Non-image files -> force download, chong XSS qua PDF/HTML
+      const ext = path.extname(filePath).toLowerCase();
+      const contentType = res.getHeader('Content-Type') as string || '';
+      const isInlineAllowed = INLINE_MIMES.some((m) => contentType.includes(m));
+      if (!isInlineAllowed) {
+        res.setHeader('Content-Disposition', 'attachment');
+      }
+    },
+  }));
 
   const port = config.get<number>('app.port', 4000);
   await app.listen(port);

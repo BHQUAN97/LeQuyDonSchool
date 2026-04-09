@@ -1,9 +1,17 @@
 import { Controller, Get, Delete, Param, Query, Body } from '@nestjs/common';
+import { IsArray, IsString, ArrayMaxSize } from 'class-validator';
 import { LogsService } from './logs.service';
 import { AdminActionsService } from './admin-actions.service';
 import { QueryLogDto } from './dto/query-log.dto';
 import { QueryActionDto } from './dto/query-action.dto';
 import { SuperAdminOnly } from '@/common/decorators/admin-only.decorator';
+
+export class BulkDeleteDto {
+  @IsArray()
+  @IsString({ each: true })
+  @ArrayMaxSize(500)
+  ids!: string[];
+}
 
 @Controller('logs')
 @SuperAdminOnly()
@@ -45,7 +53,7 @@ export class LogsController {
 
   /** Xoa nhieu log theo IDs */
   @Delete('bulk')
-  async bulkDelete(@Body() body: { ids: string[] }) {
+  async bulkDelete(@Body() body: BulkDeleteDto) {
     return this.logsService.bulkDelete(body.ids);
   }
 

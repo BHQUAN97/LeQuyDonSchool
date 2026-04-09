@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 
 import { appConfig } from './config/app.config';
 import { databaseConfig } from './config/database.config';
@@ -78,6 +79,8 @@ import { ScheduleModule } from '@nestjs/schedule';
     SearchModule,
   ],
   providers: [
+    // Auth mac dinh — tat ca route yeu cau JWT, dung @Public() de bypass
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],
 })

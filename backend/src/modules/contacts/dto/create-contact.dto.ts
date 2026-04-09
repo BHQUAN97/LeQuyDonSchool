@@ -16,5 +16,6 @@ export class CreateContactDto {
 
   @IsString()
   @MinLength(10, { message: 'Noi dung toi thieu 10 ky tu' })
+  @MaxLength(5000, { message: 'Noi dung toi da 5000 ky tu' })
   content!: string;
 }

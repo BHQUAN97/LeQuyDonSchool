@@ -1,5 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { escapeLike } from '@/common/utils/query.utils';
 import { Repository } from 'typeorm';
 import { Article } from '../articles/entities/article.entity';
 import { Page } from '../pages/entities/page.entity';
@@ -56,7 +57,9 @@ export class SearchService {
       throw new BadRequestException('Tu khoa tim kiem phai co it nhat 2 ky tu');
     }
 
-    const keyword = q.trim();
+    const rawKeyword = q.trim();
+    // Escape LIKE wildcards de tranh injection qua % va _
+    const keyword = escapeLike(rawKeyword);
     const offset = (page - 1) * limit;
     const safeLimit = Math.min(limit, 50);
 
@@ -94,7 +97,7 @@ export class SearchService {
     await Promise.all(promises);
 
     // Sort: title match xep truoc (relevance), roi theo ngay moi nhat
-    const kwLower = keyword.toLowerCase();
+    const kwLower = rawKeyword.toLowerCase();
     results.sort((a, b) => {
       const aTitleMatch = a.title.toLowerCase().includes(kwLower) ? 1 : 0;
       const bTitleMatch = b.title.toLowerCase().includes(kwLower) ? 1 : 0;

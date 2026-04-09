@@ -24,5 +24,6 @@ export class CreateRegistrationDto {
 
   @IsOptional()
   @IsString()
+  @MaxLength(2000, { message: 'Ghi chú tối đa 2000 ký tự' })
   note?: string;
 }

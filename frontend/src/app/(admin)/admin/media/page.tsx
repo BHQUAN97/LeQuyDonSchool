@@ -5,6 +5,7 @@ import { api, getAccessToken } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { LayoutGrid, List, Upload, File, X, Copy, Trash2, Search } from 'lucide-react';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 // Khi NEXT_PUBLIC_API_URL la relative ('/api') → UPLOADS_BASE = '' → dung Next.js rewrite proxy /uploads
@@ -73,74 +74,6 @@ function formatDate(dateStr: string): string {
   });
 }
 
-// ==================== Icons (inline SVG) ====================
-
-function GridIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
-      <rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" />
-    </svg>
-  );
-}
-
-function ListIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" />
-      <line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" />
-    </svg>
-  );
-}
-
-function UploadIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
-    </svg>
-  );
-}
-
-function FileIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" />
-    </svg>
-  );
-}
-
-function XIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
-  );
-}
-
-function CopyIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-    </svg>
-  );
-}
-
-function TrashIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-    </svg>
-  );
-}
-
-function SearchIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-    </svg>
-  );
-}
-
 // ==================== Filter options ====================
 
 type FilterType = 'all' | 'image' | 'document';
@@ -194,12 +127,14 @@ export default function MediaPage() {
     fetchMedia(1);
   }, [fetchMedia]);
 
-  // Debounce search
+  // Debounce search — dung searchInput rieng, chi cap nhat search sau delay
+  // useEffect tren fetchMedia (phu thuoc search) se tu dong goi API
+  const [searchInput, setSearchInput] = useState('');
   const handleSearchChange = (value: string) => {
-    setSearch(value);
+    setSearchInput(value);
     if (searchTimeout.current) clearTimeout(searchTimeout.current);
     searchTimeout.current = setTimeout(() => {
-      fetchMedia(1);
+      setSearch(value);
     }, 400);
   };
 
@@ -294,7 +229,7 @@ export default function MediaPage() {
         <div className="flex items-center gap-2 flex-wrap">
           {/* Upload button */}
           <Button onClick={() => fileInputRef.current?.click()} disabled={uploading} className="gap-2">
-            <UploadIcon />
+            <Upload className="w-4 h-4" />
             {uploading ? 'Đang tải...' : 'Tải lên'}
           </Button>
           <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileSelect} />
@@ -306,14 +241,14 @@ export default function MediaPage() {
               className={cn('p-2', viewMode === 'grid' ? 'bg-slate-200 text-slate-900' : 'bg-white text-slate-500 hover:bg-slate-50')}
               title="Dạng lưới"
             >
-              <GridIcon />
+              <LayoutGrid className="w-[18px] h-[18px]" />
             </button>
             <button
               onClick={() => setViewMode('list')}
               className={cn('p-2', viewMode === 'list' ? 'bg-slate-200 text-slate-900' : 'bg-white text-slate-500 hover:bg-slate-50')}
               title="Dạng danh sách"
             >
-              <ListIcon />
+              <List className="w-[18px] h-[18px]" />
             </button>
           </div>
         </div>
@@ -322,10 +257,10 @@ export default function MediaPage() {
       {/* Search + Filter */}
       <div className="flex flex-col sm:flex-row gap-2">
         <div className="relative flex-1">
-          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
           <Input
             placeholder="Tìm kiếm file..."
-            value={search}
+            value={searchInput}
             onChange={(e) => handleSearchChange(e.target.value)}
             className="pl-9"
           />
@@ -360,7 +295,7 @@ export default function MediaPage() {
             dragOver ? 'border-green-500 bg-green-50' : 'border-slate-300 bg-white hover:border-slate-400',
           )}
         >
-          <UploadIcon className="mx-auto mb-2 text-slate-400" />
+          <Upload className="mx-auto mb-2 text-slate-400 w-[18px] h-[18px]" />
           <p className="text-slate-500 text-sm">Kéo thả file vào đây hoặc click để chọn</p>
         </div>
       )}
@@ -375,7 +310,7 @@ export default function MediaPage() {
       {/* Empty state */}
       {!loading && items.length === 0 && (
         <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
-          <FileIcon className="mx-auto mb-3 text-slate-300" />
+          <File className="mx-auto mb-3 text-slate-300 w-6 h-6" />
           <p className="text-slate-500">Chưa có file nào</p>
         </div>
       )}
@@ -396,7 +331,7 @@ export default function MediaPage() {
                 {isImage(item.mime_type) ? (
                   <img src={fullUrl(item.url)} alt={item.alt_text || item.original_name} className="w-full h-full object-cover" />
                 ) : (
-                  <FileIcon className="text-slate-300 w-10 h-10" />
+                  <File className="text-slate-300 w-10 h-10" />
                 )}
               </div>
               <div className="p-2">
@@ -439,7 +374,7 @@ export default function MediaPage() {
                       {isImage(item.mime_type) ? (
                         <img src={fullUrl(item.url)} alt={item.alt_text || ''} className="w-full h-full object-cover" />
                       ) : (
-                        <FileIcon className="text-slate-300" />
+                        <File className="text-slate-300 w-6 h-6" />
                       )}
                     </div>
                   </td>
@@ -455,7 +390,7 @@ export default function MediaPage() {
                       className="p-1.5 rounded hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors"
                       title="Xóa"
                     >
-                      <TrashIcon />
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </td>
                 </tr>
@@ -501,7 +436,7 @@ export default function MediaPage() {
             <div className="flex items-center justify-between p-4 border-b border-slate-100">
               <h2 className="font-semibold text-slate-900 truncate pr-4">Chi tiết file</h2>
               <button onClick={() => setSelectedItem(null)} className="p-1 rounded hover:bg-slate-100">
-                <XIcon />
+                <X className="w-[18px] h-[18px]" />
               </button>
             </div>
 
@@ -512,7 +447,7 @@ export default function MediaPage() {
                   <img src={fullUrl(selectedItem.url)} alt={selectedItem.alt_text || ''} className="max-w-full max-h-[300px] object-contain" />
                 ) : (
                   <div className="py-12 text-center">
-                    <FileIcon className="mx-auto text-slate-300 w-16 h-16 mb-2" />
+                    <File className="mx-auto text-slate-300 w-16 h-16 mb-2" />
                     <p className="text-slate-500 text-sm">{selectedItem.mime_type}</p>
                   </div>
                 )}
@@ -551,7 +486,7 @@ export default function MediaPage() {
                       onClick={() => copyUrl(selectedItem.url)}
                       title="Sao chép URL"
                     >
-                      <CopyIcon />
+                      <Copy className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
@@ -578,7 +513,7 @@ export default function MediaPage() {
                   className="w-full gap-2"
                   onClick={() => deleteMedia(selectedItem.id)}
                 >
-                  <TrashIcon /> Xóa file
+                  <Trash2 className="w-4 h-4" /> Xóa file
                 </Button>
               </div>
             </div>

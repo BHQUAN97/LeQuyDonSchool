@@ -1,4 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { SearchService } from './search.service';
 import { Public } from '@/common/decorators/public.decorator';
 
@@ -9,6 +10,7 @@ export class SearchController {
   /** Tim kiem toan bo — public, khong can auth */
   @Get()
   @Public()
+  @Throttle({ default: { limit: 20, ttl: 60000 } })
   async search(
     @Query('q') q: string,
     @Query('type') type?: string,

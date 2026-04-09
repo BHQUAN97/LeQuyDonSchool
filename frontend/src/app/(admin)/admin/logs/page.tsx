@@ -95,6 +95,7 @@ function AccessLogsTab() {
   // Filters
   const [levelFilter, setLevelFilter] = useState('');
   const [search, setSearch] = useState('');
+  const [searchInput, setSearchInput] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [page, setPage] = useState(1);
@@ -105,6 +106,12 @@ function AccessLogsTab() {
 
   // Bulk delete
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => { setSearch(searchInput); setPage(1); }, 400);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   // Fetch stats
   const fetchStats = useCallback(async () => {
@@ -138,10 +145,15 @@ function AccessLogsTab() {
     }
   }, [page, levelFilter, search, startDate, endDate]);
 
+  // Stats la global, chi fetch 1 lan khi mount
+  useEffect(() => {
+    fetchStats();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Logs phu thuoc vao filter, fetch khi filter thay doi
   useEffect(() => {
     fetchLogs();
-    fetchStats();
-  }, [fetchLogs, fetchStats]);
+  }, [fetchLogs]);
 
   /** Xem chi tiet log */
   const handleView = async (id: string) => {
@@ -294,11 +306,8 @@ function AccessLogsTab() {
         <div className="flex gap-2 items-center">
           <Input
             placeholder="Tim theo message, endpoint..."
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setPage(1);
-            }}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
             className="max-w-xs"
           />
         </div>
@@ -565,6 +574,7 @@ function AdminActionsTab() {
 
   const [actionFilter, setActionFilter] = useState('');
   const [search, setSearch] = useState('');
+  const [searchInput, setSearchInput] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [page, setPage] = useState(1);
@@ -572,6 +582,12 @@ function AdminActionsTab() {
 
   // Detail view
   const [selectedAction, setSelectedAction] = useState<AdminActionLog | null>(null);
+
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => { setSearch(searchInput); setPage(1); }, 400);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   const fetchStats = useCallback(async () => {
     try {
@@ -603,10 +619,15 @@ function AdminActionsTab() {
     }
   }, [page, actionFilter, search, startDate, endDate]);
 
+  // Stats la global, chi fetch 1 lan khi mount
+  useEffect(() => {
+    fetchStats();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Actions phu thuoc vao filter, fetch khi filter thay doi
   useEffect(() => {
     fetchActions();
-    fetchStats();
-  }, [fetchActions, fetchStats]);
+  }, [fetchActions]);
 
   const formatDate = (d: string) =>
     new Date(d).toLocaleDateString('vi-VN', {
@@ -664,8 +685,8 @@ function AdminActionsTab() {
 
         <Input
           placeholder="Tim theo mo ta, ten nguoi dung..."
-          value={search}
-          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
           className="max-w-xs"
         />
       </div>

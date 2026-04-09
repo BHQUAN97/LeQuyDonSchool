@@ -10,6 +10,7 @@ import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { QueryArticleDto } from './dto/query-article.dto';
 import { generateUlid } from '@/common/utils/ulid';
+import { escapeLike } from '@/common/utils/query.utils';
 import { paginated } from '@/common/helpers/response.helper';
 
 @Injectable()
@@ -27,7 +28,7 @@ export class ArticlesService {
     const qb = this.articleRepo.createQueryBuilder('a').where('a.deleted_at IS NULL');
 
     if (search) {
-      qb.andWhere('a.title LIKE :search', { search: `%${search}%` });
+      qb.andWhere('a.title LIKE :search', { search: `%${escapeLike(search)}%` });
     }
     if (status) {
       qb.andWhere('a.status = :status', { status });
@@ -68,7 +69,7 @@ export class ArticlesService {
       .andWhere('a.status = :status', { status: ArticleStatus.PUBLISHED });
 
     if (search) {
-      qb.andWhere('a.title LIKE :search', { search: `%${search}%` });
+      qb.andWhere('a.title LIKE :search', { search: `%${escapeLike(search)}%` });
     }
     if (categoryId) {
       qb.andWhere('a.category_id = :categoryId', { categoryId });

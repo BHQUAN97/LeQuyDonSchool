@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import RichTextEditor from '@/components/admin/RichTextEditor';
+import { generateSlug } from '@/lib/slug';
 
 interface ApiResponse {
   success: boolean;
@@ -11,21 +12,10 @@ interface ApiResponse {
   message: string;
 }
 
-/**
- * Tao slug tu title — giong logic backend, dung de preview.
- */
-function generateSlug(title: string): string {
-  return title
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/đ/g, 'd')
-    .replace(/Đ/g, 'D')
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-    .slice(0, 280);
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
 }
 
 export default function CreateArticlePage() {
@@ -38,12 +28,25 @@ export default function CreateArticlePage() {
   const [slug, setSlug] = useState('');
   const [content, setContent] = useState('');
   const [excerpt, setExcerpt] = useState('');
-  const [status, setStatus] = useState('draft');
   const [categoryId, setCategoryId] = useState('');
   const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [seoTitle, setSeoTitle] = useState('');
   const [seoDescription, setSeoDescription] = useState('');
   const [publishedAt, setPublishedAt] = useState('');
+
+  // Danh sach danh muc
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  // Fetch categories on mount
+  useEffect(() => {
+    api<Category[]>('/categories')
+      .then((data) => {
+        // API co the tra ve { success, data } hoac array truc tiep
+        const list = Array.isArray(data) ? data : (data as any)?.data || [];
+        setCategories(list);
+      })
+      .catch(() => {});
+  }, []);
 
   // Tu dong tao slug tu title
   useEffect(() => {
@@ -176,31 +179,23 @@ export default function CreateArticlePage() {
 
         {/* Right — Sidebar (1/3) */}
         <div className="space-y-4">
-          {/* Status */}
+          {/* Category & Date */}
           <div className="bg-white rounded-xl border border-slate-200 p-4 space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Trạng thái</label>
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
-              >
-                <option value="draft">Nháp</option>
-                <option value="published">Đã đăng</option>
-                <option value="hidden">Ẩn</option>
-              </select>
-            </div>
-
             {/* Category */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Danh mục</label>
-              <input
-                type="text"
+              <select
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
-                placeholder="ID danh mục (tùy chọn)"
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
-              />
+              >
+                <option value="">-- Chọn danh mục --</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Published date */}

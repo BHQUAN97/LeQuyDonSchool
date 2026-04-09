@@ -1,12 +1,12 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString, IsDateString } from 'class-validator';
 
 export class AnalyticsQueryDto {
   @IsOptional()
-  @IsString()
+  @IsDateString()
   start?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   end?: string;
 
   @IsOptional()

@@ -70,12 +70,10 @@ export default function ThucDonPage() {
         bgClass="bg-gradient-to-r from-amber-600 to-orange-500"
       />
 
-      {/* Week selector */}
+      {/* Week selector — chi co 1 tuan, an nut dieu huong */}
       <section className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <button className="text-sm text-slate-500 hover:text-green-700">← Tuần trước</button>
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-center">
           <p className="text-sm font-semibold text-slate-900">Tuần 07/04 - 11/04/2026</p>
-          <button className="text-sm text-slate-500 hover:text-green-700">Tuần sau →</button>
         </div>
       </section>
 

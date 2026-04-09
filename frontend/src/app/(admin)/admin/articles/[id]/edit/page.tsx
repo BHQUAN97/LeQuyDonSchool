@@ -4,6 +4,7 @@ import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import RichTextEditor from '@/components/admin/RichTextEditor';
+import { generateSlug } from '@/lib/slug';
 
 interface Article {
   id: string;
@@ -27,21 +28,10 @@ interface ApiResponse {
   message: string;
 }
 
-/**
- * Tao slug tu title — giong logic backend, dung de preview.
- */
-function generateSlug(title: string): string {
-  return title
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/đ/g, 'd')
-    .replace(/Đ/g, 'D')
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-    .slice(0, 280);
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
 }
 
 /**
@@ -73,6 +63,19 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
   const [seoDescription, setSeoDescription] = useState('');
   const [publishedAt, setPublishedAt] = useState('');
   const [originalTitle, setOriginalTitle] = useState('');
+
+  // Danh sach danh muc
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  // Fetch categories on mount
+  useEffect(() => {
+    api<Category[]>('/categories')
+      .then((data) => {
+        const list = Array.isArray(data) ? data : (data as any)?.data || [];
+        setCategories(list);
+      })
+      .catch(() => {});
+  }, []);
 
   // Tai du lieu bai viet
   useEffect(() => {
@@ -249,13 +252,18 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
             {/* Category */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Danh mục</label>
-              <input
-                type="text"
+              <select
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
-                placeholder="ID danh mục (tùy chọn)"
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
-              />
+              >
+                <option value="">-- Chọn danh mục --</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Published date */}

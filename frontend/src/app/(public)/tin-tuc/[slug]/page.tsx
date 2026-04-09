@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import PageBanner from '@/components/public/PageBanner';
 import ArticleCard from '@/components/public/ArticleCard';
 import SafeHtml from '@/components/public/SafeHtml';
@@ -17,10 +18,11 @@ const API_URL = INTERNAL_API;
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  const { slug } = await params;
   try {
-    const res = await fetch(`${API_URL}/articles/${params.slug}`, {
+    const res = await fetch(`${API_URL}/articles/slug/${slug}`, {
       next: { revalidate: 600 },
     });
     if (res.ok) {
@@ -29,8 +31,8 @@ export async function generateMetadata({
       return buildPageMetadata({
         title: item.title || 'Bài viết',
         description: item.description || item.excerpt || `Đọc bài viết ${item.title} tại Trường Tiểu học Lê Quý Đôn.`,
-        path: `/tin-tuc/${params.slug}`,
-        ogImage: item.coverImage || item.cover_image || undefined,
+        path: `/tin-tuc/${slug}`,
+        ogImage: item.thumbnail_url || undefined,
         type: 'article',
         publishedTime: item.publishedAt || item.published_at || undefined,
       });
@@ -42,7 +44,7 @@ export async function generateMetadata({
   return buildPageMetadata({
     title: 'Bài viết',
     description: 'Đọc tin tức và bài viết mới nhất tại Trường Tiểu học Lê Quý Đôn.',
-    path: `/tin-tuc/${params.slug}`,
+    path: `/tin-tuc/${slug}`,
     type: 'article',
   });
 }
@@ -88,18 +90,19 @@ const fallbackArticle = {
   date: '',
   author: '',
   content: '<p>Nội dung bài viết đang được cập nhật.</p>',
-  cover_image: null,
+  thumbnail_url: null,
 };
 
-export default async function ArticleDetailPage({ params }: { params: { slug: string } }) {
-  const apiArticle = await getArticle(params.slug);
+export default async function ArticleDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const apiArticle = await getArticle(slug);
   const article = apiArticle ? {
     title: apiArticle.title,
     category: apiArticle.category?.name || 'Tin tức',
     date: new Date(apiArticle.published_at || apiArticle.created_at).toLocaleDateString('vi-VN'),
     author: apiArticle.author?.full_name || 'Ban Truyền thông',
     content: apiArticle.content || '',
-    cover_image: apiArticle.cover_image,
+    thumbnail_url: apiArticle.thumbnail_url,
   } : fallbackArticle;
   const relatedArticles = await getRelatedArticles();
   return (
@@ -134,9 +137,16 @@ export default async function ArticleDetailPage({ params }: { params: { slug: st
             </div>
 
             {/* Featured image */}
-            <div className="h-56 lg:h-80 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 mb-8 overflow-hidden">
-              {article.cover_image ? (
-                <img src={article.cover_image.startsWith('http') ? article.cover_image : `${PUBLIC_UPLOADS}${article.cover_image}`} alt={article.title} className="w-full h-full object-cover" />
+            <div className="h-56 lg:h-80 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 mb-8 overflow-hidden relative">
+              {article.thumbnail_url ? (
+                <Image
+                  src={article.thumbnail_url.startsWith('http') ? article.thumbnail_url : `${PUBLIC_UPLOADS}${article.thumbnail_url}`}
+                  alt={article.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 66vw"
+                  priority
+                />
               ) : (
                 'Hình ảnh bài viết'
               )}

@@ -1,5 +1,6 @@
 import { Injectable, Logger, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { escapeLike } from '@/common/utils/query.utils';
 import { Repository, IsNull } from 'typeorm';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -29,7 +30,7 @@ export class MediaService {
 
     if (search) {
       qb.andWhere('(m.filename LIKE :search OR m.original_name LIKE :search)', {
-        search: `%${search}%`,
+        search: `%${escapeLike(search)}%`,
       });
     }
 
@@ -124,7 +125,8 @@ export class MediaService {
     const media = await this.mediaRepo.findOne({ where: { id, deleted_at: IsNull() } });
     if (!media) throw new NotFoundException('Không tìm thấy file');
 
-    if (dto.filename !== undefined) media.filename = dto.filename;
+    // filename (storage key) la immutable — chi cho update metadata
+    if (dto.original_name !== undefined) media.original_name = dto.original_name;
     if (dto.alt_text !== undefined) media.alt_text = dto.alt_text;
 
     return this.mediaRepo.save(media);
@@ -137,9 +139,13 @@ export class MediaService {
     const media = await this.mediaRepo.findOne({ where: { id, deleted_at: IsNull() } });
     if (!media) throw new NotFoundException('Không tìm thấy file');
 
-    // Xoa file tren R2 neu dang dung R2 (key = filename field)
+    // Xoa file tren storage — R2 hoac local
     if (this.r2Service.isEnabled() && media.filename.startsWith('media/')) {
       await this.r2Service.delete(media.filename);
+    } else if (!this.r2Service.isEnabled()) {
+      // Xoa file local khi khong dung R2
+      const localPath = path.resolve(process.cwd(), 'uploads', media.filename);
+      this.cleanupTempFile(localPath);
     }
 
     await this.mediaRepo.update(id, { deleted_at: new Date() });

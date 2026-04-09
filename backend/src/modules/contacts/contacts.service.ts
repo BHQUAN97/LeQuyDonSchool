@@ -5,6 +5,7 @@ import { Contact, ContactStatus } from './entities/contact.entity';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { QueryContactDto } from './dto/query-contact.dto';
 import { generateUlid } from '@/common/utils/ulid';
+import { escapeLike } from '@/common/utils/query.utils';
 import { paginated } from '@/common/helpers/response.helper';
 
 @Injectable()
@@ -24,7 +25,7 @@ export class ContactsService {
     if (search) {
       qb.andWhere(
         '(c.full_name LIKE :search OR c.email LIKE :search OR c.phone LIKE :search)',
-        { search: `%${search}%` },
+        { search: `%${escapeLike(search)}%` },
       );
     }
     if (status) qb.andWhere('c.status = :status', { status });

@@ -61,8 +61,18 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
   return res.json();
 }
 
-/** Thu refresh token */
+/** Promise dedup — tranh race condition khi nhieu request 401 cung luc */
+let refreshPromise: Promise<boolean> | null = null;
+
+/** Thu refresh token (co dedup) */
 async function tryRefresh(): Promise<boolean> {
+  if (refreshPromise) return refreshPromise;
+  refreshPromise = doRefresh().finally(() => { refreshPromise = null; });
+  return refreshPromise;
+}
+
+/** Thuc hien refresh token */
+async function doRefresh(): Promise<boolean> {
   try {
     const res = await fetch(`${API_BASE}/auth/refresh`, {
       method: 'POST',

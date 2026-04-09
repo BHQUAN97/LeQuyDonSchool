@@ -1,0 +1,303 @@
+name: Restore Backup
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Backup date (YYYY-MM-DD), empty = latest'
+        required: false
+        default: ''
+      restore_db:
+        description: 'Restore database?'
+        required: true
+        type: boolean
+        default: true
+      restore_uploads:
+        description: 'Restore uploads?'
+        required: true
+        type: boolean
+        default: true
+      run_changelog:
+        description: 'Run DB changelog after restore?'
+        required: true
+        type: boolean
+        default: true
+
+env:
+  INFRA_DIR: /opt/infra
+  APP_DIR: /opt/lqd
+  # Backup branch nam tren WebPhoto repo (backup chung ca cac project)
+  BACKUP_REPO: BHQUAN97/webphoto
+
+jobs:
+  restore:
+    name: "Restore LeQuyDon (${{ inputs.date || 'latest' }})"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Load config/env
+        run: |
+          grep -v '^#' config/env | grep -v '^$' | grep '=' >> $GITHUB_ENV
+          PASS=$(grep '^VPS_PASSWORD=' config/env | cut -d= -f2-)
+          echo "SSHPASS=${PASS}" >> $GITHUB_ENV
+
+      - name: Setup SSH
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq sshpass > /dev/null
+          mkdir -p ~/.ssh
+          ssh-keyscan -p ${{ env.VPS_PORT }} -H ${{ env.VPS_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Resolve backup date
+        id: resolve
+        env:
+          GITHUB_TOKEN: ${{ secrets.CROSS_REPO_TOKEN }}
+        run: |
+          git clone --depth 1 --single-branch --branch backups \
+            "https://x-access-token:${GITHUB_TOKEN}@github.com/${BACKUP_REPO}.git" /tmp/backups-repo || {
+            echo "Cannot access backups branch in ${BACKUP_REPO}"
+            echo "Check if branch exists and CROSS_REPO_TOKEN has repo access"
+            exit 1
+          }
+
+          cd /tmp/backups-repo
+
+          if [ -n "${{ inputs.date }}" ]; then
+            DATE="${{ inputs.date }}"
+          else
+            DATE=$(ls -d lqd/????-??-?? 2>/dev/null | sort -r | head -1 | xargs basename 2>/dev/null || echo "")
+          fi
+
+          if [ -z "$DATE" ]; then
+            echo "No LeQuyDon backup found!"
+            exit 1
+          fi
+
+          echo "date=${DATE}" >> $GITHUB_OUTPUT
+          echo "Backup date: ${DATE}"
+
+          echo ""
+          echo "=== Available files ==="
+          if [ -d "lqd/${DATE}" ]; then
+            ls -lh lqd/${DATE}/
+          else
+            echo "lqd/${DATE}/ — NOT FOUND"
+            exit 1
+          fi
+
+          mkdir -p /tmp/restore
+          cp -r lqd/${DATE} /tmp/restore/lqd
+
+      - name: Decrypt backups
+        run: |
+          ENCRYPT_KEY=$(grep '^BACKUP_ENCRYPT_KEY=' config/env | cut -d= -f2- || echo "")
+          GPG_COUNT=$(find /tmp/restore -name '*.gpg' -type f 2>/dev/null | wc -l)
+          if [ "$GPG_COUNT" -eq 0 ]; then
+            echo "No encrypted files — skip"
+            exit 0
+          fi
+          if [ -z "$ENCRYPT_KEY" ]; then
+            echo "ERROR: Found .gpg files but BACKUP_ENCRYPT_KEY not set!"
+            exit 1
+          fi
+          for f in $(find /tmp/restore -name '*.gpg' -type f); do
+            OUTPUT="${f%.gpg}"
+            gpg --batch --yes --passphrase "${ENCRYPT_KEY}" \
+              --decrypt --output "$OUTPUT" "$f"
+            rm -f "$f"
+            echo "Decrypted: $(basename "$OUTPUT")"
+          done
+
+      - name: Upload backup to VPS
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+
+          sshpass -e ssh -p $PORT $VPS "mkdir -p /tmp/restore/lqd"
+          sshpass -e scp -P $PORT /tmp/restore/lqd/* $VPS:/tmp/restore/lqd/
+          echo "Uploaded LeQuyDon backup files"
+
+      - name: Restore database
+        if: inputs.restore_db
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+
+          sshpass -e ssh -p $PORT $VPS "
+            set -e
+            DUMP=/tmp/restore/lqd/lqd.sql.gz
+            if [ ! -f \$DUMP ]; then
+              echo 'No DB dump found — skip'
+              exit 0
+            fi
+
+            MYSQL_ROOT_PWD=\$(grep '^MYSQL_ROOT_PASSWORD=' ${INFRA_DIR}/.env | cut -d= -f2-)
+            LQD_PWD=\$(grep '^LQD_DB_PASSWORD=' ${APP_DIR}/.env | cut -d= -f2-)
+
+            echo 'Restoring lqd database...'
+
+            # Dam bao DB + user ton tai
+            docker exec -i shared-mysql mysql -u root -p\${MYSQL_ROOT_PWD} <<EOSQL
+              CREATE DATABASE IF NOT EXISTS lqd CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+              CREATE USER IF NOT EXISTS 'lqd'@'%' IDENTIFIED BY '\${LQD_PWD}';
+              GRANT ALL PRIVILEGES ON lqd.* TO 'lqd'@'%';
+              FLUSH PRIVILEGES;
+          EOSQL
+
+            # Safety backup truoc khi DROP
+            PRE_RESTORE=/tmp/pre-restore-lqd-\$(date +%Y%m%d_%H%M%S).sql.gz
+            echo \"Creating safety backup → \${PRE_RESTORE}\"
+            docker exec shared-mysql mysqldump -u root -p\${MYSQL_ROOT_PWD} \
+              --single-transaction --quick lqd 2>/dev/null | gzip > \${PRE_RESTORE}
+            echo \"Safety backup: \$(du -h \${PRE_RESTORE} | cut -f1)\"
+
+            # Drop + recreate
+            docker exec -i shared-mysql mysql -u root -p\${MYSQL_ROOT_PWD} -e 'DROP DATABASE lqd; CREATE DATABASE lqd CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'
+
+            # Import dump — rollback neu fail
+            if gunzip -c \$DUMP | docker exec -i shared-mysql mysql -u root -p\${MYSQL_ROOT_PWD} lqd; then
+              echo 'Database restored!'
+              rm -f \${PRE_RESTORE}
+            else
+              echo 'RESTORE FAILED — rolling back from safety backup...'
+              docker exec -i shared-mysql mysql -u root -p\${MYSQL_ROOT_PWD} -e 'DROP DATABASE IF EXISTS lqd; CREATE DATABASE lqd CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'
+              gunzip -c \${PRE_RESTORE} | docker exec -i shared-mysql mysql -u root -p\${MYSQL_ROOT_PWD} lqd
+              echo 'Rollback complete. Original data preserved.'
+              exit 1
+            fi
+
+            # Verify
+            TABLES=\$(docker exec shared-mysql mysql -u root -p\${MYSQL_ROOT_PWD} -N -e 'SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=\"lqd\"' 2>/dev/null)
+            echo \"Tables: \${TABLES}\"
+            if [ \"\${TABLES}\" -lt 1 ]; then
+              echo 'WARNING: No tables found after restore!'
+              exit 1
+            fi
+          "
+
+      - name: Restore uploads
+        if: inputs.restore_uploads
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+
+          sshpass -e ssh -p $PORT $VPS "
+            ZIP=/tmp/restore/lqd/uploads.zip
+            if [ ! -f \$ZIP ]; then
+              echo 'No uploads backup — skip'
+              exit 0
+            fi
+
+            LQD_UPLOADS=\$(docker volume inspect lqd_uploads --format '{{.Mountpoint}}' 2>/dev/null || echo '')
+            if [ -z \"\$LQD_UPLOADS\" ]; then
+              echo 'lqd_uploads volume not found — skip'
+              exit 0
+            fi
+
+            echo \"Restoring uploads to \$LQD_UPLOADS...\"
+            mkdir -p \$LQD_UPLOADS
+            unzip -qo \$ZIP -d \$LQD_UPLOADS
+            echo \"Files: \$(find \$LQD_UPLOADS -type f | wc -l)\"
+            echo 'Uploads restored!'
+          "
+
+      - name: Run DB changelog
+        if: inputs.run_changelog && inputs.restore_db
+        run: |
+          set +e
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+
+          if [ ! -d "db/changelog" ]; then
+            echo "No changelog directory — skip"
+            exit 0
+          fi
+
+          LQD_PWD=$(grep '^LQD_DB_PASSWORD=' config/env | cut -d= -f2-)
+          MYSQL_CMD="docker exec -i shared-mysql mysql -u lqd -p${LQD_PWD} lqd"
+
+          # Step 1: _init scripts
+          echo "[1/3] Running _init scripts..."
+          for f in $(find db/changelog/_init -name '*.sql' -type f 2>/dev/null | sort); do
+            echo "  $(basename $f)..."
+            sshpass -e ssh -p $PORT $VPS "$MYSQL_CMD" < "$f" 2>&1 || true
+          done
+
+          # Step 2: Get applied
+          echo "[2/3] Checking applied migrations..."
+          APPLIED=$(sshpass -e ssh -p $PORT $VPS "$MYSQL_CMD -N -e \"SELECT CONCAT(version, '/', filename) FROM schema_changelog\"" 2>/dev/null || echo "")
+
+          # Step 3: Run migrations
+          echo "[3/3] Running migrations..."
+          PASS=0; SKIP=0; FAIL=0
+
+          for ver_dir in $(find db/changelog -mindepth 1 -maxdepth 1 -type d ! -name '_init' | sort); do
+            VER=$(basename "$ver_dir")
+            echo ""
+            echo "── $VER ──"
+            for f in $(find "$ver_dir" -name '*.sql' -type f | sort); do
+              FNAME=$(basename "$f")
+              KEY="${VER}/${FNAME}"
+              if echo "$APPLIED" | grep -qF "$KEY"; then
+                echo "  $FNAME ... SKIP"
+                ((SKIP++)); continue
+              fi
+              echo -n "  $FNAME ... "
+              OUTPUT=$(sshpass -e ssh -p $PORT $VPS "$MYSQL_CMD" < "$f" 2>&1)
+              EXIT_CODE=$?
+              if [ $EXIT_CODE -eq 0 ]; then
+                DESC=$(echo "$FNAME" | sed 's/^[0-9]*__//; s/\.sql$//; s/_/ /g')
+                CHECKSUM=$(sha256sum "$f" | cut -d' ' -f1)
+                sshpass -e ssh -p $PORT $VPS "$MYSQL_CMD -e \"REPLACE INTO schema_changelog (version, filename, description, applied_by, checksum) VALUES ('$VER', '$FNAME', '$DESC', 'restore', '$CHECKSUM')\"" 2>/dev/null
+                echo "OK"; ((PASS++))
+              else
+                echo "FAILED (exit=$EXIT_CODE)"
+                echo "$OUTPUT" | sed 's/^/    /'
+                ((FAIL++))
+              fi
+            done
+          done
+          echo ""
+          echo "Changelog: $PASS applied, $SKIP skipped, $FAIL failed"
+          if [ $FAIL -gt 0 ]; then exit 1; fi
+
+      - name: Restart services
+        if: inputs.restore_db
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+
+          sshpass -e ssh -p $PORT $VPS "
+            if [ -f ${APP_DIR}/docker-compose.prod.yml ]; then
+              echo 'Restarting LeQuyDon...'
+              cd ${APP_DIR} && docker compose -f docker-compose.prod.yml restart backend frontend
+              echo 'OK'
+            else
+              echo 'LeQuyDon not deployed — skip'
+            fi
+          "
+
+      - name: Cleanup
+        if: always()
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+          sshpass -e ssh -p $PORT $VPS "rm -rf /tmp/restore" 2>/dev/null || true
+
+      - name: Health check
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+          sleep 5
+          sshpass -e ssh -p $PORT $VPS "curl -sf http://localhost:4200/api/health" && echo " LeQuyDon: OK" || echo " LeQuyDon: DOWN"
+
+      - name: Summary
+        run: |
+          echo "======================================="
+          echo "Restore completed"
+          echo "  Project:   LeQuyDon"
+          echo "  Date:      ${{ steps.resolve.outputs.date }}"
+          echo "  DB:        ${{ inputs.restore_db }}"
+          echo "  Uploads:   ${{ inputs.restore_uploads }}"
+          echo "  Changelog: ${{ inputs.run_changelog }}"
+          echo "======================================="

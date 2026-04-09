@@ -17,6 +17,7 @@ import { CreateRegistrationDto } from './dto/create-registration.dto';
 import { UpdateRegistrationStatusDto } from './dto/update-registration-status.dto';
 import { QueryRegistrationDto } from './dto/query-registration.dto';
 import { generateUlid } from '@/common/utils/ulid';
+import { escapeLike } from '@/common/utils/query.utils';
 import { paginated } from '@/common/helpers/response.helper';
 
 @Injectable()
@@ -38,7 +39,7 @@ export class AdmissionsService {
     const qb = this.postRepo.createQueryBuilder('p').where('p.deleted_at IS NULL');
 
     if (search) {
-      qb.andWhere('p.title LIKE :search', { search: `%${search}%` });
+      qb.andWhere('p.title LIKE :search', { search: `%${escapeLike(search)}%` });
     }
     if (status) {
       qb.andWhere('p.status = :status', { status });
@@ -69,7 +70,7 @@ export class AdmissionsService {
       .andWhere('p.status = :status', { status: AdmissionPostStatus.PUBLISHED });
 
     if (search) {
-      qb.andWhere('p.title LIKE :search', { search: `%${search}%` });
+      qb.andWhere('p.title LIKE :search', { search: `%${escapeLike(search)}%` });
     }
 
     const allowedSort = ['published_at', 'created_at', 'title'];
@@ -260,7 +261,7 @@ export class AdmissionsService {
 
     if (search) {
       qb.andWhere('(r.full_name LIKE :search OR r.phone LIKE :search OR r.email LIKE :search)', {
-        search: `%${search}%`,
+        search: `%${escapeLike(search)}%`,
       });
     }
     if (status) {

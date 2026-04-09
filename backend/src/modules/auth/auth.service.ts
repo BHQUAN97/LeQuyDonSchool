@@ -19,9 +19,12 @@ import { generateUlid } from '@/common/utils/ulid';
 import { AdminActionsService } from '@/modules/logs/admin-actions.service';
 import { ActionType } from '@/modules/logs/entities/admin-action.entity';
 
-// Gioi han dang nhap: 5 lan sai trong 30 phut
+// Gioi han dang nhap theo IP: 5 lan sai trong 30 phut
 const MAX_LOGIN_ATTEMPTS = 5;
 const LOCKOUT_MINUTES = 30;
+// Gioi han dang nhap theo email: 20 lan sai trong 60 phut (chong brute-force distributed)
+const MAX_EMAIL_ATTEMPTS = 20;
+const EMAIL_LOCKOUT_MINUTES = 60;
 
 @Injectable()
 export class AuthService {
@@ -228,21 +231,39 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  /** Kiem tra rate limit dang nhap */
+  /** Kiem tra rate limit dang nhap — theo IP va email */
   private async checkLoginRateLimit(ip: string, email: string) {
-    const since = new Date(Date.now() - LOCKOUT_MINUTES * 60 * 1000);
+    const ipSince = new Date(Date.now() - LOCKOUT_MINUTES * 60 * 1000);
 
-    const failedAttempts = await this.attemptRepo.count({
+    // Rate limit theo IP — chong brute-force tu 1 IP
+    const ipAttempts = await this.attemptRepo.count({
       where: {
         ip_address: ip,
         success: false,
-        attempted_at: MoreThan(since),
+        attempted_at: MoreThan(ipSince),
       },
     });
 
-    if (failedAttempts >= MAX_LOGIN_ATTEMPTS) {
+    if (ipAttempts >= MAX_LOGIN_ATTEMPTS) {
       throw new HttpException(
         `Quá nhiều lần đăng nhập thất bại. Vui lòng thử lại sau ${LOCKOUT_MINUTES} phút.`,
+        HttpStatus.TOO_MANY_REQUESTS,
+      );
+    }
+
+    // Rate limit theo email — chong brute-force distributed (nhieu IP tan cong 1 email)
+    const emailSince = new Date(Date.now() - EMAIL_LOCKOUT_MINUTES * 60 * 1000);
+    const emailAttempts = await this.attemptRepo.count({
+      where: {
+        email,
+        success: false,
+        attempted_at: MoreThan(emailSince),
+      },
+    });
+
+    if (emailAttempts >= MAX_EMAIL_ATTEMPTS) {
+      throw new HttpException(
+        `Tài khoản tạm khóa do quá nhiều lần đăng nhập thất bại. Vui lòng thử lại sau ${EMAIL_LOCKOUT_MINUTES} phút.`,
         HttpStatus.TOO_MANY_REQUESTS,
       );
     }

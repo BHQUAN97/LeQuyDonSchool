@@ -20,9 +20,7 @@ export class AnalyticsController {
   @Public()
   @Throttle({ default: { limit: 10, ttl: 60000 } })
   async recordPageview(@Body() dto: RecordPageviewDto, @Req() req: Request) {
-    const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim()
-      || req.ip
-      || '0.0.0.0';
+    const ip = req.ip || '0.0.0.0';
     const userAgent = req.headers['user-agent'];
     const referrer = req.headers['referer'] || req.headers['referrer'];
 

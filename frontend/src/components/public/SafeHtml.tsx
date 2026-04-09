@@ -19,7 +19,7 @@ const ALLOWED_TAGS = [
 
 const ALLOWED_ATTR = [
   'href', 'target', 'rel', 'src', 'alt', 'title', 'width', 'height',
-  'class', 'id', 'style', 'colspan', 'rowspan',
+  'class', 'id', 'colspan', 'rowspan',
 ];
 
 interface SafeHtmlProps {

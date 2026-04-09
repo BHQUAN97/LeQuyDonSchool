@@ -11,6 +11,7 @@ export class UpdateAdmissionPostDto {
   @IsOptional()
   @IsString()
   @MinLength(1, { message: 'Nội dung không được để trống' })
+  @MaxLength(500000)
   content?: string;
 
   @IsOptional()

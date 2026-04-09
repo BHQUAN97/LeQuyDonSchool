@@ -1,0 +1,13 @@
+# ──────────────────────────────────────────
+# LeQuyDon Crontab Configuration
+# Install: crontab /opt/lqd/scripts/crontab.example
+# ──────────────────────────────────────────
+
+# MySQL backup — daily at 2:30 AM (offset 30min tu VietNet)
+30 2 * * * /opt/lqd/scripts/backup-mysql.sh >> /var/log/lqd/cron.log 2>&1
+
+# Disk monitoring — every 30 minutes
+*/30 * * * * /opt/lqd/scripts/monitor-disk.sh >> /var/log/lqd/cron.log 2>&1
+
+# Docker cleanup — weekly Sunday at 3:30 AM
+30 3 * * 0 /opt/lqd/scripts/docker-cleanup.sh >> /var/log/lqd/cron.log 2>&1

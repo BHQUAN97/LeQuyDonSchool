@@ -1,4 +1,4 @@
-import { IsString, MaxLength, IsArray, ValidateNested, IsNotEmpty } from 'class-validator';
+import { IsString, MaxLength, IsArray, ValidateNested, IsNotEmpty, ArrayMaxSize } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class SettingItemDto {
@@ -8,6 +8,7 @@ export class SettingItemDto {
   key!: string;
 
   @IsString()
+  @MaxLength(10000)
   value!: string;
 
   @IsString()
@@ -17,6 +18,7 @@ export class SettingItemDto {
 
 export class BulkUpsertSettingDto {
   @IsArray()
+  @ArrayMaxSize(100)
   @ValidateNested({ each: true })
   @Type(() => SettingItemDto)
   items!: SettingItemDto[];

@@ -217,30 +217,31 @@ export default function Header() {
           <nav className="px-4 py-3 space-y-1">
             {navigation.map((item) => (
               <div key={item.href}>
-                <button
-                  onClick={() => {
-                    if (item.children) {
+                {item.children ? (
+                  <button
+                    onClick={() => {
                       setOpenDropdown(openDropdown === item.href ? null : item.href);
-                    } else {
-                      setMobileOpen(false);
-                    }
-                  }}
-                  className={cn(
-                    'flex items-center justify-between w-full px-3 py-3 text-sm font-bold uppercase rounded-lg transition-colors',
-                    isActive(item.href) ? 'text-green-700 bg-green-50' : 'text-red-700 hover:bg-gray-50',
-                  )}
-                >
-                  {item.children ? (
-                    <>
-                      {item.label}
-                      <ChevronDown className={cn('w-4 h-4 transition-transform', openDropdown === item.href && 'rotate-180')} />
-                    </>
-                  ) : (
-                    <Link href={item.href} onClick={() => setMobileOpen(false)} className="w-full text-left">
-                      {item.label}
-                    </Link>
-                  )}
-                </button>
+                    }}
+                    className={cn(
+                      'flex items-center justify-between w-full px-3 py-3 text-sm font-bold uppercase rounded-lg transition-colors',
+                      isActive(item.href) ? 'text-green-700 bg-green-50' : 'text-red-700 hover:bg-gray-50',
+                    )}
+                  >
+                    {item.label}
+                    <ChevronDown className={cn('w-4 h-4 transition-transform', openDropdown === item.href && 'rotate-180')} />
+                  </button>
+                ) : (
+                  <Link
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={cn(
+                      'flex items-center justify-between w-full px-3 py-3 text-sm font-bold uppercase rounded-lg transition-colors',
+                      isActive(item.href) ? 'text-green-700 bg-green-50' : 'text-red-700 hover:bg-gray-50',
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                )}
 
                 {item.children && openDropdown === item.href && (
                   <div className="ml-4 border-l-2 border-green-300 pl-3 space-y-1 mb-2">

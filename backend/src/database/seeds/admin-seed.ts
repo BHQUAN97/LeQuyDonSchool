@@ -9,8 +9,15 @@ import { generateUlid } from '../../common/utils/ulid';
  * Chay: npm run seed:admin
  */
 async function seedAdmin() {
+  const isProduction = process.env.NODE_ENV === 'production';
   const email = process.env.ADMIN_EMAIL || 'admin@lequydon.edu.vn';
-  const password = process.env.ADMIN_PASSWORD || 'Admin@123456';
+
+  if (isProduction && !process.env.ADMIN_PASSWORD) {
+    console.error('[SEED] ADMIN_PASSWORD env var is required in production. Aborting.');
+    process.exit(1);
+  }
+
+  const password = process.env.ADMIN_PASSWORD || (isProduction ? '' : 'Admin@123456');
 
   await AppDataSource.initialize();
   const userRepo = AppDataSource.getRepository(User);
