@@ -615,17 +615,30 @@ jobs:
 
       - name: Backend health
         run: |
+          set +e
           VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
           PORT="${{ env.VPS_PORT }}"
+
+          echo "=== Container status ==="
+          sshpass -e ssh -p $PORT $VPS "docker ps -a --format 'table {{.Names}}\t{{.Status}}' | grep -E 'lqd|shared'" 2>&1
+
           for i in $(seq 1 15); do
-            RESULT=$(sshpass -e ssh -p $PORT $VPS "curl -sf http://localhost:4200/api/health" 2>/dev/null)
-            if [ $? -eq 0 ] && [ -n "$RESULT" ]; then
+            RESULT=$(sshpass -e ssh -p $PORT $VPS "curl -sf http://localhost:4200/api/health" 2>&1)
+            RC=$?
+            if [ $RC -eq 0 ] && [ -n "$RESULT" ]; then
               echo "Backend: OK — $RESULT"
               exit 0
             fi
-            [ $i -eq 15 ] && { echo "::error::Backend health check failed after 30s"; sshpass -e ssh -p $PORT $VPS "docker logs lqd-api --tail 20" 2>&1; exit 1; }
+            echo "  Attempt $i/15 — curl exit $RC"
             sleep 2
           done
+
+          echo "::error::Backend health check failed after 30s"
+          echo "=== Backend logs ==="
+          sshpass -e ssh -p $PORT $VPS "docker logs lqd-api --tail 50" 2>&1
+          echo "=== Backend inspect ==="
+          sshpass -e ssh -p $PORT $VPS "docker inspect lqd-api --format '{{.State.Status}} ExitCode:{{.State.ExitCode}}'" 2>&1
+          exit 1
 
       - name: Frontend health
         run: |
