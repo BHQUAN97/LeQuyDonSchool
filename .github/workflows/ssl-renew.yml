@@ -34,19 +34,34 @@ jobs:
           VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
           PORT="${{ env.VPS_PORT }}"
 
-          echo "=== Current cert status ==="
+          # Tim ten Docker volume chua certbot data (WebPhoto dung certbot_data)
+          echo "=== Find certbot volume ==="
           sshpass -e ssh -p $PORT $VPS "
-            ls -la /etc/letsencrypt/live/lqd.bhquan.store/ 2>&1 || echo 'No cert dir found'
-            echo '--- Nginx status ---'
-            docker exec shared-nginx nginx -t 2>&1
+            echo '--- Docker volumes ---'
+            docker volume ls | grep -i cert
+            echo ''
+            echo '--- Nginx mounts ---'
+            docker inspect shared-nginx --format '{{range .Mounts}}{{.Source}} -> {{.Destination}}{{println}}{{end}}'
           "
 
           echo ""
-          echo "=== Removing old/placeholder cert ==="
+          echo "=== Current cert in volume ==="
           sshpass -e ssh -p $PORT $VPS "
-            rm -rf /etc/letsencrypt/live/lqd.bhquan.store*
-            rm -rf /etc/letsencrypt/archive/lqd.bhquan.store*
-            rm -rf /etc/letsencrypt/renewal/lqd.bhquan.store*.conf
+            docker exec shared-nginx ls -la /etc/letsencrypt/live/ 2>&1 || echo 'No cert dir'
+            docker exec shared-nginx ls -la /etc/letsencrypt/live/lqd.bhquan.store/ 2>&1 || echo 'No lqd cert'
+          "
+
+          echo ""
+          echo "=== Removing old/placeholder cert from volume ==="
+          sshpass -e ssh -p $PORT $VPS "
+            CERT_VOL=\$(docker inspect shared-nginx --format '{{range .Mounts}}{{if eq .Destination \"/etc/letsencrypt\"}}{{.Source}}{{end}}{{end}}')
+            echo \"Cert volume/path: \$CERT_VOL\"
+            docker run --rm -v \${CERT_VOL}:/etc/letsencrypt alpine sh -c '
+              rm -rf /etc/letsencrypt/live/lqd.bhquan.store*
+              rm -rf /etc/letsencrypt/archive/lqd.bhquan.store*
+              rm -rf /etc/letsencrypt/renewal/lqd.bhquan.store*.conf
+              echo Cleaned
+            '
           "
 
           echo ""
@@ -54,11 +69,13 @@ jobs:
           sshpass -e ssh -p $PORT $VPS "docker stop shared-nginx 2>/dev/null || true"
 
           echo ""
-          echo "=== Running certbot standalone ==="
+          echo "=== Running certbot into Docker volume ==="
           sshpass -e ssh -p $PORT $VPS "
+            CERT_VOL=\$(docker inspect shared-nginx --format '{{range .Mounts}}{{if eq .Destination \"/etc/letsencrypt\"}}{{.Name}}{{end}}{{end}}')
+            echo \"Using volume: \$CERT_VOL\"
+
             docker run --rm \
-              -v /etc/letsencrypt:/etc/letsencrypt \
-              -v /var/lib/letsencrypt:/var/lib/letsencrypt \
+              -v \${CERT_VOL}:/etc/letsencrypt \
               -p 80:80 \
               certbot/certbot certonly --standalone \
               --non-interactive \
@@ -70,16 +87,17 @@ jobs:
           "
 
           echo ""
-          echo "=== Verify cert ==="
-          sshpass -e ssh -p $PORT $VPS "
-            ls -la /etc/letsencrypt/live/lqd.bhquan.store/
-            openssl x509 -in /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem -noout -subject -dates 2>&1
-          "
-
-          echo ""
           echo "=== Restarting nginx ==="
           sshpass -e ssh -p $PORT $VPS "
             docker start shared-nginx
             sleep 2
+          "
+
+          echo ""
+          echo "=== Verify cert in nginx container ==="
+          sshpass -e ssh -p $PORT $VPS "
+            docker exec shared-nginx ls -la /etc/letsencrypt/live/lqd.bhquan.store/
+            docker exec shared-nginx sh -c 'openssl x509 -in /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem -noout -subject -dates' 2>&1
+            docker exec shared-nginx nginx -t 2>&1
             docker exec shared-nginx nginx -s reload 2>&1
           "

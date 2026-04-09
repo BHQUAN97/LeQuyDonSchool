@@ -356,18 +356,27 @@ jobs:
           PORT="${{ env.VPS_PORT }}"
 
           sshpass -e ssh -p $PORT $VPS "
+            # Tim Docker volume ma shared-nginx mount tai /etc/letsencrypt
+            CERT_VOL=\$(docker inspect shared-nginx --format '{{range .Mounts}}{{if eq .Destination \"/etc/letsencrypt\"}}{{.Name}}{{end}}{{end}}' 2>/dev/null)
+            if [ -z \"\$CERT_VOL\" ]; then
+              echo 'WARN: No cert volume found on shared-nginx, using host path'
+              CERT_VOL='/etc/letsencrypt'
+            fi
+            echo \"Using cert volume: \$CERT_VOL\"
+
             echo '=== Removing old/placeholder cert ==='
-            rm -rf /etc/letsencrypt/live/lqd.bhquan.store*
-            rm -rf /etc/letsencrypt/archive/lqd.bhquan.store*
-            rm -rf /etc/letsencrypt/renewal/lqd.bhquan.store*.conf
+            docker run --rm -v \${CERT_VOL}:/etc/letsencrypt alpine sh -c '
+              rm -rf /etc/letsencrypt/live/lqd.bhquan.store*
+              rm -rf /etc/letsencrypt/archive/lqd.bhquan.store*
+              rm -rf /etc/letsencrypt/renewal/lqd.bhquan.store*.conf
+            '
 
             echo '=== Stopping nginx to free port 80 ==='
             docker stop shared-nginx 2>/dev/null || true
 
-            echo '=== Running certbot standalone ==='
+            echo '=== Running certbot into Docker volume ==='
             docker run --rm \
-              -v /etc/letsencrypt:/etc/letsencrypt \
-              -v /var/lib/letsencrypt:/var/lib/letsencrypt \
+              -v \${CERT_VOL}:/etc/letsencrypt \
               -p 80:80 \
               certbot/certbot certonly --standalone \
               --non-interactive \
@@ -376,12 +385,15 @@ jobs:
               --agree-tos --no-eff-email \
               -d lqd.bhquan.store \
               2>&1 || {
-              echo 'Certbot failed — creating placeholder'
-              mkdir -p /etc/letsencrypt/live/lqd.bhquan.store
-              openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
-                -keyout /etc/letsencrypt/live/lqd.bhquan.store/privkey.pem \
-                -out /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem \
-                -subj '/CN=lqd.bhquan.store' 2>/dev/null
+              echo 'Certbot failed — creating placeholder in volume'
+              docker run --rm -v \${CERT_VOL}:/etc/letsencrypt alpine sh -c '
+                mkdir -p /etc/letsencrypt/live/lqd.bhquan.store
+                apk add --no-cache openssl >/dev/null 2>&1
+                openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
+                  -keyout /etc/letsencrypt/live/lqd.bhquan.store/privkey.pem \
+                  -out /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem \
+                  -subj /CN=lqd.bhquan.store 2>/dev/null
+              '
             }
 
             echo '=== Restarting nginx ==='
@@ -389,8 +401,8 @@ jobs:
             sleep 2
             docker exec shared-nginx nginx -t && docker exec shared-nginx nginx -s reload
 
-            echo '=== Verify cert ==='
-            openssl x509 -in /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem -noout -subject -dates 2>&1 || true
+            echo '=== Verify cert in nginx ==='
+            docker exec shared-nginx sh -c 'openssl x509 -in /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem -noout -subject -dates' 2>&1 || true
           "
 
       # ── INIT: Seed admin (chi lan dau) ───────────
@@ -451,14 +463,18 @@ jobs:
           PORT="${{ env.VPS_PORT }}"
           sshpass -e scp -P $PORT nginx/conf.d/lqd.bhquan.store.conf $VPS:${WEBPHOTO_DIR}/nginx/conf.d/ 2>/dev/null && {
             sshpass -e ssh -p $PORT $VPS "
-              CERT_EXISTS=\$(test -f /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem && echo yes || echo no)
+              CERT_EXISTS=\$(docker exec shared-nginx test -f /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem 2>/dev/null && echo yes || echo no)
               if [ \"\$CERT_EXISTS\" = 'no' ]; then
-                echo 'No SSL cert found — creating placeholder'
-                mkdir -p /etc/letsencrypt/live/lqd.bhquan.store
-                openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
-                  -keyout /etc/letsencrypt/live/lqd.bhquan.store/privkey.pem \
-                  -out /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem \
-                  -subj '/CN=lqd.bhquan.store' 2>/dev/null
+                echo 'No SSL cert found in volume — creating placeholder'
+                CERT_VOL=\$(docker inspect shared-nginx --format '{{range .Mounts}}{{if eq .Destination \"/etc/letsencrypt\"}}{{.Name}}{{end}}{{end}}' 2>/dev/null || echo '/etc/letsencrypt')
+                docker run --rm -v \${CERT_VOL}:/etc/letsencrypt alpine sh -c '
+                  mkdir -p /etc/letsencrypt/live/lqd.bhquan.store
+                  apk add --no-cache openssl >/dev/null 2>&1
+                  openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
+                    -keyout /etc/letsencrypt/live/lqd.bhquan.store/privkey.pem \
+                    -out /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem \
+                    -subj /CN=lqd.bhquan.store 2>/dev/null
+                '
               fi
               docker exec shared-nginx nginx -t 2>&1 | tail -1 && docker exec shared-nginx nginx -s reload
             "
