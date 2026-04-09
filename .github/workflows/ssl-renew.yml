@@ -50,7 +50,11 @@ jobs:
           "
 
           echo ""
-          echo "=== Running certbot ==="
+          echo "=== Stopping nginx to free port 80 ==="
+          sshpass -e ssh -p $PORT $VPS "docker stop shared-nginx 2>/dev/null || true"
+
+          echo ""
+          echo "=== Running certbot standalone ==="
           sshpass -e ssh -p $PORT $VPS "
             docker run --rm \
               -v /etc/letsencrypt:/etc/letsencrypt \
@@ -73,5 +77,9 @@ jobs:
           "
 
           echo ""
-          echo "=== Reload nginx ==="
-          sshpass -e ssh -p $PORT $VPS "docker exec shared-nginx nginx -s reload 2>&1"
+          echo "=== Restarting nginx ==="
+          sshpass -e ssh -p $PORT $VPS "
+            docker start shared-nginx
+            sleep 2
+            docker exec shared-nginx nginx -s reload 2>&1
+          "
