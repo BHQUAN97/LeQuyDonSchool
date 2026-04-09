@@ -7,7 +7,11 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
-const UPLOADS_BASE = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:4000';
+// Khi NEXT_PUBLIC_API_URL la relative ('/api') → UPLOADS_BASE = '' → dung Next.js rewrite proxy /uploads
+// Khi undefined → fallback localhost cho local dev khong co .env
+const UPLOADS_BASE = process.env.NEXT_PUBLIC_API_URL
+  ? process.env.NEXT_PUBLIC_API_URL.replace(/\/api\/?$/, '')
+  : 'http://localhost:4000';
 
 // ==================== Types ====================
 
