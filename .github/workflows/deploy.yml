@@ -405,26 +405,6 @@ jobs:
             docker exec shared-nginx sh -c 'openssl x509 -in /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem -noout -subject -dates' 2>&1 || true
           "
 
-      # ── INIT: Seed admin (chi lan dau) ───────────
-      - name: "[INIT] Seed admin user"
-        if: needs.build.outputs.mode == 'init'
-        run: |
-          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
-          PORT="${{ env.VPS_PORT }}"
-
-          echo "Waiting for backend to be ready..."
-          for i in $(seq 1 30); do
-            sshpass -e ssh -p $PORT $VPS "curl -sf http://localhost:4200/api/health" > /dev/null 2>&1 && break
-            [ $i -eq 30 ] && { echo "Backend not ready — skip seed"; exit 0; }
-            sleep 2
-          done
-
-          echo "Seeding admin user (first-time only)..."
-          sshpass -e ssh -p $PORT $VPS "
-            cd ${APP_DIR}
-            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/admin-seed.js 2>&1 || echo 'Seed skipped (may already exist)'
-          "
-
       # ── UPDATE: Upload changed files ─────────────
       - name: "[UPDATE] Upload frontend"
         if: needs.build.outputs.mode == 'update' && needs.build.outputs.fe == 'true'
@@ -567,7 +547,7 @@ jobs:
           EOSQL"
 
       - name: Run DB changelog
-        if: needs.build.outputs.db == 'true'
+        id: changelog
         run: |
           set +e
           VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
@@ -577,12 +557,20 @@ jobs:
           LQD_DB_PWD=$(grep '^LQD_DB_PASSWORD=' config/env | cut -d= -f2-)
           MYSQL_CMD="docker exec -i shared-mysql mysql -u lqd -p${LQD_DB_PWD} lqd"
 
-          # _init
+          # _init — luon chay, dung CREATE IF NOT EXISTS nen idempotent
+          echo "=== Running _init scripts ==="
           for f in $(find db/changelog/_init -name '*.sql' -type f 2>/dev/null | sort); do
-            sshpass -e ssh -p $PORT $VPS "$MYSQL_CMD" < "$f" 2>&1 || true
+            echo -n "  $(basename $f) ... "
+            OUTPUT=$(sshpass -e ssh -p $PORT $VPS "$MYSQL_CMD" < "$f" 2>&1)
+            if [ $? -eq 0 ]; then
+              echo "OK"
+            else
+              echo "FAILED"; echo "$OUTPUT" | tail -3 | sed 's/^/    /'
+            fi
           done
 
-          # pending migrations
+          # Versioned migrations — chi chay file chua apply
+          echo "=== Running versioned migrations ==="
           APPLIED=$(sshpass -e ssh -p $PORT $VPS "$MYSQL_CMD -N -e \"SELECT CONCAT(version, '/', filename) FROM schema_changelog\"" 2>/dev/null || echo "")
           PASS=0; SKIP=0; FAIL=0
 
@@ -605,12 +593,43 @@ jobs:
           done
           echo "Changelog: $PASS applied, $SKIP skipped, $FAIL failed"
 
+          # Output co thay doi DB khong — de quyet dinh restart + seed
+          if [ $PASS -gt 0 ] || [ "${{ needs.build.outputs.mode }}" = "init" ]; then
+            echo "db_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "db_changed=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Restart after DB changes
-        if: needs.build.outputs.db == 'true'
+        if: steps.changelog.outputs.db_changed == 'true'
         run: |
           VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
           PORT="${{ env.VPS_PORT }}"
           sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml restart backend frontend" 2>&1 || true
+          echo "Waiting for backend..."
+          for i in $(seq 1 30); do
+            sshpass -e ssh -p $PORT $VPS "curl -sf http://localhost:4200/api/health" > /dev/null 2>&1 && { echo "Backend ready!"; break; }
+            [ $i -eq 30 ] && { echo "::warning::Backend not ready after 60s"; }
+            sleep 2
+          done
+
+      - name: Seed data
+        if: steps.changelog.outputs.db_changed == 'true'
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+
+          echo "Seeding admin user..."
+          sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/admin-seed.js 2>&1
+          " || echo "::warning::Admin seed failed"
+
+          echo "Seeding content..."
+          sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/content-seed.js 2>&1
+          " || echo "::warning::Content seed failed"
 
   # ─── STAGE 4: VERIFY ────────────────────────────
   verify:
