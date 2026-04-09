@@ -283,6 +283,16 @@ jobs:
             fi
           "
 
+      - name: "[INIT] Sync .env before build"
+        if: needs.build.outputs.mode == 'init'
+        run: |
+          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
+          PORT="${{ env.VPS_PORT }}"
+          sshpass -e ssh -p $PORT $VPS "mkdir -p ${APP_DIR}/config"
+          sshpass -e scp -P $PORT config/env $VPS:${APP_DIR}/config/env
+          sshpass -e ssh -p $PORT $VPS "cp ${APP_DIR}/config/env ${APP_DIR}/.env && chmod 600 ${APP_DIR}/.env"
+          echo ".env synced to VPS"
+
       - name: "[INIT] Build & Start services"
         if: needs.build.outputs.mode == 'init'
         run: |
@@ -303,7 +313,7 @@ jobs:
 
           echo ""
           echo "=== Building backend ==="
-          sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml build --no-cache backend 2>&1"
+          sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose --env-file .env -f docker-compose.prod.yml build backend 2>&1"
           if [ $? -ne 0 ]; then
             echo "::error::Backend build failed"
             sshpass -e ssh -p $PORT $VPS "free -h; dmesg | grep -i 'oom\|killed' | tail -5" 2>&1 || true
@@ -312,7 +322,7 @@ jobs:
 
           echo ""
           echo "=== Building frontend ==="
-          sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml build --no-cache frontend 2>&1"
+          sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose --env-file .env -f docker-compose.prod.yml build frontend 2>&1"
           if [ $? -ne 0 ]; then
             echo "::error::Frontend build failed"
             sshpass -e ssh -p $PORT $VPS "free -h; dmesg | grep -i 'oom\|killed' | tail -5" 2>&1 || true
@@ -321,7 +331,7 @@ jobs:
 
           echo ""
           echo "=== Starting services ==="
-          sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml up -d 2>&1"
+          sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose --env-file .env -f docker-compose.prod.yml up -d 2>&1"
           if [ $? -ne 0 ]; then
             echo "::error::Docker start failed"
             sshpass -e ssh -p $PORT $VPS "
