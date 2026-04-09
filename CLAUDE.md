@@ -1,4 +1,4 @@
-# LeQuyDon — Truong Tieu hoc Le Quy Don
+# LeQuyDon — Truong Tieu hoc Le Quy Don.
 
 ## Quick Start
 ```bash
