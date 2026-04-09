@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
 import type { User, PaginatedResponse } from '@/types';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface UserForm {
   fullName: string;
@@ -150,14 +151,20 @@ export default function UsersPage() {
     }
   };
 
-  /** Xoa user */
-  const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Xóa tài khoản "${name}"?`)) return;
+  // State cho confirm dialog xoa user
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  /** Xoa user sau khi xac nhan */
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
     try {
-      await api(`/users/${id}`, { method: 'DELETE' });
+      await api(`/users/${deleteTarget.id}`, { method: 'DELETE' });
+      setDeleteTarget(null);
       fetchUsers();
     } catch (err: any) {
-      alert(err.message || 'Không thể xóa tài khoản');
+      setDeleteTarget(null);
+      setErrorMsg(err.message || 'Không thể xóa tài khoản');
     }
   };
 
@@ -171,7 +178,7 @@ export default function UsersPage() {
       });
       fetchUsers();
     } catch (err: any) {
-      alert(err.message || 'Không thể cập nhật trạng thái');
+      setErrorMsg(err.message || 'Không thể cập nhật trạng thái');
     }
   };
 
@@ -323,8 +330,8 @@ export default function UsersPage() {
           <div className="p-8 text-center text-slate-500">Chưa có tài khoản nào</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
+            <table className="w-full min-w-[800px] text-sm">
+              <thead className="sticky top-0 z-10">
                 <tr className="border-b border-slate-200 bg-slate-50">
                   <th className="px-4 py-3 text-left font-medium text-slate-600">Họ tên</th>
                   <th className="px-4 py-3 text-left font-medium text-slate-600">Email</th>
@@ -382,7 +389,7 @@ export default function UsersPage() {
                           Sửa
                         </button>
                         <button
-                          onClick={() => handleDelete(user.id, user.full_name)}
+                          onClick={() => setDeleteTarget({ id: user.id, name: user.full_name })}
                           className="text-sm text-red-600 hover:text-red-800 font-medium"
                         >
                           Xóa
@@ -421,6 +428,30 @@ export default function UsersPage() {
           </div>
         )}
       </div>
+
+      {/* Confirm dialog xoa tai khoan */}
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title="Xóa tài khoản"
+        message={`Bạn có chắc muốn xóa tài khoản "${deleteTarget?.name}"? Thao tác này không thể hoàn tác.`}
+        confirmLabel="Xóa"
+        cancelLabel="Hủy"
+        variant="danger"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteTarget(null)}
+      />
+
+      {/* Error dialog */}
+      <ConfirmDialog
+        open={!!errorMsg}
+        title="Lỗi"
+        message={errorMsg}
+        confirmLabel="Đóng"
+        cancelLabel="Đóng"
+        variant="warning"
+        onConfirm={() => setErrorMsg('')}
+        onCancel={() => setErrorMsg('')}
+      />
     </div>
   );
 }

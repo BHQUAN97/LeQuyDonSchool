@@ -5,6 +5,7 @@ import { api } from '@/lib/api';
 import type { Category, PaginatedResponse, ApiResponse } from '@/types';
 import { Plus, Pencil, Trash2, ChevronLeft, ChevronRight, X, Search } from 'lucide-react';
 import { generateSlug } from '@/lib/slug';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface CategoryForm {
   name: string;
@@ -41,6 +42,7 @@ export default function CategoriesPage() {
   // Delete confirm
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [catError, setCatError] = useState('');
 
   // Lay danh sach danh muc phan trang
   const fetchCategories = useCallback(async (page = 1, searchQuery = '') => {
@@ -192,7 +194,7 @@ export default function CategoriesPage() {
       fetchCategories(pagination.page, search);
       fetchAllCategories();
     } catch (err: any) {
-      alert(err.message || 'Không thể xóa danh mục');
+      setCatError(err.message || 'Không thể xóa danh mục');
     } finally {
       setDeleting(false);
     }
@@ -342,8 +344,8 @@ export default function CategoriesPage() {
       {/* Table */}
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
+          <table className="w-full min-w-[700px]">
+            <thead className="sticky top-0 z-10">
               <tr className="border-b border-slate-200 bg-slate-50">
                 <th className="text-left px-4 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">
                   Tên
@@ -494,6 +496,18 @@ export default function CategoriesPage() {
           </div>
         </div>
       )}
+
+      {/* Error dialog */}
+      <ConfirmDialog
+        open={!!catError}
+        title="Lỗi"
+        message={catError}
+        confirmLabel="Đóng"
+        cancelLabel="Đóng"
+        variant="warning"
+        onConfirm={() => setCatError('')}
+        onCancel={() => setCatError('')}
+      />
     </div>
   );
 }

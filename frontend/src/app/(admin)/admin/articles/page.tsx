@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/api';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface Article {
   id: string;
@@ -76,14 +77,20 @@ export default function ArticlesPage() {
     fetchArticles();
   }, [fetchArticles]);
 
-  /** Xoa bai viet */
-  const handleDelete = async (id: string, title: string) => {
-    if (!confirm(`Xóa bài viết "${title}"?`)) return;
+  // State cho confirm dialog xoa bai viet
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
+  const [deleteError, setDeleteError] = useState('');
+
+  /** Xoa bai viet sau khi xac nhan */
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
     try {
-      await api(`/articles/${id}`, { method: 'DELETE' });
+      await api(`/articles/${deleteTarget.id}`, { method: 'DELETE' });
+      setDeleteTarget(null);
       fetchArticles();
     } catch (err: any) {
-      alert(err.message || 'Không thể xóa bài viết');
+      setDeleteTarget(null);
+      setDeleteError(err.message || 'Không thể xóa bài viết');
     }
   };
 
@@ -147,8 +154,8 @@ export default function ArticlesPage() {
           <div className="p-8 text-center text-slate-500">Không có bài viết nào</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
+            <table className="w-full min-w-[700px] text-sm">
+              <thead className="sticky top-0 z-10">
                 <tr className="border-b border-slate-200 bg-slate-50">
                   <th className="px-4 py-3 text-left font-medium text-slate-600 w-12">Ảnh</th>
                   <th className="px-4 py-3 text-left font-medium text-slate-600">Tiêu đề</th>
@@ -211,7 +218,7 @@ export default function ArticlesPage() {
                           Sửa
                         </Link>
                         <button
-                          onClick={() => handleDelete(article.id, article.title)}
+                          onClick={() => setDeleteTarget({ id: article.id, title: article.title })}
                           className="text-sm text-red-600 hover:text-red-800 font-medium"
                         >
                           Xóa
@@ -269,6 +276,29 @@ export default function ArticlesPage() {
           </div>
         )}
       </div>
+      {/* Confirm dialog xoa bai viet */}
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title="Xóa bài viết"
+        message={`Bạn có chắc muốn xóa bài viết "${deleteTarget?.title}"? Thao tác này không thể hoàn tác.`}
+        confirmLabel="Xóa"
+        cancelLabel="Hủy"
+        variant="danger"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteTarget(null)}
+      />
+
+      {/* Error dialog */}
+      <ConfirmDialog
+        open={!!deleteError}
+        title="Lỗi"
+        message={deleteError}
+        confirmLabel="Đóng"
+        cancelLabel="Đóng"
+        variant="warning"
+        onConfirm={() => setDeleteError('')}
+        onCancel={() => setDeleteError('')}
+      />
     </div>
   );
 }

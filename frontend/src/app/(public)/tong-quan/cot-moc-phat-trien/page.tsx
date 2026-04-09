@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
-import PageBanner from '@/components/public/PageBanner';
+import Link from 'next/link';
+import Breadcrumb from '@/components/public/Breadcrumb';
 import { buildPageMetadata } from '@/lib/seo-helpers';
 
 export const metadata: Metadata = buildPageMetadata({
@@ -8,6 +9,16 @@ export const metadata: Metadata = buildPageMetadata({
     'Hành trình phát triển của Trường Tiểu học Lê Quý Đôn qua các cột mốc quan trọng từ ngày thành lập đến nay.',
   path: '/tong-quan/cot-moc-phat-trien',
 });
+
+const tongQuanPages = [
+  { title: 'Tầm nhìn & Sứ mệnh', href: '/tong-quan/tam-nhin-su-menh' },
+  { title: 'Cột mốc phát triển', href: '/tong-quan/cot-moc-phat-trien' },
+  { title: 'Gia đình Doners', href: '/tong-quan/gia-dinh-doners' },
+  { title: 'Ngôi nhà Lê Quý Đôn', href: '/tong-quan/ngoi-nha-le-quy-don' },
+  { title: 'Sắc màu Lê Quý Đôn', href: '/tong-quan/sac-mau-le-quy-don' },
+];
+
+const currentPage = '/tong-quan/cot-moc-phat-trien';
 
 const milestones = [
   { year: '2005', title: 'Thành lập trường', desc: 'Trường Tiểu học Lê Quý Đôn chính thức được thành lập tại quận Nam Từ Liêm, Hà Nội.' },
@@ -23,47 +34,87 @@ const milestones = [
 export default function CotMocPhatTrienPage() {
   return (
     <div>
-      <PageBanner
-        title="Cột mốc phát triển"
-        description="Hành trình xây dựng và phát triển của Hệ thống Giáo dục Lê Quý Đôn"
-        breadcrumbItems={[
-          { label: 'Tổng quan', href: '/tong-quan/tam-nhin-su-menh' },
-          { label: 'Cột mốc phát triển' },
-        ]}
-      />
+      {/* Breadcrumb */}
+      <div className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4">
+          <Breadcrumb items={[
+            { label: 'Tổng quan', href: '/tong-quan/tam-nhin-su-menh' },
+            { label: 'Cột mốc phát triển' },
+          ]} />
+        </div>
+      </div>
 
-      {/* Timeline */}
-      <section className="max-w-7xl mx-auto px-4 py-12 lg:py-16">
-        <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-green-200 -translate-x-1/2" />
+      {/* Section title */}
+      <section className="max-w-7xl mx-auto px-4 pt-8">
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">TỔNG QUAN</span>
+            <div className="flex gap-0.5">
+              <span className="w-6 h-1 bg-green-700 rounded-full" />
+              <span className="w-6 h-1 bg-red-600 rounded-full" />
+              <span className="w-6 h-1 bg-green-700 rounded-full" />
+            </div>
+          </div>
+          <h1 className="text-2xl lg:text-3xl font-bold text-slate-900">Cột mốc phát triển</h1>
+        </div>
 
-          <div className="space-y-8 md:space-y-12">
-            {milestones.map((m, i) => (
-              <div
-                key={m.year}
-                className={`relative flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 ${
-                  i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                }`}
-              >
-                {/* Content card */}
-                <div className={`ml-10 md:ml-0 md:w-[calc(50%-2rem)] ${i % 2 === 0 ? 'md:text-right' : ''}`}>
-                  <div className="bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md transition-shadow">
-                    <span className="text-xs font-bold text-green-700 bg-green-50 px-2 py-1 rounded">
-                      {m.year}
-                    </span>
-                    <h3 className="text-base font-bold text-slate-900 mt-3 mb-2">{m.title}</h3>
-                    <p className="text-sm text-slate-600 leading-relaxed">{m.desc}</p>
+        {/* Main content + Sidebar */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-12">
+          {/* Content */}
+          <div className="lg:col-span-2">
+            <p className="text-gray-700 leading-relaxed mb-8">
+              Hành trình xây dựng và phát triển của Hệ thống Giáo dục Lê Quý Đôn qua các cột mốc quan trọng từ ngày thành lập đến nay.
+            </p>
+
+            {/* Image placeholder */}
+            <div className="bg-green-50 rounded-xl h-48 lg:h-64 flex items-center justify-center text-green-600 text-sm mb-10">
+              Hình ảnh lịch sử trường qua các thời kỳ
+            </div>
+
+            {/* Timeline */}
+            <div className="relative">
+              {/* Vertical line */}
+              <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-green-200" />
+
+              <div className="space-y-8">
+                {milestones.map((m) => (
+                  <div key={m.year} className="relative flex items-start gap-6 pl-10">
+                    {/* Dot */}
+                    <div className="absolute left-2.5 top-1 w-3.5 h-3.5 bg-green-600 rounded-full border-4 border-green-100 z-10" />
+
+                    <div className="bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md transition-shadow flex-1">
+                      <span className="text-xs font-bold text-green-700 bg-green-50 px-2 py-1 rounded">
+                        {m.year}
+                      </span>
+                      <h3 className="text-base font-bold text-slate-900 mt-3 mb-2">{m.title}</h3>
+                      <p className="text-sm text-gray-700 leading-relaxed">{m.desc}</p>
+                    </div>
                   </div>
-                </div>
-
-                {/* Dot */}
-                <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-4 h-4 bg-green-600 rounded-full border-4 border-green-100 z-10" />
-
-                {/* Spacer for alignment */}
-                <div className="hidden md:block md:w-[calc(50%-2rem)]" />
+                ))}
               </div>
-            ))}
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-xl border border-slate-200 p-5 sticky top-24">
+              <h3 className="font-bold text-slate-900 mb-4">Tổng quan</h3>
+              <nav className="space-y-1">
+                {tongQuanPages.map((page) => (
+                  <Link
+                    key={page.href}
+                    href={page.href}
+                    className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
+                      page.href === currentPage
+                        ? 'bg-green-50 text-green-700 font-medium'
+                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                    }`}
+                  >
+                    {page.title}
+                  </Link>
+                ))}
+              </nav>
+            </div>
           </div>
         </div>
       </section>

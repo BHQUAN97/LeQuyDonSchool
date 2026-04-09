@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
-import PageBanner from '@/components/public/PageBanner';
-import { UtensilsCrossed, Apple, Leaf, Clock } from 'lucide-react';
+import Link from 'next/link';
+import Breadcrumb from '@/components/public/Breadcrumb';
+import ArticleCard from '@/components/public/ArticleCard';
+import ArticleSidebar from '@/components/public/ArticleSidebar';
 import { buildPageMetadata } from '@/lib/seo-helpers';
 
 export const metadata: Metadata = buildPageMetadata({
@@ -10,115 +12,112 @@ export const metadata: Metadata = buildPageMetadata({
   path: '/dich-vu-hoc-duong/thuc-don',
 });
 
-const weekDays = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6'];
+const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
 
-const menuData = [
+/** Fetch bai viet thuc don tu API */
+async function getArticles() {
+  try {
+    const res = await fetch(
+      `${INTERNAL_API}/articles/public?category=thuc-don&limit=12&sort=published_at&order=DESC`,
+      { next: { revalidate: 300 } },
+    );
+    if (!res.ok) return [];
+    const json = await res.json();
+    return json.data || [];
+  } catch {
+    return [];
+  }
+}
+
+/** Placeholder khi chua co bai viet tu API */
+const placeholderArticles = [
   {
-    day: 'Thứ 2',
+    title: 'Thực đơn tuần 07/04 - 11/04/2026',
+    description: 'Thực đơn dinh dưỡng được chuyên gia thiết kế đảm bảo đủ 4 nhóm chất cho học sinh.',
+    category: 'Thực đơn',
     date: '07/04/2026',
-    morning: 'Sữa tươi, Bánh mì bơ',
-    lunch: 'Cơm trắng, Thịt gà rang gừng, Canh rau cải, Rau muống xào tỏi',
-    snack: 'Chè đỗ xanh, Trái cây tươi',
+    slug: 'thuc-don-tuan-07-04-2026',
   },
   {
-    day: 'Thứ 3',
-    date: '08/04/2026',
-    morning: 'Phở bò, Sữa chua',
-    lunch: 'Cơm trắng, Cá hồi sốt cam, Canh bí đỏ, Đậu phụ nhồi thịt',
-    snack: 'Bánh flan, Nước ép cam',
+    title: 'Thực đơn tuần 31/03 - 04/04/2026',
+    description: 'Bữa ăn cân bằng với nguồn thực phẩm sạch, rau từ trang trại liên kết.',
+    category: 'Thực đơn',
+    date: '31/03/2026',
+    slug: 'thuc-don-tuan-31-03-2026',
   },
   {
-    day: 'Thứ 4',
-    date: '09/04/2026',
-    morning: 'Bún riêu cua, Sữa tươi',
-    lunch: 'Cơm trắng, Sườn xào chua ngọt, Canh chua cá, Rau xào thập cẩm',
-    snack: 'Kem trái cây, Bánh quy',
+    title: 'Thực đơn tuần 24/03 - 28/03/2026',
+    description: 'Menu đa dạng với 3 bữa/ngày: sáng, trưa và xế đảm bảo năng lượng cho cả ngày học.',
+    category: 'Thực đơn',
+    date: '24/03/2026',
+    slug: 'thuc-don-tuan-24-03-2026',
   },
   {
-    day: 'Thứ 5',
-    date: '10/04/2026',
-    morning: 'Cháo gà, Bánh bao',
-    lunch: 'Cơm trắng, Bò xào bông cải, Canh mồng tơi, Trứng chiên thịt',
-    snack: 'Chè bưởi, Trái cây tươi',
-  },
-  {
-    day: 'Thứ 6',
-    date: '11/04/2026',
-    morning: 'Mì xào hải sản, Sữa chua',
-    lunch: 'Cơm trắng, Tôm rang muối, Canh rau ngót, Gà kho gừng',
-    snack: 'Bánh cuốn, Nước ép dưa hấu',
+    title: 'Thực đơn tuần 17/03 - 21/03/2026',
+    description: 'Bếp ăn một chiều đạt chuẩn VSATTP, nhân viên có chứng chỉ chuyên môn.',
+    category: 'Thực đơn',
+    date: '17/03/2026',
+    slug: 'thuc-don-tuan-17-03-2026',
   },
 ];
 
-const nutrition = [
-  { icon: Apple, title: 'Dinh dưỡng cân bằng', desc: 'Thực đơn được chuyên gia dinh dưỡng thiết kế đảm bảo đủ 4 nhóm chất.' },
-  { icon: Leaf, title: 'Nguyên liệu sạch', desc: 'Nguồn thực phẩm được kiểm định, rau sạch từ trang trại liên kết.' },
-  { icon: Clock, title: '3 bữa/ngày', desc: 'Bữa sáng, bữa trưa và bữa xế đảm bảo năng lượng cho cả ngày học.' },
-  { icon: UtensilsCrossed, title: 'Bếp ăn đạt chuẩn', desc: 'Bếp ăn một chiều đạt chuẩn VSATTP, nhân viên có chứng chỉ.' },
-];
+export default async function ThucDonPage() {
+  const apiArticles = await getArticles();
+  const articles = apiArticles.length > 0
+    ? apiArticles.map((a: any) => ({
+        title: a.title,
+        description: a.excerpt || a.description || '',
+        category: a.category?.name || 'Thực đơn',
+        date: new Date(a.published_at || a.created_at).toLocaleDateString('vi-VN'),
+        slug: a.slug,
+      }))
+    : placeholderArticles;
 
-export default function ThucDonPage() {
   return (
     <div>
-      <PageBanner
-        title="Thực đơn hàng tuần"
-        description="Thực đơn dinh dưỡng được thiết kế khoa học cho học sinh"
-        breadcrumbItems={[
-          { label: 'Dịch vụ học đường', href: '/dich-vu-hoc-duong/thuc-don' },
-          { label: 'Thực đơn' },
-        ]}
-        bgClass="bg-gradient-to-r from-amber-600 to-orange-500"
-      />
-
-      {/* Week selector — chi co 1 tuan, an nut dieu huong */}
-      <section className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-center">
-          <p className="text-sm font-semibold text-slate-900">Tuần 07/04 - 11/04/2026</p>
+      {/* Breadcrumb */}
+      <div className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4">
+          <Breadcrumb items={[
+            { label: 'Tin tức', href: '/tin-tuc/su-kien' },
+            { label: 'Thực đơn' },
+          ]} />
         </div>
-      </section>
+      </div>
 
-      {/* Menu cards */}
-      <section className="max-w-7xl mx-auto px-4 py-8 lg:py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {menuData.map((menu) => (
-            <div key={menu.day} className="bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-              <div className="bg-green-700 text-white px-4 py-3 flex items-center justify-between">
-                <span className="font-semibold text-sm">{menu.day}</span>
-                <span className="text-xs opacity-80">{menu.date}</span>
-              </div>
-              <div className="p-4 space-y-3">
-                <div>
-                  <p className="text-xs font-medium text-amber-600 mb-1">🌅 Bữa sáng</p>
-                  <p className="text-sm text-slate-700">{menu.morning}</p>
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-green-700 mb-1">☀️ Bữa trưa</p>
-                  <p className="text-sm text-slate-700">{menu.lunch}</p>
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-purple-600 mb-1">🍎 Bữa xế</p>
-                  <p className="text-sm text-slate-700">{menu.snack}</p>
-                </div>
-              </div>
+      {/* Section title */}
+      <section className="max-w-7xl mx-auto px-4 pt-8">
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">TIN TỨC SỰ KIỆN</span>
+            <div className="flex gap-0.5">
+              <span className="w-6 h-1 bg-green-700 rounded-full" />
+              <span className="w-6 h-1 bg-red-600 rounded-full" />
+              <span className="w-6 h-1 bg-green-700 rounded-full" />
             </div>
-          ))}
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900">Thực đơn</h2>
         </div>
-      </section>
 
-      {/* Nutrition info */}
-      <section className="bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 py-12 lg:py-16">
-          <h2 className="text-xl lg:text-2xl font-bold text-slate-900 mb-8">Tiêu chuẩn dinh dưỡng</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {nutrition.map((n) => (
-              <div key={n.title} className="bg-white rounded-xl border border-slate-200 p-5 text-center">
-                <div className="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <n.icon className="w-6 h-6 text-amber-600" />
-                </div>
-                <h3 className="font-semibold text-slate-900 text-sm mb-2">{n.title}</h3>
-                <p className="text-xs text-slate-600">{n.desc}</p>
-              </div>
+        {/* Main content + Sidebar */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Articles list */}
+          <div className="lg:col-span-2 space-y-5">
+            {articles.map((a: any) => (
+              <ArticleCard key={a.slug} {...a} variant="list" />
             ))}
+
+            {/* Pagination */}
+            <div className="flex justify-center gap-2 pt-6 pb-8">
+              <button className="w-9 h-9 rounded-lg bg-green-700 text-white text-sm font-medium">1</button>
+              <button className="w-9 h-9 rounded-lg bg-slate-100 text-slate-600 text-sm hover:bg-slate-200">2</button>
+              <button className="w-9 h-9 rounded-lg bg-slate-100 text-slate-600 text-sm hover:bg-slate-200">3</button>
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            <ArticleSidebar />
           </div>
         </div>
       </section>

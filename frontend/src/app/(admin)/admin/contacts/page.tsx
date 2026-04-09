@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface Contact {
   id: string;
@@ -58,6 +59,10 @@ export default function ContactsAdminPage() {
   // Chi tiet lien he
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
 
+  // Confirm dialog va error
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const [contactError, setContactError] = useState('');
+
   const fetchContacts = useCallback(async () => {
     setLoading(true);
     try {
@@ -105,19 +110,21 @@ export default function ContactsAdminPage() {
       }
       fetchContacts();
     } catch (err: any) {
-      alert(err.message || 'Loi cap nhat trang thai');
+      setContactError(err.message || 'Lỗi cập nhật trạng thái');
     }
   };
 
-  /** Xoa lien he */
-  const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Xóa liên hệ từ "${name}"?`)) return;
+  /** Xoa lien he sau khi xac nhan */
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
     try {
-      await api(`/contacts/${id}`, { method: 'DELETE' });
-      if (selectedContact?.id === id) setSelectedContact(null);
+      await api(`/contacts/${deleteTarget.id}`, { method: 'DELETE' });
+      if (selectedContact?.id === deleteTarget.id) setSelectedContact(null);
+      setDeleteTarget(null);
       fetchContacts();
     } catch (err: any) {
-      alert(err.message || 'Lỗi khi xóa');
+      setDeleteTarget(null);
+      setContactError(err.message || 'Lỗi khi xóa');
     }
   };
 
@@ -229,8 +236,8 @@ export default function ContactsAdminPage() {
       {/* Bang danh sach */}
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-slate-200">
+          <table className="w-full min-w-[800px] text-sm">
+            <thead className="bg-slate-50 border-b border-slate-200 sticky top-0 z-10">
               <tr>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Họ tên</th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Email</th>
@@ -279,7 +286,7 @@ export default function ContactsAdminPage() {
                           Xem
                         </button>
                         <button
-                          onClick={() => handleDelete(c.id, c.full_name)}
+                          onClick={() => setDeleteTarget({ id: c.id, name: c.full_name })}
                           className="text-red-600 hover:text-red-800 text-sm font-medium"
                         >
                           Xóa
@@ -318,6 +325,30 @@ export default function ContactsAdminPage() {
           </div>
         )}
       </div>
+
+      {/* Confirm dialog xoa lien he */}
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title="Xóa liên hệ"
+        message={`Bạn có chắc muốn xóa liên hệ từ "${deleteTarget?.name}"? Thao tác này không thể hoàn tác.`}
+        confirmLabel="Xóa"
+        cancelLabel="Hủy"
+        variant="danger"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteTarget(null)}
+      />
+
+      {/* Error dialog */}
+      <ConfirmDialog
+        open={!!contactError}
+        title="Lỗi"
+        message={contactError}
+        confirmLabel="Đóng"
+        cancelLabel="Đóng"
+        variant="warning"
+        onConfirm={() => setContactError('')}
+        onCancel={() => setContactError('')}
+      />
     </div>
   );
 }

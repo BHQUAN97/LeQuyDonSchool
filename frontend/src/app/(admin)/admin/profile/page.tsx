@@ -65,11 +65,23 @@ function ProfileInfo({ user }: { user: any }) {
   );
 }
 
+/** Kiem tra yeu cau mat khau real-time */
+function usePasswordChecks(password: string) {
+  return {
+    minLength: password.length >= 8,
+    hasUpper: /[A-Z]/.test(password),
+    hasLower: /[a-z]/.test(password),
+    hasNumber: /\d/.test(password),
+  };
+}
+
 /** Form doi mat khau */
 function ChangePassword() {
   const [form, setForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const checks = usePasswordChecks(form.newPassword);
+  const allChecksPassed = checks.minLength && checks.hasUpper && checks.hasLower && checks.hasNumber;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -129,7 +141,26 @@ function ChangePassword() {
             required
             minLength={8}
           />
-          <p className="text-xs text-slate-400 mt-1">Tối thiểu 8 ký tự, có chữ hoa, chữ thường và số</p>
+          {/* Realtime password checklist */}
+          {form.newPassword.length > 0 && (
+            <ul className="mt-2 space-y-1 text-xs">
+              <li className={checks.minLength ? 'text-green-600' : 'text-slate-400'}>
+                {checks.minLength ? '✓' : '○'} Tối thiểu 8 ký tự
+              </li>
+              <li className={checks.hasUpper ? 'text-green-600' : 'text-slate-400'}>
+                {checks.hasUpper ? '✓' : '○'} Có chữ hoa (A-Z)
+              </li>
+              <li className={checks.hasLower ? 'text-green-600' : 'text-slate-400'}>
+                {checks.hasLower ? '✓' : '○'} Có chữ thường (a-z)
+              </li>
+              <li className={checks.hasNumber ? 'text-green-600' : 'text-slate-400'}>
+                {checks.hasNumber ? '✓' : '○'} Có số (0-9)
+              </li>
+            </ul>
+          )}
+          {form.newPassword.length === 0 && (
+            <p className="text-xs text-slate-400 mt-1">Tối thiểu 8 ký tự, có chữ hoa, chữ thường và số</p>
+          )}
         </div>
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">Xác nhận mật khẩu mới</label>
@@ -139,6 +170,9 @@ function ChangePassword() {
             onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
             required
           />
+          {form.confirmPassword.length > 0 && form.newPassword !== form.confirmPassword && (
+            <p className="text-xs text-red-500 mt-1">Mật khẩu xác nhận không khớp</p>
+          )}
         </div>
 
         {message && (

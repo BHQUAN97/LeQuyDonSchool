@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
-import PageBanner from '@/components/public/PageBanner';
+import Link from 'next/link';
+import Breadcrumb from '@/components/public/Breadcrumb';
 import ArticleCard from '@/components/public/ArticleCard';
+import ArticleSidebar from '@/components/public/ArticleSidebar';
 import { buildPageMetadata } from '@/lib/seo-helpers';
 
 export const metadata: Metadata = buildPageMetadata({
@@ -37,33 +39,78 @@ const placeholderArticles = [
   { title: 'Dự án STEM "Thành phố thông minh" của lớp 4A', description: 'Lớp 4A hoàn thành dự án STEM mô hình thành phố thông minh với hệ thống đèn tự động.', category: 'Học tập', date: '20/02/2026', slug: 'du-an-stem-thanh-pho' },
 ];
 
+/** Category tabs — 3 chuyen muc chinh */
+const categoryTabs = [
+  { label: 'Sự kiện', href: '/tin-tuc/su-kien', active: false },
+  { label: 'Ngoại khóa', href: '/tin-tuc/ngoai-khoa', active: false },
+  { label: 'Học tập', href: '/tin-tuc/hoc-tap', active: true },
+];
+
 export default async function HocTapPage() {
   const apiArticles = await getArticles();
   const articles = apiArticles.length > 0 ? apiArticles : placeholderArticles;
   return (
     <div>
-      <PageBanner
-        title="Hoạt động học tập"
-        description="Thành tích và hoạt động học tập nổi bật của học sinh"
-        breadcrumbItems={[
-          { label: 'Tin tức', href: '/tin-tuc/su-kien' },
-          { label: 'Học tập' },
-        ]}
-        bgClass="bg-gradient-to-r from-emerald-700 to-green-600"
-      />
+      {/* Breadcrumb */}
+      <div className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4">
+          <Breadcrumb items={[
+            { label: 'Tin tức', href: '/tin-tuc/su-kien' },
+            { label: 'Học tập' },
+          ]} />
+        </div>
+      </div>
 
-      {/* Articles grid */}
-      <section className="max-w-7xl mx-auto px-4 py-8 lg:py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {articles.map((a: any) => (
-            <ArticleCard key={a.slug} {...a} />
-          ))}
+      {/* Section title + category tabs */}
+      <section className="max-w-7xl mx-auto px-4 pt-8">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">TIN TỨC SỰ KIỆN</span>
+              <div className="flex gap-0.5">
+                <span className="w-6 h-1 bg-green-700 rounded-full" />
+                <span className="w-6 h-1 bg-red-600 rounded-full" />
+                <span className="w-6 h-1 bg-green-700 rounded-full" />
+              </div>
+            </div>
+            <h2 className="text-2xl font-bold text-slate-900">Hoạt động học tập</h2>
+          </div>
+          <div className="flex gap-2 overflow-x-auto">
+            {categoryTabs.map((tab) => (
+              <Link
+                key={tab.href}
+                href={tab.href}
+                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                  tab.active
+                    ? 'bg-green-700 text-white'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                }`}
+              >
+                {tab.label}
+              </Link>
+            ))}
+          </div>
         </div>
 
-        {/* Pagination */}
-        <div className="flex justify-center gap-2 mt-10">
-          <button className="w-9 h-9 rounded-lg bg-green-700 text-white text-sm font-medium">1</button>
-          <button className="w-9 h-9 rounded-lg bg-slate-100 text-slate-600 text-sm hover:bg-slate-200">2</button>
+        {/* Main content + Sidebar */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Articles list */}
+          <div className="lg:col-span-2 space-y-5">
+            {articles.map((a: any) => (
+              <ArticleCard key={a.slug} {...a} variant="list" />
+            ))}
+
+            {/* Pagination */}
+            <div className="flex justify-center gap-2 pt-6 pb-8">
+              <button className="w-10 h-10 rounded-lg bg-green-700 text-white text-sm font-medium">1</button>
+              <button className="w-10 h-10 rounded-lg bg-slate-100 text-slate-600 text-sm hover:bg-slate-200">2</button>
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            <ArticleSidebar />
+          </div>
         </div>
       </section>
     </div>

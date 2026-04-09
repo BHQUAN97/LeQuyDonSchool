@@ -131,14 +131,13 @@ export default function Header() {
                 <Link
                   href={item.children ? item.children[0].href : item.href}
                   className={cn(
-                    'flex items-center gap-1 px-3 xl:px-4 py-2 text-[13px] xl:text-sm font-bold uppercase tracking-wide transition-colors border-b-2',
+                    'flex items-center px-3 xl:px-4 py-2 text-[13px] xl:text-sm font-bold uppercase tracking-wide transition-colors border-b-2',
                     isActive(item.href)
                       ? 'text-green-700 border-green-700'
                       : 'text-red-700 hover:text-green-700 border-transparent',
                   )}
                 >
                   {item.label}
-                  {item.children && <ChevronDown className="w-3 h-3 opacity-60" />}
                 </Link>
 
                 {/* Dropdown — nen xanh dam */}
@@ -168,7 +167,7 @@ export default function Header() {
             {/* Search toggle — tron xanh */}
             <button
               onClick={() => setSearchOpen(!searchOpen)}
-              className="ml-3 w-10 h-10 rounded-full bg-green-700 hover:bg-green-800 flex items-center justify-center text-white transition-colors shadow-sm"
+              className="ml-3 w-11 h-11 rounded-full bg-green-700 hover:bg-green-800 flex items-center justify-center text-white transition-colors shadow-sm"
               aria-label="Tìm kiếm"
             >
               <Search className="w-4 h-4" />
@@ -178,7 +177,7 @@ export default function Header() {
           {/* Mobile: search phai */}
           <button
             onClick={() => { setSearchOpen(!searchOpen); setMobileOpen(false); }}
-            className="w-9 h-9 rounded-full bg-green-700 flex items-center justify-center text-white lg:hidden"
+            className="w-11 h-11 rounded-full bg-green-700 flex items-center justify-center text-white lg:hidden"
             aria-label="Tìm kiếm"
           >
             <Search className="w-4 h-4" />
@@ -223,7 +222,7 @@ export default function Header() {
                       setOpenDropdown(openDropdown === item.href ? null : item.href);
                     }}
                     className={cn(
-                      'flex items-center justify-between w-full px-3 py-3 text-sm font-bold uppercase rounded-lg transition-colors',
+                      'flex items-center justify-between w-full px-3 py-4 text-sm font-bold uppercase rounded-lg transition-colors',
                       isActive(item.href) ? 'text-green-700 bg-green-50' : 'text-red-700 hover:bg-gray-50',
                     )}
                   >
@@ -235,7 +234,7 @@ export default function Header() {
                     href={item.href}
                     onClick={() => setMobileOpen(false)}
                     className={cn(
-                      'flex items-center justify-between w-full px-3 py-3 text-sm font-bold uppercase rounded-lg transition-colors',
+                      'flex items-center justify-between w-full px-3 py-4 text-sm font-bold uppercase rounded-lg transition-colors',
                       isActive(item.href) ? 'text-green-700 bg-green-50' : 'text-red-700 hover:bg-gray-50',
                     )}
                   >

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { LayoutGrid, List, Upload, File, X, Copy, Trash2, Search } from 'lucide-react';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 // Khi NEXT_PUBLIC_API_URL la relative ('/api') → UPLOADS_BASE = '' → dung Next.js rewrite proxy /uploads
@@ -97,6 +98,10 @@ export default function MediaPage() {
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
 
+  // Confirm dialog va error cho media
+  const [deleteMediaId, setDeleteMediaId] = useState<string | null>(null);
+  const [mediaError, setMediaError] = useState('');
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const searchTimeout = useRef<ReturnType<typeof setTimeout>>();
 
@@ -162,7 +167,7 @@ export default function MediaPage() {
       await fetchMedia(1);
     } catch (err) {
       console.error('Upload error:', err);
-      alert(err instanceof Error ? err.message : 'Upload that bai');
+      setMediaError(err instanceof Error ? err.message : 'Upload thất bại');
     } finally {
       setUploading(false);
     }
@@ -203,26 +208,39 @@ export default function MediaPage() {
     }
   };
 
-  // Xoa media (soft delete)
-  const deleteMedia = async (id: string) => {
-    if (!confirm('Ban co chac muon xoa file nay?')) return;
+  // Xoa media sau khi xac nhan
+  const handleDeleteMediaConfirm = async () => {
+    if (!deleteMediaId) return;
     try {
-      await api(`/media/${id}`, { method: 'DELETE' });
+      await api(`/media/${deleteMediaId}`, { method: 'DELETE' });
       setSelectedItem(null);
+      setDeleteMediaId(null);
       await fetchMedia(pagination.page);
     } catch (err) {
       console.error('Xoa that bai:', err);
-      alert(err instanceof Error ? err.message : 'Xoa that bai');
+      setDeleteMediaId(null);
+      setMediaError(err instanceof Error ? err.message : 'Xóa thất bại');
     }
   };
+
+  // Toast sao chep URL
+  const [copyToast, setCopyToast] = useState(false);
 
   // Copy URL vao clipboard
   const copyUrl = (url: string) => {
     navigator.clipboard.writeText(fullUrl(url));
+    setCopyToast(true);
+    setTimeout(() => setCopyToast(false), 2000);
   };
 
   return (
     <div className="space-y-4">
+      {/* Copy toast */}
+      {copyToast && (
+        <div className="fixed top-4 right-4 z-50 px-4 py-3 rounded-lg shadow-lg text-sm font-medium bg-green-600 text-white">
+          Đã sao chép!
+        </div>
+      )}
       {/* Tieu de + controls */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <h1 className="text-xl font-bold text-slate-900">Quản lý Media</h1>
@@ -346,8 +364,8 @@ export default function MediaPage() {
       {/* List view */}
       {!loading && items.length > 0 && viewMode === 'list' && (
         <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-          <table className="w-full text-sm">
-            <thead>
+          <table className="w-full min-w-[600px] text-sm">
+            <thead className="sticky top-0 z-10">
               <tr className="border-b border-slate-100 bg-slate-50">
                 <th className="text-left p-3 font-medium text-slate-600 w-16"></th>
                 <th className="text-left p-3 font-medium text-slate-600">Tên file</th>
@@ -386,7 +404,7 @@ export default function MediaPage() {
                   <td className="p-3 text-slate-500 hidden lg:table-cell">{formatDate(item.created_at)}</td>
                   <td className="p-3 text-right">
                     <button
-                      onClick={(e) => { e.stopPropagation(); deleteMedia(item.id); }}
+                      onClick={(e) => { e.stopPropagation(); setDeleteMediaId(item.id); }}
                       className="p-1.5 rounded hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors"
                       title="Xóa"
                     >
@@ -511,7 +529,7 @@ export default function MediaPage() {
                 <Button
                   variant="destructive"
                   className="w-full gap-2"
-                  onClick={() => deleteMedia(selectedItem.id)}
+                  onClick={() => setDeleteMediaId(selectedItem.id)}
                 >
                   <Trash2 className="w-4 h-4" /> Xóa file
                 </Button>
@@ -520,6 +538,30 @@ export default function MediaPage() {
           </div>
         </div>
       )}
+
+      {/* Confirm dialog xoa file */}
+      <ConfirmDialog
+        open={!!deleteMediaId}
+        title="Xóa file"
+        message="Bạn có chắc muốn xóa file này? Thao tác này không thể hoàn tác."
+        confirmLabel="Xóa"
+        cancelLabel="Hủy"
+        variant="danger"
+        onConfirm={handleDeleteMediaConfirm}
+        onCancel={() => setDeleteMediaId(null)}
+      />
+
+      {/* Error dialog */}
+      <ConfirmDialog
+        open={!!mediaError}
+        title="Lỗi"
+        message={mediaError}
+        confirmLabel="Đóng"
+        cancelLabel="Đóng"
+        variant="warning"
+        onConfirm={() => setMediaError('')}
+        onCancel={() => setMediaError('')}
+      />
     </div>
   );
 }

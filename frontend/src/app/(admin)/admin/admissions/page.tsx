@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 // ─── TYPES ─────────────────────────────────────────────────
 
@@ -117,6 +118,10 @@ function PostsTab() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
 
+  // Confirm dialog va error
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
+  const [postError, setPostError] = useState('');
+
   // Form state
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -173,13 +178,13 @@ function PostsTab() {
       setEditingId(id);
       setShowForm(true);
     } catch (err: any) {
-      alert(err.message || 'Loi khi tai bai dang');
+      setPostError(err.message || 'Lỗi khi tải bài đăng');
     }
   };
 
   const handleSave = async () => {
     if (!form.title || !form.content) {
-      alert('Vui lòng nhập tiêu đề và nội dung');
+      setPostError('Vui lòng nhập tiêu đề và nội dung');
       return;
     }
     setSaving(true);
@@ -200,19 +205,21 @@ function PostsTab() {
       setShowForm(false);
       fetchPosts();
     } catch (err: any) {
-      alert(err.message || 'Khong the luu bai dang');
+      setPostError(err.message || 'Không thể lưu bài đăng');
     } finally {
       setSaving(false);
     }
   };
 
-  const handleDelete = async (id: string, title: string) => {
-    if (!confirm(`Xóa bài đăng "${title}"?`)) return;
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
     try {
-      await api(`/admissions/posts/${id}`, { method: 'DELETE' });
+      await api(`/admissions/posts/${deleteTarget.id}`, { method: 'DELETE' });
+      setDeleteTarget(null);
       fetchPosts();
     } catch (err: any) {
-      alert(err.message || 'Khong the xoa bai dang');
+      setDeleteTarget(null);
+      setPostError(err.message || 'Không thể xóa bài đăng');
     }
   };
 
@@ -310,8 +317,8 @@ function PostsTab() {
           <div className="p-8 text-center text-slate-500">Không có bài đăng nào</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
+            <table className="w-full min-w-[600px] text-sm">
+              <thead className="sticky top-0 z-10">
                 <tr className="border-b border-slate-200 bg-slate-50">
                   <th className="px-4 py-3 text-left font-medium text-slate-600">Tiêu đề</th>
                   <th className="px-4 py-3 text-left font-medium text-slate-600">Trạng thái</th>
@@ -337,7 +344,7 @@ function PostsTab() {
                     <td className="px-4 py-3 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button onClick={() => handleEdit(post.id)} className="text-sm text-blue-600 hover:text-blue-800 font-medium">Sửa</button>
-                        <button onClick={() => handleDelete(post.id, post.title)} className="text-sm text-red-600 hover:text-red-800 font-medium">Xóa</button>
+                        <button onClick={() => setDeleteTarget({ id: post.id, title: post.title })} className="text-sm text-red-600 hover:text-red-800 font-medium">Xóa</button>
                       </div>
                     </td>
                   </tr>
@@ -357,6 +364,30 @@ function PostsTab() {
           </div>
         )}
       </div>
+
+      {/* Confirm dialog xoa bai dang */}
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title="Xóa bài đăng"
+        message={`Bạn có chắc muốn xóa bài đăng "${deleteTarget?.title}"? Thao tác này không thể hoàn tác.`}
+        confirmLabel="Xóa"
+        cancelLabel="Hủy"
+        variant="danger"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteTarget(null)}
+      />
+
+      {/* Error dialog */}
+      <ConfirmDialog
+        open={!!postError}
+        title="Lỗi"
+        message={postError}
+        confirmLabel="Đóng"
+        cancelLabel="Đóng"
+        variant="warning"
+        onConfirm={() => setPostError('')}
+        onCancel={() => setPostError('')}
+      />
     </>
   );
 }
@@ -366,6 +397,10 @@ function PostsTab() {
 function FaqTab() {
   const [faqs, setFaqs] = useState<Faq[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Confirm dialog va error
+  const [deleteFaqId, setDeleteFaqId] = useState<string | null>(null);
+  const [faqError, setFaqError] = useState('');
 
   // Form state
   const [showForm, setShowForm] = useState(false);
@@ -406,7 +441,7 @@ function FaqTab() {
 
   const handleSave = async () => {
     if (!form.question || !form.answer) {
-      alert('Vui lòng nhập câu hỏi và câu trả lời');
+      setFaqError('Vui lòng nhập câu hỏi và câu trả lời');
       return;
     }
     setSaving(true);
@@ -426,19 +461,21 @@ function FaqTab() {
       setShowForm(false);
       fetchFaqs();
     } catch (err: any) {
-      alert(err.message || 'Khong the luu FAQ');
+      setFaqError(err.message || 'Không thể lưu FAQ');
     } finally {
       setSaving(false);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Xóa câu hỏi này?')) return;
+  const handleDeleteConfirm = async () => {
+    if (!deleteFaqId) return;
     try {
-      await api(`/admissions/faq/${id}`, { method: 'DELETE' });
+      await api(`/admissions/faq/${deleteFaqId}`, { method: 'DELETE' });
+      setDeleteFaqId(null);
       fetchFaqs();
     } catch (err: any) {
-      alert(err.message || 'Khong the xoa FAQ');
+      setDeleteFaqId(null);
+      setFaqError(err.message || 'Không thể xóa FAQ');
     }
   };
 
@@ -451,7 +488,7 @@ function FaqTab() {
       });
       fetchFaqs();
     } catch (err: any) {
-      alert(err.message || 'Khong the cap nhat');
+      setFaqError(err.message || 'Không thể cập nhật');
     }
   };
 
@@ -534,8 +571,8 @@ function FaqTab() {
           <div className="p-8 text-center text-slate-500">Chưa có câu hỏi nào</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
+            <table className="w-full min-w-[600px] text-sm">
+              <thead className="sticky top-0 z-10">
                 <tr className="border-b border-slate-200 bg-slate-50">
                   <th className="px-4 py-3 text-left font-medium text-slate-600">Câu hỏi</th>
                   <th className="px-4 py-3 text-left font-medium text-slate-600">Trả lời</th>
@@ -571,7 +608,7 @@ function FaqTab() {
                     <td className="px-4 py-3 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button onClick={() => handleEdit(faq)} className="text-sm text-blue-600 hover:text-blue-800 font-medium">Sửa</button>
-                        <button onClick={() => handleDelete(faq.id)} className="text-sm text-red-600 hover:text-red-800 font-medium">Xóa</button>
+                        <button onClick={() => setDeleteFaqId(faq.id)} className="text-sm text-red-600 hover:text-red-800 font-medium">Xóa</button>
                       </div>
                     </td>
                   </tr>
@@ -581,6 +618,30 @@ function FaqTab() {
           </div>
         )}
       </div>
+
+      {/* Confirm dialog xoa FAQ */}
+      <ConfirmDialog
+        open={!!deleteFaqId}
+        title="Xóa câu hỏi"
+        message="Bạn có chắc muốn xóa câu hỏi này? Thao tác này không thể hoàn tác."
+        confirmLabel="Xóa"
+        cancelLabel="Hủy"
+        variant="danger"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteFaqId(null)}
+      />
+
+      {/* Error dialog */}
+      <ConfirmDialog
+        open={!!faqError}
+        title="Lỗi"
+        message={faqError}
+        confirmLabel="Đóng"
+        cancelLabel="Đóng"
+        variant="warning"
+        onConfirm={() => setFaqError('')}
+        onCancel={() => setFaqError('')}
+      />
     </>
   );
 }
@@ -626,6 +687,8 @@ function RegistrationsTab() {
     return () => clearTimeout(timer);
   }, [searchInput]);
 
+  const [regError, setRegError] = useState('');
+
   /** Cap nhat trang thai dang ky */
   const handleUpdateStatus = async (id: string, newStatus: string) => {
     try {
@@ -635,7 +698,7 @@ function RegistrationsTab() {
       });
       fetchRegistrations();
     } catch (err: any) {
-      alert(err.message || 'Khong the cap nhat trang thai');
+      setRegError(err.message || 'Không thể cập nhật trạng thái');
     }
   };
 
@@ -670,8 +733,8 @@ function RegistrationsTab() {
           <div className="p-8 text-center text-slate-500">Không có đăng ký nào</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
+            <table className="w-full min-w-[750px] text-sm">
+              <thead className="sticky top-0 z-10">
                 <tr className="border-b border-slate-200 bg-slate-50">
                   <th className="px-4 py-3 text-left font-medium text-slate-600">Họ tên</th>
                   <th className="px-4 py-3 text-left font-medium text-slate-600">Lớp</th>
@@ -730,6 +793,18 @@ function RegistrationsTab() {
           </div>
         )}
       </div>
+
+      {/* Error dialog */}
+      <ConfirmDialog
+        open={!!regError}
+        title="Lỗi"
+        message={regError}
+        confirmLabel="Đóng"
+        cancelLabel="Đóng"
+        variant="warning"
+        onConfirm={() => setRegError('')}
+        onCancel={() => setRegError('')}
+      />
     </>
   );
 }

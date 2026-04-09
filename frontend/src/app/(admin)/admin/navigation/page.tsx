@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface MenuNode {
   id: string;
@@ -102,10 +103,14 @@ export default function NavigationPage() {
     setShowForm(true);
   };
 
+  // State cho confirm dialog va error
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; label: string } | null>(null);
+  const [navError, setNavError] = useState('');
+
   /** Luu — rebuild tree roi gui len API */
   const handleSave = async () => {
     if (!form.label || !form.url) {
-      alert('Vui lòng nhập nhãn và URL');
+      setNavError('Vui lòng nhập nhãn và URL');
       return;
     }
     setSaving(true);
@@ -146,28 +151,30 @@ export default function NavigationPage() {
       setShowForm(false);
       fetchMenu();
     } catch (err: any) {
-      alert(err.message || 'Khong the luu menu');
+      setNavError(err.message || 'Không thể lưu menu');
     } finally {
       setSaving(false);
     }
   };
 
-  /** Xoa menu item — rebuild tree roi gui len API */
-  const handleDelete = async (id: string, label: string) => {
-    if (!confirm(`Xóa mục "${label}" và tất cả mục con?`)) return;
+  /** Xoa menu item sau khi xac nhan */
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
     setSaving(true);
     try {
       const cloneTree = JSON.parse(JSON.stringify(menuTree)) as MenuNode[];
-      const filtered = removeFromTree(cloneTree, id);
+      const filtered = removeFromTree(cloneTree, deleteTarget.id);
 
       await api('/navigation/menu', {
         method: 'PUT',
         body: JSON.stringify({ items: filtered }),
       });
 
+      setDeleteTarget(null);
       fetchMenu();
     } catch (err: any) {
-      alert(err.message || 'Khong the xoa menu');
+      setDeleteTarget(null);
+      setNavError(err.message || 'Không thể xóa menu');
     } finally {
       setSaving(false);
     }
@@ -187,7 +194,7 @@ export default function NavigationPage() {
 
       fetchMenu();
     } catch (err: any) {
-      alert(err.message || 'Khong the cap nhat');
+      setNavError(err.message || 'Không thể cập nhật');
     } finally {
       setSaving(false);
     }
@@ -311,13 +318,37 @@ export default function NavigationPage() {
                 node={node}
                 depth={0}
                 onEdit={handleEdit}
-                onDelete={handleDelete}
+                onDelete={(id, label) => setDeleteTarget({ id, label })}
                 onToggleVisible={handleToggleVisible}
               />
             ))}
           </div>
         )}
       </div>
+
+      {/* Confirm dialog xoa menu */}
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title="Xóa mục menu"
+        message={`Bạn có chắc muốn xóa mục "${deleteTarget?.label}" và tất cả mục con? Thao tác này không thể hoàn tác.`}
+        confirmLabel="Xóa"
+        cancelLabel="Hủy"
+        variant="danger"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteTarget(null)}
+      />
+
+      {/* Error dialog */}
+      <ConfirmDialog
+        open={!!navError}
+        title="Lỗi"
+        message={navError}
+        confirmLabel="Đóng"
+        cancelLabel="Đóng"
+        variant="warning"
+        onConfirm={() => setNavError('')}
+        onCancel={() => setNavError('')}
+      />
     </div>
   );
 }

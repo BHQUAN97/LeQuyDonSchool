@@ -5,6 +5,7 @@ import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import RichTextEditor from '@/components/admin/RichTextEditor';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface Page {
   id: string;
@@ -49,6 +50,10 @@ export default function PagesAdminPage() {
   });
   const [saving, setSaving] = useState(false);
   const [searchInput, setSearchInput] = useState('');
+
+  // State cho confirm dialog va error
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
+  const [pageError, setPageError] = useState('');
 
   // Debounce search input
   useEffect(() => {
@@ -123,20 +128,22 @@ export default function PagesAdminPage() {
       setShowForm(false);
       fetchPages();
     } catch (err: any) {
-      alert(err.message || 'Loi khi luu');
+      setPageError(err.message || 'Lỗi khi lưu');
     } finally {
       setSaving(false);
     }
   };
 
-  /** Xoa trang */
-  const handleDelete = async (id: string, title: string) => {
-    if (!confirm(`Xoa trang "${title}"?`)) return;
+  /** Xoa trang sau khi xac nhan */
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
     try {
-      await api(`/pages/${id}`, { method: 'DELETE' });
+      await api(`/pages/${deleteTarget.id}`, { method: 'DELETE' });
+      setDeleteTarget(null);
       fetchPages();
     } catch (err: any) {
-      alert(err.message || 'Loi khi xoa');
+      setDeleteTarget(null);
+      setPageError(err.message || 'Lỗi khi xóa');
     }
   };
 
@@ -229,8 +236,8 @@ export default function PagesAdminPage() {
       {/* Bang danh sach */}
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-slate-200">
+          <table className="w-full min-w-[600px] text-sm">
+            <thead className="bg-slate-50 border-b border-slate-200 sticky top-0 z-10">
               <tr>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Tiêu đề</th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Slug/URL</th>
@@ -269,7 +276,7 @@ export default function PagesAdminPage() {
                           Sửa
                         </button>
                         <button
-                          onClick={() => handleDelete(p.id, p.title)}
+                          onClick={() => setDeleteTarget({ id: p.id, title: p.title })}
                           className="text-red-600 hover:text-red-800 text-sm font-medium"
                         >
                           Xóa
@@ -308,6 +315,30 @@ export default function PagesAdminPage() {
           </div>
         )}
       </div>
+
+      {/* Confirm dialog xoa trang */}
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title="Xóa trang"
+        message={`Bạn có chắc muốn xóa trang "${deleteTarget?.title}"? Thao tác này không thể hoàn tác.`}
+        confirmLabel="Xóa"
+        cancelLabel="Hủy"
+        variant="danger"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteTarget(null)}
+      />
+
+      {/* Error dialog */}
+      <ConfirmDialog
+        open={!!pageError}
+        title="Lỗi"
+        message={pageError}
+        confirmLabel="Đóng"
+        cancelLabel="Đóng"
+        variant="warning"
+        onConfirm={() => setPageError('')}
+        onCancel={() => setPageError('')}
+      />
     </div>
   );
 }

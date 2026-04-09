@@ -1,8 +1,8 @@
 import { Entity, Column, Index } from 'typeorm';
 import { BaseEntity } from '@/common/entities/base.entity';
 
-@Entity('admission_faq')
-@Index('idx_admission_faq_order', ['display_order'])
+@Entity('admission_faqs')
+@Index('idx_admission_faqs_order', ['display_order'])
 export class AdmissionFaq extends BaseEntity {
   @Column({ type: 'varchar', length: 500 })
   question!: string;

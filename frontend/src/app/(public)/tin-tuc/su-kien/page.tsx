@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
-import PageBanner from '@/components/public/PageBanner';
+import Link from 'next/link';
+import Breadcrumb from '@/components/public/Breadcrumb';
 import ArticleCard from '@/components/public/ArticleCard';
+import ArticleSidebar from '@/components/public/ArticleSidebar';
 import { buildPageMetadata } from '@/lib/seo-helpers';
 
 export const metadata: Metadata = buildPageMetadata({
@@ -36,7 +38,12 @@ const placeholderArticles = [
   { title: 'Hội chợ Xuân 2026 - Gây quỹ từ thiện', description: 'Học sinh tự tay làm sản phẩm, bán hàng tại hội chợ, gây quỹ ủng hộ trẻ em vùng cao.', category: 'Sự kiện', date: '25/01/2026', slug: 'hoi-cho-xuan-2026' },
 ];
 
-const categories = ['Tất cả', 'Sự kiện', 'Thông báo', 'Khen thưởng'];
+/** Category tabs — 3 chuyen muc chinh */
+const categoryTabs = [
+  { label: 'Sự kiện', href: '/tin-tuc/su-kien', active: true },
+  { label: 'Ngoại khóa', href: '/tin-tuc/ngoai-khoa', active: false },
+  { label: 'Học tập', href: '/tin-tuc/hoc-tap', active: false },
+];
 
 export default async function SuKienPage() {
   const apiArticles = await getArticles();
@@ -52,46 +59,67 @@ export default async function SuKienPage() {
     : placeholderArticles;
   return (
     <div>
-      <PageBanner
-        title="Tin tức & Sự kiện"
-        description="Cập nhật những tin tức và sự kiện mới nhất tại Lê Quý Đôn"
-        breadcrumbItems={[
-          { label: 'Tin tức', href: '/tin-tuc/su-kien' },
-          { label: 'Sự kiện' },
-        ]}
-      />
-
-      {/* Filter */}
-      <section className="bg-white border-b border-slate-200 sticky top-0 z-10">
+      {/* Breadcrumb */}
+      <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex gap-2 overflow-x-auto py-3">
-            {categories.map((cat, i) => (
-              <button
-                key={cat}
+          <Breadcrumb items={[
+            { label: 'Tin tức', href: '/tin-tuc/su-kien' },
+            { label: 'Sự kiện' },
+          ]} />
+        </div>
+      </div>
+
+      {/* Section title + category tabs */}
+      <section className="max-w-7xl mx-auto px-4 pt-8">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">TIN TỨC SỰ KIỆN</span>
+              <div className="flex gap-0.5">
+                <span className="w-6 h-1 bg-green-700 rounded-full" />
+                <span className="w-6 h-1 bg-red-600 rounded-full" />
+                <span className="w-6 h-1 bg-green-700 rounded-full" />
+              </div>
+            </div>
+            <h2 className="text-2xl font-bold text-slate-900">Tin tức - Sự kiện</h2>
+          </div>
+          <div className="flex gap-2 overflow-x-auto">
+            {categoryTabs.map((tab) => (
+              <Link
+                key={tab.href}
+                href={tab.href}
                 className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                  i === 0 ? 'bg-green-700 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  tab.active
+                    ? 'bg-green-700 text-white'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
-                {cat}
-              </button>
+                {tab.label}
+              </Link>
             ))}
           </div>
         </div>
-      </section>
 
-      {/* Articles grid */}
-      <section className="max-w-7xl mx-auto px-4 py-8 lg:py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {articles.map((a: any) => (
-            <ArticleCard key={a.slug} {...a} />
-          ))}
-        </div>
+        {/* Main content + Sidebar */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Articles list */}
+          <div className="lg:col-span-2 space-y-5">
+            {articles.map((a: any) => (
+              <ArticleCard key={a.slug} {...a} variant="list" />
+            ))}
 
-        {/* Pagination */}
-        <div className="flex justify-center gap-2 mt-10">
-          <button className="w-9 h-9 rounded-lg bg-green-700 text-white text-sm font-medium">1</button>
-          <button className="w-9 h-9 rounded-lg bg-slate-100 text-slate-600 text-sm hover:bg-slate-200">2</button>
-          <button className="w-9 h-9 rounded-lg bg-slate-100 text-slate-600 text-sm hover:bg-slate-200">3</button>
+            {/* Pagination */}
+            <div className="flex justify-center gap-2 pt-6 pb-8">
+              <button className="w-10 h-10 rounded-lg bg-green-700 text-white text-sm font-medium">1</button>
+              <button className="w-10 h-10 rounded-lg bg-slate-100 text-slate-600 text-sm hover:bg-slate-200">2</button>
+              <button className="w-10 h-10 rounded-lg bg-slate-100 text-slate-600 text-sm hover:bg-slate-200">3</button>
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            <ArticleSidebar />
+          </div>
         </div>
       </section>
     </div>

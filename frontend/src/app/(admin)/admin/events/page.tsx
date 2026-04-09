@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface Event {
   id: string;
@@ -66,6 +67,7 @@ export default function EventsPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
+  const [dateError, setDateError] = useState('');
 
   const fetchEvents = useCallback(async () => {
     setLoading(true);
@@ -106,6 +108,7 @@ export default function EventsPage() {
   const handleAdd = () => {
     setForm(EMPTY_FORM);
     setEditingId(null);
+    setDateError('');
     setShowForm(true);
   };
 
@@ -122,15 +125,25 @@ export default function EventsPage() {
       status: event.status,
     });
     setEditingId(event.id);
+    setDateError('');
     setShowForm(true);
   };
+
+  // State cho confirm dialog va error
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
+  const [eventError, setEventError] = useState('');
 
   /** Luu su kien (tao moi hoac cap nhat) */
   const handleSave = async () => {
     if (!form.title || !form.startDate) {
-      alert('Vui lòng nhập tiêu đề và ngày bắt đầu');
+      setEventError('Vui lòng nhập tiêu đề và ngày bắt đầu');
       return;
     }
+    if (form.endDate && form.startDate && new Date(form.endDate) < new Date(form.startDate)) {
+      setDateError('Ngày kết thúc phải sau ngày bắt đầu');
+      return;
+    }
+    setDateError('');
     setSaving(true);
     try {
       const body: any = {
@@ -152,20 +165,22 @@ export default function EventsPage() {
       setShowForm(false);
       fetchEvents();
     } catch (err: any) {
-      alert(err.message || 'Không thể lưu sự kiện');
+      setEventError(err.message || 'Không thể lưu sự kiện');
     } finally {
       setSaving(false);
     }
   };
 
-  /** Xoa su kien */
-  const handleDelete = async (id: string, title: string) => {
-    if (!confirm(`Xóa sự kiện "${title}"?`)) return;
+  /** Xoa su kien sau khi xac nhan */
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
     try {
-      await api(`/events/${id}`, { method: 'DELETE' });
+      await api(`/events/${deleteTarget.id}`, { method: 'DELETE' });
+      setDeleteTarget(null);
       fetchEvents();
     } catch (err: any) {
-      alert(err.message || 'Không thể xóa sự kiện');
+      setDeleteTarget(null);
+      setEventError(err.message || 'Không thể xóa sự kiện');
     }
   };
 
@@ -242,11 +257,12 @@ export default function EventsPage() {
                   <input
                     type="datetime-local"
                     value={form.endDate}
-                    onChange={(e) => setForm({ ...form, endDate: e.target.value })}
-                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+                    onChange={(e) => { setForm({ ...form, endDate: e.target.value }); if (dateError) setDateError(''); }}
+                    className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 ${dateError ? 'border-red-500' : 'border-slate-300'}`}
                   />
                 </div>
               </div>
+              {dateError && <p className="text-red-500 text-xs -mt-1">{dateError}</p>}
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Địa điểm</label>
@@ -331,8 +347,8 @@ export default function EventsPage() {
           <div className="p-8 text-center text-slate-500">Không có sự kiện nào</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
+            <table className="w-full min-w-[700px] text-sm">
+              <thead className="sticky top-0 z-10">
                 <tr className="border-b border-slate-200 bg-slate-50">
                   <th className="px-4 py-3 text-left font-medium text-slate-600">Tiêu đề</th>
                   <th className="px-4 py-3 text-left font-medium text-slate-600">Ngày bắt đầu</th>
@@ -375,7 +391,7 @@ export default function EventsPage() {
                           Sửa
                         </button>
                         <button
-                          onClick={() => handleDelete(event.id, event.title)}
+                          onClick={() => setDeleteTarget({ id: event.id, title: event.title })}
                           className="text-sm text-red-600 hover:text-red-800 font-medium"
                         >
                           Xóa
@@ -433,6 +449,30 @@ export default function EventsPage() {
           </div>
         )}
       </div>
+
+      {/* Confirm dialog xoa su kien */}
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title="Xóa sự kiện"
+        message={`Bạn có chắc muốn xóa sự kiện "${deleteTarget?.title}"? Thao tác này không thể hoàn tác.`}
+        confirmLabel="Xóa"
+        cancelLabel="Hủy"
+        variant="danger"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteTarget(null)}
+      />
+
+      {/* Error dialog */}
+      <ConfirmDialog
+        open={!!eventError}
+        title="Lỗi"
+        message={eventError}
+        confirmLabel="Đóng"
+        cancelLabel="Đóng"
+        variant="warning"
+        onConfirm={() => setEventError('')}
+        onCancel={() => setEventError('')}
+      />
     </div>
   );
 }

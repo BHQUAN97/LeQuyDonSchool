@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 type TabKey = 'general' | 'contact' | 'social' | 'seo' | 'floating';
 
@@ -16,40 +17,40 @@ const TABS: { key: TabKey; label: string }[] = [
 ];
 
 /** Cau hinh cac field cho moi tab */
-const TAB_FIELDS: Record<TabKey, { key: string; label: string; type: 'text' | 'textarea' | 'toggle' }[]> = {
+const TAB_FIELDS: Record<TabKey, { key: string; label: string; type: 'text' | 'textarea' | 'toggle'; help?: string; maxLength?: number }[]> = {
   general: [
-    { key: 'school_name', label: 'Tên trường', type: 'text' },
-    { key: 'slogan', label: 'Slogan', type: 'text' },
-    { key: 'logo_url', label: 'URL Logo', type: 'text' },
-    { key: 'favicon_url', label: 'URL Favicon', type: 'text' },
+    { key: 'school_name', label: 'Tên trường', type: 'text', help: 'Tên chính thức của trường hiển thị trên website' },
+    { key: 'slogan', label: 'Slogan', type: 'text', help: 'Khẩu hiệu ngắn gọn của trường' },
+    { key: 'logo_url', label: 'URL Logo', type: 'text', help: 'Đường dẫn ảnh logo (khuyến nghị PNG trong suốt)' },
+    { key: 'favicon_url', label: 'URL Favicon', type: 'text', help: 'Icon nhỏ hiển thị trên tab trình duyệt (16x16 hoặc 32x32)' },
   ],
   contact: [
-    { key: 'address', label: 'Địa chỉ', type: 'text' },
-    { key: 'phone', label: 'Số điện thoại', type: 'text' },
-    { key: 'email', label: 'Email', type: 'text' },
-    { key: 'google_maps_url', label: 'URL Google Maps', type: 'text' },
+    { key: 'address', label: 'Địa chỉ', type: 'text', help: 'Địa chỉ đầy đủ của trường' },
+    { key: 'phone', label: 'Số điện thoại', type: 'text', help: 'Số điện thoại liên hệ chính' },
+    { key: 'email', label: 'Email', type: 'text', help: 'Email liên hệ chính của trường' },
+    { key: 'google_maps_url', label: 'URL Google Maps', type: 'text', help: 'Link nhúng Google Maps (embed URL)' },
   ],
   social: [
-    { key: 'facebook_url', label: 'Facebook URL', type: 'text' },
-    { key: 'youtube_url', label: 'YouTube URL', type: 'text' },
-    { key: 'zalo_url', label: 'Zalo URL', type: 'text' },
-    { key: 'messenger_url', label: 'Messenger URL', type: 'text' },
+    { key: 'facebook_url', label: 'Facebook URL', type: 'text', help: 'Đường dẫn trang Facebook của trường' },
+    { key: 'youtube_url', label: 'YouTube URL', type: 'text', help: 'Đường dẫn kênh YouTube của trường' },
+    { key: 'zalo_url', label: 'Zalo URL', type: 'text', help: 'Đường dẫn Zalo OA của trường' },
+    { key: 'messenger_url', label: 'Messenger URL', type: 'text', help: 'Đường dẫn Messenger của trường' },
   ],
   seo: [
-    { key: 'default_title', label: 'Tiêu đề mặc định', type: 'text' },
-    { key: 'meta_description', label: 'Mô tả meta', type: 'textarea' },
-    { key: 'og_image_url', label: 'OG Image URL', type: 'text' },
-    { key: 'google_analytics_id', label: 'Google Analytics ID', type: 'text' },
+    { key: 'default_title', label: 'Tiêu đề mặc định', type: 'text', help: 'Tiêu đề hiển thị trên tab trình duyệt và kết quả tìm kiếm' },
+    { key: 'meta_description', label: 'Mô tả meta', type: 'textarea', help: 'Mô tả ngắn hiển thị trên kết quả Google', maxLength: 160 },
+    { key: 'og_image_url', label: 'OG Image URL', type: 'text', help: 'URL ảnh đại diện khi chia sẻ lên mạng xã hội' },
+    { key: 'google_analytics_id', label: 'Google Analytics ID', type: 'text', help: 'Mã theo dõi Google Analytics (VD: G-XXXXXXXXXX)' },
   ],
   floating: [
     { key: 'phone_enabled', label: 'Hiện nút Gọi điện', type: 'toggle' },
-    { key: 'phone_number', label: 'Số điện thoại', type: 'text' },
+    { key: 'phone_number', label: 'Số điện thoại', type: 'text', help: 'Số điện thoại khi nhấn nút gọi nhanh' },
     { key: 'messenger_enabled', label: 'Hiện nút Messenger', type: 'toggle' },
-    { key: 'messenger_url_floating', label: 'Messenger URL', type: 'text' },
+    { key: 'messenger_url_floating', label: 'Messenger URL', type: 'text', help: 'Link Messenger cho nút liên hệ nhanh' },
     { key: 'zalo_enabled', label: 'Hiện nút Zalo', type: 'toggle' },
-    { key: 'zalo_url_floating', label: 'Zalo URL', type: 'text' },
+    { key: 'zalo_url_floating', label: 'Zalo URL', type: 'text', help: 'Link Zalo cho nút liên hệ nhanh' },
     { key: 'form_enabled', label: 'Hiện nút Form', type: 'toggle' },
-    { key: 'form_url', label: 'Form URL', type: 'text' },
+    { key: 'form_url', label: 'Form URL', type: 'text', help: 'Link form đăng ký / liên hệ' },
   ],
 };
 
@@ -58,6 +59,7 @@ export default function SettingsAdminPage() {
   const [values, setValues] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [settingsMsg, setSettingsMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   /** Tai tat ca settings tu API */
   useEffect(() => {
@@ -99,9 +101,9 @@ export default function SettingsAdminPage() {
         body: JSON.stringify({ items }),
       });
 
-      alert('Đã lưu cấu hình');
+      setSettingsMsg({ type: 'success', text: 'Đã lưu cấu hình thành công' });
     } catch (err: any) {
-      alert(err.message || 'Lỗi khi lưu');
+      setSettingsMsg({ type: 'error', text: err.message || 'Lỗi khi lưu' });
     } finally {
       setSaving(false);
     }
@@ -168,17 +170,28 @@ export default function SettingsAdminPage() {
                 />
               </button>
             ) : field.type === 'textarea' ? (
-              <textarea
-                value={values[field.key] || ''}
-                onChange={(e) => updateValue(field.key, e.target.value)}
-                rows={3}
-                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <>
+                <textarea
+                  value={values[field.key] || ''}
+                  onChange={(e) => { if (!field.maxLength || e.target.value.length <= field.maxLength) updateValue(field.key, e.target.value); }}
+                  rows={3}
+                  maxLength={field.maxLength}
+                  className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                {field.maxLength && (
+                  <p className={`text-xs mt-1 ${(values[field.key] || '').length >= field.maxLength - 20 ? 'text-orange-500' : 'text-slate-400'}`}>
+                    {(values[field.key] || '').length}/{field.maxLength}
+                  </p>
+                )}
+              </>
             ) : (
               <Input
                 value={values[field.key] || ''}
                 onChange={(e) => updateValue(field.key, e.target.value)}
               />
+            )}
+            {field.help && (
+              <p className="text-xs text-slate-400 mt-1">{field.help}</p>
             )}
           </div>
         ))}
@@ -189,6 +202,18 @@ export default function SettingsAdminPage() {
           </Button>
         </div>
       </div>
+
+      {/* Success/Error dialog */}
+      <ConfirmDialog
+        open={!!settingsMsg}
+        title={settingsMsg?.type === 'success' ? 'Thành công' : 'Lỗi'}
+        message={settingsMsg?.text || ''}
+        confirmLabel="Đóng"
+        cancelLabel="Đóng"
+        variant={settingsMsg?.type === 'success' ? 'warning' : 'warning'}
+        onConfirm={() => setSettingsMsg(null)}
+        onCancel={() => setSettingsMsg(null)}
+      />
     </div>
   );
 }

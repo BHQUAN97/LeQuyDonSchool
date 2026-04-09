@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import PageBanner from '@/components/public/PageBanner';
-import { Home, Heart, Users, Calendar, Star, Gift } from 'lucide-react';
+import Breadcrumb from '@/components/public/Breadcrumb';
+import ArticleCard from '@/components/public/ArticleCard';
+import ArticleSidebar from '@/components/public/ArticleSidebar';
 import { buildPageMetadata } from '@/lib/seo-helpers';
 
 export const metadata: Metadata = buildPageMetadata({
@@ -11,125 +12,113 @@ export const metadata: Metadata = buildPageMetadata({
   path: '/tuyen-sinh/clb-ngoi-nha-mo-uoc',
 });
 
-const activities = [
+const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
+
+/** Fetch bai viet CLB tu API */
+async function getArticles() {
+  try {
+    const res = await fetch(
+      `${INTERNAL_API}/articles/public?category=clb-ngoi-nha-mo-uoc&limit=12&sort=published_at&order=DESC`,
+      { next: { revalidate: 300 } },
+    );
+    if (!res.ok) return [];
+    const json = await res.json();
+    return json.data || [];
+  } catch {
+    return [];
+  }
+}
+
+/** Placeholder khi chua co bai viet tu API */
+const placeholderArticles = [
   {
-    icon: Home,
-    title: 'Tham quan trường',
-    desc: 'Các bé và phụ huynh được tham quan toàn bộ cơ sở vật chất, phòng học, sân chơi.',
+    title: 'Ngày hội "Ngôi nhà mơ ước" lần 1 - 2026',
+    description: 'Chương trình trải nghiệm dành cho phụ huynh và các bé chuẩn bị vào lớp 1, tham quan trường và giao lưu giáo viên.',
+    category: 'CLB',
+    date: '20/04/2026',
+    slug: 'ngoi-nha-mo-uoc-lan-1-2026',
   },
   {
-    icon: Users,
-    title: 'Gặp gỡ giáo viên',
-    desc: 'Phụ huynh được giao lưu trực tiếp với đội ngũ giáo viên chủ nhiệm và giáo viên bộ môn.',
+    title: 'Hoạt động trải nghiệm lớp học cho bé mẫu giáo',
+    description: 'Các bé được tham gia tiết học mẫu, trải nghiệm không khí học tập thực tế tại trường.',
+    category: 'CLB',
+    date: '15/03/2026',
+    slug: 'trai-nghiem-lop-hoc-mau-giao',
   },
   {
-    icon: Star,
-    title: 'Trải nghiệm lớp học',
-    desc: 'Các bé được tham gia một tiết học mẫu, trải nghiệm không khí học tập thực tế.',
+    title: 'Đăng ký tham gia CLB Ngôi nhà mơ ước đợt 2',
+    description: 'Phụ huynh đăng ký trong ngày hội được hưởng ưu đãi học phí đặc biệt cho năm học 2026-2027.',
+    category: 'CLB',
+    date: '10/05/2026',
+    slug: 'dang-ky-clb-dot-2',
   },
   {
-    icon: Gift,
-    title: 'Hoạt động vui chơi',
-    desc: 'Tổ chức các trò chơi sáng tạo, hoạt động nhóm giúp các bé tự tin và hào hứng.',
-  },
-  {
-    icon: Heart,
-    title: 'Tư vấn tuyển sinh',
-    desc: 'Đội ngũ tư vấn giải đáp mọi thắc mắc về chương trình, học phí, chính sách.',
-  },
-  {
-    icon: Calendar,
-    title: 'Đăng ký ưu đãi',
-    desc: 'Phụ huynh đăng ký trong ngày hội được hưởng ưu đãi học phí đặc biệt.',
+    title: 'Hình ảnh ngày hội Ngôi nhà mơ ước 2025',
+    description: 'Tổng hợp hình ảnh các hoạt động vui chơi, giao lưu tại ngày hội năm 2025.',
+    category: 'CLB',
+    date: '20/04/2025',
+    slug: 'hinh-anh-ngoi-nha-mo-uoc-2025',
   },
 ];
 
-const upcomingEvents = [
-  { date: '20/04/2026', time: '8:00 - 11:30', title: 'Ngày hội "Ngôi nhà mơ ước" lần 1', slots: '50 gia đình' },
-  { date: '18/05/2026', time: '8:00 - 11:30', title: 'Ngày hội "Ngôi nhà mơ ước" lần 2', slots: '50 gia đình' },
-  { date: '15/06/2026', time: '8:00 - 11:30', title: 'Ngày hội "Ngôi nhà mơ ước" lần 3', slots: '50 gia đình' },
-];
+export default async function CLBNgoiNhaMoUocPage() {
+  const apiArticles = await getArticles();
+  const articles = apiArticles.length > 0
+    ? apiArticles.map((a: any) => ({
+        title: a.title,
+        description: a.excerpt || a.description || '',
+        category: a.category?.name || 'CLB',
+        date: new Date(a.published_at || a.created_at).toLocaleDateString('vi-VN'),
+        slug: a.slug,
+      }))
+    : placeholderArticles;
 
-export default function CLBNgoiNhaMoUocPage() {
   return (
     <div>
-      <PageBanner
-        title="CLB Ngôi nhà mơ ước"
-        description="Chương trình trải nghiệm dành cho phụ huynh và các bé chuẩn bị vào lớp 1"
-        breadcrumbItems={[
-          { label: 'Tuyển sinh', href: '/tuyen-sinh/thong-tin' },
-          { label: 'CLB Ngôi nhà mơ ước' },
-        ]}
-        bgClass="bg-gradient-to-r from-pink-600 to-rose-500"
-      />
-
-      {/* Intro */}
-      <section className="max-w-7xl mx-auto px-4 py-12 lg:py-16">
-        <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-xl lg:text-2xl font-bold text-slate-900 mb-4">
-            Hãy đến và cảm nhận!
-          </h2>
-          <p className="text-sm text-slate-600 leading-relaxed">
-            CLB &ldquo;Ngôi nhà mơ ước&rdquo; là chương trình đặc biệt giúp phụ huynh và các bé
-            trải nghiệm thực tế môi trường học tập tại Trường Tiểu học Lê Quý Đôn
-            trước khi đưa ra quyết định. Tham gia miễn phí, đăng ký trước để đảm bảo chỗ.
-          </p>
+      {/* Breadcrumb */}
+      <div className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4">
+          <Breadcrumb items={[
+            { label: 'Tuyển sinh', href: '/tuyen-sinh/thong-tin' },
+            { label: 'CLB Ngôi nhà mơ ước' },
+          ]} />
         </div>
+      </div>
 
-        {/* Activities */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {activities.map((a) => (
-            <div key={a.title} className="bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md transition-shadow">
-              <div className="w-10 h-10 bg-rose-50 rounded-lg flex items-center justify-center mb-3">
-                <a.icon className="w-5 h-5 text-rose-600" />
-              </div>
-              <h3 className="font-semibold text-slate-900 mb-2 text-sm">{a.title}</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">{a.desc}</p>
+      {/* Section title */}
+      <section className="max-w-7xl mx-auto px-4 pt-8">
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">TIN TỨC SỰ KIỆN</span>
+            <div className="flex gap-0.5">
+              <span className="w-6 h-1 bg-green-700 rounded-full" />
+              <span className="w-6 h-1 bg-red-600 rounded-full" />
+              <span className="w-6 h-1 bg-green-700 rounded-full" />
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Upcoming events */}
-      <section className="bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 py-12 lg:py-16">
-          <h2 className="text-xl lg:text-2xl font-bold text-slate-900 mb-8">Lịch tổ chức sắp tới</h2>
-          <div className="space-y-4">
-            {upcomingEvents.map((e, i) => (
-              <div key={i} className="bg-white rounded-xl border border-slate-200 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-rose-600 text-white rounded-xl flex flex-col items-center justify-center flex-shrink-0">
-                    <span className="text-lg font-bold leading-none">{e.date.split('/')[0]}</span>
-                    <span className="text-[10px] opacity-80">{`Th${e.date.split('/')[1]}`}</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-slate-900 text-sm">{e.title}</h3>
-                    <p className="text-xs text-slate-500 mt-1">
-                      {e.time} • Còn {e.slots}
-                    </p>
-                  </div>
-                </div>
-                <Link
-                  href="/lien-he"
-                  className="px-4 py-2 bg-rose-600 text-white text-sm font-medium rounded-lg hover:bg-rose-700 transition-colors self-start sm:self-center"
-                >
-                  Đăng ký
-                </Link>
-              </div>
-            ))}
           </div>
+          <h2 className="text-2xl font-bold text-slate-900">Tuyển sinh CLB Ngôi nhà mơ ước</h2>
         </div>
-      </section>
 
-      {/* Gallery */}
-      <section className="max-w-7xl mx-auto px-4 py-12 lg:py-16">
-        <h2 className="text-xl lg:text-2xl font-bold text-slate-900 mb-8">Hình ảnh các kỳ trước</h2>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          {['Tham quan sân trường', 'Lớp học trải nghiệm', 'Hoạt động nhóm', 'Trao quà'].map((label) => (
-            <div key={label} className="h-36 lg:h-48 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 text-sm">
-              {label}
+        {/* Main content + Sidebar */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Articles list */}
+          <div className="lg:col-span-2 space-y-5">
+            {articles.map((a: any) => (
+              <ArticleCard key={a.slug} {...a} variant="list" />
+            ))}
+
+            {/* Pagination */}
+            <div className="flex justify-center gap-2 pt-6 pb-8">
+              <button className="w-9 h-9 rounded-lg bg-green-700 text-white text-sm font-medium">1</button>
+              <button className="w-9 h-9 rounded-lg bg-slate-100 text-slate-600 text-sm hover:bg-slate-200">2</button>
+              <button className="w-9 h-9 rounded-lg bg-slate-100 text-slate-600 text-sm hover:bg-slate-200">3</button>
             </div>
-          ))}
+          </div>
+
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            <ArticleSidebar />
+          </div>
         </div>
       </section>
     </div>

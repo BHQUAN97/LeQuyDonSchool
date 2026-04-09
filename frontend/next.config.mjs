@@ -2,6 +2,19 @@ const isProd = process.env.NODE_ENV === 'production' && process.env.BUILD_MODE !
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Security headers — chong XSS, clickjacking, MIME sniffing
+  headers: async () => [
+    {
+      source: '/(.*)',
+      headers: [
+        { key: 'X-Content-Type-Options', value: 'nosniff' },
+        { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+        { key: 'X-XSS-Protection', value: '1; mode=block' },
+        { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+        { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+      ],
+    },
+  ],
   allowedDevOrigins: ['demo.remoteterminal.online'],
   // Skip TS/ESLint during build — chay rieng trong CI/dev
   typescript: { ignoreBuildErrors: false },

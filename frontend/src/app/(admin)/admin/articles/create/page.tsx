@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import RichTextEditor from '@/components/admin/RichTextEditor';
 import { generateSlug } from '@/lib/slug';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface ApiResponse {
   success: boolean;
@@ -22,6 +23,8 @@ export default function CreateArticlePage() {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [slugManual, setSlugManual] = useState(false);
+  const [createError, setCreateError] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Form state
   const [title, setTitle] = useState('');
@@ -57,14 +60,14 @@ export default function CreateArticlePage() {
 
   /** Luu bai viet */
   const handleSave = async (saveStatus: string) => {
-    if (!title.trim()) {
-      alert('Vui lòng nhập tiêu đề');
+    const newErrors: Record<string, string> = {};
+    if (!title.trim()) newErrors.title = 'Vui lòng nhập tiêu đề';
+    if (!content.trim()) newErrors.content = 'Vui lòng nhập nội dung';
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
-    if (!content.trim()) {
-      alert('Vui lòng nhập nội dung');
-      return;
-    }
+    setErrors({});
 
     setSaving(true);
     try {
@@ -87,7 +90,7 @@ export default function CreateArticlePage() {
       });
       router.push('/admin/articles');
     } catch (err: any) {
-      alert(err.message || 'Không thể tạo bài viết');
+      setCreateError(err.message || 'Không thể tạo bài viết');
     } finally {
       setSaving(false);
     }
@@ -119,10 +122,11 @@ export default function CreateArticlePage() {
               <input
                 type="text"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => { setTitle(e.target.value); if (errors.title) setErrors((prev) => ({ ...prev, title: '' })); }}
                 placeholder="Nhập tiêu đề bài viết..."
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent ${errors.title ? 'border-red-500' : 'border-slate-300'}`}
               />
+              {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
             </div>
 
             {/* Slug */}
@@ -168,11 +172,13 @@ export default function CreateArticlePage() {
               <label className="block text-sm font-medium text-slate-700 mb-1">Tóm tắt</label>
               <textarea
                 value={excerpt}
-                onChange={(e) => setExcerpt(e.target.value)}
+                onChange={(e) => { if (e.target.value.length <= 300) setExcerpt(e.target.value); }}
                 placeholder="Mô tả ngắn về bài viết..."
                 rows={3}
+                maxLength={300}
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent resize-y"
               />
+              <p className={`text-xs mt-1 ${excerpt.length >= 280 ? 'text-orange-500' : 'text-slate-400'}`}>{excerpt.length}/300</p>
             </div>
           </div>
         </div>
@@ -242,20 +248,24 @@ export default function CreateArticlePage() {
               <input
                 type="text"
                 value={seoTitle}
-                onChange={(e) => setSeoTitle(e.target.value)}
+                onChange={(e) => { if (e.target.value.length <= 60) setSeoTitle(e.target.value); }}
                 placeholder="Tiêu đề SEO"
+                maxLength={60}
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
               />
+              <p className={`text-xs mt-1 ${seoTitle.length >= 50 ? 'text-orange-500' : 'text-slate-400'}`}>{seoTitle.length}/60</p>
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">SEO Description</label>
               <textarea
                 value={seoDescription}
-                onChange={(e) => setSeoDescription(e.target.value)}
+                onChange={(e) => { if (e.target.value.length <= 160) setSeoDescription(e.target.value); }}
                 placeholder="Mô tả SEO"
                 rows={3}
+                maxLength={160}
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent resize-y"
               />
+              <p className={`text-xs mt-1 ${seoDescription.length >= 140 ? 'text-orange-500' : 'text-slate-400'}`}>{seoDescription.length}/160</p>
             </div>
           </div>
 
@@ -278,6 +288,18 @@ export default function CreateArticlePage() {
           </div>
         </div>
       </div>
+
+      {/* Error dialog */}
+      <ConfirmDialog
+        open={!!createError}
+        title="Lỗi"
+        message={createError}
+        confirmLabel="Đóng"
+        cancelLabel="Đóng"
+        variant="warning"
+        onConfirm={() => setCreateError('')}
+        onCancel={() => setCreateError('')}
+      />
     </div>
   );
 }

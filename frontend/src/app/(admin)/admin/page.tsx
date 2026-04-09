@@ -26,9 +26,11 @@ export default function DashboardPage() {
     recentRegistrations: [],
   });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchDashboard = useCallback(async () => {
     setLoading(true);
+    setError(null);
     try {
       // Goi song song 3 API de lay thong ke tong quan
       const [articlesRes, contactsRes, registrationsRes] = await Promise.allSettled([
@@ -62,6 +64,7 @@ export default function DashboardPage() {
       setData(newData);
     } catch (err) {
       console.error('Loi tai dashboard:', err);
+      setError('Không thể tải dữ liệu dashboard. Vui lòng thử lại.');
     } finally {
       setLoading(false);
     }
@@ -74,6 +77,14 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
+
+      {/* Error banner */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm flex items-center justify-between">
+          <span>{error}</span>
+          <button onClick={() => { setError(null); fetchDashboard(); }} className="text-red-700 hover:text-red-900 font-medium ml-4">Thử lại</button>
+        </div>
+      )}
 
       {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -89,9 +100,15 @@ export default function DashboardPage() {
         ) : (
           <>
             <StatCard label="Lượt truy cập hôm nay" value="—" icon={Eye} trend="Chưa tích hợp analytics" />
-            <StatCard label="Tổng bài viết" value={data.totalArticles} icon={FileText} />
-            <StatCard label="Liên hệ mới" value={data.newContacts} icon={Mail} />
-            <StatCard label="Đăng ký tuyển sinh" value={data.newRegistrations} icon={GraduationCap} />
+            <Link href="/admin/articles" className="block hover:ring-2 hover:ring-green-500 rounded-xl transition-shadow">
+              <StatCard label="Tổng bài viết" value={data.totalArticles} icon={FileText} />
+            </Link>
+            <Link href="/admin/contacts" className="block hover:ring-2 hover:ring-green-500 rounded-xl transition-shadow">
+              <StatCard label="Liên hệ mới" value={data.newContacts} icon={Mail} />
+            </Link>
+            <Link href="/admin/admissions" className="block hover:ring-2 hover:ring-green-500 rounded-xl transition-shadow">
+              <StatCard label="Đăng ký tuyển sinh" value={data.newRegistrations} icon={GraduationCap} />
+            </Link>
           </>
         )}
       </div>

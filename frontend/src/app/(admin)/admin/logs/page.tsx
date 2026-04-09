@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 // ─── TYPES ───────────────────────────────────────────────
 
@@ -107,6 +108,10 @@ function AccessLogsTab() {
   // Bulk delete
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
+  // Confirm dialog state cho xoa log
+  const [confirmAction, setConfirmAction] = useState<{ type: 'bulk' | 'all'; message: string } | null>(null);
+  const [logError, setLogError] = useState('');
+
   // Debounce search input
   useEffect(() => {
     const timer = setTimeout(() => { setSearch(searchInput); setPage(1); }, 400);
@@ -165,36 +170,40 @@ function AccessLogsTab() {
     }
   };
 
-  /** Xoa nhieu log da chon */
-  const handleBulkDelete = async () => {
+  /** Mo confirm dialog xoa nhieu log */
+  const handleBulkDelete = () => {
     if (selectedIds.size === 0) return;
-    if (!confirm(`Xoa ${selectedIds.size} log da chon?`)) return;
-    try {
-      await api('/logs/bulk', {
-        method: 'DELETE',
-        body: JSON.stringify({ ids: Array.from(selectedIds) }),
-      });
-      setSelectedIds(new Set());
-      fetchLogs();
-      fetchStats();
-    } catch (err: any) {
-      alert(err.message || 'Loi khi xoa');
-    }
+    setConfirmAction({ type: 'bulk', message: `Xóa ${selectedIds.size} log đã chọn?` });
   };
 
-  /** Xoa tat ca log */
-  const handleDeleteAll = async () => {
+  /** Mo confirm dialog xoa tat ca log */
+  const handleDeleteAll = () => {
     const msg = levelFilter
-      ? `Xoa tat ca log level "${levelFilter}"?`
-      : 'Xoa TAT CA log? Hanh dong nay khong the hoan tac.';
-    if (!confirm(msg)) return;
+      ? `Xóa tất cả log level "${levelFilter}"?`
+      : 'Xóa TẤT CẢ log? Hành động này không thể hoàn tác.';
+    setConfirmAction({ type: 'all', message: msg });
+  };
+
+  /** Thuc hien xoa sau khi xac nhan */
+  const handleConfirmDelete = async () => {
+    if (!confirmAction) return;
     try {
-      const params = levelFilter ? `?level=${levelFilter}` : '';
-      await api(`/logs/all${params}`, { method: 'DELETE' });
+      if (confirmAction.type === 'bulk') {
+        await api('/logs/bulk', {
+          method: 'DELETE',
+          body: JSON.stringify({ ids: Array.from(selectedIds) }),
+        });
+        setSelectedIds(new Set());
+      } else {
+        const params = levelFilter ? `?level=${levelFilter}` : '';
+        await api(`/logs/all${params}`, { method: 'DELETE' });
+      }
+      setConfirmAction(null);
       fetchLogs();
       fetchStats();
     } catch (err: any) {
-      alert(err.message || 'Loi khi xoa');
+      setConfirmAction(null);
+      setLogError(err.message || 'Lỗi khi xóa');
     }
   };
 
@@ -412,8 +421,8 @@ function AccessLogsTab() {
       {/* Bang danh sach */}
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-slate-200">
+          <table className="w-full min-w-[900px] text-sm">
+            <thead className="bg-slate-50 border-b border-slate-200 sticky top-0 z-10">
               <tr>
                 <th className="text-left px-4 py-3 w-10">
                   <input
@@ -519,6 +528,30 @@ function AccessLogsTab() {
           </div>
         )}
       </div>
+
+      {/* Confirm dialog xoa log */}
+      <ConfirmDialog
+        open={!!confirmAction}
+        title="Xóa log"
+        message={confirmAction?.message || ''}
+        confirmLabel="Xóa"
+        cancelLabel="Hủy"
+        variant="danger"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setConfirmAction(null)}
+      />
+
+      {/* Error dialog */}
+      <ConfirmDialog
+        open={!!logError}
+        title="Lỗi"
+        message={logError}
+        confirmLabel="Đóng"
+        cancelLabel="Đóng"
+        variant="warning"
+        onConfirm={() => setLogError('')}
+        onCancel={() => setLogError('')}
+      />
     </>
   );
 }
@@ -765,8 +798,8 @@ function AdminActionsTab() {
       {/* Bang danh sach */}
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-slate-200">
+          <table className="w-full min-w-[800px] text-sm">
+            <thead className="bg-slate-50 border-b border-slate-200 sticky top-0 z-10">
               <tr>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Hanh dong</th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Mo ta</th>

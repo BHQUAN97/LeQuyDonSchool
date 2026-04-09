@@ -1,154 +1,116 @@
-'use client';
+import { Metadata } from 'next';
+import Breadcrumb from '@/components/public/Breadcrumb';
+import AccordionFAQ from './AccordionFAQ';
+import { buildPageMetadata } from '@/lib/seo-helpers';
 
-import { useState } from 'react';
-import PageBanner from '@/components/public/PageBanner';
-import { ChevronDown } from 'lucide-react';
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Câu hỏi thường gặp - Tuyển sinh',
+  description:
+    'Giải đáp các câu hỏi thường gặp về tuyển sinh Trường Tiểu học Lê Quý Đôn: đối tượng, thời gian, hồ sơ, quy trình tuyển sinh.',
+  path: '/tuyen-sinh/cau-hoi-thuong-gap',
+});
 
-const faqCategories = [
-  { id: 'tuyen-sinh', label: 'Tuyển sinh' },
-  { id: 'hoc-phi', label: 'Học phí' },
-  { id: 'chuong-trinh', label: 'Chương trình' },
-  { id: 'khac', label: 'Khác' },
-];
+const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
 
-const faqs = [
+/** Danh sach FAQ mac dinh — fallback khi API chua co du lieu */
+const DEFAULT_FAQS = [
   {
-    category: 'tuyen-sinh',
-    question: 'Điều kiện tuyển sinh lớp 1 là gì?',
+    question: 'Đối tượng tuyển sinh?',
     answer:
-      'Trẻ đủ 6 tuổi (tính theo năm) tại thời điểm nhập học. Phụ huynh nộp hồ sơ gồm: đơn xin nhập học, giấy khai sinh (bản sao), sổ hộ khẩu (bản sao), giấy khám sức khỏe. Trẻ tham gia buổi kiểm tra đánh giá sự sẵn sàng.',
+      'Trường tuyển sinh học sinh từ lớp 1 đến lớp 5. Đối với lớp 1, trẻ cần đủ 6 tuổi tính theo năm tại thời điểm nhập học. Đối với các lớp 2-5, trường nhận tuyển sinh bổ sung khi còn chỉ tiêu.',
   },
   {
-    category: 'tuyen-sinh',
-    question: 'Trường có nhận tuyển sinh giữa năm học không?',
+    question: 'Thời gian tuyển sinh?',
     answer:
-      'Có, trường nhận hồ sơ tuyển sinh bổ sung từ lớp 2 đến lớp 5 khi còn chỉ tiêu. Học sinh cần tham gia kiểm tra đánh giá năng lực trước khi nhập học.',
+      'Thời gian nhận hồ sơ tuyển sinh lớp 1 thường bắt đầu từ tháng 3 hàng năm. Tuyển sinh bổ sung các lớp khác nhận hồ sơ quanh năm khi còn chỉ tiêu.',
   },
   {
-    category: 'tuyen-sinh',
-    question: 'Thời gian đăng ký tuyển sinh là khi nào?',
+    question: 'Hồ sơ tuyển sinh gồm những gì?',
     answer:
-      'Thời gian nhận hồ sơ tuyển sinh lớp 1 thường bắt đầu từ tháng 3 hàng năm. Tuyển sinh bổ sung các lớp khác nhận hồ sơ quanh năm.',
+      'Hồ sơ tuyển sinh bao gồm: Đơn xin nhập học (theo mẫu của trường), giấy khai sinh (bản sao công chứng), sổ hộ khẩu (bản sao), giấy khám sức khỏe, học bạ (đối với lớp 2-5), và 4 ảnh thẻ 3x4.',
   },
   {
-    category: 'hoc-phi',
-    question: 'Học phí một năm là bao nhiêu?',
+    question: 'Quy trình tuyển sinh?',
     answer:
-      'Học phí được công bố chi tiết trong buổi tư vấn tuyển sinh. Học phí bao gồm: học phí chính khóa, phí bán trú, phí Tiếng Anh tăng cường, và các hoạt động ngoại khóa. Phụ huynh vui lòng liên hệ phòng tuyển sinh để nhận bảng học phí chi tiết.',
+      'Quy trình gồm 4 bước: (1) Phụ huynh nộp hồ sơ trực tiếp hoặc online, (2) Nhà trường xét duyệt hồ sơ, (3) Học sinh tham gia buổi đánh giá sự sẵn sàng, (4) Nhận kết quả và hoàn tất thủ tục nhập học.',
   },
   {
-    category: 'hoc-phi',
-    question: 'Trường có chính sách học bổng không?',
+    question: 'Thời gian học?',
     answer:
-      'Có, trường có chương trình học bổng hàng năm gồm: Học bổng toàn phần cho học sinh xuất sắc, Học bổng bán phần (50%) theo kết quả đầu vào, Ưu đãi anh chị em ruột cùng theo học.',
+      'Học sinh học từ 7:30 đến 16:30 hàng ngày (bán trú). Buổi sáng học các môn chính khóa, buổi chiều học các môn năng khiếu, thể chất và ngoại khóa. Bữa trưa và giờ nghỉ trưa từ 11:30 đến 13:30.',
   },
   {
-    category: 'chuong-trinh',
-    question: 'Chương trình học có gì khác biệt?',
+    question: 'Con chuyển trường từ trường khác đến thì thủ tục như thế nào?',
     answer:
-      'Trường áp dụng chương trình giáo dục quốc gia nâng cao, kết hợp Tiếng Anh tăng cường với giáo viên bản ngữ, giáo dục thể chất & nghệ thuật, và phát triển kỹ năng sống. Học sinh học 2 buổi/ngày với sĩ số nhỏ (tối đa 35 em/lớp).',
+      'Phụ huynh cần chuẩn bị: Đơn xin chuyển trường, học bạ gốc có xác nhận của trường cũ, giấy giới thiệu chuyển trường, giấy khai sinh (bản sao), và sổ hộ khẩu (bản sao). Học sinh sẽ tham gia kiểm tra đánh giá năng lực trước khi nhập học.',
   },
   {
-    category: 'chuong-trinh',
-    question: 'Thời gian học trong ngày như thế nào?',
+    question: 'Sau khi đăng ký ghi danh, bao lâu thì tôi nhận được email xác nhận từ Nhà trường?',
     answer:
-      'Học sinh học từ 7:30 đến 16:30 (bán trú). Buổi sáng: các môn học chính. Buổi chiều: các môn năng khiếu, thể chất, ngoại khóa. Bữa trưa và giờ nghỉ trưa từ 11:30 đến 13:30.',
+      'Sau khi nhận được hồ sơ đăng ký, Nhà trường sẽ gửi email xác nhận trong vòng 2-3 ngày làm việc. Nếu sau 3 ngày chưa nhận được phản hồi, phụ huynh vui lòng liên hệ phòng tuyển sinh qua hotline hoặc email.',
   },
   {
-    category: 'khac',
-    question: 'Trường có xe đưa đón không?',
+    question: 'Tôi cần tư vấn chi tiết thì có thể liên hệ như thế nào?',
     answer:
-      'Có, trường tổ chức xe đưa đón học sinh theo các tuyến cố định trong nội thành Hà Nội. Phí xe bus tính riêng theo khoảng cách. Phụ huynh đăng ký khi nhập học.',
-  },
-  {
-    category: 'khac',
-    question: 'Làm thế nào để theo dõi tình hình học tập của con?',
-    answer:
-      'Phụ huynh theo dõi qua: Ứng dụng điện tử (nhận thông báo, xem điểm, xem ảnh); Sổ liên lạc điện tử hàng tuần; Họp phụ huynh 4 lần/năm; Trao đổi trực tiếp với giáo viên qua email/điện thoại.',
+      'Phụ huynh có thể liên hệ qua: Hotline tuyển sinh, Email phòng tuyển sinh, hoặc đến trực tiếp Văn phòng tuyển sinh tại trường trong giờ hành chính (8:00 - 17:00, thứ Hai đến thứ Sáu). Ngoài ra, phụ huynh có thể đặt lịch hẹn tư vấn trực tuyến trên website.',
   },
 ];
 
-function FAQItem({ question, answer }: { question: string; answer: string }) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="border border-slate-200 rounded-xl overflow-hidden">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-4 lg:p-5 text-left hover:bg-slate-50 transition-colors"
-      >
-        <span className="font-medium text-slate-900 text-sm pr-4">{question}</span>
-        <ChevronDown
-          className={`w-5 h-5 text-slate-400 flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-        />
-      </button>
-      {isOpen && (
-        <div className="px-4 pb-4 lg:px-5 lg:pb-5">
-          <p className="text-sm text-slate-600 leading-relaxed">{answer}</p>
-        </div>
-      )}
-    </div>
-  );
+interface FAQItem {
+  question: string;
+  answer: string;
 }
 
-export default function CauHoiThuongGapPage() {
-  const [activeCategory, setActiveCategory] = useState('tuyen-sinh');
-  const filteredFaqs = faqs.filter((f) => f.category === activeCategory);
+/** Lay danh sach FAQ tu API, fallback ve du lieu mac dinh */
+async function getFAQs(): Promise<FAQItem[]> {
+  try {
+    const res = await fetch(`${INTERNAL_API}/admissions/faqs/public`, {
+      next: { revalidate: 300 },
+    });
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) return data;
+    return DEFAULT_FAQS;
+  } catch {
+    return DEFAULT_FAQS;
+  }
+}
+
+export default async function CauHoiThuongGapPage() {
+  const faqs = await getFAQs();
 
   return (
     <div>
-      <PageBanner
-        title="Câu hỏi thường gặp"
-        description="Giải đáp những thắc mắc phổ biến của phụ huynh"
-        breadcrumbItems={[
-          { label: 'Tuyển sinh', href: '/tuyen-sinh/thong-tin' },
-          { label: 'Câu hỏi thường gặp' },
-        ]}
-      />
-
-      <section className="max-w-7xl mx-auto px-4 py-8 lg:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Category sidebar */}
-          <div className="lg:col-span-1">
-            <div className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible">
-              {faqCategories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                    activeCategory === cat.id
-                      ? 'bg-green-700 text-white'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* FAQ list */}
-          <div className="lg:col-span-3 space-y-3">
-            {filteredFaqs.map((faq, i) => (
-              <FAQItem key={i} question={faq.question} answer={faq.answer} />
-            ))}
-          </div>
+      {/* Breadcrumb */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4">
+          <Breadcrumb items={[{ label: 'Q&A' }]} />
         </div>
+      </div>
+
+      {/* Section title voi flag bars */}
+      <section className="max-w-7xl mx-auto px-4 pt-8 lg:pt-12">
+        <div className="mb-8">
+          {/* Flag bars — xanh/do/xanh */}
+          <div className="flex items-center gap-1 mb-3">
+            <span className="w-8 h-1 bg-green-700 rounded-full" />
+            <span className="w-4 h-1 bg-red-600 rounded-full" />
+            <span className="w-8 h-1 bg-green-700 rounded-full" />
+          </div>
+          <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-2">
+            TUYỂN SINH
+          </h1>
+          <p className="text-base text-slate-600">
+            Q&A - Câu hỏi thường gặp về Tuyển sinh
+          </p>
+        </div>
+
+        {/* Accordion FAQ */}
+        <AccordionFAQ faqs={faqs} />
       </section>
 
-      {/* Still have questions */}
-      <section className="bg-green-800 text-white">
-        <div className="max-w-7xl mx-auto px-4 py-12 text-center">
-          <h2 className="text-xl font-bold mb-3">Chưa tìm thấy câu trả lời?</h2>
-          <p className="text-sm opacity-90 mb-6">Liên hệ với chúng tôi để được tư vấn trực tiếp</p>
-          <a
-            href="/lien-he"
-            className="inline-flex px-6 py-3 bg-white text-green-800 font-semibold rounded-lg hover:bg-slate-50 transition-colors text-sm"
-          >
-            Liên hệ ngay
-          </a>
-        </div>
-      </section>
+      {/* Spacing bottom — them padding cho mobile nav bar */}
+      <div className="h-20 md:h-16" />
     </div>
   );
 }

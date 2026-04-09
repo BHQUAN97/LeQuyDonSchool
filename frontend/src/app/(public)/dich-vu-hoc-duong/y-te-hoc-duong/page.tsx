@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
-import PageBanner from '@/components/public/PageBanner';
-import { Heart, Stethoscope, Shield, Activity, Eye, Smile } from 'lucide-react';
+import Image from 'next/image';
+import Breadcrumb from '@/components/public/Breadcrumb';
 import { buildPageMetadata } from '@/lib/seo-helpers';
 
 export const metadata: Metadata = buildPageMetadata({
@@ -10,121 +10,107 @@ export const metadata: Metadata = buildPageMetadata({
   path: '/dich-vu-hoc-duong/y-te-hoc-duong',
 });
 
-const services = [
+/** Cac section noi dung trang Y te hoc duong */
+const contentSections = [
   {
-    icon: Stethoscope,
-    title: 'Phòng y tế thường trực',
-    desc: 'Nhân viên y tế có mặt suốt thời gian học, sẵn sàng xử lý các tình huống sức khỏe.',
-  },
-  {
-    icon: Shield,
-    title: 'Khám sức khỏe định kỳ',
-    desc: 'Tổ chức khám sức khỏe toàn diện 2 lần/năm phối hợp bệnh viện uy tín.',
-  },
-  {
-    icon: Activity,
-    title: 'Theo dõi thể chất',
-    desc: 'Đo chiều cao, cân nặng, thị lực hàng quý. Cập nhật hồ sơ sức khỏe điện tử.',
-  },
-  {
-    icon: Eye,
-    title: 'Chăm sóc thị lực',
-    desc: 'Kiểm tra thị lực định kỳ, tư vấn phòng ngừa cận thị cho học sinh.',
-  },
-  {
-    icon: Smile,
-    title: 'Nha khoa học đường',
-    desc: 'Khám răng miệng, hướng dẫn vệ sinh răng, phát hiện sớm các vấn đề nha khoa.',
-  },
-  {
-    icon: Heart,
-    title: 'Tâm lý học đường',
-    desc: 'Tư vấn tâm lý, hỗ trợ học sinh vượt qua khó khăn cảm xúc và hòa nhập.',
-  },
-];
+    id: 'tam-quan-trong',
+    title: 'Tầm quan trọng của y tế học đường',
+    content: `Y tế học đường đóng vai trò quan trọng trong việc bảo vệ và nâng cao sức khỏe cho học sinh. Tại Trường Tiểu học Lê Quý Đôn, chúng tôi xây dựng hệ thống y tế toàn diện với đội ngũ nhân viên y tế chuyên nghiệp, phòng y tế đạt chuẩn và quy trình chăm sóc sức khỏe khoa học.
 
-const protocols = [
-  'Phun khử khuẩn toàn trường định kỳ',
-  'Đo thân nhiệt hàng ngày (khi có dịch)',
-  'Tủ thuốc đầy đủ, kiểm tra hạn sử dụng hàng tháng',
-  'Quy trình xử lý tai nạn thương tích chuẩn',
-  'Phối hợp cấp cứu với Bệnh viện gần nhất',
-  'Bảo hiểm y tế cho toàn bộ học sinh',
+Mục tiêu của chương trình y tế học đường là đảm bảo mọi học sinh được theo dõi sức khỏe thường xuyên, phát hiện sớm các vấn đề sức khỏe và có biện pháp can thiệp kịp thời. Chúng tôi phối hợp chặt chẽ với phụ huynh và các cơ sở y tế uy tín để mang lại sự chăm sóc tốt nhất.`,
+    imageLabel: 'Phòng y tế trường học',
+  },
+  {
+    id: 've-sinh-truong-hoc',
+    title: 'Vệ sinh trường học',
+    content: `Vệ sinh trường học là nền tảng của môi trường học tập lành mạnh. Trường thực hiện phun khử khuẩn toàn bộ khuôn viên định kỳ, đặc biệt trong mùa dịch bệnh. Các phòng học, nhà vệ sinh, khu vực ăn uống được vệ sinh hàng ngày theo quy trình nghiêm ngặt.
+
+Hệ thống nước uống được kiểm tra chất lượng định kỳ, đảm bảo an toàn cho học sinh. Thùng rác được phân loại và thu gom đúng quy định. Nhà trường cũng tổ chức các buổi giáo dục ý thức vệ sinh cá nhân cho học sinh.`,
+    imageLabel: 'Vệ sinh trường học',
+  },
+  {
+    id: 'chieu-sang',
+    title: 'Chiếu sáng',
+    content: `Hệ thống chiếu sáng trong phòng học được thiết kế theo tiêu chuẩn quốc gia về chiếu sáng học đường. Ánh sáng đồng đều, không gây chói mắt, giúp bảo vệ thị lực cho học sinh trong quá trình học tập.
+
+Tất cả các phòng học đều sử dụng đèn LED tiết kiệm năng lượng với cường độ ánh sáng phù hợp. Rèm cửa được lắp đặt để điều chỉnh ánh sáng tự nhiên, tránh tình trạng chói lóa. Nhà trường kiểm tra và bảo trì hệ thống chiếu sáng định kỳ hàng tháng.`,
+    imageLabel: 'Hệ thống chiếu sáng phòng học',
+  },
+  {
+    id: 'moi-truong-hoc-tap',
+    title: 'Môi trường học tập',
+    content: `Môi trường học tập tại Lê Quý Đôn được thiết kế khoa học, đảm bảo các yếu tố: nhiệt độ phù hợp, thông thoáng, yên tĩnh và an toàn. Mỗi phòng học đều có hệ thống điều hòa, quạt thông gió và cách âm hiệu quả.
+
+Bàn ghế được chọn theo tiêu chuẩn ergonomic phù hợp với từng lứa tuổi, giúp học sinh ngồi đúng tư thế, phòng tránh các bệnh về cột sống. Khoảng cách giữa bảng và bàn học đầu tiên tuân thủ quy định tối thiểu 2.5m.`,
+    imageLabel: 'Môi trường học tập hiện đại',
+  },
+  {
+    id: 'y-te-hoc-duong',
+    title: 'Y tế học đường',
+    content: `Phòng y tế trường được trang bị đầy đủ thiết bị và thuốc men cần thiết, hoạt động suốt thời gian học. Nhân viên y tế có chứng chỉ hành nghề, được đào tạo sơ cấp cứu chuyên nghiệp.
+
+Chương trình y tế học đường bao gồm: khám sức khỏe định kỳ 2 lần/năm phối hợp bệnh viện uy tín, theo dõi chiều cao - cân nặng - thị lực hàng quý, kiểm tra răng miệng và tư vấn dinh dưỡng. Hồ sơ sức khỏe điện tử của mỗi học sinh được cập nhật liên tục và chia sẻ với phụ huynh qua ứng dụng.
+
+Ngoài ra, nhà trường phối hợp với các bệnh viện gần nhất để đảm bảo quy trình cấp cứu nhanh chóng khi cần thiết. Toàn bộ học sinh đều có bảo hiểm y tế.`,
+    imageLabel: 'Phòng y tế trường',
+  },
 ];
 
 export default function YTeHocDuongPage() {
   return (
     <div>
-      <PageBanner
-        title="Y tế học đường"
-        description="Chăm sóc sức khỏe toàn diện, đảm bảo môi trường an toàn cho học sinh"
-        breadcrumbItems={[
-          { label: 'Dịch vụ học đường', href: '/dich-vu-hoc-duong/thuc-don' },
-          { label: 'Y tế học đường' },
-        ]}
-        bgClass="bg-gradient-to-r from-cyan-700 to-teal-600"
-      />
-
-      {/* Services grid */}
-      <section className="max-w-7xl mx-auto px-4 py-12 lg:py-16">
-        <h2 className="text-xl lg:text-2xl font-bold text-slate-900 mb-8">Dịch vụ y tế</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {services.map((s) => (
-            <div key={s.title} className="bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md transition-shadow">
-              <div className="w-10 h-10 bg-teal-50 rounded-lg flex items-center justify-center mb-3">
-                <s.icon className="w-5 h-5 text-teal-700" />
-              </div>
-              <h3 className="font-semibold text-slate-900 mb-2">{s.title}</h3>
-              <p className="text-sm text-slate-600 leading-relaxed">{s.desc}</p>
-            </div>
-          ))}
+      {/* Breadcrumb */}
+      <div className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4">
+          <Breadcrumb items={[
+            { label: 'Dịch vụ học đường', href: '/dich-vu-hoc-duong/thuc-don' },
+            { label: 'Y tế học đường' },
+          ]} />
         </div>
-      </section>
+      </div>
 
-      {/* Health image */}
-      <section className="bg-teal-700 text-white">
-        <div className="max-w-7xl mx-auto px-4 py-12 lg:py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h2 className="text-xl lg:text-2xl font-bold mb-6">Quy trình đảm bảo an toàn</h2>
-              <ul className="space-y-3">
-                {protocols.map((p) => (
-                  <li key={p} className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-teal-300 rounded-full mt-1.5 flex-shrink-0" />
-                    <span className="text-sm opacity-90">{p}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="hidden lg:flex justify-center">
-              <div className="w-72 h-52 bg-white/10 rounded-2xl flex items-center justify-center text-white/50 text-sm">
-                Hình ảnh phòng y tế
-              </div>
+      {/* Section title */}
+      <section className="max-w-7xl mx-auto px-4 pt-8">
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">DICH VU HOC DUONG</span>
+            <div className="flex gap-0.5">
+              <span className="w-6 h-1 bg-green-700 rounded-full" />
+              <span className="w-6 h-1 bg-red-600 rounded-full" />
+              <span className="w-6 h-1 bg-green-700 rounded-full" />
             </div>
           </div>
+          <h2 className="text-2xl font-bold text-slate-900">Y tế học đường</h2>
         </div>
       </section>
 
-      {/* Contact info */}
-      <section className="max-w-7xl mx-auto px-4 py-12 lg:py-16">
-        <div className="bg-slate-50 rounded-xl p-6 lg:p-8">
-          <h2 className="text-lg font-bold text-slate-900 mb-4">Liên hệ phòng Y tế</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-            <div>
-              <p className="text-slate-500">Điện thoại</p>
-              <p className="font-medium text-slate-900">024 1234 5678 (ext. 102)</p>
+      {/* Content sections */}
+      <div className="max-w-7xl mx-auto px-4 pb-12 space-y-12">
+        {contentSections.map((section, index) => (
+          <section key={section.id} id={section.id}>
+            <div className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-8 items-start`}>
+              {/* Image placeholder */}
+              <div className="w-full lg:w-2/5 shrink-0">
+                <div className="w-full h-64 lg:h-72 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 text-sm">
+                  {section.imageLabel}
+                </div>
+              </div>
+
+              {/* Text content */}
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-slate-900 mb-4">{section.title}</h3>
+                <div className="space-y-3">
+                  {section.content.split('\n\n').map((paragraph, pIdx) => (
+                    <p key={pIdx} className="text-sm text-slate-600 leading-relaxed">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              </div>
             </div>
-            <div>
-              <p className="text-slate-500">Email</p>
-              <p className="font-medium text-slate-900">yte@lequydon.edu.vn</p>
-            </div>
-            <div>
-              <p className="text-slate-500">Giờ làm việc</p>
-              <p className="font-medium text-slate-900">7:00 - 17:00 (Thứ 2 - Thứ 6)</p>
-            </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        ))}
+      </div>
     </div>
   );
 }
