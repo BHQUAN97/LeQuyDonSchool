@@ -6,6 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import type { Article, Event, PaginatedResponse } from '@/types';
+import type { HomepageConfig } from '@/types/homepage';
+import { DEFAULT_HOMEPAGE_CONFIG } from '@/types/homepage';
+import BlockSortableList from './components/BlockSortableList';
+import LayoutVariantPicker from './components/LayoutVariantPicker';
+import ThemeEditor from './components/ThemeEditor';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -25,7 +30,7 @@ interface Testimonial {
   avatar_url: string;
 }
 
-type PageTab = 'config' | 'preview';
+type PageTab = 'config' | 'preview' | 'layout' | 'layout-detail' | 'theme';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -68,6 +73,10 @@ export default function HomepageAdminPage() {
   const [recentArticles, setRecentArticles] = useState<Article[]>([]);
   const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
   const [allEvents, setAllEvents] = useState<Event[]>([]);
+
+  // Customizer config — bo cuc + giao dien trang chu
+  const [custConfig, setCustConfig] = useState<HomepageConfig>(DEFAULT_HOMEPAGE_CONFIG);
+  const [savingCust, setSavingCust] = useState(false);
 
   // Toast message
   const [toast, setToast] = useState<{ msg: string; type: 'ok' | 'err' } | null>(null);
@@ -121,6 +130,16 @@ export default function HomepageAdminPage() {
         setFeaturedEventId(flat['featured_event_id'] || '');
       }
 
+      // Load customizer config tu settings API
+      try {
+        const custRes = await api<{ success: boolean; data: HomepageConfig }>('/settings/homepage');
+        if (custRes.success && custRes.data) {
+          setCustConfig(custRes.data);
+        }
+      } catch {
+        // Chua co config — dung default
+      }
+
       if (articlesRes.status === 'fulfilled' && articlesRes.value.success) {
         setRecentArticles(articlesRes.value.data);
       }
@@ -167,6 +186,29 @@ export default function HomepageAdminPage() {
     { key: 'stat_years', value: statYears },
   ]);
   const saveFeaturedEvent = () => saveSettings('featured_event', [{ key: 'featured_event_id', value: featuredEventId }]);
+
+  /** Luu customizer config (blocks + theme) */
+  const saveCustomizerConfig = async () => {
+    setSavingCust(true);
+    try {
+      await api('/settings/homepage', {
+        method: 'PUT',
+        body: JSON.stringify(custConfig),
+      });
+      showToast('Đã lưu cấu hình trang chủ!');
+    } catch (err: any) {
+      showToast(err.message || 'Lỗi khi lưu', 'err');
+    } finally {
+      setSavingCust(false);
+    }
+  };
+
+  /** Khoi phuc mac dinh */
+  const resetCustomizerConfig = () => {
+    if (!window.confirm('Khôi phục bố cục và giao diện về mặc định? Thay đổi chưa lưu sẽ mất.')) return;
+    setCustConfig(DEFAULT_HOMEPAGE_CONFIG);
+    showToast('Đã khôi phục mặc định — nhấn Lưu để áp dụng');
+  };
 
   // ─── Hero slide helpers ───────────────────────────────────────────────────
 
@@ -227,10 +269,13 @@ export default function HomepageAdminPage() {
         </a>
       </div>
 
-      {/* Tab: Cau hinh | Preview */}
-      <div className="flex gap-1 bg-slate-100 rounded-lg p-1">
+      {/* Tabs */}
+      <div className="flex gap-1 bg-slate-100 rounded-lg p-1 overflow-x-auto">
         {[
-          { key: 'config' as PageTab, label: 'Cấu hình' },
+          { key: 'config' as PageTab, label: 'Nội dung' },
+          { key: 'layout' as PageTab, label: 'Bố cục' },
+          { key: 'layout-detail' as PageTab, label: 'Bố cục chi tiết' },
+          { key: 'theme' as PageTab, label: 'Giao diện' },
           { key: 'preview' as PageTab, label: 'Preview' },
         ].map((tab) => (
           <button
@@ -430,6 +475,63 @@ export default function HomepageAdminPage() {
               <SaveButton loading={savingSection === 'featured_event'} onClick={saveFeaturedEvent} />
             </div>
           </SectionAccordion>
+        </div>
+      )}
+
+      {/* ═══════════════════════ LAYOUT TAB (Bo cuc) ═══════════════════════ */}
+      {activeTab === 'layout' && (
+        <div className="space-y-4">
+          <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <h3 className="text-sm font-semibold text-slate-700 mb-1">Sắp xếp các khối trang chủ</h3>
+            <p className="text-xs text-slate-400 mb-4">
+              Kéo thả để thay đổi thứ tự. Bấm biểu tượng mắt để ẩn/hiện.
+            </p>
+            <BlockSortableList
+              blocks={custConfig.blocks}
+              onChange={(blocks) => setCustConfig((prev) => ({ ...prev, blocks }))}
+            />
+          </div>
+          <CustomizerActionBar
+            saving={savingCust}
+            onSave={saveCustomizerConfig}
+            onReset={resetCustomizerConfig}
+          />
+        </div>
+      )}
+
+      {/* ═══════════════════════ LAYOUT DETAIL TAB ═══════════════════════ */}
+      {activeTab === 'layout-detail' && (
+        <div className="space-y-4">
+          <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <h3 className="text-sm font-semibold text-slate-700 mb-1">Chọn kiểu bố cục cho từng khối</h3>
+            <p className="text-xs text-slate-400 mb-4">
+              Mỗi khối có nhiều kiểu hiển thị khác nhau. Chọn kiểu phù hợp nhất.
+            </p>
+          </div>
+          <LayoutVariantPicker
+            blocks={custConfig.blocks}
+            onChange={(blocks) => setCustConfig((prev) => ({ ...prev, blocks }))}
+          />
+          <CustomizerActionBar
+            saving={savingCust}
+            onSave={saveCustomizerConfig}
+            onReset={resetCustomizerConfig}
+          />
+        </div>
+      )}
+
+      {/* ═══════════════════════ THEME TAB ═══════════════════════ */}
+      {activeTab === 'theme' && (
+        <div className="space-y-4">
+          <ThemeEditor
+            theme={custConfig.theme}
+            onChange={(theme) => setCustConfig((prev) => ({ ...prev, theme }))}
+          />
+          <CustomizerActionBar
+            saving={savingCust}
+            onSave={saveCustomizerConfig}
+            onReset={resetCustomizerConfig}
+          />
         </div>
       )}
 
@@ -679,5 +781,42 @@ function SaveButton({ loading, onClick }: { loading: boolean; onClick: () => voi
     >
       {loading ? 'Đang lưu...' : 'Lưu thay đổi'}
     </Button>
+  );
+}
+
+/** Action bar cho cac tab customizer — Khoi phuc | Xem truoc | Luu */
+function CustomizerActionBar({
+  saving,
+  onSave,
+  onReset,
+}: {
+  saving: boolean;
+  onSave: () => void;
+  onReset: () => void;
+}) {
+  return (
+    <div className="flex items-center justify-end gap-3 pt-2">
+      <button
+        onClick={onReset}
+        className="px-4 py-2 text-sm font-medium text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors"
+      >
+        Khôi phục mặc định
+      </button>
+      <a
+        href="/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="px-4 py-2 text-sm font-medium text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors"
+      >
+        Xem trước
+      </a>
+      <Button
+        onClick={onSave}
+        disabled={saving}
+        className="bg-green-600 hover:bg-green-700 text-white"
+      >
+        {saving ? 'Đang lưu...' : 'Lưu thay đổi'}
+      </Button>
+    </div>
   );
 }
