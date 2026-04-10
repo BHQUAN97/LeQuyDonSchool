@@ -1,8 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Setting } from './entities/setting.entity';
+import * as crypto from 'crypto';
+import { Setting, SettingGroup } from './entities/setting.entity';
 import { generateUlid } from '@/common/utils/ulid';
+import { HomepageConfig, DEFAULT_HOMEPAGE_CONFIG, VALID_BLOCK_VARIANTS } from './homepage-config';
+import { UpdateHomepageConfigDto } from './dto/homepage-config.dto';
 
 @Injectable()
 export class SettingsService {
@@ -90,6 +93,78 @@ export class SettingsService {
       result[s.key] = s.value;
     }
     return result;
+  }
+
+  // --- Homepage config ---
+
+  /** Preview store — luu tam config de xem truoc, TTL 1h */
+  private previewStore = new Map<string, { config: HomepageConfig; expires: number }>();
+
+  /**
+   * Validate homepage config — dung chung cho save va preview.
+   */
+  validateHomepageConfig(config: UpdateHomepageConfigDto): void {
+    // Toi thieu 1 block visible
+    const hasVisible = config.blocks.some(b => b.visible);
+    if (!hasVisible) {
+      throw new BadRequestException('Phải giữ tối thiểu 1 section hiển thị');
+    }
+    // Validate variant hop le
+    for (const block of config.blocks) {
+      const validVariants = VALID_BLOCK_VARIANTS[block.id];
+      if (validVariants && !validVariants.includes(block.variant)) {
+        throw new BadRequestException(
+          `Variant "${block.variant}" không hợp lệ cho block "${block.id}"`,
+        );
+      }
+    }
+  }
+
+  /**
+   * Lay homepage config — tra default neu chua co.
+   */
+  async getHomepageConfig(): Promise<HomepageConfig> {
+    const setting = await this.settingRepo.findOne({ where: { key: 'homepage_config' } });
+    if (!setting?.value) return DEFAULT_HOMEPAGE_CONFIG;
+    try {
+      return JSON.parse(setting.value) as HomepageConfig;
+    } catch {
+      return DEFAULT_HOMEPAGE_CONFIG;
+    }
+  }
+
+  /**
+   * Luu homepage config — validate variant truoc khi luu.
+   */
+  async saveHomepageConfig(config: UpdateHomepageConfigDto): Promise<HomepageConfig> {
+    this.validateHomepageConfig(config);
+    const value = JSON.stringify(config);
+    await this.upsert('homepage_config', value, SettingGroup.HOMEPAGE);
+    return config as HomepageConfig;
+  }
+
+  /**
+   * Tao preview token — luu tam config 1h de xem truoc.
+   */
+  createHomepagePreview(config: HomepageConfig): string {
+    const token = crypto.randomUUID();
+    const expires = Date.now() + 60 * 60 * 1000; // 1h
+    this.previewStore.set(token, { config, expires });
+    return token;
+  }
+
+  /**
+   * Lay preview config theo token — tra null neu het han hoac khong ton tai.
+   */
+  getHomepagePreview(token: string): HomepageConfig | null {
+    // Don dep cac entry het han
+    const now = Date.now();
+    for (const [key, entry] of this.previewStore) {
+      if (entry.expires < now) this.previewStore.delete(key);
+    }
+    const entry = this.previewStore.get(token);
+    if (!entry || entry.expires < now) return null;
+    return entry.config;
   }
 
   /**

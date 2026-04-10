@@ -7,6 +7,7 @@ export enum SettingGroup {
   SOCIAL = 'social',
   SEO = 'seo',
   FLOATING = 'floating',
+  HOMEPAGE = 'homepage',
 }
 
 /**
