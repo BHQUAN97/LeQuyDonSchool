@@ -48,4 +48,16 @@ CREATE TABLE IF NOT EXISTS login_attempts (
   INDEX idx_login_attempts_email_time (email, attempted_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-SELECT '[OK] users, refresh_tokens, login_attempts created' AS result;
+-- Seed default Super Admin (dev/staging)
+-- Email: admin@lequydon.edu.vn | Password: Admin@123456
+INSERT INTO users (id, email, password_hash, full_name, role, status)
+VALUES (
+  '01JRQX0000DEFAULT0ADMIN',
+  'admin@lequydon.edu.vn',
+  '$2b$10$A1Sh5G4Zj/jxAEo.jxBxiun3bWtm.Usp4CdFzzlhP.LMWuNXowvkK',
+  'Quản trị viên',
+  'super_admin',
+  'active'
+) ON DUPLICATE KEY UPDATE id = id;
+
+SELECT '[OK] users, refresh_tokens, login_attempts created + default admin seeded' AS result;
