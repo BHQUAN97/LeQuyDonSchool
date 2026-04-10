@@ -195,7 +195,7 @@ describe('AuthService', () => {
     it('should return httpOnly cookie options', () => {
       const options = service.getRefreshCookieOptions();
       expect(options.httpOnly).toBe(true);
-      expect(options.path).toBe('/api/auth');
+      expect(options.path).toBe('/');
       expect(options.sameSite).toBe('lax');
     });
   });
