@@ -7,13 +7,18 @@ import FeaturesSection from './FeaturesSection';
 import TestimonialSection from './TestimonialSection';
 import type { HomepageConfig } from '@/types/homepage';
 
+interface SectionProps {
+  variant: string;
+  articles?: { title: string; slug: string; [key: string]: unknown }[];
+}
+
 interface Props {
   config: HomepageConfig;
-  articles?: any[];
+  articles?: { title: string; slug: string; [key: string]: unknown }[];
   isPreview?: boolean;
 }
 
-const SECTION_MAP: Record<string, React.ComponentType<any>> = {
+const SECTION_MAP: Record<string, React.ComponentType<SectionProps>> = {
   hero: HeroSection,
   news: NewsSection,
   features: FeaturesSection,
@@ -32,10 +37,17 @@ export default function HomepageRenderer({ config, articles = [], isPreview = fa
           Dang xem truoc — Chua duoc luu
         </div>
       )}
-      {visibleBlocks.map((block) => {
+      {visibleBlocks.map((block, idx) => {
         const Section = SECTION_MAP[block.id];
         if (!Section) return null;
-        return <Section key={block.id} variant={block.variant} articles={articles} />;
+        return (
+          <div
+            key={block.id}
+            style={idx > 0 ? { paddingTop: 'var(--hp-spacing, 4rem)' } : undefined}
+          >
+            <Section variant={block.variant} articles={articles} />
+          </div>
+        );
       })}
     </ThemeProvider>
   );

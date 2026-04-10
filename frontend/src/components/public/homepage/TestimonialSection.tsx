@@ -63,7 +63,7 @@ function TestimonialYearBanner() {
         </div>
         {/* Emblem goc trai tren */}
         <div className="absolute top-4 left-4 flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-green-700/80 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'color-mix(in srgb, var(--hp-primary, #15803d) 80%, transparent)' }}>
             <span className="text-white font-bold text-[7px]">LQD</span>
           </div>
         </div>
@@ -104,7 +104,7 @@ function TestimonialSimpleCarousel() {
           showDots={true}
           showArrows={true}
           arrowStyle="circle"
-          dotActiveClass="bg-green-700"
+          dotActiveClass="bg-[var(--hp-primary,#15803d)]"
           dotInactiveClass="bg-gray-300"
           className="min-h-[280px]"
           renderSlide={(index) => {
@@ -120,7 +120,7 @@ function TestimonialSimpleCarousel() {
                 </p>
                 {/* Author */}
                 <div className="flex items-center justify-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-sm border-2 border-green-200">
+                  <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-[var(--hp-primary,#15803d)] font-bold text-sm border-2 border-green-200">
                     {t.name.split(' ').pop()?.charAt(0)}
                   </div>
                   <div className="text-left">
@@ -176,7 +176,7 @@ function TestimonialCards() {
 
               {/* Author */}
               <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-                <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-sm shrink-0">
+                <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-[var(--hp-primary,#15803d)] font-bold text-sm shrink-0">
                   {t.name.split(' ').pop()?.charAt(0)}
                 </div>
                 <div>

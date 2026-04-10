@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import {
   IsArray, IsBoolean, IsHexColor, IsIn, IsInt, IsNotEmpty,
-  IsOptional, IsString, IsUrl, MaxLength, Min, ValidateNested,
+  IsOptional, IsString, IsUrl, Max, MaxLength, Min, ValidateNested,
   ArrayMinSize, ArrayMaxSize, ValidateIf,
 } from 'class-validator';
 import { VALID_FONTS, VALID_BLOCK_VARIANTS } from '../homepage-config';
@@ -25,6 +25,7 @@ export class HomepageBlockDto {
 
   @IsInt()
   @Min(0)
+  @Max(100)
   order!: number;
 }
 

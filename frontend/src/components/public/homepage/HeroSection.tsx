@@ -21,7 +21,7 @@ function HeroWithSidebar() {
       </div>
 
       {/* Sidebar — 1 cot */}
-      <div className="bg-gradient-to-b from-green-700 to-green-900 text-white p-6 lg:p-8 flex flex-col justify-between">
+      <div className="text-white p-6 lg:p-8 flex flex-col justify-between" style={{ background: 'linear-gradient(to bottom, var(--hp-primary, #15803d), color-mix(in srgb, var(--hp-primary, #15803d) 70%, black))' }}>
         {/* Logo + ten truong */}
         <div>
           <div className="flex items-center gap-3 mb-6">
@@ -104,7 +104,7 @@ function HeroMinimal() {
         </p>
         <Link
           href="/tuyen-sinh"
-          className="inline-flex items-center px-8 py-4 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-colors shadow-lg text-sm"
+          className="inline-flex items-center px-8 py-4 bg-[var(--hp-accent,#D32F2F)] text-white font-bold rounded-lg hover:opacity-90 transition-colors shadow-lg text-sm"
         >
           Tim hieu ngay
         </Link>

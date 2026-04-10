@@ -13,9 +13,21 @@ function imageUrl(url?: string | null): string | null {
   return `${PUBLIC_UPLOADS}${url}`;
 }
 
+interface ArticleItem {
+  title: string;
+  slug: string;
+  excerpt?: string;
+  description?: string;
+  thumbnail_url?: string | null;
+  published_at?: string;
+  created_at?: string;
+  category?: { name: string };
+  [key: string]: unknown;
+}
+
 interface Props {
   variant: string;
-  articles?: any[];
+  articles?: ArticleItem[];
 }
 
 /* ==========================================
@@ -23,7 +35,7 @@ interface Props {
  * Featured article + Event sidebar + grid carousel
  * — copy tu page.tsx hien tai
  * ========================================== */
-function NewsFeaturedGrid({ articles = [] }: { articles: any[] }) {
+function NewsFeaturedGrid({ articles = [] }: { articles: ArticleItem[] }) {
   const featuredArticle = articles.length > 0 ? articles[0] : null;
   const gridArticles = articles.length > 1 ? articles.slice(1) : [];
 
@@ -46,7 +58,7 @@ function NewsFeaturedGrid({ articles = [] }: { articles: any[] }) {
         </div>
         <Link
           href="/tin-tuc/su-kien"
-          className="text-sm text-gray-500 hover:text-green-700 transition-colors font-medium"
+          className="text-sm text-gray-500 hover:text-[var(--hp-primary,#15803d)] transition-colors font-medium"
         >
           Xem tat ca &rarr;
         </Link>
@@ -78,7 +90,7 @@ function NewsFeaturedGrid({ articles = [] }: { articles: any[] }) {
                   )}
                 </div>
                 <div className="p-6 flex flex-col justify-center">
-                  <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-green-700 transition-colors leading-snug">
+                  <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-[var(--hp-primary,#15803d)] transition-colors leading-snug">
                     {featuredArticle.title}
                   </h3>
                   <p className="text-sm text-gray-600 line-clamp-4 leading-relaxed">
@@ -118,7 +130,7 @@ function NewsFeaturedGrid({ articles = [] }: { articles: any[] }) {
 
         {/* Event banner — 2 cot */}
         <div className="lg:col-span-2">
-          <div className="bg-gradient-to-br from-green-700 to-green-800 rounded-xl overflow-hidden h-full text-white relative">
+          <div className="rounded-xl overflow-hidden h-full text-white relative" style={{ background: 'linear-gradient(to bottom right, var(--hp-primary, #15803d), color-mix(in srgb, var(--hp-primary, #15803d) 80%, black))' }}>
             <div className="absolute inset-0 opacity-10">
               <div className="absolute top-4 right-4 text-6xl font-black text-white/20">20</div>
             </div>
@@ -173,7 +185,7 @@ function NewsFeaturedGrid({ articles = [] }: { articles: any[] }) {
  * Variant: grid-only
  * Grid 3 cot don gian, perPage=6
  * ========================================== */
-function NewsGridOnly({ articles = [] }: { articles: any[] }) {
+function NewsGridOnly({ articles = [] }: { articles: ArticleItem[] }) {
   return (
     <section className="max-w-7xl mx-auto px-4 py-12 lg:py-16">
       {/* Header */}
@@ -193,7 +205,7 @@ function NewsGridOnly({ articles = [] }: { articles: any[] }) {
         </div>
         <Link
           href="/tin-tuc/su-kien"
-          className="text-sm text-gray-500 hover:text-green-700 transition-colors font-medium"
+          className="text-sm text-gray-500 hover:text-[var(--hp-primary,#15803d)] transition-colors font-medium"
         >
           Xem tat ca &rarr;
         </Link>
@@ -214,7 +226,7 @@ function NewsGridOnly({ articles = [] }: { articles: any[] }) {
  * Variant: list
  * Danh sach doc — image trai, text phai
  * ========================================== */
-function NewsList({ articles = [] }: { articles: any[] }) {
+function NewsList({ articles = [] }: { articles: ArticleItem[] }) {
   const displayArticles = articles.slice(0, 5);
 
   return (
@@ -236,7 +248,7 @@ function NewsList({ articles = [] }: { articles: any[] }) {
         </div>
         <Link
           href="/tin-tuc/su-kien"
-          className="text-sm text-gray-500 hover:text-green-700 transition-colors font-medium"
+          className="text-sm text-gray-500 hover:text-[var(--hp-primary,#15803d)] transition-colors font-medium"
         >
           Xem tat ca &rarr;
         </Link>
@@ -281,12 +293,12 @@ function NewsList({ articles = [] }: { articles: any[] }) {
                 {/* Noi dung ben phai */}
                 <div className="sm:col-span-2 p-5 flex flex-col justify-center">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded">
+                    <span className="text-xs font-medium text-[var(--hp-primary,#15803d)] bg-green-50 px-2 py-0.5 rounded">
                       {category}
                     </span>
                     <span className="text-xs text-gray-400">{date}</span>
                   </div>
-                  <h3 className="text-base font-bold text-gray-900 mb-2 group-hover:text-green-700 transition-colors leading-snug line-clamp-2">
+                  <h3 className="text-base font-bold text-gray-900 mb-2 group-hover:text-[var(--hp-primary,#15803d)] transition-colors leading-snug line-clamp-2">
                     {title}
                   </h3>
                   <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">{desc}</p>
@@ -302,7 +314,7 @@ function NewsList({ articles = [] }: { articles: any[] }) {
         <div className="text-center mt-8">
           <Link
             href="/tin-tuc/su-kien"
-            className="inline-flex items-center px-6 py-3 bg-green-700 text-white rounded-lg text-sm font-bold hover:bg-green-800 transition-colors"
+            className="inline-flex items-center px-6 py-3 bg-[var(--hp-primary,#2E7D32)] text-white rounded-lg text-sm font-bold hover:opacity-90 transition-colors"
           >
             Xem them bai viet
           </Link>

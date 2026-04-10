@@ -61,8 +61,8 @@ const features = [
  * ========================================== */
 function FeaturesTwoColumn() {
   return (
-    <section className="bg-[#1a6b30] text-white">
-      <div className="max-w-7xl mx-auto px-4 py-12 lg:py-16">
+    <section className="bg-[var(--hp-primary,#1a6b30)] text-white">
+      <div className="max-w-7xl mx-auto px-4 py-[var(--hp-spacing,4rem)] lg:py-[var(--hp-spacing,4rem)]" style={{ fontFamily: 'var(--hp-font-body)' }}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Trai: title + feature cards */}
           <div>
@@ -89,7 +89,7 @@ function FeaturesTwoColumn() {
                     <p className="text-sm font-bold text-gray-800 uppercase leading-snug">
                       {f.title}
                     </p>
-                    <Icon className="w-8 h-8 text-green-700 stroke-[1.5]" />
+                    <Icon className="w-8 h-8 text-[var(--hp-primary,#2E7D32)] stroke-[1.5]" />
                   </div>
                 );
               })}
@@ -108,7 +108,7 @@ function FeaturesTwoColumn() {
             <div>
               <Link
                 href="/tong-quan/tam-nhin-su-menh"
-                className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg text-sm font-bold hover:bg-red-700 transition-colors shadow-lg"
+                className="inline-flex items-center px-6 py-3 bg-[var(--hp-accent,#D32F2F)] text-white rounded-lg text-sm font-bold hover:opacity-90 transition-colors shadow-lg"
               >
                 Xem chi tiet
               </Link>
@@ -174,7 +174,7 @@ function FeaturesCardsGrid() {
                 <div className="h-1 bg-green-600" />
                 <div className="p-6">
                   <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-green-100 transition-colors">
-                    <Icon className="w-6 h-6 text-green-700 stroke-[1.5]" />
+                    <Icon className="w-6 h-6 text-[var(--hp-primary,#2E7D32)] stroke-[1.5]" />
                   </div>
                   <h3 className="text-sm font-bold text-gray-900 uppercase mb-3 leading-snug">
                     {f.title}
@@ -192,7 +192,7 @@ function FeaturesCardsGrid() {
         <div className="text-center mt-10">
           <Link
             href="/tong-quan/tam-nhin-su-menh"
-            className="inline-flex items-center px-6 py-3 bg-green-700 text-white rounded-lg text-sm font-bold hover:bg-green-800 transition-colors"
+            className="inline-flex items-center px-6 py-3 bg-[var(--hp-primary,#2E7D32)] text-white rounded-lg text-sm font-bold hover:opacity-90 transition-colors"
           >
             Tim hieu them
           </Link>
@@ -250,7 +250,7 @@ function FeaturesAccordion() {
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center shrink-0">
-                      <Icon className="w-5 h-5 text-green-700 stroke-[1.5]" />
+                      <Icon className="w-5 h-5 text-[var(--hp-primary,#2E7D32)] stroke-[1.5]" />
                     </div>
                     <span className="text-sm font-bold text-gray-900 uppercase leading-snug">
                       {f.title}
@@ -280,7 +280,7 @@ function FeaturesAccordion() {
         <div className="text-center mt-10">
           <Link
             href="/tong-quan/tam-nhin-su-menh"
-            className="inline-flex items-center px-6 py-3 bg-green-700 text-white rounded-lg text-sm font-bold hover:bg-green-800 transition-colors"
+            className="inline-flex items-center px-6 py-3 bg-[var(--hp-primary,#2E7D32)] text-white rounded-lg text-sm font-bold hover:opacity-90 transition-colors"
           >
             Tim hieu them
           </Link>

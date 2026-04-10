@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Post, Body, Param, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Put, Post, Body, Param, NotFoundException, ParseUUIDPipe } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { BulkUpsertSettingDto } from './dto/upsert-setting.dto';
 import { UpdateHomepageConfigDto } from './dto/homepage-config.dto';
@@ -66,7 +66,7 @@ export class SettingsController {
   /** Lay preview config theo token — public de iframe/tab moi co the load */
   @Public()
   @Get('homepage/preview/:token')
-  async getHomepagePreview(@Param('token') token: string) {
+  async getHomepagePreview(@Param('token', new ParseUUIDPipe({ version: '4' })) token: string) {
     const config = this.settingsService.getHomepagePreview(token);
     if (!config) {
       throw new NotFoundException('Preview không tồn tại hoặc đã hết hạn');

@@ -3,6 +3,7 @@
 import {
   DndContext,
   closestCenter,
+  KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
@@ -10,6 +11,7 @@ import {
 } from '@dnd-kit/core';
 import {
   SortableContext,
+  sortableKeyboardCoordinates,
   verticalListSortingStrategy,
   useSortable,
   arrayMove,
@@ -28,6 +30,7 @@ interface Props {
 export default function BlockSortableList({ blocks, onChange }: Props) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -95,6 +98,7 @@ function SortableBlockItem({
         {...attributes}
         {...listeners}
         className="cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-600"
+        aria-label={`Kéo để sắp xếp ${block.label}`}
         title="Kéo để sắp xếp"
       >
         <GripVertical className="w-5 h-5" />
@@ -114,6 +118,7 @@ function SortableBlockItem({
             ? 'text-green-700 hover:bg-green-50'
             : 'text-slate-400 hover:bg-slate-100'
         }`}
+        aria-label={block.visible ? `Ẩn ${block.label}` : `Hiện ${block.label}`}
         title={block.visible ? 'Ẩn block này' : 'Hiện block này'}
       >
         {block.visible ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
