@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
 import Breadcrumb from '@/components/public/Breadcrumb';
 import ArticleCard from '@/components/public/ArticleCard';
 import ArticleSidebar from '@/components/public/ArticleSidebar';
+import Pagination from '@/components/public/Pagination';
 import { buildPageMetadata } from '@/lib/seo-helpers';
 
 export const metadata: Metadata = buildPageMetadata({
@@ -13,19 +13,23 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
+const ITEMS_PER_PAGE = 8;
 
-/** Fetch bai viet thuc don tu API */
-async function getArticles() {
+/** Fetch bai viet thuc don tu API voi phan trang */
+async function getArticles(page: number) {
   try {
     const res = await fetch(
-      `${INTERNAL_API}/articles/public?category=thuc-don&limit=12&sort=published_at&order=DESC`,
+      `${INTERNAL_API}/articles/public?category=thuc-don&limit=${ITEMS_PER_PAGE}&page=${page}&sort=published_at&order=DESC`,
       { next: { revalidate: 300 } },
     );
-    if (!res.ok) return [];
+    if (!res.ok) return { data: [], totalPages: 0 };
     const json = await res.json();
-    return json.data || [];
+    return {
+      data: json.data || [],
+      totalPages: json.pagination?.totalPages || 0,
+    };
   } catch {
-    return [];
+    return { data: [], totalPages: 0 };
   }
 }
 
@@ -61,8 +65,14 @@ const placeholderArticles = [
   },
 ];
 
-export default async function ThucDonPage() {
-  const apiArticles = await getArticles();
+export default async function ThucDonPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const params = await searchParams;
+  const currentPage = Math.max(1, parseInt(params.page || '1', 10) || 1);
+  const { data: apiArticles, totalPages } = await getArticles(currentPage);
   const articles = apiArticles.length > 0
     ? apiArticles.map((a: any) => ({
         title: a.title,
@@ -108,11 +118,7 @@ export default async function ThucDonPage() {
             ))}
 
             {/* Pagination */}
-            <div className="flex justify-center gap-2 pt-6 pb-8">
-              <button className="w-9 h-9 rounded-lg bg-green-700 text-white text-sm font-medium">1</button>
-              <button className="w-9 h-9 rounded-lg bg-slate-100 text-slate-600 text-sm hover:bg-slate-200">2</button>
-              <button className="w-9 h-9 rounded-lg bg-slate-100 text-slate-600 text-sm hover:bg-slate-200">3</button>
-            </div>
+            <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/dich-vu-hoc-duong/thuc-don" />
           </div>
 
           {/* Sidebar */}

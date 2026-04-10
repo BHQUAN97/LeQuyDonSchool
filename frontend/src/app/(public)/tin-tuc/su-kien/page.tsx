@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Breadcrumb from '@/components/public/Breadcrumb';
 import ArticleCard from '@/components/public/ArticleCard';
 import ArticleSidebar from '@/components/public/ArticleSidebar';
+import Pagination from '@/components/public/Pagination';
 import { buildPageMetadata } from '@/lib/seo-helpers';
 
 export const metadata: Metadata = buildPageMetadata({
@@ -13,18 +14,23 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
+const ITEMS_PER_PAGE = 8;
 
-/** Fetch bai viet tu API */
-async function getArticles() {
+/** Fetch bai viet tu API voi phan trang */
+async function getArticles(page: number) {
   try {
-    const res = await fetch(`${INTERNAL_API}/articles/public?category=su-kien&limit=12&sort=published_at&order=DESC`, {
-      next: { revalidate: 300 },
-    });
-    if (!res.ok) return [];
+    const res = await fetch(
+      `${INTERNAL_API}/articles/public?category=su-kien&limit=${ITEMS_PER_PAGE}&page=${page}&sort=published_at&order=DESC`,
+      { next: { revalidate: 300 } },
+    );
+    if (!res.ok) return { data: [], totalPages: 0 };
     const json = await res.json();
-    return json.data || [];
+    return {
+      data: json.data || [],
+      totalPages: json.pagination?.totalPages || 0,
+    };
   } catch {
-    return [];
+    return { data: [], totalPages: 0 };
   }
 }
 
@@ -34,8 +40,6 @@ const placeholderArticles = [
   { title: 'Hội thao mùa xuân 2026 - Ngày hội của tình thân', description: 'Hội thao quy tụ học sinh từ lớp 1 đến lớp 5 với nhiều nội dung thi đấu hấp dẫn.', category: 'Sự kiện', date: '15/03/2026', slug: 'hoi-thao-mua-xuan-2026' },
   { title: 'Ngày hội sách Lê Quý Đôn lần thứ 5', description: 'Chương trình khuyến đọc với nhiều hoạt động: trao đổi sách, giao lưu tác giả, vẽ tranh.', category: 'Sự kiện', date: '20/03/2026', slug: 'ngay-hoi-sach-lan-5' },
   { title: 'Lễ tổng kết năm học và trao giải học sinh xuất sắc', description: 'Vinh danh những học sinh có thành tích xuất sắc trong năm học 2024-2025.', category: 'Sự kiện', date: '30/05/2025', slug: 'le-tong-ket-2024-2025' },
-  { title: 'Đêm nhạc "Sắc màu tuổi thơ" chào mừng 20/11', description: 'Chương trình văn nghệ đặc sắc do chính học sinh biểu diễn nhân Ngày Nhà giáo Việt Nam.', category: 'Sự kiện', date: '20/11/2025', slug: 'dem-nhac-sac-mau-tuoi-tho' },
-  { title: 'Hội chợ Xuân 2026 - Gây quỹ từ thiện', description: 'Học sinh tự tay làm sản phẩm, bán hàng tại hội chợ, gây quỹ ủng hộ trẻ em vùng cao.', category: 'Sự kiện', date: '25/01/2026', slug: 'hoi-cho-xuan-2026' },
 ];
 
 /** Category tabs — 3 chuyen muc chinh */
@@ -45,8 +49,14 @@ const categoryTabs = [
   { label: 'Học tập', href: '/tin-tuc/hoc-tap', active: false },
 ];
 
-export default async function SuKienPage() {
-  const apiArticles = await getArticles();
+export default async function SuKienPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const params = await searchParams;
+  const currentPage = Math.max(1, parseInt(params.page || '1', 10) || 1);
+  const { data: apiArticles, totalPages } = await getArticles(currentPage);
   const articles = apiArticles.length > 0
     ? apiArticles.map((a: any) => ({
         title: a.title,
@@ -109,11 +119,7 @@ export default async function SuKienPage() {
             ))}
 
             {/* Pagination */}
-            <div className="flex justify-center gap-2 pt-6 pb-8">
-              <button className="w-10 h-10 rounded-lg bg-green-700 text-white text-sm font-medium">1</button>
-              <button className="w-10 h-10 rounded-lg bg-slate-100 text-slate-600 text-sm hover:bg-slate-200">2</button>
-              <button className="w-10 h-10 rounded-lg bg-slate-100 text-slate-600 text-sm hover:bg-slate-200">3</button>
-            </div>
+            <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/tin-tuc/su-kien" />
           </div>
 
           {/* Sidebar */}

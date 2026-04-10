@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Breadcrumb from '@/components/public/Breadcrumb';
 import ArticleCard from '@/components/public/ArticleCard';
 import ArticleSidebar from '@/components/public/ArticleSidebar';
+import Pagination from '@/components/public/Pagination';
 import { buildPageMetadata } from '@/lib/seo-helpers';
 
 export const metadata: Metadata = buildPageMetadata({
@@ -13,23 +14,28 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
+const ITEMS_PER_PAGE = 8;
 
-async function getArticles() {
+async function getArticles(page: number) {
   try {
-    const res = await fetch(`${INTERNAL_API}/articles/public?category=ngoai-khoa&limit=12&sort=published_at&order=DESC`, {
-      next: { revalidate: 300 },
-    });
-    if (!res.ok) return [];
+    const res = await fetch(
+      `${INTERNAL_API}/articles/public?category=ngoai-khoa&limit=${ITEMS_PER_PAGE}&page=${page}&sort=published_at&order=DESC`,
+      { next: { revalidate: 300 } },
+    );
+    if (!res.ok) return { data: [], totalPages: 0 };
     const json = await res.json();
-    return (json.data || []).map((a: any) => ({
-      title: a.title,
-      description: a.excerpt || a.description || '',
-      category: a.category?.name || 'Ngoại khóa',
-      date: new Date(a.published_at || a.created_at).toLocaleDateString('vi-VN'),
-      slug: a.slug,
-    }));
+    return {
+      data: (json.data || []).map((a: any) => ({
+        title: a.title,
+        description: a.excerpt || a.description || '',
+        category: a.category?.name || 'Ngoại khóa',
+        date: new Date(a.published_at || a.created_at).toLocaleDateString('vi-VN'),
+        slug: a.slug,
+      })),
+      totalPages: json.pagination?.totalPages || 0,
+    };
   } catch {
-    return [];
+    return { data: [], totalPages: 0 };
   }
 }
 
@@ -46,8 +52,14 @@ const categoryTabs = [
   { label: 'Học tập', href: '/tin-tuc/hoc-tap', active: false },
 ];
 
-export default async function NgoaiKhoaPage() {
-  const apiArticles = await getArticles();
+export default async function NgoaiKhoaPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const params = await searchParams;
+  const currentPage = Math.max(1, parseInt(params.page || '1', 10) || 1);
+  const { data: apiArticles, totalPages } = await getArticles(currentPage);
   const articles = apiArticles.length > 0 ? apiArticles : placeholderArticles;
   return (
     <div>
@@ -101,10 +113,7 @@ export default async function NgoaiKhoaPage() {
             ))}
 
             {/* Pagination */}
-            <div className="flex justify-center gap-2 pt-6 pb-8">
-              <button className="w-10 h-10 rounded-lg bg-green-700 text-white text-sm font-medium">1</button>
-              <button className="w-10 h-10 rounded-lg bg-slate-100 text-slate-600 text-sm hover:bg-slate-200">2</button>
-            </div>
+            <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/tin-tuc/ngoai-khoa" />
           </div>
 
           {/* Sidebar */}

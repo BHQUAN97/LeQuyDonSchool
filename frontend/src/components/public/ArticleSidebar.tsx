@@ -51,14 +51,10 @@ export default async function ArticleSidebar() {
       <div className="bg-white rounded-xl border border-gray-200 p-5">
         <h3 className="font-bold text-base text-gray-900 mb-4">Tin tức mới nhất</h3>
         <div className="space-y-4">
-          {(articles.length > 0
-            ? articles
-            : [
-                { slug: 'bai-1', title: 'Bài viết mới nhất 1', thumbnail_url: null, published_at: '2026-04-03', category: { name: 'Tin tức' } },
-                { slug: 'bai-2', title: 'Bài viết mới nhất 2', thumbnail_url: null, published_at: '2026-04-02', category: { name: 'Tin tức' } },
-                { slug: 'bai-3', title: 'Bài viết mới nhất 3', thumbnail_url: null, published_at: '2026-04-01', category: { name: 'Sự kiện' } },
-              ]
-          ).map((a: any, i: number) => {
+          {articles.length === 0 && (
+            <p className="text-sm text-gray-400">Chưa có bài viết nào.</p>
+          )}
+          {articles.map((a: any, i: number) => {
             const cover = imgUrl(a.thumbnail_url);
             const date = new Date(a.published_at || a.created_at || Date.now()).toLocaleDateString('vi-VN');
             return (
@@ -111,21 +107,7 @@ export default async function ArticleSidebar() {
             ))}
           </div>
         ) : (
-          /* Placeholder — event ky niem 20 nam */
-          <div className="bg-gradient-to-br from-green-700 to-green-800 rounded-lg overflow-hidden text-white">
-            <div className="p-4 relative">
-              <div className="absolute top-2 right-2 text-4xl font-black text-white/10">20</div>
-              <p className="text-xs uppercase tracking-wider text-green-200 mb-1">Chào đón</p>
-              <p className="text-sm font-bold leading-snug mb-2">
-                Kỷ niệm 20 năm thành lập Hệ thống Trường Liên cấp Lê Quý Đôn
-              </p>
-              <p className="text-[11px] text-white/70">04/08/2025 08:00</p>
-              <div className="flex gap-1 mt-2">
-                <span className="w-2 h-2 rounded-full bg-white" />
-                <span className="w-2 h-2 rounded-full bg-white/40" />
-              </div>
-            </div>
-          </div>
+          <p className="text-sm text-gray-400">Chưa có sự kiện nào sắp diễn ra.</p>
         )}
       </div>
 

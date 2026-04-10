@@ -7,8 +7,9 @@ import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import TextAlign from '@tiptap/extension-text-align';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
+import MediaPickerModal from './MediaPickerModal';
 import {
   Bold,
   Italic,
@@ -116,6 +117,8 @@ export default function RichTextEditor({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content]);
 
+  const [showMediaPicker, setShowMediaPicker] = useState(false);
+
   if (!editor) return null;
 
   /** Them/xoa link */
@@ -130,17 +133,26 @@ export default function RichTextEditor({
     }
   };
 
-  /** Chen hinh anh */
+  /** Mo modal chon anh tu Media library */
   const handleImage = () => {
-    const url = prompt('Nhập URL hình ảnh:');
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    }
+    setShowMediaPicker(true);
+  };
+
+  /** Callback khi chon anh tu modal */
+  const handleImageSelected = (url: string) => {
+    editor.chain().focus().setImage({ src: url }).run();
   };
 
   const iconSize = 18;
 
   return (
+    <>
+    <MediaPickerModal
+      open={showMediaPicker}
+      onClose={() => setShowMediaPicker(false)}
+      onSelect={handleImageSelected}
+      filterImages
+    />
     <div className="rounded-lg border border-slate-300 overflow-hidden focus-within:ring-2 focus-within:ring-green-600 focus-within:border-transparent">
       {/* Toolbar — sticky */}
       <div className="sticky top-0 z-10 bg-white border-b border-slate-200 px-2 py-1.5 flex flex-wrap gap-0.5 items-center">
@@ -296,5 +308,6 @@ export default function RichTextEditor({
       {/* Editor content */}
       <EditorContent editor={editor} />
     </div>
+    </>
   );
 }
