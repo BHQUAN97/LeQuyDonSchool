@@ -99,15 +99,15 @@ export default function DashboardPage() {
           </>
         ) : (
           <>
-            <StatCard label="Lượt truy cập hôm nay" value="—" icon={Eye} trend="Chưa tích hợp analytics" />
-            <Link href="/admin/articles" className="block hover:ring-2 hover:ring-green-500 rounded-xl transition-shadow">
-              <StatCard label="Tổng bài viết" value={data.totalArticles} icon={FileText} />
+            <StatCard label="Lượt truy cập hôm nay" value="—" icon={Eye} trend="Chưa tích hợp analytics" className="h-full" />
+            <Link href="/admin/articles" className="block h-full hover:ring-2 hover:ring-green-500 rounded-xl transition-shadow">
+              <StatCard label="Tổng bài viết" value={data.totalArticles} icon={FileText} className="h-full" />
             </Link>
-            <Link href="/admin/contacts" className="block hover:ring-2 hover:ring-green-500 rounded-xl transition-shadow">
-              <StatCard label="Liên hệ mới" value={data.newContacts} icon={Mail} />
+            <Link href="/admin/contacts" className="block h-full hover:ring-2 hover:ring-green-500 rounded-xl transition-shadow">
+              <StatCard label="Liên hệ mới" value={data.newContacts} icon={Mail} className="h-full" />
             </Link>
-            <Link href="/admin/admissions" className="block hover:ring-2 hover:ring-green-500 rounded-xl transition-shadow">
-              <StatCard label="Đăng ký tuyển sinh" value={data.newRegistrations} icon={GraduationCap} />
+            <Link href="/admin/admissions" className="block h-full hover:ring-2 hover:ring-green-500 rounded-xl transition-shadow">
+              <StatCard label="Đăng ký tuyển sinh" value={data.newRegistrations} icon={GraduationCap} className="h-full" />
             </Link>
           </>
         )}

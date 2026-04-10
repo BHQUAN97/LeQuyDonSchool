@@ -132,8 +132,9 @@ export class MediaService {
       try {
         const media = await this.upload(file, userId);
         results.success.push(media);
-      } catch (err) {
-        results.errors.push(`${file.originalname}: ${err.message || 'Upload thất bại'}`);
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Upload thất bại';
+        results.errors.push(`${file.originalname}: ${message}`);
       }
     }
 
