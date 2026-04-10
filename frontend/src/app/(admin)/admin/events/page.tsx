@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import ImagePicker from '@/components/admin/ImagePicker';
 
 interface Event {
   id: string;
@@ -284,16 +285,11 @@ export default function EventsPage() {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">URL ảnh</label>
-                <input
-                  type="text"
-                  value={form.imageUrl}
-                  onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-                  placeholder="https://..."
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
-                />
-              </div>
+              <ImagePicker
+                value={form.imageUrl}
+                onChange={(url) => setForm({ ...form, imageUrl: url })}
+                label="Ảnh sự kiện"
+              />
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Link URL</label>

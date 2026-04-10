@@ -9,8 +9,9 @@ import {
   Body,
   UseInterceptors,
   UploadedFile,
+  UploadedFiles,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { MediaService } from './media.service';
 import { QueryMediaDto } from './dto/query-media.dto';
 import { UpdateMediaDto } from './dto/update-media.dto';
@@ -42,6 +43,17 @@ export class MediaController {
     @CurrentUser('id') userId: string,
   ) {
     return this.mediaService.upload(file, userId);
+  }
+
+  /** Upload nhieu file cung luc — toi da 20 file */
+  @Post('upload-multiple')
+  @EditorOnly()
+  @UseInterceptors(FilesInterceptor('files', 20))
+  async uploadMultiple(
+    @UploadedFiles() files: Express.Multer.File[],
+    @CurrentUser('id') userId: string,
+  ) {
+    return this.mediaService.uploadMultiple(files, userId);
   }
 
   @Put(':id')

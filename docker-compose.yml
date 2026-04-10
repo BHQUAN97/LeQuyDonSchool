@@ -31,6 +31,14 @@ services:
       - "4200:4000"
     env_file:
       - ./backend/.env
+    environment:
+      - LQD_PORT=4000
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=lqd
+      - DB_PASSWORD=lqd_dev
+      - DB_NAME=lqd
+      - REDIS_HOST=redis
     depends_on:
       mysql:
         condition: service_healthy

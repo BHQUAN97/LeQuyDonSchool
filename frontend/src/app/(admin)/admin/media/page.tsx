@@ -143,40 +143,67 @@ export default function MediaPage() {
     }, 400);
   };
 
-  // Upload file qua fetch (khong dung api() vi can FormData)
-  const uploadFile = async (file: File) => {
+  // Upload progress
+  const [uploadProgress, setUploadProgress] = useState<{ total: number; done: number } | null>(null);
+
+  // Upload nhieu file cung luc qua endpoint upload-multiple
+  const uploadFiles = async (fileList: FileList | File[]) => {
+    const files = Array.from(fileList);
+    if (files.length === 0) return;
+
     setUploading(true);
+    setUploadProgress({ total: files.length, done: 0 });
+
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-
       const token = getAccessToken();
-      const res = await fetch(`${API_BASE}/media/upload`, {
-        method: 'POST',
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-        credentials: 'include',
-        body: formData,
-      });
+      const headers: Record<string, string> = {};
+      if (token) headers['Authorization'] = `Bearer ${token}`;
 
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ message: 'Upload that bai' }));
-        throw new Error(err.message);
+      if (files.length === 1) {
+        // Upload 1 file — dung endpoint cu
+        const formData = new FormData();
+        formData.append('file', files[0]);
+        const res = await fetch(`${API_BASE}/media/upload`, {
+          method: 'POST', headers, credentials: 'include', body: formData,
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ message: 'Upload thất bại' }));
+          throw new Error(err.message);
+        }
+        setUploadProgress({ total: 1, done: 1 });
+      } else {
+        // Upload nhieu file — dung endpoint upload-multiple
+        const formData = new FormData();
+        files.forEach(f => formData.append('files', f));
+        const res = await fetch(`${API_BASE}/media/upload-multiple`, {
+          method: 'POST', headers, credentials: 'include', body: formData,
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ message: 'Upload thất bại' }));
+          throw new Error(err.message);
+        }
+        const json = await res.json();
+        const successCount = json.data?.success?.length || files.length;
+        const errors = json.data?.errors || [];
+        setUploadProgress({ total: files.length, done: successCount });
+        if (errors.length > 0) {
+          setMediaError(`${successCount}/${files.length} file thành công.\n${errors.join('\n')}`);
+        }
       }
 
-      // Tai lai danh sach sau khi upload thanh cong
       await fetchMedia(1);
     } catch (err) {
       console.error('Upload error:', err);
       setMediaError(err instanceof Error ? err.message : 'Upload thất bại');
     } finally {
       setUploading(false);
+      setTimeout(() => setUploadProgress(null), 2000);
     }
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files && files[0]) uploadFile(files[0]);
-    // Reset input de co the chon cung file
+    if (files && files.length > 0) uploadFiles(files);
     e.target.value = '';
   };
 
@@ -190,7 +217,7 @@ export default function MediaPage() {
     e.preventDefault();
     setDragOver(false);
     const files = e.dataTransfer.files;
-    if (files && files[0]) uploadFile(files[0]);
+    if (files && files.length > 0) uploadFiles(files);
   };
 
   // Cap nhat alt text
@@ -250,7 +277,7 @@ export default function MediaPage() {
             <Upload className="w-4 h-4" />
             {uploading ? 'Đang tải...' : 'Tải lên'}
           </Button>
-          <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileSelect} />
+          <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileSelect} multiple accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx,video/mp4,video/webm" />
 
           {/* View toggle */}
           <div className="flex border border-slate-200 rounded-md overflow-hidden">
@@ -314,7 +341,15 @@ export default function MediaPage() {
           )}
         >
           <Upload className="mx-auto mb-2 text-slate-400 w-[18px] h-[18px]" />
-          <p className="text-slate-500 text-sm">Kéo thả file vào đây hoặc click để chọn</p>
+          <p className="text-slate-500 text-sm">Kéo thả file vào đây hoặc click để chọn (hỗ trợ nhiều file)</p>
+          {uploadProgress && (
+            <div className="mt-2">
+              <div className="w-48 mx-auto bg-slate-200 rounded-full h-1.5">
+                <div className="bg-green-600 h-1.5 rounded-full transition-all" style={{ width: `${(uploadProgress.done / uploadProgress.total) * 100}%` }} />
+              </div>
+              <p className="text-xs text-slate-400 mt-1">{uploadProgress.done}/{uploadProgress.total} file</p>
+            </div>
+          )}
         </div>
       )}
 

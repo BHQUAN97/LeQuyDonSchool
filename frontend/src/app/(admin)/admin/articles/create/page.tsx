@@ -6,6 +6,7 @@ import { api } from '@/lib/api';
 import RichTextEditor from '@/components/admin/RichTextEditor';
 import { generateSlug } from '@/lib/slug';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import ImagePicker from '@/components/admin/ImagePicker';
 
 interface ApiResponse {
   success: boolean;
@@ -218,26 +219,12 @@ export default function CreateArticlePage() {
 
           {/* Thumbnail */}
           <div className="bg-white rounded-xl border border-slate-200 p-4 space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">URL hình ảnh</label>
-              <input
-                type="text"
-                value={thumbnailUrl}
-                onChange={(e) => setThumbnailUrl(e.target.value)}
-                placeholder="https://..."
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
-              />
-              {thumbnailUrl && (
-                <img
-                  src={thumbnailUrl}
-                  alt="Preview"
-                  className="mt-2 w-full h-32 rounded-lg object-cover border border-slate-200"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-              )}
-            </div>
+            <ImagePicker
+              value={thumbnailUrl}
+              onChange={setThumbnailUrl}
+              label="Ảnh đại diện"
+              placeholder="Nhập URL hoặc chọn từ kho..."
+            />
           </div>
 
           {/* SEO */}

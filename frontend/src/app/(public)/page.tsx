@@ -3,14 +3,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { buildPageMetadata } from '@/lib/seo-helpers';
 import {
-  ChevronLeft,
-  ChevronRight,
   GraduationCap,
   UserRound,
   Trophy,
   Globe,
   Building2,
 } from 'lucide-react';
+import HeroBanner from '@/components/public/HeroBanner';
+import TestimonialCarousel from '@/components/public/TestimonialCarousel';
 
 const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
 const PUBLIC_UPLOADS = process.env.NEXT_PUBLIC_SITE_URL || '';
@@ -84,49 +84,7 @@ const features = [
   },
 ];
 
-/* Testimonials */
-const testimonials = [
-  {
-    name: 'Anh Hoàng Hữu Thắng',
-    title:
-      'Chủ tịch HĐQT Intech Group | Phó Chủ tịch CLB Đầu tư & Khởi nghiệp Việt Nam | PHHS khóa 2021 - 2026',
-    content:
-      'Tôi thấy vui và hạnh phúc mỗi khi con nói chuyện thể hiện sự đam mê, yêu thích ngôi trường. Mỗi lần đến Trường Tiểu học Lê Quý Đôn để đón con, tôi lại thấy sự vui tươi, hồn nhiên của các con. Tôi tin tưởng vào sự phát triển toàn diện mà nhà trường mang lại cho con trai mình. Điều quý giá nhất là con không chỉ giỏi kiến thức mà còn phát triển cả về kỹ năng sống và nhân cách. Trường thực sự là tổ ấm thứ hai cho các em, để mỗi sáng mẹ không phải mệt công tìm kiếm lý do để con yêu trường, đến trường.',
-  },
-  {
-    name: 'Anh Nguyễn Thanh Bình',
-    title:
-      'Giám đốc Nhà máy Công ty TNHH Chế biến thực phẩm và bánh kẹo Phạm Nguyên | PHHS niên khoá 2011 - 2016, 2020 - 2025 và 2024 - 2029',
-    content:
-      'Là một người bố, tôi luôn cảm thấy vô cùng biết ơn khi nhìn thấy những bước đi vững chắc của các con mình trên con đường học vấn. Ba đứa con tôi đều học tại trường Tiểu học Lê Quý Đôn và nơi đây thực sự là một ngôi nhà thứ hai của các con. Tôi thực sự cảm nhận được sự trưởng thành của các con qua từng ngày và đó là điều khiến tôi tự hào nhất.',
-  },
-];
 
-/* SVG trang tri hinh the thao cho section testimonial */
-function SportDecorations() {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {/* Nguoi chay */}
-      <svg className="absolute top-8 right-8 w-16 h-16 text-white/10" viewBox="0 0 64 64" fill="currentColor">
-        <circle cx="40" cy="8" r="5" />
-        <path d="M28 20l8-4 6 8 10 2-2 4-12-2-6 6 4 14-4 2-6-14-8 4-2-4 8-8z" />
-      </svg>
-      {/* Nguoi nhay */}
-      <svg className="absolute top-1/3 right-16 w-14 h-14 text-white/10" viewBox="0 0 64 64" fill="currentColor">
-        <circle cx="32" cy="8" r="5" />
-        <path d="M24 18l8 2 8-2 4 6-8 4v10l6 8-4 2-6-8-6 8-4-2 6-8V28l-8-4z" />
-      </svg>
-      {/* Sach mo */}
-      <svg className="absolute bottom-12 right-12 w-20 h-20 text-white/8" viewBox="0 0 64 64" fill="currentColor">
-        <path d="M8 12l24 4 24-4v40l-24 4-24-4V12zm24 4v36m-20-34v32l20 3m20-35v32l-20 3" fillOpacity="0" stroke="currentColor" strokeWidth="2" />
-      </svg>
-      {/* Hoa van ngoi sao */}
-      <svg className="absolute top-1/2 right-4 w-12 h-12 text-white/8" viewBox="0 0 64 64" fill="currentColor">
-        <path d="M32 4l6 18h18l-14 10 6 18-16-12-16 12 6-18L8 22h18z" />
-      </svg>
-    </div>
-  );
-}
 
 export default async function HomePage() {
   const articles = await getLatestArticles();
@@ -138,81 +96,9 @@ export default async function HomePage() {
   return (
     <div>
       {/* ============================================ */}
-      {/* HERO BANNER — anh nen full + floating card  */}
-      {/* Theo V2: background photo + overlay card    */}
+      {/* HERO BANNER — carousel auto-next 3s          */}
       {/* ============================================ */}
-      <section className="relative min-h-[360px] sm:min-h-[420px] lg:min-h-[520px] overflow-hidden">
-        {/* Background image placeholder — thay bang anh that khi co */}
-        <div className="absolute inset-0 bg-gradient-to-r from-green-800/60 to-green-600/40 z-10" />
-        <div className="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center" />
-        {/* Fallback gradient neu chua co anh */}
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-200 via-green-100 to-yellow-300 -z-10" />
-
-        <div className="relative z-20 max-w-7xl mx-auto px-4 py-16 lg:py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            {/* Trai: text overlay tren nen */}
-            <div className="text-white">
-              <h1 className="text-xl sm:text-2xl lg:text-4xl xl:text-5xl font-extrabold mb-4 leading-tight drop-shadow-lg">
-                Từ kỳ vọng đến tin yêu
-                <br />
-                <span className="text-yellow-300">Tiểu học Lê Quý Đôn</span>
-                <br />
-                qua lời Cha Mẹ
-              </h1>
-              <p className="text-base lg:text-lg opacity-90 mb-6 drop-shadow">
-                Với Tiểu học Lê Quý Đôn, mỗi ngày đến trường là một hành trình khám phá, sáng tạo
-                và trưởng thành đồng hành cùng con.
-              </p>
-              <Link
-                href="/tong-quan/tam-nhin-su-menh"
-                className="inline-flex items-center px-7 py-3.5 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-colors shadow-lg text-sm"
-              >
-                Xem chi tiết
-              </Link>
-            </div>
-
-            {/* Phai: floating white card */}
-            <div className="hidden lg:flex justify-center">
-              <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm transform rotate-1 hover:rotate-0 transition-transform">
-                {/* Logo truong */}
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center border-2 border-yellow-500">
-                    <span className="text-white font-bold text-[10px]">LQD</span>
-                  </div>
-                  <div>
-                    <p className="text-[9px] text-green-700 font-semibold uppercase tracking-wide leading-tight">
-                      Hệ thống Trường liên cấp Lê Quý Đôn
-                    </p>
-                    <p className="text-xs font-bold text-red-600 leading-tight">
-                      Trường Tiểu học Lê Quý Đôn
-                    </p>
-                  </div>
-                </div>
-                <h2 className="text-xl font-bold text-green-800 mb-1 leading-snug">
-                  Từ kỳ vọng đến tin yêu
-                </h2>
-                <p className="text-sm text-gray-600 mb-4">
-                  Tiểu học Lê Quý Đôn qua lời Cha Mẹ
-                </p>
-                <div className="flex gap-1 text-2xl">
-                  <span className="text-red-500">&#10084;</span>
-                  <span className="text-yellow-500">&#10084;</span>
-                  <span className="text-yellow-500">&#10084;</span>
-                  <span className="text-blue-400">&#10084;</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Dots */}
-          <div className="flex justify-center gap-2 mt-10">
-            <span className="w-3 h-3 rounded-full bg-white/40" />
-            <span className="w-3 h-3 rounded-full bg-white/40" />
-            <span className="w-3 h-3 rounded-full bg-white/40" />
-            <span className="w-3 h-3 rounded-full bg-white" />
-          </div>
-        </div>
-      </section>
+      <HeroBanner />
 
       {/* ============================================ */}
       {/* TIN TUC — Moi cap nhat (V2 layout)          */}
@@ -537,62 +423,8 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* Phai: testimonial nen do + trang tri the thao */}
-        <div className="bg-[#c62828] text-white py-10 lg:py-16 px-6 lg:px-10 relative overflow-hidden">
-          <SportDecorations />
-
-          <div className="max-w-lg relative z-10">
-            {/* Dau ngoac kep lon */}
-            <div className="text-7xl text-white/20 font-serif leading-none mb-2">
-              &#8220;
-            </div>
-
-            <div className="mb-6">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-sm opacity-80 uppercase tracking-wide">Từ cộng đồng</span>
-                <div className="flex gap-0.5">
-                  <span className="w-4 h-1 bg-green-400 rounded-full" />
-                  <span className="w-4 h-1 bg-red-300 rounded-full" />
-                  <span className="w-4 h-1 bg-green-400 rounded-full" />
-                </div>
-              </div>
-              <h2 className="text-2xl font-bold">Lê Quý Đôn</h2>
-            </div>
-
-            {/* Testimonial card — hien 1, co nav de chuyen */}
-            <div className="mb-6">
-              <div className="flex items-center gap-3 mb-4">
-                {/* Avatar placeholder */}
-                <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center text-xs border-2 border-white/30 shrink-0">
-                  Ảnh
-                </div>
-                <div>
-                  <p className="font-bold text-base uppercase">{testimonials[0].name}</p>
-                  <p className="text-[11px] opacity-70 leading-snug mt-0.5">
-                    {testimonials[0].title}
-                  </p>
-                </div>
-              </div>
-              <p className="text-sm opacity-90 leading-relaxed italic">
-                {testimonials[0].content}
-              </p>
-            </div>
-
-            {/* Navigation arrows + dots */}
-            <div className="flex items-center gap-4">
-              <button type="button" aria-label="Testimonial trước" className="w-10 h-10 rounded-full border-2 border-white/30 flex items-center justify-center hover:bg-white/10 transition-colors">
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button type="button" aria-label="Testimonial tiếp" className="w-10 h-10 rounded-full border-2 border-white/30 flex items-center justify-center hover:bg-white/10 transition-colors">
-                <ChevronRight className="w-5 h-5" />
-              </button>
-              <div className="flex gap-2 ml-2">
-                <span className="w-3 h-3 rounded-full bg-white" />
-                <span className="w-3 h-3 rounded-full bg-white/40" />
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Phai: testimonial carousel auto-next */}
+        <TestimonialCarousel />
       </section>
     </div>
   );

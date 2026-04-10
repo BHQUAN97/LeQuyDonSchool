@@ -119,6 +119,28 @@ export class MediaService {
   }
 
   /**
+   * Upload nhieu file cung luc. Tra ve danh sach ket qua (thanh cong + that bai).
+   */
+  async uploadMultiple(files: Express.Multer.File[], userId: string) {
+    if (!files || files.length === 0) {
+      throw new BadRequestException('Không có file được gửi');
+    }
+
+    const results: { success: Media[]; errors: string[] } = { success: [], errors: [] };
+
+    for (const file of files) {
+      try {
+        const media = await this.upload(file, userId);
+        results.success.push(media);
+      } catch (err) {
+        results.errors.push(`${file.originalname}: ${err.message || 'Upload thất bại'}`);
+      }
+    }
+
+    return results;
+  }
+
+  /**
    * Cap nhat metadata — doi ten file hien thi, alt text.
    */
   async update(id: string, dto: UpdateMediaDto) {

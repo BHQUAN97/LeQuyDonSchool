@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import ImagePicker from '@/components/admin/ImagePicker';
 
 // ─── TYPES ─────────────────────────────────────────────────
 
@@ -277,16 +278,11 @@ function PostsTab() {
                   className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">URL ảnh đại diện</label>
-                <input
-                  type="text"
-                  value={form.thumbnailUrl}
-                  onChange={(e) => setForm({ ...form, thumbnailUrl: e.target.value })}
-                  placeholder="https://..."
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
-                />
-              </div>
+              <ImagePicker
+                value={form.thumbnailUrl}
+                onChange={(url) => setForm({ ...form, thumbnailUrl: url })}
+                label="Ảnh đại diện"
+              />
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Trạng thái</label>
                 <select
