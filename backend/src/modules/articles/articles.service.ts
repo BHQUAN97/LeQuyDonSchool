@@ -61,10 +61,11 @@ export class ArticlesService {
    * Danh sach bai viet public — chi hien published.
    */
   async findAllPublic(query: QueryArticleDto) {
-    const { page, limit, search, categoryId, sort, order } = query;
+    const { page, limit, search, categoryId, category, sort, order } = query;
 
     const qb = this.articleRepo
       .createQueryBuilder('a')
+      .leftJoinAndSelect('a.category', 'cat')
       .where('a.deleted_at IS NULL')
       .andWhere('a.status = :status', { status: ArticleStatus.PUBLISHED });
 
@@ -73,6 +74,9 @@ export class ArticlesService {
     }
     if (categoryId) {
       qb.andWhere('a.category_id = :categoryId', { categoryId });
+    }
+    if (category) {
+      qb.andWhere('cat.slug = :categorySlug', { categorySlug: category });
     }
 
     // Sap xep theo published_at mac dinh cho public
@@ -106,6 +110,7 @@ export class ArticlesService {
   async findBySlug(slug: string) {
     const article = await this.articleRepo.findOne({
       where: { slug, status: ArticleStatus.PUBLISHED, deleted_at: IsNull() },
+      relations: ['category'],
     });
     if (!article) throw new NotFoundException('Không tìm thấy bài viết');
     return article;

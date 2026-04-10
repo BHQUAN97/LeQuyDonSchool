@@ -15,6 +15,11 @@ export class QueryArticleDto extends PaginationDto {
   @IsString()
   categoryId?: string;
 
+  /** Filter theo category slug — tien cho frontend */
+  @IsOptional()
+  @IsString()
+  category?: string;
+
   @IsOptional()
   @IsDateString()
   dateFrom?: string;

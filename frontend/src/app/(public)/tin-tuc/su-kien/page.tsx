@@ -17,7 +17,7 @@ const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api'
 /** Fetch bai viet tu API */
 async function getArticles() {
   try {
-    const res = await fetch(`${INTERNAL_API}/articles/public?limit=12&sort=published_at&order=DESC`, {
+    const res = await fetch(`${INTERNAL_API}/articles/public?category=su-kien&limit=12&sort=published_at&order=DESC`, {
       next: { revalidate: 300 },
     });
     if (!res.ok) return [];

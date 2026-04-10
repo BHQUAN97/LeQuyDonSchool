@@ -1,5 +1,6 @@
 import { Entity, Column, Index, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from '@/common/entities/base.entity';
+import { Category } from '@/modules/categories/entities/category.entity';
 
 export enum ArticleStatus {
   DRAFT = 'draft',
@@ -50,4 +51,8 @@ export class Article extends BaseEntity {
 
   @Column({ type: 'char', length: 26, nullable: true })
   category_id!: string | null;
+
+  @ManyToOne(() => Category, { nullable: true })
+  @JoinColumn({ name: 'category_id' })
+  category!: Category | null;
 }

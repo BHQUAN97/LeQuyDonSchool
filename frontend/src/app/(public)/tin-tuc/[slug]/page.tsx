@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 import Breadcrumb from '@/components/public/Breadcrumb';
 import ArticleSidebar from '@/components/public/ArticleSidebar';
 import SafeHtml from '@/components/public/SafeHtml';
@@ -79,25 +80,18 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
   const { slug } = await params;
   const apiArticle = await getArticle(slug);
 
-  const article = apiArticle
-    ? {
-        title: apiArticle.title,
-        category: apiArticle.category?.name || 'Tin tức',
-        categorySlug: apiArticle.category?.slug || 'su-kien',
-        date: new Date(apiArticle.published_at || apiArticle.created_at).toLocaleDateString('vi-VN'),
-        author: apiArticle.author?.full_name || 'Ban Truyền thông',
-        content: apiArticle.content || '',
-        thumbnail_url: apiArticle.thumbnail_url,
-      }
-    : {
-        title: 'Bài viết',
-        category: 'Tin tức',
-        categorySlug: 'su-kien',
-        date: '',
-        author: '',
-        content: '<p>Nội dung bài viết đang được cập nhật.</p>',
-        thumbnail_url: null,
-      };
+  // Khong tim thay bai viet → 404
+  if (!apiArticle) notFound();
+
+  const article = {
+    title: apiArticle.title,
+    category: apiArticle.category?.name || 'Tin tức',
+    categorySlug: apiArticle.category?.slug || 'su-kien',
+    date: new Date(apiArticle.published_at || apiArticle.created_at).toLocaleDateString('vi-VN'),
+    author: apiArticle.author?.full_name || 'Ban Truyền thông',
+    content: apiArticle.content || '',
+    thumbnail_url: apiArticle.thumbnail_url,
+  };
 
   const relatedArticles = await getRelatedArticles();
 
