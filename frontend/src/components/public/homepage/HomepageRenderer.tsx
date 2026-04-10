@@ -5,28 +5,7 @@ import HeroSection from './HeroSection';
 import NewsSection from './NewsSection';
 import FeaturesSection from './FeaturesSection';
 import TestimonialSection from './TestimonialSection';
-
-interface HomepageBlock {
-  id: string;
-  label: string;
-  visible: boolean;
-  variant: string;
-  order: number;
-}
-
-interface HomepageTheme {
-  primaryColor: string;
-  accentColor: string;
-  headingFont: string;
-  bodyFont: string;
-  logoUrl: string | null;
-  spacing: 'compact' | 'normal' | 'spacious';
-}
-
-interface HomepageConfig {
-  blocks: HomepageBlock[];
-  theme: HomepageTheme;
-}
+import type { HomepageConfig } from '@/types/homepage';
 
 interface Props {
   config: HomepageConfig;

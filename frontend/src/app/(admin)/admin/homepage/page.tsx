@@ -171,8 +171,9 @@ export default function HomepageAdminPage() {
         }),
       });
       showToast('Đã lưu thành công!');
-    } catch (err: any) {
-      showToast(err.message || 'Lỗi khi lưu', 'err');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Lỗi khi lưu';
+      showToast(message, 'err');
     } finally {
       setSavingSection(null);
     }
@@ -196,8 +197,9 @@ export default function HomepageAdminPage() {
         body: JSON.stringify(custConfig),
       });
       showToast('Đã lưu cấu hình trang chủ!');
-    } catch (err: any) {
-      showToast(err.message || 'Lỗi khi lưu', 'err');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Lỗi khi lưu';
+      showToast(message, 'err');
     } finally {
       setSavingCust(false);
     }
@@ -208,6 +210,26 @@ export default function HomepageAdminPage() {
     if (!window.confirm('Khôi phục bố cục và giao diện về mặc định? Thay đổi chưa lưu sẽ mất.')) return;
     setCustConfig(DEFAULT_HOMEPAGE_CONFIG);
     showToast('Đã khôi phục mặc định — nhấn Lưu để áp dụng');
+  };
+
+  /** Xem truoc — tao preview token roi mo tab moi */
+  const [previewing, setPreviewing] = useState(false);
+  const previewHomepage = async () => {
+    setPreviewing(true);
+    try {
+      const res = await api<{ success: boolean; data: { token: string } }>('/settings/homepage/preview', {
+        method: 'POST',
+        body: JSON.stringify(custConfig),
+      });
+      if (res.data?.token) {
+        window.open(`/?preview=${res.data.token}`, '_blank');
+      }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Lỗi tạo preview';
+      showToast(message, 'err');
+    } finally {
+      setPreviewing(false);
+    }
   };
 
   // ─── Hero slide helpers ───────────────────────────────────────────────────
@@ -495,6 +517,8 @@ export default function HomepageAdminPage() {
             saving={savingCust}
             onSave={saveCustomizerConfig}
             onReset={resetCustomizerConfig}
+            onPreview={previewHomepage}
+            previewing={previewing}
           />
         </div>
       )}
@@ -516,6 +540,8 @@ export default function HomepageAdminPage() {
             saving={savingCust}
             onSave={saveCustomizerConfig}
             onReset={resetCustomizerConfig}
+            onPreview={previewHomepage}
+            previewing={previewing}
           />
         </div>
       )}
@@ -531,6 +557,8 @@ export default function HomepageAdminPage() {
             saving={savingCust}
             onSave={saveCustomizerConfig}
             onReset={resetCustomizerConfig}
+            onPreview={previewHomepage}
+            previewing={previewing}
           />
         </div>
       )}
@@ -789,10 +817,14 @@ function CustomizerActionBar({
   saving,
   onSave,
   onReset,
+  onPreview,
+  previewing,
 }: {
   saving: boolean;
   onSave: () => void;
   onReset: () => void;
+  onPreview: () => void;
+  previewing: boolean;
 }) {
   return (
     <div className="flex items-center justify-end gap-3 pt-2">
@@ -802,14 +834,13 @@ function CustomizerActionBar({
       >
         Khôi phục mặc định
       </button>
-      <a
-        href="/"
-        target="_blank"
-        rel="noopener noreferrer"
+      <button
+        onClick={onPreview}
+        disabled={previewing}
         className="px-4 py-2 text-sm font-medium text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors"
       >
-        Xem trước
-      </a>
+        {previewing ? 'Đang tạo...' : 'Xem trước'}
+      </button>
       <Button
         onClick={onSave}
         disabled={saving}

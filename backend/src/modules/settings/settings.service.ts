@@ -97,7 +97,8 @@ export class SettingsService {
 
   // --- Homepage config ---
 
-  /** Preview store — luu tam config de xem truoc, TTL 1h */
+  /** Preview store — luu tam config de xem truoc, TTL 1h, toi da 100 entry */
+  private static readonly MAX_PREVIEW_ENTRIES = 100;
   private previewStore = new Map<string, { config: HomepageConfig; expires: number }>();
 
   /**
@@ -149,6 +150,20 @@ export class SettingsService {
   createHomepagePreview(config: HomepageConfig): string {
     const token = crypto.randomUUID();
     const expires = Date.now() + 60 * 60 * 1000; // 1h
+
+    // Don dep entry het han truoc khi them moi
+    const now = Date.now();
+    for (const [key, entry] of this.previewStore) {
+      if (entry.expires < now) this.previewStore.delete(key);
+    }
+
+    // Gioi han so luong entry de tranh memory leak
+    if (this.previewStore.size >= SettingsService.MAX_PREVIEW_ENTRIES) {
+      // Xoa entry cu nhat
+      const oldestKey = this.previewStore.keys().next().value;
+      if (oldestKey) this.previewStore.delete(oldestKey);
+    }
+
     this.previewStore.set(token, { config, expires });
     return token;
   }

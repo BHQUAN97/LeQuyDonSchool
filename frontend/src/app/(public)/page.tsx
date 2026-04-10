@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { buildPageMetadata } from '@/lib/seo-helpers';
 import HomepageRenderer from '@/components/public/homepage/HomepageRenderer';
+import { DEFAULT_HOMEPAGE_CONFIG } from '@/types/homepage';
 
 const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
 
@@ -47,23 +48,8 @@ async function getPreviewConfig(token: string) {
   }
 }
 
-// Default config — fallback khi API chua co data
-const DEFAULT_CONFIG = {
-  blocks: [
-    { id: 'hero', label: 'Banner chính', visible: true, variant: 'full-width', order: 0 },
-    { id: 'news', label: 'Tin tức mới cập nhật', visible: true, variant: 'featured-grid', order: 1 },
-    { id: 'features', label: 'Chỉ có tại Lê Quý Đôn', visible: true, variant: 'two-column', order: 2 },
-    { id: 'testimonial', label: 'Cảm nhận từ cộng đồng', visible: true, variant: 'year-banner', order: 3 },
-  ],
-  theme: {
-    primaryColor: '#2E7D32',
-    accentColor: '#D32F2F',
-    headingFont: 'system',
-    bodyFont: 'system',
-    logoUrl: null,
-    spacing: 'normal' as const,
-  },
-};
+// Fallback khi API chua co data
+const DEFAULT_CONFIG = DEFAULT_HOMEPAGE_CONFIG;
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Trường Tiểu học Lê Quý Đôn - Hà Nội',

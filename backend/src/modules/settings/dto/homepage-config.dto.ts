@@ -1,17 +1,18 @@
 import { Type } from 'class-transformer';
 import {
   IsArray, IsBoolean, IsHexColor, IsIn, IsInt, IsNotEmpty,
-  IsOptional, IsString, Min, ValidateNested, ArrayMinSize,
+  IsOptional, IsString, IsUrl, MaxLength, Min, ValidateNested,
+  ArrayMinSize, ArrayMaxSize, ValidateIf,
 } from 'class-validator';
-import { VALID_FONTS } from '../homepage-config';
+import { VALID_FONTS, VALID_BLOCK_VARIANTS } from '../homepage-config';
 
 export class HomepageBlockDto {
-  @IsString()
-  @IsNotEmpty()
+  @IsIn(Object.keys(VALID_BLOCK_VARIANTS))
   id!: string;
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(100)
   label!: string;
 
   @IsBoolean()
@@ -19,6 +20,7 @@ export class HomepageBlockDto {
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(50)
   variant!: string;
 
   @IsInt()
@@ -40,7 +42,9 @@ export class HomepageThemeDto {
   bodyFont!: string;
 
   @IsOptional()
-  @IsString()
+  @ValidateIf((o) => o.logoUrl !== null && o.logoUrl !== '')
+  @IsUrl({ protocols: ['http', 'https'], require_protocol: true }, { message: 'logoUrl phải là URL hợp lệ (http/https)' })
+  @MaxLength(2048)
   logoUrl!: string | null;
 
   @IsIn(['compact', 'normal', 'spacious'])
@@ -50,6 +54,7 @@ export class HomepageThemeDto {
 export class UpdateHomepageConfigDto {
   @IsArray()
   @ArrayMinSize(1)
+  @ArrayMaxSize(20)
   @ValidateNested({ each: true })
   @Type(() => HomepageBlockDto)
   blocks!: HomepageBlockDto[];
