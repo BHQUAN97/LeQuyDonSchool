@@ -25,7 +25,7 @@ describe('AuthController', () => {
         httpOnly: true,
         secure: false,
         sameSite: 'lax',
-        path: '/api/auth',
+        path: '/',
         maxAge: 604800000,
       }),
     };
@@ -97,7 +97,7 @@ describe('AuthController', () => {
       await controller.logout('user-1', mockReq, mockRes);
 
       expect(service.logout).toHaveBeenCalledWith('user-1', '127.0.0.1');
-      expect(mockRes.clearCookie).toHaveBeenCalledWith('refreshToken', { path: '/api/auth' });
+      expect(mockRes.clearCookie).toHaveBeenCalledWith('refreshToken', { path: '/' });
       expect(mockRes.json).toHaveBeenCalledWith(
         expect.objectContaining({ success: true }),
       );

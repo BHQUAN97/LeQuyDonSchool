@@ -288,7 +288,7 @@ export class AuthService {
       httpOnly: true,
       secure: isProduction,
       sameSite: 'lax' as const,
-      path: '/api/auth',
+      path: '/',
       maxAge: refreshExpiresIn * 1000,
     };
   }
