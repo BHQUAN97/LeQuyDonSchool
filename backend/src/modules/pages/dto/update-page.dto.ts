@@ -10,6 +10,11 @@ export class UpdatePageDto {
 
   @IsOptional()
   @IsString()
+  @MaxLength(300)
+  slug?: string;
+
+  @IsOptional()
+  @IsString()
   @MaxLength(500000)
   content?: string;
 

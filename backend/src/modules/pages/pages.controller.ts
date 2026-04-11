@@ -28,6 +28,14 @@ export class PagesController {
     return ok(page);
   }
 
+  /** Xem trang theo path (ho tro nested slug) — public */
+  @Get('by-path')
+  @Public()
+  async findByPath(@Query('path') path: string) {
+    const page = await this.pagesService.findBySlug(path);
+    return ok(page);
+  }
+
   /** Xem chi tiet trang — admin */
   @Get(':id')
   @EditorOnly()

@@ -5,6 +5,7 @@ import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import ImagePicker from '@/components/admin/ImagePicker';
 
 type TabKey = 'general' | 'contact' | 'social' | 'seo' | 'floating';
 
@@ -17,12 +18,12 @@ const TABS: { key: TabKey; label: string }[] = [
 ];
 
 /** Cau hinh cac field cho moi tab */
-const TAB_FIELDS: Record<TabKey, { key: string; label: string; type: 'text' | 'textarea' | 'toggle'; help?: string; maxLength?: number }[]> = {
+const TAB_FIELDS: Record<TabKey, { key: string; label: string; type: 'text' | 'textarea' | 'toggle' | 'image'; help?: string; maxLength?: number }[]> = {
   general: [
     { key: 'school_name', label: 'Tên trường', type: 'text', help: 'Tên chính thức của trường hiển thị trên website' },
     { key: 'slogan', label: 'Slogan', type: 'text', help: 'Khẩu hiệu ngắn gọn của trường' },
-    { key: 'logo_url', label: 'URL Logo', type: 'text', help: 'Đường dẫn ảnh logo (khuyến nghị PNG trong suốt)' },
-    { key: 'favicon_url', label: 'URL Favicon', type: 'text', help: 'Icon nhỏ hiển thị trên tab trình duyệt (16x16 hoặc 32x32)' },
+    { key: 'logo_url', label: 'Logo', type: 'image', help: 'Ảnh logo (khuyến nghị PNG trong suốt)' },
+    { key: 'favicon_url', label: 'Favicon', type: 'image', help: 'Icon nhỏ hiển thị trên tab trình duyệt (16x16 hoặc 32x32)' },
   ],
   contact: [
     { key: 'address', label: 'Địa chỉ', type: 'text', help: 'Địa chỉ đầy đủ của trường' },
@@ -39,7 +40,7 @@ const TAB_FIELDS: Record<TabKey, { key: string; label: string; type: 'text' | 't
   seo: [
     { key: 'default_title', label: 'Tiêu đề mặc định', type: 'text', help: 'Tiêu đề hiển thị trên tab trình duyệt và kết quả tìm kiếm' },
     { key: 'meta_description', label: 'Mô tả meta', type: 'textarea', help: 'Mô tả ngắn hiển thị trên kết quả Google', maxLength: 160 },
-    { key: 'og_image_url', label: 'OG Image URL', type: 'text', help: 'URL ảnh đại diện khi chia sẻ lên mạng xã hội' },
+    { key: 'og_image_url', label: 'Ảnh OG (mạng xã hội)', type: 'image', help: 'Ảnh đại diện khi chia sẻ lên mạng xã hội' },
     { key: 'google_analytics_id', label: 'Google Analytics ID', type: 'text', help: 'Mã theo dõi Google Analytics (VD: G-XXXXXXXXXX)' },
   ],
   floating: [
@@ -156,7 +157,14 @@ export default function SettingsAdminPage() {
               {field.label}
             </label>
 
-            {field.type === 'toggle' ? (
+            {field.type === 'image' ? (
+              <ImagePicker
+                value={values[field.key] || ''}
+                onChange={(url) => updateValue(field.key, url)}
+                label=""
+                placeholder="Chọn hoặc nhập URL ảnh..."
+              />
+            ) : field.type === 'toggle' ? (
               <button
                 onClick={() => toggleValue(field.key)}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${

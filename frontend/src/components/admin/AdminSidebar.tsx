@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import {
   LayoutDashboard, FileText, FolderTree, File, Home, Link2,
   GraduationCap, UtensilsCrossed, Calendar, Mail, ImageIcon,
-  Users, Settings, ScrollText, BarChart3, ChevronLeft,
+  Users, Settings, ScrollText, BarChart3, ChevronLeft, BookOpen,
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -31,6 +31,7 @@ const menuItems: (MenuItem | { divider: true })[] = [
   { label: 'Sự kiện', icon: Calendar, href: '/admin/events', roles: ['super_admin', 'editor'] },
   { label: 'Liên hệ', icon: Mail, href: '/admin/contacts', roles: ['super_admin', 'editor'] },
   { label: 'Media', icon: ImageIcon, href: '/admin/media', roles: ['super_admin', 'editor'] },
+  { label: 'Hướng dẫn', icon: BookOpen, href: '/admin/guide', roles: ['super_admin', 'editor'] },
   { divider: true },
   { label: 'Người dùng', icon: Users, href: '/admin/users', roles: ['super_admin'] },
   { label: 'Cài đặt', icon: Settings, href: '/admin/settings', roles: ['super_admin'] },

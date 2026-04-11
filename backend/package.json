@@ -16,6 +16,8 @@
     "seed:admin:prod": "node dist/database/seeds/admin-seed.js",
     "seed:content": "ts-node -r tsconfig-paths/register src/database/seeds/content-seed.ts",
     "seed:content:prod": "node dist/database/seeds/content-seed.js",
+    "seed:admissions": "ts-node -r tsconfig-paths/register src/database/seeds/seed-admissions.ts",
+    "seed:admissions:prod": "node dist/database/seeds/seed-admissions.js",
     "test": "jest --passWithNoTests",
     "test:cov": "jest --coverage --passWithNoTests"
   },

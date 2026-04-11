@@ -7,6 +7,11 @@ export class CreatePageDto {
   @MaxLength(255)
   title!: string;
 
+  @IsOptional()
+  @IsString()
+  @MaxLength(300)
+  slug?: string;
+
   @IsString()
   @MaxLength(500000)
   content!: string;

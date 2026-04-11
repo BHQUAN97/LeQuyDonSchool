@@ -43,6 +43,7 @@ export default function PagesAdminPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: '',
+    slug: '',
     content: '',
     status: 'draft' as 'draft' | 'published' | 'hidden',
     seoTitle: '',
@@ -85,7 +86,7 @@ export default function PagesAdminPage() {
   /** Mo form tao moi */
   const handleCreate = () => {
     setEditingId(null);
-    setFormData({ title: '', content: '', status: 'draft', seoTitle: '', seoDescription: '' });
+    setFormData({ title: '', slug: '', content: '', status: 'draft', seoTitle: '', seoDescription: '' });
     setShowForm(true);
   };
 
@@ -97,6 +98,7 @@ export default function PagesAdminPage() {
         setEditingId(id);
         setFormData({
           title: res.data.title,
+          slug: res.data.slug || '',
           content: res.data.content,
           status: res.data.status,
           seoTitle: res.data.seo_title || '',
@@ -113,13 +115,14 @@ export default function PagesAdminPage() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const body = {
+      const body: Record<string, string> = {
         title: formData.title,
         content: formData.content,
         status: formData.status,
         seoTitle: formData.seoTitle,
         seoDescription: formData.seoDescription,
       };
+      if (formData.slug) body.slug = formData.slug;
       if (editingId) {
         await api(`/pages/${editingId}`, { method: 'PUT', body: JSON.stringify(body) });
       } else {
@@ -175,13 +178,24 @@ export default function PagesAdminPage() {
             {editingId ? 'Chỉnh sửa trang' : 'Tạo trang mới'}
           </h2>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Tiêu đề *</label>
-            <Input
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              placeholder="Nhập tiêu đề trang"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Tiêu đề *</label>
+              <Input
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                placeholder="Nhập tiêu đề trang"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Slug (URL)</label>
+              <Input
+                value={formData.slug}
+                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                placeholder="Tự động tạo từ tiêu đề, hoặc nhập tùy chỉnh (VD: tong-quan/tam-nhin)"
+              />
+              <p className="text-xs text-slate-400 mt-1">Để trống để tự động tạo. Hỗ trợ nested: tong-quan/tam-nhin-su-menh</p>
+            </div>
           </div>
 
           <div>

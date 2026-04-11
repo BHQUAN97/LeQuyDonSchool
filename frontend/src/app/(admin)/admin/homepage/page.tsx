@@ -11,6 +11,7 @@ import { DEFAULT_HOMEPAGE_CONFIG } from '@/types/homepage';
 import BlockSortableList from './components/BlockSortableList';
 import LayoutVariantPicker from './components/LayoutVariantPicker';
 import ThemeEditor from './components/ThemeEditor';
+import ImagePicker from '@/components/admin/ImagePicker';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -373,7 +374,7 @@ export default function HomepageAdminPage() {
                     <FieldInput label="Nút CTA (text)" value={slide.cta_text} onChange={(v) => updateSlide(idx, 'cta_text', v)} placeholder="VD: Tìm hiểu thêm" />
                     <FieldInput label="CTA Link" value={slide.cta_link} onChange={(v) => updateSlide(idx, 'cta_link', v)} placeholder="/tuyen-sinh" />
                   </div>
-                  <FieldInput label="URL Hình ảnh" value={slide.image_url} onChange={(v) => updateSlide(idx, 'image_url', v)} placeholder="https://..." />
+                  <ImagePicker label="Hình ảnh slide" value={slide.image_url} onChange={(v) => updateSlide(idx, 'image_url', v)} />
                 </div>
               ))}
             </div>
@@ -430,7 +431,7 @@ export default function HomepageAdminPage() {
                     <FieldInput label="Vai trò / Chức danh" value={t.title} onChange={(v) => updateTestimonial(idx, 'title', v)} placeholder="VD: Phụ huynh lớp 3A" />
                   </div>
                   <FieldTextarea label="Nội dung" value={t.content} onChange={(v) => updateTestimonial(idx, 'content', v)} rows={3} />
-                  <FieldInput label="URL Ảnh đại diện" value={t.avatar_url} onChange={(v) => updateTestimonial(idx, 'avatar_url', v)} placeholder="https://..." />
+                  <ImagePicker label="Ảnh đại diện" value={t.avatar_url} onChange={(v) => updateTestimonial(idx, 'avatar_url', v)} />
                 </div>
               ))}
             </div>

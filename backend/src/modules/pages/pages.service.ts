@@ -67,7 +67,8 @@ export class PagesService {
    * Tao trang moi — tu dong tao slug tu title.
    */
   async create(dto: CreatePageDto, createdBy: string) {
-    const slug = await this.generateUniqueSlug(dto.title);
+    // Dung slug tu DTO neu co, khong thi tu dong tao tu title
+    const slug = dto.slug || await this.generateUniqueSlug(dto.title);
 
     const page = this.pageRepo.create({
       id: generateUlid(),
@@ -94,7 +95,13 @@ export class PagesService {
 
     if (dto.title && dto.title !== page.title) {
       updateData.title = dto.title;
-      updateData.slug = await this.generateUniqueSlug(dto.title, id);
+      // Chi tu dong tao slug moi khi khong co slug tu DTO
+      if (!dto.slug) {
+        updateData.slug = await this.generateUniqueSlug(dto.title, id);
+      }
+    }
+    if (dto.slug && dto.slug !== page.slug) {
+      updateData.slug = dto.slug;
     }
     if (dto.content !== undefined) updateData.content = dto.content;
     if (dto.status) updateData.status = dto.status;
