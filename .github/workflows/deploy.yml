@@ -585,23 +585,34 @@ jobs:
             sleep 2
           done
 
-      - name: Seed data
-        if: steps.changelog.outputs.db_changed == 'true'
+      - name: Seed data (idempotent)
         run: |
           VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
           PORT="${{ env.VPS_PORT }}"
 
-          echo "Seeding admin user..."
+          # Doi backend san sang
+          for i in $(seq 1 15); do
+            sshpass -e ssh -p $PORT $VPS "curl -sf http://localhost:4200/api/health" > /dev/null 2>&1 && break
+            sleep 2
+          done
+
+          echo "=== Seeding admin ==="
           sshpass -e ssh -p $PORT $VPS "
             cd ${APP_DIR}
             docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/admin-seed.js 2>&1
           " || echo "::warning::Admin seed failed"
 
-          echo "Seeding content..."
+          echo "=== Seeding content ==="
           sshpass -e ssh -p $PORT $VPS "
             cd ${APP_DIR}
             docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/content-seed.js 2>&1
           " || echo "::warning::Content seed failed"
+
+          echo "=== Seeding admissions ==="
+          sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-admissions.js 2>&1
+          " || echo "::warning::Admissions seed failed"
 
   # ─── STAGE 4: VERIFY ────────────────────────────
   verify:

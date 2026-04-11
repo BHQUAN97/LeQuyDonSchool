@@ -47,7 +47,7 @@ echo "  Mode:   Shared infra with WebPhoto/VietNet"
 echo "============================================================"
 
 # ─── STEP 0: PRE-FLIGHT ──────────────────────────────────
-step "0/8 — Kiem tra truoc khi deploy"
+step "0/9 — Kiem tra truoc khi deploy"
 
 ssh -o ConnectTimeout=5 -o BatchMode=yes "${VPS_HOST}" "echo SSH_OK" 2>/dev/null || err "Khong the SSH vao ${VPS_HOST}"
 log "SSH connection OK"
@@ -61,7 +61,7 @@ ssh "${VPS_HOST}" "docker --version && docker compose version" >/dev/null 2>&1 |
 log "Docker OK"
 
 # ─── STEP 1: BUILD LOCAL ──────────────────────────────────
-step "1/8 — Build frontend + backend (local)"
+step "1/9 — Build frontend + backend (local)"
 
 echo "  Building backend..."
 cd "$ROOT_DIR/backend"
@@ -78,7 +78,7 @@ log "Frontend built"
 cd "$ROOT_DIR"
 
 # ─── STEP 2: PREPARE VPS ──────────────────────────────────
-step "2/8 — Chuan bi VPS"
+step "2/9 — Chuan bi VPS"
 
 ssh "${VPS_HOST}" "
   mkdir -p ${APP_DIR}/backend
@@ -90,7 +90,7 @@ ssh "${VPS_HOST}" "
 log "VPS prepared"
 
 # ─── STEP 3: UPLOAD FILES ─────────────────────────────────
-step "3/8 — Upload files len VPS"
+step "3/9 — Upload files len VPS"
 
 echo "  Uploading docker-compose..."
 scp "$ROOT_DIR/docker-compose.prod.yml" "${VPS_HOST}:${APP_DIR}/docker-compose.yml"
@@ -123,7 +123,7 @@ scp -r "$ROOT_DIR/scripts" "${VPS_HOST}:${APP_DIR}/"
 log "All files uploaded"
 
 # ─── STEP 4: CREATE DB + ENV ──────────────────────────────
-step "4/8 — Tao database lqd trong shared-mysql + .env"
+step "4/9 — Tao database lqd trong shared-mysql + .env"
 
 MYSQL_ROOT_PASS=$(ssh "${VPS_HOST}" "grep '^MYSQL_ROOT_PASSWORD=' ${WEBPHOTO_DIR}/.env | cut -d= -f2-")
 [ -n "$MYSQL_ROOT_PASS" ] || err "Khong lay duoc MYSQL_ROOT_PASSWORD tu ${WEBPHOTO_DIR}/.env"
@@ -159,7 +159,7 @@ EOF
 log "Environment configured"
 
 # ─── STEP 5: BUILD + START DOCKER ────────────────────────
-step "5/8 — Build Docker images + Start"
+step "5/9 — Build Docker images + Start"
 
 ssh "${VPS_HOST}" "
   cd ${APP_DIR}
@@ -184,7 +184,7 @@ ssh "${VPS_HOST}" "
 log "Containers started"
 
 # ─── STEP 6: DB MIGRATIONS ───────────────────────────────
-step "6/8 — Database migrations"
+step "6/9 — Database migrations"
 
 ssh "${VPS_HOST}" "
   cd ${APP_DIR}
@@ -200,7 +200,7 @@ ssh "${VPS_HOST}" "
 log "Database ready"
 
 # ─── STEP 7: NGINX CONFIG ────────────────────────────────
-step "7/8 — Cau hinh Nginx trong shared-nginx"
+step "7/9 — Cau hinh Nginx trong shared-nginx"
 
 scp "$ROOT_DIR/nginx/conf.d/demo.remoteterminal.online.conf" "${VPS_HOST}:${WEBPHOTO_DIR}/nginx/conf.d/demo.remoteterminal.online.conf"
 
@@ -221,7 +221,7 @@ ssh "${VPS_HOST}" "
 log "Nginx configured"
 
 # ─── STEP 8: HEALTH CHECK ────────────────────────────────
-step "8/8 — Health check"
+step "8/9 — Health check"
 
 ssh "${VPS_HOST}" "
   sleep 5
@@ -236,6 +236,31 @@ ssh "${VPS_HOST}" "
   docker ps --filter 'name=lqd-' --filter 'name=shared-' --format 'table {{.Names}}\t{{.Status}}'
 "
 
+# ─── STEP 9: SEED DATA (first deploy) ───────────────────
+step "9/9 — Seed du lieu (neu chua co)"
+
+ssh "${VPS_HOST}" "
+  # Kiem tra da co du lieu chua (check categories table)
+  LQD_DB_PASS=\$(grep '^LQD_DB_PASSWORD=' ${APP_DIR}/.env | cut -d= -f2-)
+  HAS_DATA=\$(docker exec shared-mysql mysql -u lqd -p\"\${LQD_DB_PASS}\" lqd -N -e 'SELECT COUNT(*) FROM category' 2>/dev/null || echo '0')
+
+  if [ \"\$HAS_DATA\" = '0' ] || [ -z \"\$HAS_DATA\" ]; then
+    echo '  Seeding admin...'
+    docker exec lqd-api node dist/database/seeds/admin-seed.js 2>&1 || true
+
+    echo '  Seeding content...'
+    docker exec lqd-api node dist/database/seeds/content-seed.js 2>&1 || true
+
+    echo '  Seeding admissions...'
+    docker exec lqd-api node dist/database/seeds/seed-admissions.js 2>&1 || true
+
+    echo '  Seed done!'
+  else
+    echo \"  Da co \${HAS_DATA} categories — skip seed\"
+  fi
+"
+log "Seed check done"
+
 echo ""
 echo "============================================================"
 echo -e "  ${GREEN}DEPLOY HOAN TAT!${NC}"
@@ -245,4 +270,5 @@ echo "  https://${DOMAIN}        (LeQuyDon)"
 echo "  https://${DOMAIN}/admin  (Admin)"
 echo ""
 echo "  Update:  bash scripts/update-deploy.sh ${VPS_IP}"
+echo "  Seed:    bash scripts/seed-prod.sh ${VPS_IP}"
 echo "============================================================"
