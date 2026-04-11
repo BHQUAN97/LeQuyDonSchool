@@ -51,7 +51,7 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [slugManual, setSlugManual] = useState(true); // Mac dinh manual khi edit
+  const [, setSlugManual] = useState(true); // Mac dinh manual khi edit
   const [editError, setEditError] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -66,7 +66,7 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
   const [seoTitle, setSeoTitle] = useState('');
   const [seoDescription, setSeoDescription] = useState('');
   const [publishedAt, setPublishedAt] = useState('');
-  const [originalTitle, setOriginalTitle] = useState('');
+  const [, setOriginalTitle] = useState('');
 
   // Danh sach danh muc
   const [categories, setCategories] = useState<Category[]>([]);

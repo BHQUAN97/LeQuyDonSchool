@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { LayoutGrid, List, Upload, File, X, Copy, Trash2, Search } from 'lucide-react';
+import Image from 'next/image';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
@@ -382,7 +383,7 @@ export default function MediaPage() {
             >
               <div className="aspect-square bg-slate-50 flex items-center justify-center overflow-hidden">
                 {isImage(item.mime_type) ? (
-                  <img src={fullUrl(item.url)} alt={item.alt_text || item.original_name} className="w-full h-full object-cover" />
+                  <Image src={fullUrl(item.url)} alt={item.alt_text || item.original_name} width={0} height={0} sizes="100vw" className="w-full h-full object-cover" />
                 ) : (
                   <File className="text-slate-300 w-10 h-10" />
                 )}
@@ -425,7 +426,7 @@ export default function MediaPage() {
                   <td className="p-3">
                     <div className="w-12 h-12 rounded bg-slate-100 flex items-center justify-center overflow-hidden">
                       {isImage(item.mime_type) ? (
-                        <img src={fullUrl(item.url)} alt={item.alt_text || ''} className="w-full h-full object-cover" />
+                        <Image src={fullUrl(item.url)} alt={item.alt_text || ''} width={48} height={48} className="w-full h-full object-cover" />
                       ) : (
                         <File className="text-slate-300 w-6 h-6" />
                       )}
@@ -497,7 +498,7 @@ export default function MediaPage() {
             <div className="p-4">
               <div className="bg-slate-50 rounded-lg flex items-center justify-center overflow-hidden mb-4" style={{ minHeight: 200 }}>
                 {isImage(selectedItem.mime_type) ? (
-                  <img src={fullUrl(selectedItem.url)} alt={selectedItem.alt_text || ''} className="max-w-full max-h-[300px] object-contain" />
+                  <Image src={fullUrl(selectedItem.url)} alt={selectedItem.alt_text || ''} width={0} height={0} sizes="100vw" className="max-w-full max-h-[300px] w-auto h-auto object-contain" />
                 ) : (
                   <div className="py-12 text-center">
                     <File className="mx-auto text-slate-300 w-16 h-16 mb-2" />

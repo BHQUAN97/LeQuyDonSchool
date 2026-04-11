@@ -81,7 +81,7 @@ function ChangePassword() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const checks = usePasswordChecks(form.newPassword);
-  const allChecksPassed = checks.minLength && checks.hasUpper && checks.hasLower && checks.hasNumber;
+  const allChecksPassed = checks.minLength && checks.hasUpper && checks.hasLower && checks.hasNumber; // eslint-disable-line @typescript-eslint/no-unused-vars
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

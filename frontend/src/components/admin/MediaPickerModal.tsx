@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import Image from 'next/image';
 import { X, Upload, Check, Search, Image as ImageIcon } from 'lucide-react';
 import { api, getAccessToken } from '@/lib/api';
 import type { Media, PaginatedResponse } from '@/types';
@@ -169,9 +170,12 @@ export default function MediaPickerModal({
                         : 'border-transparent hover:border-gray-300'
                     }`}
                   >
-                    <img
+                    <Image
                       src={url}
                       alt={m.alt_text || m.original_name}
+                      width={0}
+                      height={0}
+                      sizes="100vw"
                       className="w-full h-full object-cover"
                     />
                     {isSelected && (

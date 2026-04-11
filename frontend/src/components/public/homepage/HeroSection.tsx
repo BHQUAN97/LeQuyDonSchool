@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import HeroBanner from '../HeroBanner';
-import Carousel from '../Carousel';
 
 interface Props {
   variant: string;

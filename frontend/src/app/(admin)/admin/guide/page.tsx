@@ -131,12 +131,12 @@ const sections: GuideSection[] = [
         />
 
         <NoteBox type="warning">
-          Bai dang da xuat ban se hien thi ngay tren website. Hay kiem tra ky noi dung truoc khi chuyen sang trang thai "Xuat ban".
+          Bai dang da xuat ban se hien thi ngay tren website. Hay kiem tra ky noi dung truoc khi chuyen sang trang thai &ldquo;Xuat ban&rdquo;.
         </NoteBox>
 
         <NoteBox type="info">
           Meo: Dung trang thai <strong>Nhap (Draft)</strong> de luu bai dang chua hoan chinh. Chi chuyen sang
-          "Xuat ban" khi da san sang.
+          &ldquo;Xuat ban&rdquo; khi da san sang.
         </NoteBox>
       </>
     ),
@@ -268,7 +268,7 @@ const sections: GuideSection[] = [
         />
 
         <NoteBox type="info">
-          Nut <strong>"Xem truoc"</strong> cho phep ban xem trang chu se nhu the nao truoc khi luu thay doi.
+          Nut <strong>&ldquo;Xem truoc&rdquo;</strong> cho phep ban xem trang chu se nhu the nao truoc khi luu thay doi.
         </NoteBox>
       </>
     ),
@@ -414,7 +414,7 @@ const sections: GuideSection[] = [
         />
 
         <NoteBox type="info">
-          Su kien sap dien ra se hien thi noi bat tren website. Su kien da qua se tu dong chuyen vao muc "Da dien ra".
+          Su kien sap dien ra se hien thi noi bat tren website. Su kien da qua se tu dong chuyen vao muc &ldquo;Da dien ra&rdquo;.
         </NoteBox>
       </>
     ),
@@ -471,7 +471,7 @@ const sections: GuideSection[] = [
 
         <h4 className="font-semibold text-slate-800 mt-4 mb-2">Su dung ImagePicker</h4>
         <p className="text-sm text-slate-700 mb-2">
-          Khi tao bai dang, trang, hoac bat ky noi dung nao can hinh anh, ban se thay nut <strong>"Chon anh"</strong>.
+          Khi tao bai dang, trang, hoac bat ky noi dung nao can hinh anh, ban se thay nut <strong>&ldquo;Chon anh&rdquo;</strong>.
         </p>
         <Steps
           items={[

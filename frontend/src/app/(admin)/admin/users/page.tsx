@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
 import type { User, PaginatedResponse } from '@/types';
+import Image from 'next/image';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface UserForm {
@@ -348,7 +349,7 @@ export default function UsersPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         {user.avatar_url ? (
-                          <img src={user.avatar_url} alt="" className="w-8 h-8 rounded-full object-cover" />
+                          <Image src={user.avatar_url} alt="" width={32} height={32} className="w-8 h-8 rounded-full object-cover" />
                         ) : (
                           <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-700 text-xs font-bold">
                             {user.full_name.charAt(0).toUpperCase()}

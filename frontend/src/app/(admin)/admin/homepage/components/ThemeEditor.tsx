@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import type { HomepageTheme } from '@/types/homepage';
 import { FONT_OPTIONS, SPACING_OPTIONS } from '@/types/homepage';
 
@@ -73,10 +74,13 @@ export default function ThemeEditor({ theme, onChange }: Props) {
 
         {theme.logoUrl && (
           <div className="mb-3">
-            <img
+            <Image
               src={theme.logoUrl}
               alt="Logo preview"
-              className="h-16 object-contain rounded border border-slate-200 p-1"
+              width={0}
+              height={0}
+              sizes="100vw"
+              className="h-16 w-auto object-contain rounded border border-slate-200 p-1"
             />
           </div>
         )}

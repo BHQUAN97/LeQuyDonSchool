@@ -11,6 +11,7 @@ import { DEFAULT_HOMEPAGE_CONFIG } from '@/types/homepage';
 import BlockSortableList from './components/BlockSortableList';
 import LayoutVariantPicker from './components/LayoutVariantPicker';
 import ThemeEditor from './components/ThemeEditor';
+import Image from 'next/image';
 import ImagePicker from '@/components/admin/ImagePicker';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -362,7 +363,7 @@ export default function HomepageAdminPage() {
 
                   {/* Preview thumbnail */}
                   {slide.image_url && (
-                    <img src={slide.image_url} alt="" className="w-full h-32 object-cover rounded" />
+                    <Image src={slide.image_url} alt="" width={0} height={0} sizes="100vw" className="w-full h-32 object-cover rounded" />
                   )}
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -411,7 +412,7 @@ export default function HomepageAdminPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       {t.avatar_url ? (
-                        <img src={t.avatar_url} alt="" className="w-10 h-10 rounded-full object-cover" />
+                        <Image src={t.avatar_url} alt="" width={40} height={40} className="w-10 h-10 rounded-full object-cover" />
                       ) : (
                         <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 text-sm font-bold">
                           {t.name?.charAt(0) || '?'}
@@ -577,7 +578,7 @@ export default function HomepageAdminPage() {
                 {heroSlides.map((slide, idx) => (
                   <div key={idx} className="rounded-lg overflow-hidden border border-slate-200">
                     {slide.image_url ? (
-                      <img src={slide.image_url} alt="" className="w-full h-36 object-cover" />
+                      <Image src={slide.image_url} alt="" width={0} height={0} sizes="100vw" className="w-full h-36 object-cover" />
                     ) : (
                       <div className="w-full h-36 bg-gradient-to-br from-green-600 to-green-800 flex items-center justify-center">
                         <span className="text-white/50 text-xs">No image</span>
@@ -628,7 +629,7 @@ export default function HomepageAdminPage() {
                 {testimonials.map((t, idx) => (
                   <div key={idx} className="flex gap-3 p-3 bg-slate-50 rounded-lg">
                     {t.avatar_url ? (
-                      <img src={t.avatar_url} alt="" className="w-10 h-10 rounded-full object-cover flex-shrink-0" />
+                      <Image src={t.avatar_url} alt="" width={40} height={40} className="w-10 h-10 rounded-full object-cover flex-shrink-0" />
                     ) : (
                       <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 text-green-700 text-sm font-bold">
                         {t.name?.charAt(0) || '?'}
@@ -661,7 +662,7 @@ export default function HomepageAdminPage() {
                 {recentArticles.map((article) => (
                   <div key={article.id} className="flex gap-3 items-start">
                     {article.thumbnail_url ? (
-                      <img src={article.thumbnail_url} alt="" className="w-16 h-16 rounded object-cover flex-shrink-0" />
+                      <Image src={article.thumbnail_url} alt="" width={64} height={64} className="w-16 h-16 rounded object-cover flex-shrink-0" />
                     ) : (
                       <div className="w-16 h-16 rounded bg-slate-100 flex items-center justify-center flex-shrink-0 text-slate-300 text-xs">
                         N/A

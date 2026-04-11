@@ -4,7 +4,7 @@ import { describe, it, expect, vi } from 'vitest';
 // Mock dompurify — simulate sanitization behavior
 vi.mock('dompurify', () => ({
   default: {
-    sanitize: (html: string, options: any) => {
+    sanitize: (html: string) => {
       // Simulate stripping script tags (XSS prevention)
       let clean = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
       // Simulate stripping event handlers

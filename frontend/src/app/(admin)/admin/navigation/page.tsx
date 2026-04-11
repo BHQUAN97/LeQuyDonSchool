@@ -62,6 +62,7 @@ export default function NavigationPage() {
   };
 
   /** Flatten tree thanh mang items de gui len API */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const flattenTreeForSave = (nodes: MenuNode[]): any[] => {
     const result: any[] = [];
     for (const node of nodes) {

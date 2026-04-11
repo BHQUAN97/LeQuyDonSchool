@@ -5,6 +5,7 @@ import { api, getAccessToken } from '@/lib/api';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 import { X, Search, Upload, Check, ImageIcon } from 'lucide-react';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
@@ -158,9 +159,12 @@ export default function ImagePicker({ value, onChange, label = 'Hình ảnh', pl
       {/* Preview */}
       {value && (
         <div className="mt-2 relative group">
-          <img
+          <Image
             src={value}
             alt="Preview"
+            width={0}
+            height={0}
+            sizes="100vw"
             className="w-full h-32 rounded-lg object-cover border border-slate-200"
             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
           />
@@ -244,9 +248,12 @@ export default function ImagePicker({ value, onChange, label = 'Hình ảnh', pl
                           isSelected ? 'border-green-600 ring-2 ring-green-200' : 'border-transparent hover:border-slate-300',
                         )}
                       >
-                        <img
+                        <Image
                           src={fullUrl(item.url)}
                           alt={item.original_name}
+                          width={0}
+                          height={0}
+                          sizes="100vw"
                           className="w-full h-full object-cover"
                         />
                         {/* Overlay ten file */}

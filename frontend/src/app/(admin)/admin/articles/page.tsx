@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { api } from '@/lib/api';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
@@ -171,9 +172,11 @@ export default function ArticlesPage() {
                     {/* Thumbnail */}
                     <td className="px-4 py-3">
                       {article.thumbnail_url ? (
-                        <img
+                        <Image
                           src={article.thumbnail_url}
                           alt=""
+                          width={48}
+                          height={48}
                           className="w-12 h-12 rounded object-cover"
                         />
                       ) : (
