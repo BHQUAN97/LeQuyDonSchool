@@ -608,6 +608,54 @@ jobs:
             docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/content-seed.js 2>&1
           " || echo "::warning::Content seed failed"
 
+          echo "=== Seeding categories + articles ==="
+          sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-categories-articles.js 2>&1
+          " || echo "::warning::Categories+articles seed failed"
+
+          echo "=== Seeding events ==="
+          sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-events.js 2>&1
+          " || echo "::warning::Events seed failed"
+
+          echo "=== Seeding contacts, settings, navigation ==="
+          sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-contacts-settings-nav.js 2>&1
+          " || echo "::warning::Contacts+settings+nav seed failed"
+
+          echo "=== Seeding media ==="
+          sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-media.js 2>&1
+          " || echo "::warning::Media seed failed"
+
+          echo "=== Seeding pages (detailed) ==="
+          sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/pages-seed.js 2>&1
+          " || echo "::warning::Pages seed failed"
+
+          echo "=== Seeding pages part 1 ==="
+          sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-pages-part1.js 2>&1
+          " || echo "::warning::Pages part 1 seed failed"
+
+          echo "=== Seeding pages part 2 ==="
+          sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-pages-part2.js 2>&1
+          " || echo "::warning::Pages part 2 seed failed"
+
+          echo "=== Seeding pages part 3 ==="
+          sshpass -e ssh -p $PORT $VPS "
+            cd ${APP_DIR}
+            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-pages-part3.js 2>&1
+          " || echo "::warning::Pages part 3 seed failed"
+
           echo "=== Seeding admissions ==="
           sshpass -e ssh -p $PORT $VPS "
             cd ${APP_DIR}

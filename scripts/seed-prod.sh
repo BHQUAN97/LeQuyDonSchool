@@ -40,8 +40,40 @@ echo "--- Seed Admin ---"
 ssh "${VPS_HOST}" "docker exec lqd-api node dist/database/seeds/admin-seed.js" && log "Admin seed done" || warn "Admin seed failed (co the da ton tai)"
 
 echo ""
-echo "--- Seed Content (categories, articles, pages, events, settings, navigation) ---"
-ssh "${VPS_HOST}" "docker exec lqd-api node dist/database/seeds/content-seed.js" && log "Content seed done" || err "Content seed failed"
+echo "--- Seed Content (basic categories, articles, pages, events, settings, nav) ---"
+ssh "${VPS_HOST}" "docker exec lqd-api node dist/database/seeds/content-seed.js" && log "Content seed done" || warn "Content seed failed"
+
+echo ""
+echo "--- Seed Categories + Articles (extended) ---"
+ssh "${VPS_HOST}" "docker exec lqd-api node dist/database/seeds/seed-categories-articles.js" && log "Categories+articles seed done" || warn "Categories+articles seed failed"
+
+echo ""
+echo "--- Seed Events (extended) ---"
+ssh "${VPS_HOST}" "docker exec lqd-api node dist/database/seeds/seed-events.js" && log "Events seed done" || warn "Events seed failed"
+
+echo ""
+echo "--- Seed Contacts, Settings, Navigation ---"
+ssh "${VPS_HOST}" "docker exec lqd-api node dist/database/seeds/seed-contacts-settings-nav.js" && log "Contacts+settings+nav seed done" || warn "Contacts+settings+nav seed failed"
+
+echo ""
+echo "--- Seed Media ---"
+ssh "${VPS_HOST}" "docker exec lqd-api node dist/database/seeds/seed-media.js" && log "Media seed done" || warn "Media seed failed"
+
+echo ""
+echo "--- Seed Pages (25 nested pages) ---"
+ssh "${VPS_HOST}" "docker exec lqd-api node dist/database/seeds/pages-seed.js" && log "Pages seed done" || warn "Pages seed failed"
+
+echo ""
+echo "--- Seed Pages Part 1 ---"
+ssh "${VPS_HOST}" "docker exec lqd-api node dist/database/seeds/seed-pages-part1.js" && log "Pages part 1 done" || warn "Pages part 1 failed"
+
+echo ""
+echo "--- Seed Pages Part 2 ---"
+ssh "${VPS_HOST}" "docker exec lqd-api node dist/database/seeds/seed-pages-part2.js" && log "Pages part 2 done" || warn "Pages part 2 failed"
+
+echo ""
+echo "--- Seed Pages Part 3 ---"
+ssh "${VPS_HOST}" "docker exec lqd-api node dist/database/seeds/seed-pages-part3.js" && log "Pages part 3 done" || warn "Pages part 3 failed"
 
 echo ""
 echo "--- Seed Admissions ---"
