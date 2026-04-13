@@ -718,7 +718,7 @@ create_faq() {
 ENDJSON
 )
 
-  local res=$(curl -s -X POST "$BASE_URL/admissions/faqs" -H "$AUTH" -H "$CT" -d "$json")
+  local res=$(curl -s -X POST "$BASE_URL/admissions/faq" -H "$AUTH" -H "$CT" -d "$json")
   local success=$(echo "$res" | grep -o '"success":true')
   if [ -n "$success" ]; then
     echo -n "."
