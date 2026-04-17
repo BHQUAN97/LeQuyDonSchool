@@ -38,3 +38,21 @@ coverage/
 # Docker
 docker-compose.override.yml
 .playwright-mcp/
+
+# Backup credentials & logs
+scripts/.gdrive-credentials.json
+scripts/node_modules/
+logs/
+*.gdrive-credentials.json
+
+# Secrets - managed by secrets-infra
+.env
+.env.local
+.env.*.local
+.env.prod
+.env.staging
+.env.production
+secrets/*.decrypted
+# Chi commit ban encrypted (.enc) va template (.example)
+!.env.example
+!.env.*.enc
