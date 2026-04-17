@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
+import { getInternalApiBase } from '@/lib/ssr-api';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://demo.remoteterminal.online';
-const API_URL = process.env.INTERNAL_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+const API_URL = getInternalApiBase();
 
 interface ApiItem {
   slug: string;

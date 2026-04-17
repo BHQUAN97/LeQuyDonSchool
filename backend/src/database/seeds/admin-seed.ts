@@ -33,7 +33,7 @@ async function seedAdmin() {
   const user = userRepo.create({
     id: generateUlid(),
     email,
-    password_hash: await bcrypt.hash(password, 10),
+    password_hash: await bcrypt.hash(password, 12),
     full_name: 'Quản trị viên',
     role: UserRole.SUPER_ADMIN,
     status: UserStatus.ACTIVE,

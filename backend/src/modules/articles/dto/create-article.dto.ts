@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum, MinLength, MaxLength, IsDateString } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsUrl, MinLength, MaxLength, IsDateString } from 'class-validator';
 import { ArticleStatus } from '../entities/article.entity';
 
 export class CreateArticleDto {
@@ -9,18 +9,22 @@ export class CreateArticleDto {
 
   @IsString()
   @MinLength(1, { message: 'Nội dung không được để trống' })
+  @MaxLength(500_000, { message: 'Nội dung quá dài' })
   content!: string;
 
   @IsOptional()
   @IsString()
+  @MaxLength(26)
   categoryId?: string;
 
   @IsOptional()
   @IsString()
+  @MaxLength(500)
   excerpt?: string;
 
   @IsOptional()
   @IsString()
+  @IsUrl({ require_tld: false, protocols: ['http', 'https'] }, { message: 'Đường dẫn ảnh không hợp lệ' })
   @MaxLength(500)
   thumbnailUrl?: string;
 
@@ -35,6 +39,7 @@ export class CreateArticleDto {
 
   @IsOptional()
   @IsString()
+  @MaxLength(300)
   seoDescription?: string;
 
   @IsOptional()

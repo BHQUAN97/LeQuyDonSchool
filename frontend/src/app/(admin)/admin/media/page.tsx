@@ -286,6 +286,8 @@ export default function MediaPage() {
               onClick={() => setViewMode('grid')}
               className={cn('p-2', viewMode === 'grid' ? 'bg-slate-200 text-slate-900' : 'bg-white text-slate-500 hover:bg-slate-50')}
               title="Dạng lưới"
+              aria-label="Chuyển sang dạng lưới"
+              aria-pressed={viewMode === 'grid'}
             >
               <LayoutGrid className="w-[18px] h-[18px]" />
             </button>
@@ -293,6 +295,8 @@ export default function MediaPage() {
               onClick={() => setViewMode('list')}
               className={cn('p-2', viewMode === 'list' ? 'bg-slate-200 text-slate-900' : 'bg-white text-slate-500 hover:bg-slate-50')}
               title="Dạng danh sách"
+              aria-label="Chuyển sang dạng danh sách"
+              aria-pressed={viewMode === 'list'}
             >
               <List className="w-[18px] h-[18px]" />
             </button>
@@ -303,9 +307,10 @@ export default function MediaPage() {
       {/* Search + Filter */}
       <div className="flex flex-col sm:flex-row gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" aria-hidden="true" />
           <Input
             placeholder="Tìm kiếm file..."
+            aria-label="Tìm kiếm file trong thư viện"
             value={searchInput}
             onChange={(e) => handleSearchChange(e.target.value)}
             className="pl-9"
@@ -348,16 +353,24 @@ export default function MediaPage() {
               <div className="w-48 mx-auto bg-slate-200 rounded-full h-1.5">
                 <div className="bg-green-600 h-1.5 rounded-full transition-all" style={{ width: `${(uploadProgress.done / uploadProgress.total) * 100}%` }} />
               </div>
-              <p className="text-xs text-slate-400 mt-1">{uploadProgress.done}/{uploadProgress.total} file</p>
+              <p className="text-sm text-slate-400 mt-1">{uploadProgress.done}/{uploadProgress.total} file</p>
             </div>
           )}
         </div>
       )}
 
-      {/* Loading */}
+      {/* Loading — skeleton grid match layout */}
       {loading && (
-        <div className="flex justify-center py-12">
-          <div className="w-8 h-8 border-4 border-green-700 border-t-transparent rounded-full animate-spin" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div key={i} className="bg-white rounded-lg border border-slate-200 overflow-hidden">
+              <div className="aspect-square bg-slate-100 animate-pulse" />
+              <div className="p-2 space-y-1">
+                <div className="h-3 bg-slate-200 rounded animate-pulse" />
+                <div className="h-3 bg-slate-100 rounded w-1/2 animate-pulse" />
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
@@ -389,8 +402,8 @@ export default function MediaPage() {
                 )}
               </div>
               <div className="p-2">
-                <p className="text-xs font-medium text-slate-700 truncate">{item.original_name}</p>
-                <p className="text-xs text-slate-400">{formatFileSize(item.size)}</p>
+                <p className="text-sm font-medium text-slate-700 truncate">{item.original_name}</p>
+                <p className="text-sm text-slate-400">{formatFileSize(item.size)}</p>
               </div>
             </div>
           ))}
@@ -510,30 +523,30 @@ export default function MediaPage() {
               {/* Info */}
               <div className="space-y-3 text-sm">
                 <div>
-                  <label className="text-slate-500 text-xs">Tên gốc</label>
+                  <label className="text-slate-500 text-sm">Tên gốc</label>
                   <p className="text-slate-800 font-medium">{selectedItem.original_name}</p>
                 </div>
 
                 <div>
-                  <label className="text-slate-500 text-xs">Kích thước</label>
+                  <label className="text-slate-500 text-sm">Kích thước</label>
                   <p className="text-slate-800">{formatFileSize(selectedItem.size)}</p>
                 </div>
 
                 <div>
-                  <label className="text-slate-500 text-xs">Loại file</label>
+                  <label className="text-slate-500 text-sm">Loại file</label>
                   <p className="text-slate-800">{selectedItem.mime_type}</p>
                 </div>
 
                 <div>
-                  <label className="text-slate-500 text-xs">Ngày tải lên</label>
+                  <label className="text-slate-500 text-sm">Ngày tải lên</label>
                   <p className="text-slate-800">{formatDate(selectedItem.created_at)}</p>
                 </div>
 
                 {/* URL + copy */}
                 <div>
-                  <label className="text-slate-500 text-xs">URL</label>
+                  <label className="text-slate-500 text-sm">URL</label>
                   <div className="flex items-center gap-2 mt-1">
-                    <Input value={fullUrl(selectedItem.url)} readOnly className="text-xs bg-slate-50" />
+                    <Input value={fullUrl(selectedItem.url)} readOnly className="text-sm bg-slate-50" />
                     <Button
                       variant="outline"
                       size="icon"
@@ -547,7 +560,7 @@ export default function MediaPage() {
 
                 {/* Alt text — editable */}
                 <div>
-                  <label className="text-slate-500 text-xs">Alt text</label>
+                  <label className="text-slate-500 text-sm">Alt text</label>
                   <Input
                     value={selectedItem.alt_text || ''}
                     placeholder="Nhập mô tả hình ảnh..."

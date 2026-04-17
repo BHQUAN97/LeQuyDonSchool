@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Breadcrumb from '@/components/public/Breadcrumb';
 import AccordionFAQ from './AccordionFAQ';
 import { buildPageMetadata } from '@/lib/seo-helpers';
+import { getInternalApiBase } from '@/lib/ssr-api';
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Câu hỏi thường gặp - Tuyển sinh',
@@ -10,7 +11,7 @@ export const metadata: Metadata = buildPageMetadata({
   path: '/tuyen-sinh/cau-hoi-thuong-gap',
 });
 
-const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
+const INTERNAL_API = getInternalApiBase();
 
 /** Danh sach FAQ mac dinh — fallback khi API chua co du lieu */
 const DEFAULT_FAQS = [

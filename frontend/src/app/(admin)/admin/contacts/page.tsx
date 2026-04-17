@@ -197,7 +197,7 @@ export default function ContactsAdminPage() {
             </div>
             <div>
               <span className="font-medium text-slate-600">Trạng thái:</span>{' '}
-              <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_CONFIG[selectedContact.status]?.class}`}>
+              <span className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${STATUS_CONFIG[selectedContact.status]?.class}`}>
                 {STATUS_CONFIG[selectedContact.status]?.text}
               </span>
             </div>
@@ -250,9 +250,20 @@ export default function ContactsAdminPage() {
             </thead>
             <tbody>
               {loading ? (
-                <tr>
-                  <td colSpan={7} className="text-center py-8 text-slate-500">Đang tải...</td>
-                </tr>
+                Array.from({ length: 5 }).map((_, i) => (
+                  <tr key={i} className="border-b border-slate-100">
+                    <td colSpan={7} className="px-4 py-3">
+                      <div className="flex items-center gap-4 animate-pulse">
+                        <div className="h-4 bg-slate-200 rounded w-1/6" />
+                        <div className="h-4 bg-slate-200 rounded w-1/5" />
+                        <div className="h-4 bg-slate-200 rounded w-1/6" />
+                        <div className="h-4 bg-slate-100 rounded flex-1" />
+                        <div className="h-4 bg-slate-100 rounded w-24" />
+                        <div className="h-6 bg-slate-200 rounded-full w-16" />
+                      </div>
+                    </td>
+                  </tr>
+                ))
               ) : contacts.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="text-center py-8 text-slate-500">Chưa có liên hệ nào</td>
@@ -274,7 +285,7 @@ export default function ContactsAdminPage() {
                       <td className="px-4 py-3 text-slate-500">{truncate(c.content, 50)}</td>
                       <td className="px-4 py-3 text-slate-500">{formatDate(c.created_at)}</td>
                       <td className="px-4 py-3">
-                        <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${st.class}`}>
+                        <span className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${st.class}`}>
                           {st.text}
                         </span>
                       </td>

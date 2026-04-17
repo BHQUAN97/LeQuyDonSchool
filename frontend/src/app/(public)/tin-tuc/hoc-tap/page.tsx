@@ -5,6 +5,7 @@ import ArticleCard from '@/components/public/ArticleCard';
 import ArticleSidebar from '@/components/public/ArticleSidebar';
 import Pagination from '@/components/public/Pagination';
 import { buildPageMetadata } from '@/lib/seo-helpers';
+import { getInternalApiBase } from '@/lib/ssr-api';
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Hoạt động học tập',
@@ -13,7 +14,7 @@ export const metadata: Metadata = buildPageMetadata({
   path: '/tin-tuc/hoc-tap',
 });
 
-const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
+const INTERNAL_API = getInternalApiBase();
 const ITEMS_PER_PAGE = 8;
 
 async function getArticles(page: number) {
@@ -78,7 +79,7 @@ export default async function HocTapPage({
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">TIN TỨC SỰ KIỆN</span>
+              <span className="text-sm font-semibold uppercase tracking-wider text-slate-500">TIN TỨC SỰ KIỆN</span>
               <div className="flex gap-0.5">
                 <span className="w-6 h-1 bg-green-700 rounded-full" />
                 <span className="w-6 h-1 bg-red-600 rounded-full" />

@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum, MinLength, MaxLength, IsDateString } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsUrl, MinLength, MaxLength, IsDateString } from 'class-validator';
 import { EventStatus } from '../entities/event.entity';
 
 export class UpdateEventDto {
@@ -10,10 +10,12 @@ export class UpdateEventDto {
 
   @IsOptional()
   @IsString()
+  @MaxLength(10000)
   description?: string;
 
   @IsOptional()
   @IsString()
+  @IsUrl({ require_tld: false, protocols: ['http', 'https'] }, { message: 'Đường dẫn ảnh không hợp lệ' })
   @MaxLength(500)
   imageUrl?: string;
 
@@ -32,6 +34,7 @@ export class UpdateEventDto {
 
   @IsOptional()
   @IsString()
+  @IsUrl({ require_tld: false, protocols: ['http', 'https'] }, { message: 'Đường dẫn liên kết không hợp lệ' })
   @MaxLength(500)
   linkUrl?: string;
 

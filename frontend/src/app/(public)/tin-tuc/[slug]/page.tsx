@@ -7,8 +7,9 @@ import ArticleSidebar from '@/components/public/ArticleSidebar';
 import SafeHtml from '@/components/public/SafeHtml';
 import { Calendar, Tag } from 'lucide-react';
 import { buildPageMetadata } from '@/lib/seo-helpers';
+import { getInternalApiBase } from '@/lib/ssr-api';
 
-const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
+const INTERNAL_API = getInternalApiBase();
 const PUBLIC_UPLOADS = process.env.NEXT_PUBLIC_SITE_URL || '';
 
 export async function generateMetadata({
@@ -121,7 +122,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
 
             {/* Meta */}
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6">
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-50 text-green-700 rounded text-xs font-medium">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-50 text-green-700 rounded text-sm font-medium">
                 <Tag className="w-3 h-3" />
                 {article.category}
               </span>
@@ -163,10 +164,10 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                 &#8592; Chia sẻ với mọi người
               </span>
               <div className="flex gap-2">
-                <a href="#" className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs hover:bg-blue-700" aria-label="Facebook">f</a>
-                <a href="#" className="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center text-xs hover:bg-red-600" aria-label="Zalo">Z</a>
-                <a href="#" className="w-8 h-8 rounded-full bg-blue-700 text-white flex items-center justify-center text-xs hover:bg-blue-800" aria-label="LinkedIn">in</a>
-                <a href="#" className="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center text-xs hover:bg-red-700" aria-label="Pinterest">P</a>
+                <a href="#" className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm hover:bg-blue-700" aria-label="Facebook">f</a>
+                <a href="#" className="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center text-sm hover:bg-red-600" aria-label="Zalo">Z</a>
+                <a href="#" className="w-8 h-8 rounded-full bg-blue-700 text-white flex items-center justify-center text-sm hover:bg-blue-800" aria-label="LinkedIn">in</a>
+                <a href="#" className="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center text-sm hover:bg-red-700" aria-label="Pinterest">P</a>
               </div>
             </div>
           </article>
@@ -208,13 +209,13 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                       )}
                     </div>
                     <div className="p-4">
-                      <p className="text-[11px] text-gray-400 mb-1">
+                      <p className="text-sm text-gray-400 mb-1">
                         {a.category?.name || 'Tin tức'} • {date}
                       </p>
                       <h3 className="text-sm font-bold text-gray-900 line-clamp-2 group-hover:text-green-700 transition-colors">
                         {a.title}
                       </h3>
-                      <p className="text-xs text-gray-500 line-clamp-2 mt-1">{a.excerpt || a.description || ''}</p>
+                      <p className="text-sm text-gray-500 line-clamp-2 mt-1">{a.excerpt || a.description || ''}</p>
                     </div>
                   </Link>
                 );

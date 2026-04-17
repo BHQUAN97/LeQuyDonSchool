@@ -1,5 +1,16 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 
+/**
+ * Access token storage strategy (W3 decision):
+ *  - In-memory variable (KHONG localStorage) → XSS khong persist sau khi reload.
+ *  - Short TTL 15 phut — gioi han cua so XSS.
+ *  - Refresh token httpOnly + sameSite=strict cookie → khong the doc bang JS.
+ *  - Gui qua `Authorization: Bearer` header → browser KHONG auto-attach cross-origin,
+ *    nen admin endpoints an toan voi CSRF ma khong can CSRF token.
+ *
+ * KHONG chuyen access token sang cookie vi se can CSRF toan bo admin API
+ * va phai refactor flow hien tai.
+ */
 let accessToken: string | null = null;
 
 export function setAccessToken(token: string | null) {

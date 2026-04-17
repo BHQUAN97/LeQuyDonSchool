@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  BadRequestException,
+} from '@nestjs/common';
 import { PagesService } from './pages.service';
 import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
@@ -8,6 +18,11 @@ import { SuperAdminOnly } from '@/common/decorators/admin-only.decorator';
 import { EditorOnly } from '@/common/decorators/admin-only.decorator';
 import { Public } from '@/common/decorators/public.decorator';
 import { ok } from '@/common/helpers/response.helper';
+
+// Slug path format: chi cho phep chu cai thuong, chu so, dau gach noi, va dau /
+// De chong traversal (../) va injection.
+const SLUG_PATH_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/;
+const MAX_SLUG_PATH_LENGTH = 100;
 
 @Controller('pages')
 export class PagesController {
@@ -32,6 +47,13 @@ export class PagesController {
   @Get('by-path')
   @Public()
   async findByPath(@Query('path') path: string) {
+    // Validate slug path — chong traversal va input chua ky tu dac biet
+    if (!path || typeof path !== 'string' || path.length > MAX_SLUG_PATH_LENGTH) {
+      throw new BadRequestException('Đường dẫn trang không hợp lệ');
+    }
+    if (!SLUG_PATH_REGEX.test(path)) {
+      throw new BadRequestException('Đường dẫn trang không hợp lệ');
+    }
     const page = await this.pagesService.findBySlug(path);
     return ok(page);
   }

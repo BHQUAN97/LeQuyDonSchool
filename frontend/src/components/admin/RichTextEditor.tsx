@@ -57,8 +57,10 @@ function ToolbarButton({
       onClick={onClick}
       disabled={disabled}
       title={title}
+      aria-label={title}
+      aria-pressed={active}
       className={cn(
-        'p-1.5 rounded-md transition-colors disabled:opacity-40',
+        'p-1.5 rounded-md transition-colors disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600',
         active
           ? 'bg-slate-200 text-slate-900'
           : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'

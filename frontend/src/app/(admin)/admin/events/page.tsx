@@ -263,7 +263,7 @@ export default function EventsPage() {
                   />
                 </div>
               </div>
-              {dateError && <p className="text-red-500 text-xs -mt-1">{dateError}</p>}
+              {dateError && <p className="text-red-500 text-sm -mt-1">{dateError}</p>}
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Địa điểm</label>
@@ -338,7 +338,19 @@ export default function EventsPage() {
       {/* Table */}
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center text-slate-500">Đang tải...</div>
+          <div className="divide-y divide-slate-100">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4 px-4 py-3 animate-pulse">
+                <div className="flex-1 min-w-0 space-y-2">
+                  <div className="h-4 bg-slate-200 rounded w-3/5" />
+                  <div className="h-3 bg-slate-100 rounded w-2/5" />
+                </div>
+                <div className="h-4 w-28 bg-slate-100 rounded hidden sm:block" />
+                <div className="h-4 w-28 bg-slate-100 rounded hidden md:block" />
+                <div className="h-6 w-20 bg-slate-200 rounded-full" />
+              </div>
+            ))}
+          </div>
         ) : events.length === 0 ? (
           <div className="p-8 text-center text-slate-500">Không có sự kiện nào</div>
         ) : (
@@ -371,7 +383,7 @@ export default function EventsPage() {
                     <td className="px-4 py-3 text-slate-600">{event.location || '—'}</td>
                     <td className="px-4 py-3">
                       <span
-                        className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
+                        className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${
                           STATUS_BADGE[event.status]?.className || ''
                         }`}
                       >

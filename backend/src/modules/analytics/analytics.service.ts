@@ -8,6 +8,28 @@ import { PageViewDaily } from './entities/page-view-daily.entity';
 /** Regex phat hien bot tu user-agent */
 const BOT_PATTERNS = /bot|crawl|spider|wget|curl|lighthouse|headless|phantom|selenium|puppeteer|slurp|mediapartners|googlebot|bingbot|yandex|baidu|duckduck/i;
 
+/**
+ * Anonymize IP — GDPR/PDPA compliance.
+ * IPv4: zero out last octet (1.2.3.4 → 1.2.3.0).
+ * IPv6: zero out last 80 bits (keep first /48 prefix).
+ * Unknown format: return '0.0.0.0'.
+ */
+function anonymizeIp(ip: string): string {
+  if (!ip) return '0.0.0.0';
+  // IPv6 detection — chua dau ':'
+  if (ip.includes(':')) {
+    const parts = ip.split(':');
+    // Giu 3 segment dau (48 bits), zero 5 segment cuoi
+    return parts.slice(0, 3).concat(['0', '0', '0', '0', '0']).join(':');
+  }
+  // IPv4
+  const parts = ip.split('.');
+  if (parts.length === 4) {
+    return `${parts[0]}.${parts[1]}.${parts[2]}.0`;
+  }
+  return '0.0.0.0';
+}
+
 @Injectable()
 export class AnalyticsService {
   private readonly logger = new Logger(AnalyticsService.name);
@@ -23,11 +45,13 @@ export class AnalyticsService {
    */
   async recordPageView(path: string, ip: string, userAgent?: string, referrer?: string) {
     try {
+      // Anonymize IP truoc khi luu — chi giu /24 (IPv4) hoac /48 (IPv6)
+      const anonIp = anonymizeIp(ip);
       // Dedup: kiem tra xem cung IP+path da co trong 30s gan day chua
       const thirtySecondsAgo = new Date(Date.now() - 30_000);
       const recent = await this.pvRepo
         .createQueryBuilder('pv')
-        .where('pv.visitor_ip = :ip', { ip })
+        .where('pv.visitor_ip = :ip', { ip: anonIp })
         .andWhere('pv.page_path = :path', { path })
         .andWhere('pv.viewed_at > :since', { since: thirtySecondsAgo })
         .getCount();
@@ -39,7 +63,7 @@ export class AnalyticsService {
 
       const pv = this.pvRepo.create({
         page_path: path,
-        visitor_ip: ip,
+        visitor_ip: anonIp,
         user_agent: userAgent || null,
         referrer: referrer || null,
         device_type: deviceType,

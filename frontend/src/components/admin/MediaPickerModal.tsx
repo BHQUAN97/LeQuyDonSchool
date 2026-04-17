@@ -58,6 +58,16 @@ export default function MediaPickerModal({
     }
   }, [open, fetchMedia]);
 
+  // Dong modal voi phim ESC — UX chuan cho dialog
+  useEffect(() => {
+    if (!open) return;
+    const handleKeydown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeydown);
+    return () => window.removeEventListener('keydown', handleKeydown);
+  }, [open, onClose]);
+
   /** Upload file moi */
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -103,7 +113,13 @@ export default function MediaPickerModal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Chọn hình ảnh từ thư viện"
+    >
       <div
         className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[80vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
@@ -152,7 +168,7 @@ export default function MediaPickerModal({
             <div className="flex flex-col items-center justify-center py-12 text-gray-400">
               <ImageIcon size={48} className="mb-3 opacity-40" />
               <p className="text-sm">Chưa có hình ảnh nào</p>
-              <p className="text-xs mt-1">Nhấn &ldquo;Tải lên&rdquo; để thêm hình ảnh mới</p>
+              <p className="text-sm mt-1">Nhấn &ldquo;Tải lên&rdquo; để thêm hình ảnh mới</p>
             </div>
           ) : (
             <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-3">
@@ -186,7 +202,7 @@ export default function MediaPickerModal({
                       </div>
                     )}
                     <div className="absolute bottom-0 left-0 right-0 bg-black/50 px-1.5 py-0.5">
-                      <p className="text-[10px] text-white truncate">{m.original_name}</p>
+                      <p className="text-sm text-white truncate">{m.original_name}</p>
                     </div>
                   </button>
                 );

@@ -13,7 +13,8 @@ export class CreatePageDto {
   slug?: string;
 
   @IsString()
-  @MaxLength(500000)
+  @MinLength(1, { message: 'Nội dung không được để trống' })
+  @MaxLength(500_000, { message: 'Nội dung quá dài' })
   content!: string;
 
   @IsOptional()

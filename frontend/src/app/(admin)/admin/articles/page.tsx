@@ -141,6 +141,7 @@ export default function ArticlesPage() {
         <input
           type="text"
           placeholder="Tìm kiếm tiêu đề..."
+          aria-label="Tìm kiếm bài viết theo tiêu đề"
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           className="w-full sm:w-80 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
@@ -150,7 +151,19 @@ export default function ArticlesPage() {
       {/* Table */}
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center text-slate-500">Đang tải...</div>
+          <div className="divide-y divide-slate-100">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4 px-4 py-3 animate-pulse">
+                <div className="w-12 h-12 rounded bg-slate-200 flex-shrink-0" />
+                <div className="flex-1 min-w-0 space-y-2">
+                  <div className="h-4 bg-slate-200 rounded w-3/4" />
+                  <div className="h-3 bg-slate-100 rounded w-1/2" />
+                </div>
+                <div className="h-6 w-20 bg-slate-200 rounded-full" />
+                <div className="h-4 w-16 bg-slate-100 rounded" />
+              </div>
+            ))}
+          </div>
         ) : articles.length === 0 ? (
           <div className="p-8 text-center text-slate-500">Không có bài viết nào</div>
         ) : (
@@ -174,13 +187,13 @@ export default function ArticlesPage() {
                       {article.thumbnail_url ? (
                         <Image
                           src={article.thumbnail_url}
-                          alt=""
+                          alt={article.title}
                           width={48}
                           height={48}
                           className="w-12 h-12 rounded object-cover"
                         />
                       ) : (
-                        <div className="w-12 h-12 rounded bg-slate-200 flex items-center justify-center text-slate-400 text-xs">
+                        <div className="w-12 h-12 rounded bg-slate-200 flex items-center justify-center text-slate-400 text-sm">
                           N/A
                         </div>
                       )}
@@ -189,13 +202,13 @@ export default function ArticlesPage() {
                     {/* Title */}
                     <td className="px-4 py-3">
                       <div className="font-medium text-slate-900 line-clamp-1">{article.title}</div>
-                      <div className="text-xs text-slate-400 mt-0.5">/{article.slug}</div>
+                      <div className="text-sm text-slate-400 mt-0.5">/{article.slug}</div>
                     </td>
 
                     {/* Status */}
                     <td className="px-4 py-3">
                       <span
-                        className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
+                        className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${
                           STATUS_BADGE[article.status]?.className || ''
                         }`}
                       >

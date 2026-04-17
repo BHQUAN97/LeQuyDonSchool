@@ -75,7 +75,7 @@ export class UsersService {
     const user = this.userRepo.create({
       id: generateUlid(),
       email: dto.email,
-      password_hash: await bcrypt.hash(dto.password, 10),
+      password_hash: await bcrypt.hash(dto.password, 12),
       full_name: dto.fullName,
       phone: dto.phone || null,
       role: dto.role,

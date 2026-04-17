@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Breadcrumb from '@/components/public/Breadcrumb';
+import SafeHtml from '@/components/public/SafeHtml';
 import { buildPageMetadata } from '@/lib/seo-helpers';
-
-const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
+import { getInternalApiBase } from '@/lib/ssr-api';
 
 interface PageData {
   id: string;
@@ -18,7 +18,7 @@ interface PageData {
 async function getPage(slugPath: string): Promise<PageData | null> {
   try {
     const res = await fetch(
-      `${INTERNAL_API}/pages/by-path?path=${encodeURIComponent(slugPath)}`,
+      `${getInternalApiBase()}/pages/by-path?path=${encodeURIComponent(slugPath)}`,
       { next: { revalidate: 300 } },
     );
     if (!res.ok) return null;
@@ -105,9 +105,10 @@ export default async function DynamicPage({
         </div>
       </section>
 
-      {/* Noi dung trang */}
+      {/* Noi dung trang — sanitize bang DOMPurify de chong XSS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12">
-        <article
+        <SafeHtml
+          html={page.content}
           className="prose prose-slate prose-lg max-w-none
             prose-headings:text-slate-900 prose-headings:font-bold
             prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4
@@ -119,7 +120,6 @@ export default async function DynamicPage({
             prose-li:text-slate-700
             prose-table:border-collapse prose-th:bg-slate-100 prose-th:px-4 prose-th:py-2
             prose-td:border prose-td:border-slate-200 prose-td:px-4 prose-td:py-2"
-          dangerouslySetInnerHTML={{ __html: page.content }}
         />
       </section>
     </>

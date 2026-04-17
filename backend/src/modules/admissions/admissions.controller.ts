@@ -104,10 +104,14 @@ export class AdmissionsController {
 
   // ─── ĐĂNG KÝ TUYỂN SINH ─────────────────────────────────
 
-  /** Dang ky tuyen sinh — public, throttle 3 lan/phut */
+  /**
+   * Dang ky tuyen sinh — public, throttle 3 lan/phut.
+   * CSRF: yeu cau header `x-csrf-token` khop cookie `csrf-token`
+   * (enforce trong CsrfMiddleware, app.module.ts forRoutes { path: 'admissions/registrations', POST }).
+   */
   @Post('registrations')
   @Public()
-  @Throttle({ default: { limit: 3, ttl: 60000 } })
+  @Throttle({ default: { limit: 3, ttl: 300_000 } })
   async createRegistration(@Body() dto: CreateRegistrationDto) {
     return this.admissionsService.createRegistration(dto);
   }

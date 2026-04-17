@@ -56,34 +56,55 @@ function TimKiemContent() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [hasSearched, setHasSearched] = useState(!!initialQ);
+  const [searchError, setSearchError] = useState<string | null>(null);
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Abort controller cho request search — cancel request cu khi co request moi,
+  // tranh race condition (response cu toi sau ghi de response moi).
+  const abortRef = useRef<AbortController | null>(null);
 
   // Goi API tim kiem
   const doSearch = useCallback(async (q: string, p: number) => {
     if (!q || q.trim().length < 2) return;
+    // Cancel request cu (neu co) truoc khi bat dau request moi
+    if (abortRef.current) abortRef.current.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     setLoading(true);
     setHasSearched(true);
+    setSearchError(null);
     try {
       const params = new URLSearchParams({
         q: q.trim(),
         page: String(p),
         limit: String(LIMIT),
       });
-      const res = await fetch(`${API_BASE}/search?${params}`);
+      const res = await fetch(`${API_BASE}/search?${params}`, { signal: controller.signal });
       const data = await res.json();
       if (data.success) {
         setResults(data.data);
         setTotal(data.pagination.total);
         setTotalPages(data.pagination.totalPages);
         setPage(data.pagination.page);
+      } else {
+        setSearchError(data.message || 'Không thể thực hiện tìm kiếm');
+        setResults([]);
+        setTotal(0);
       }
     } catch (err) {
+      // AbortError khong phai loi — chi la request cu bi cancel
+      if ((err as Error).name === 'AbortError') return;
       console.error('Loi tim kiem:', err);
+      setSearchError('Không thể kết nối đến máy chủ. Vui lòng thử lại.');
       setResults([]);
       setTotal(0);
     } finally {
-      setLoading(false);
+      // Chi reset loading neu day la request moi nhat
+      if (abortRef.current === controller) {
+        setLoading(false);
+        abortRef.current = null;
+      }
     }
   }, []);
 
@@ -172,13 +193,13 @@ function TimKiemContent() {
         {/* Quick suggestions — chi hien khi chua search */}
         {!hasSearched && (
           <div className="max-w-2xl mx-auto mt-4">
-            <p className="text-xs text-slate-400 mb-2">Tìm kiếm phổ biến:</p>
+            <p className="text-sm text-slate-400 mb-2">Tìm kiếm phổ biến:</p>
             <div className="flex flex-wrap gap-2">
               {['Tuyển sinh', 'Học phí', 'Lịch học', 'Thực đơn', 'Ngoại khóa'].map((term) => (
                 <button
                   key={term}
                   onClick={() => handleQuickSearch(term)}
-                  className="px-3 py-1.5 bg-slate-100 rounded-full text-xs text-slate-600 hover:bg-slate-200 transition-colors"
+                  className="px-3 py-1.5 bg-slate-100 rounded-full text-sm text-slate-600 hover:bg-slate-200 transition-colors"
                 >
                   {term}
                 </button>
@@ -198,8 +219,17 @@ function TimKiemContent() {
         </section>
       )}
 
+      {/* Error state */}
+      {searchError && !loading && (
+        <section className="max-w-7xl mx-auto px-4 pb-8">
+          <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-red-700">
+            {searchError}
+          </div>
+        </section>
+      )}
+
       {/* Results */}
-      {hasSearched && !loading && (
+      {hasSearched && !loading && !searchError && (
         <section className="max-w-7xl mx-auto px-4 pb-12 lg:pb-16">
           <div className="flex items-center justify-between mb-6">
             <p className="text-sm text-slate-500">

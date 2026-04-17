@@ -25,6 +25,8 @@ const LOCKOUT_MINUTES = 30;
 // Gioi han dang nhap theo email: 20 lan sai trong 60 phut (chong brute-force distributed)
 const MAX_EMAIL_ATTEMPTS = 20;
 const EMAIL_LOCKOUT_MINUTES = 60;
+// OWASP 2023+: bcrypt cost >= 12 cho password hashing
+const BCRYPT_ROUNDS = 12;
 
 @Injectable()
 export class AuthService {
@@ -88,6 +90,10 @@ export class AuthService {
 
   /**
    * Refresh token — verify, detect theft, rotate.
+   *
+   * Performance: dung `jti` trong JWT de lookup O(1) theo id row thay vi
+   * scan tat ca token cua user. Fallback legacy (token khong co jti) van
+   * chay nhung O(n) — se tu phai re-login khi token hien tai het han.
    */
   async refresh(refreshTokenValue: string, ip: string, userAgent: string) {
     if (!refreshTokenValue) {
@@ -95,7 +101,7 @@ export class AuthService {
     }
 
     // Verify JWT
-    let payload: { sub: string; type: string };
+    let payload: { sub: string; type: string; jti?: string };
     try {
       payload = this.jwtService.verify(refreshTokenValue, {
         secret: this.configService.getOrThrow<string>('jwt.secret'),
@@ -108,26 +114,29 @@ export class AuthService {
       throw new UnauthorizedException('Token không hợp lệ');
     }
 
-    // Tim tat ca refresh tokens cua user
-    const storedTokens = await this.refreshRepo.find({
-      where: { user_id: payload.sub },
-    });
-
-    if (storedTokens.length === 0) {
-      throw new UnauthorizedException('Phiên đăng nhập không tồn tại');
-    }
-
-    // Tim token khop
     let matchedToken: RefreshToken | null = null;
-    for (const stored of storedTokens) {
-      const isMatch = await bcrypt.compare(refreshTokenValue, stored.token_hash);
-      if (isMatch) {
-        matchedToken = stored;
-        break;
+
+    if (payload.jti) {
+      // Fast path O(1): lookup truc tiep theo jti + verify user_id
+      const stored = await this.refreshRepo.findOne({
+        where: { id: payload.jti, user_id: payload.sub },
+      });
+      if (stored) {
+        const isMatch = await bcrypt.compare(refreshTokenValue, stored.token_hash);
+        if (isMatch) matchedToken = stored;
+      }
+    } else {
+      // Legacy path O(n): scan tat ca tokens — chi dung cho token cu chua co jti.
+      const storedTokens = await this.refreshRepo.find({ where: { user_id: payload.sub } });
+      for (const stored of storedTokens) {
+        if (await bcrypt.compare(refreshTokenValue, stored.token_hash)) {
+          matchedToken = stored;
+          break;
+        }
       }
     }
 
-    // Token theft detection: co tokens nhung khong khop → huy tat ca
+    // Token theft detection: token khong khop → huy tat ca session cua user
     if (!matchedToken) {
       await this.refreshRepo.delete({ user_id: payload.sub });
       throw new UnauthorizedException('Phát hiện bất thường — đã hủy tất cả phiên đăng nhập');
@@ -181,7 +190,7 @@ export class AuthService {
     const valid = await bcrypt.compare(dto.currentPassword, user.password_hash);
     if (!valid) throw new UnauthorizedException('Mật khẩu hiện tại không đúng');
 
-    const newHash = await bcrypt.hash(dto.newPassword, 10);
+    const newHash = await bcrypt.hash(dto.newPassword, BCRYPT_ROUNDS);
     await this.userRepo.update(userId, { password_hash: newHash });
 
     // Huy tat ca phien — bat buoc dang nhap lai
@@ -207,19 +216,29 @@ export class AuthService {
 
   /** Tao access + refresh token pair */
   private async generateTokens(user: User, ip: string, userAgent: string) {
-    const accessPayload = { sub: user.id, email: user.email, role: user.role, type: 'access' };
-    const refreshPayload = { sub: user.id, email: user.email, role: user.role, type: 'refresh' };
-
     const expiresIn = this.configService.get<number>('jwt.expiresIn', 900);
     const refreshExpiresIn = this.configService.get<number>('jwt.refreshExpiresIn', 604800);
+
+    // Sinh token id truoc — dung lam jti trong JWT + PK cho refresh_tokens row.
+    // Cho phep lookup O(1) khi refresh, thay vi scan tat ca tokens cua user.
+    const tokenId = generateUlid();
+
+    const accessPayload = { sub: user.id, email: user.email, role: user.role, type: 'access' };
+    const refreshPayload = {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+      type: 'refresh',
+      jti: tokenId,
+    };
 
     const accessToken = this.jwtService.sign(accessPayload, { expiresIn });
     const refreshToken = this.jwtService.sign(refreshPayload, { expiresIn: refreshExpiresIn });
 
     // Luu hash cua refresh token vao DB
-    const tokenHash = await bcrypt.hash(refreshToken, 10);
+    const tokenHash = await bcrypt.hash(refreshToken, BCRYPT_ROUNDS);
     const refreshRecord = this.refreshRepo.create({
-      id: generateUlid(),
+      id: tokenId,
       user_id: user.id,
       token_hash: tokenHash,
       ip_address: ip,
@@ -280,14 +299,18 @@ export class AuthService {
     await this.attemptRepo.save(attempt);
   }
 
-  /** Lay refresh token config cho cookie */
+  /**
+   * Lay refresh token config cho cookie.
+   * Production: sameSite 'strict' — frontend va API cung registrable domain (demo.remoteterminal.online).
+   * Dev: 'lax' — de test cross-origin tools (Postman, dev tools) khong bi chan.
+   */
   getRefreshCookieOptions() {
     const refreshExpiresIn = this.configService.get<number>('jwt.refreshExpiresIn', 604800);
     const isProduction = this.configService.get<string>('app.nodeEnv') === 'production';
     return {
       httpOnly: true,
       secure: isProduction,
-      sameSite: 'lax' as const,
+      sameSite: (isProduction ? 'strict' : 'lax') as 'strict' | 'lax',
       path: '/',
       maxAge: refreshExpiresIn * 1000,
     };

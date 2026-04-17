@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, Logger } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
@@ -10,6 +10,8 @@ import { Public } from '@/common/decorators/public.decorator';
 
 @Controller('articles')
 export class ArticlesController {
+  private readonly logger = new Logger(ArticlesController.name);
+
   constructor(private readonly articlesService: ArticlesService) {}
 
   /** Danh sach bai viet — admin, phan trang + filter */
@@ -31,8 +33,10 @@ export class ArticlesController {
   @Public()
   async findBySlug(@Param('slug') slug: string) {
     const article = await this.articlesService.findBySlug(slug);
-    // Tang luot xem — fire-and-forget
-    this.articlesService.incrementViewCount(article.id);
+    // Tang luot xem — fire-and-forget, log error thay vi nuot im
+    this.articlesService.incrementViewCount(article.id).catch((err) => {
+      this.logger.warn(`Failed to increment view count for ${article.id}: ${(err as Error).message}`);
+    });
     return article;
   }
 

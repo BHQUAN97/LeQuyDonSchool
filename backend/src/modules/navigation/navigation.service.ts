@@ -1,26 +1,65 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, IsNull } from 'typeorm';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import type { Cache } from 'cache-manager';
+import { Repository, IsNull, DataSource } from 'typeorm';
 import { MenuItem, MenuTarget } from './entities/menu-item.entity';
 import { SaveMenuDto, MenuItemDto } from './dto/save-menu.dto';
 import { generateUlid } from '@/common/utils/ulid';
 
+/** Cache key cho navigation public menu — TTL 1h */
+const CACHE_KEY_PUBLIC_MENU = 'nav:public-menu';
+const CACHE_TTL_PUBLIC_MENU = 3600_000; // 1h in ms (cache-manager v5 uses ms)
+
 @Injectable()
 export class NavigationService {
+  private readonly logger = new Logger(NavigationService.name);
+
   constructor(
     @InjectRepository(MenuItem) private readonly menuRepo: Repository<MenuItem>,
+    @Inject(CACHE_MANAGER) private readonly cache: Cache,
+    private readonly dataSource: DataSource,
   ) {}
 
   /**
    * Lay menu tree public — chi hien thi visible items.
    * Tra ve cau truc cay (parent → children).
+   * Cache trong Redis key `nav:public-menu`, TTL 1h. Invalidate khi admin save.
    */
   async findPublicMenu() {
+    // Thu lay tu cache truoc
+    try {
+      const cached = await this.cache.get<any[]>(CACHE_KEY_PUBLIC_MENU);
+      if (cached) return cached;
+    } catch (err) {
+      this.logger.warn(`Cache get failed: ${(err as Error).message}`);
+    }
+
     const items = await this.menuRepo.find({
       where: { is_visible: true, deleted_at: IsNull() },
       order: { display_order: 'ASC' },
     });
-    return this.buildTree(items);
+    const tree = this.buildTree(items);
+
+    // Fire-and-forget set cache
+    try {
+      await this.cache.set(CACHE_KEY_PUBLIC_MENU, tree, CACHE_TTL_PUBLIC_MENU);
+    } catch (err) {
+      this.logger.warn(`Cache set failed: ${(err as Error).message}`);
+    }
+
+    return tree;
+  }
+
+  /**
+   * Xoa cache public menu — goi sau moi lan admin CRUD.
+   */
+  private async invalidatePublicMenuCache() {
+    try {
+      await this.cache.del(CACHE_KEY_PUBLIC_MENU);
+    } catch (err) {
+      this.logger.warn(`Cache del failed: ${(err as Error).message}`);
+    }
   }
 
   /**
@@ -36,35 +75,42 @@ export class NavigationService {
 
   /**
    * Luu toan bo menu tree — xoa het roi insert lai.
-   * Cach tiep can "replace all" de dam bao consistency.
+   * Wrap trong transaction de dam bao atomic: neu insert fail, soft-delete rollback.
    */
   async saveMenu(dto: SaveMenuDto) {
-    // Soft delete tat ca menu items hien tai
-    await this.menuRepo
-      .createQueryBuilder()
-      .update(MenuItem)
-      .set({ deleted_at: new Date() })
-      .where('deleted_at IS NULL')
-      .execute();
+    await this.dataSource.transaction(async (mgr) => {
+      const txMenuRepo = mgr.getRepository(MenuItem);
 
-    // Insert lai tu tree moi
-    const flatItems = this.flattenTree(dto.items, null, 0);
+      // Soft delete tat ca menu items hien tai
+      await txMenuRepo
+        .createQueryBuilder()
+        .update(MenuItem)
+        .set({ deleted_at: new Date() })
+        .where('deleted_at IS NULL')
+        .execute();
 
-    if (flatItems.length > 0) {
-      const entities = flatItems.map((item) => {
-        return this.menuRepo.create({
-          id: item.id || generateUlid(),
-          label: item.label,
-          url: item.url,
-          target: item.target || MenuTarget.SELF,
-          parent_id: item.parentId || null,
-          display_order: item.displayOrder,
-          is_visible: item.isVisible ?? true,
-        });
-      });
+      // Insert lai tu tree moi
+      const flatItems = this.flattenTree(dto.items, null, 0);
 
-      await this.menuRepo.save(entities);
-    }
+      if (flatItems.length > 0) {
+        const entities = flatItems.map((item) =>
+          txMenuRepo.create({
+            id: item.id || generateUlid(),
+            label: item.label,
+            url: item.url,
+            target: item.target || MenuTarget.SELF,
+            parent_id: item.parentId || null,
+            display_order: item.displayOrder,
+            is_visible: item.isVisible ?? true,
+          }),
+        );
+
+        await txMenuRepo.save(entities);
+      }
+    });
+
+    // Invalidate cache public menu sau khi replace (ngoai transaction — cache external)
+    await this.invalidatePublicMenuCache();
 
     // Tra ve tree moi
     return this.findAllMenu();

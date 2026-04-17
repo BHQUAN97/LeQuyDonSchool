@@ -2,8 +2,9 @@
 
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { api } from '@/lib/api';
-import RichTextEditor from '@/components/admin/RichTextEditor';
+import RichTextEditor from '@/components/admin/RichTextEditorDynamic';
 import { generateSlug } from '@/lib/slug';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
 import ImagePicker from '@/components/admin/ImagePicker';
@@ -36,6 +37,9 @@ interface Category {
   slug: string;
 }
 
+// API /categories may return either a bare array or a wrapped response
+type CategoriesPayload = Category[] | { data?: Category[] };
+
 /**
  * Format datetime cho input datetime-local.
  */
@@ -51,7 +55,6 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [, setSlugManual] = useState(true); // Mac dinh manual khi edit
   const [editError, setEditError] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -66,16 +69,15 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
   const [seoTitle, setSeoTitle] = useState('');
   const [seoDescription, setSeoDescription] = useState('');
   const [publishedAt, setPublishedAt] = useState('');
-  const [, setOriginalTitle] = useState('');
 
   // Danh sach danh muc
   const [categories, setCategories] = useState<Category[]>([]);
 
   // Fetch categories on mount
   useEffect(() => {
-    api<Category[]>('/categories')
+    api<CategoriesPayload>('/categories')
       .then((data) => {
-        const list = Array.isArray(data) ? data : (data as any)?.data || [];
+        const list = Array.isArray(data) ? data : data?.data ?? [];
         setCategories(list);
       })
       .catch(() => {});
@@ -96,9 +98,10 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
         setSeoTitle(article.seo_title || '');
         setSeoDescription(article.seo_description || '');
         setPublishedAt(formatDatetimeLocal(article.published_at));
-        setOriginalTitle(article.title);
-      } catch (err: any) {
-        setEditError(err.message || 'Không thể tải bài viết');
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Không thể tải bài viết';
+        setEditError(message);
+        toast.error(message);
         router.push('/admin/articles');
       } finally {
         setLoading(false);
@@ -120,7 +123,7 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
 
     setSaving(true);
     try {
-      const body: Record<string, any> = {
+      const body: Record<string, string | undefined> = {
         title: title.trim(),
         content,
         slug,
@@ -138,9 +141,12 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
         method: 'PUT',
         body: JSON.stringify(body),
       });
+      toast.success('Đã cập nhật bài viết');
       router.push('/admin/articles');
-    } catch (err: any) {
-      setEditError(err.message || 'Không thể cập nhật bài viết');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Không thể cập nhật bài viết';
+      setEditError(message);
+      toast.error(message);
     } finally {
       setSaving(false);
     }
@@ -184,7 +190,7 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
                 placeholder="Nhập tiêu đề bài viết..."
                 className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent ${errors.title ? 'border-red-500' : 'border-slate-300'}`}
               />
-              {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
+              {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
             </div>
 
             {/* Slug */}
@@ -193,19 +199,13 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
               <input
                 type="text"
                 value={slug}
-                onChange={(e) => {
-                  setSlug(e.target.value);
-                  setSlugManual(true);
-                }}
+                onChange={(e) => setSlug(e.target.value)}
                 placeholder="tu-dong-tao-tu-tieu-de"
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
               />
               <button
-                onClick={() => {
-                  setSlugManual(false);
-                  setSlug(generateSlug(title));
-                }}
-                className="text-xs text-blue-600 hover:underline mt-1"
+                onClick={() => setSlug(generateSlug(title))}
+                className="text-sm text-blue-600 hover:underline mt-1"
               >
                 Tự động tạo lại từ tiêu đề
               </button>
@@ -234,7 +234,7 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
                 maxLength={300}
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent resize-y"
               />
-              <p className={`text-xs mt-1 ${excerpt.length >= 280 ? 'text-orange-500' : 'text-slate-400'}`}>{excerpt.length}/300</p>
+              <p className={`text-sm mt-1 ${excerpt.length >= 280 ? 'text-orange-500' : 'text-slate-400'}`}>{excerpt.length}/300</p>
             </div>
           </div>
         </div>
@@ -308,7 +308,7 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
                 maxLength={60}
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
               />
-              <p className={`text-xs mt-1 ${seoTitle.length >= 50 ? 'text-orange-500' : 'text-slate-400'}`}>{seoTitle.length}/60</p>
+              <p className={`text-sm mt-1 ${seoTitle.length >= 50 ? 'text-orange-500' : 'text-slate-400'}`}>{seoTitle.length}/60</p>
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">SEO Description</label>
@@ -320,7 +320,7 @@ export default function EditArticlePage({ params }: { params: Promise<{ id: stri
                 maxLength={160}
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent resize-y"
               />
-              <p className={`text-xs mt-1 ${seoDescription.length >= 140 ? 'text-orange-500' : 'text-slate-400'}`}>{seoDescription.length}/160</p>
+              <p className={`text-sm mt-1 ${seoDescription.length >= 140 ? 'text-orange-500' : 'text-slate-400'}`}>{seoDescription.length}/160</p>
             </div>
           </div>
 

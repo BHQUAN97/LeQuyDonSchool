@@ -2,8 +2,9 @@ import { Metadata } from 'next';
 import { buildPageMetadata } from '@/lib/seo-helpers';
 import HomepageRenderer from '@/components/public/homepage/HomepageRenderer';
 import { DEFAULT_HOMEPAGE_CONFIG } from '@/types/homepage';
+import { getInternalApiBase } from '@/lib/ssr-api';
 
-const INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:4000/api';
+const INTERNAL_API = getInternalApiBase();
 
 /** Fetch homepage config tu Settings API */
 async function getHomepageConfig() {
