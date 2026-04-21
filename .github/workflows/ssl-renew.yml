@@ -14,25 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Load config/env
-        run: |
-          while IFS= read -r line; do
-            [[ -z "$line" || "$line" == \#* ]] && continue
-            [[ "$line" == *=* ]] && echo "$line" >> $GITHUB_ENV
-          done < config/env
-          PASS=$(sed -n 's/^VPS_PASSWORD=//p' config/env)
-          echo "SSHPASS=${PASS}" >> $GITHUB_ENV
-
       - name: Setup SSH
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq sshpass > /dev/null
           mkdir -p ~/.ssh
-          ssh-keyscan -p ${{ env.VPS_PORT }} -H ${{ env.VPS_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+          ssh-keyscan -p ${{ secrets.VPS_PORT }} -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+          echo "SSHPASS=${{ secrets.VPS_PASSWORD }}" >> $GITHUB_ENV
 
       - name: Get SSL cert for lqd.bhquan.store
         run: |
-          VPS="${{ env.VPS_USER }}@${{ env.VPS_HOST }}"
-          PORT="${{ env.VPS_PORT }}"
+          VPS="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
+          PORT="${{ secrets.VPS_PORT }}"
 
           # Tim ten Docker volume chua certbot data (WebPhoto dung certbot_data)
           echo "=== Find certbot volume ==="
