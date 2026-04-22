@@ -55,14 +55,24 @@ Secrets được lưu trong **repo settings** — không commit lên git.
 
 ```bash
 # Không cần vào GitHub UI — dùng gh CLI
-gh secret set VPS_PASSWORD --body "mat_khau_moi" --repo BHQUAN97/LeQuyDon
+gh secret set VPS_PASSWORD --body "mat_khau_moi" --repo BHQUAN97/LeQuyDonSchool
 
 # Thêm secret mới
-gh secret set LQD_DB_PASSWORD --body "db_pass_moi" --repo BHQUAN97/LeQuyDon
+gh secret set LQD_DB_PASSWORD --body "db_pass_moi" --repo BHQUAN97/LeQuyDonSchool
 
 # Xem danh sách secrets (chỉ thấy tên, không thấy giá trị)
-gh secret list --repo BHQUAN97/LeQuyDon
+gh secret list --repo BHQUAN97/LeQuyDonSchool
 ```
+
+---
+
+## Checklist trước khi deploy
+
+- [ ] `gh secret list --repo BHQUAN97/LeQuyDonSchool` hiện đủ 9 secrets
+- [ ] Push code lên `master` → Actions chạy tự động
+- [ ] Xem progress: `gh run watch --repo BHQUAN97/LeQuyDonSchool`
+
+> Đổi VPS password: `bash /e/DEVELOP/.claude-shared/secrets-infra/scripts/set-all-secrets.sh --shared`
 
 ---
 
