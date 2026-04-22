@@ -98,12 +98,12 @@ export default function TestimonialCarousel() {
             return (
               <div className="pb-16">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center text-xs border-2 border-white/30 shrink-0 font-bold">
+                  <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center text-sm border-2 border-white/30 shrink-0 font-bold">
                     {t.name.split(' ').pop()?.charAt(0)}
                   </div>
                   <div>
                     <p className="font-bold text-base uppercase">{t.name}</p>
-                    <p className="text-[11px] opacity-70 leading-snug mt-0.5">{t.title}</p>
+                    <p className="text-sm opacity-70 leading-snug mt-0.5">{t.title}</p>
                   </div>
                 </div>
                 <p className="text-sm opacity-90 leading-relaxed italic">{t.content}</p>

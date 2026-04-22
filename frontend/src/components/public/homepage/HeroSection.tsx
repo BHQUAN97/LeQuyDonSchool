@@ -28,7 +28,7 @@ function HeroWithSidebar() {
               <span className="text-white font-bold text-sm">LQD</span>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-wider text-green-200">
+              <p className="text-sm uppercase tracking-wider text-green-200">
                 He thong Truong lien cap
               </p>
               <p className="text-sm font-bold leading-tight">
@@ -39,7 +39,7 @@ function HeroWithSidebar() {
 
           {/* Thong bao */}
           <div className="bg-white/10 rounded-xl p-4 mb-4 border border-white/20">
-            <p className="text-xs font-semibold uppercase tracking-wide text-yellow-300 mb-2">
+            <p className="text-sm font-semibold uppercase tracking-wide text-yellow-300 mb-2">
               Thong bao
             </p>
             <p className="text-sm leading-relaxed opacity-90">
@@ -50,7 +50,7 @@ function HeroWithSidebar() {
 
         {/* Quick links */}
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-green-200 mb-3">
+          <p className="text-sm font-semibold uppercase tracking-wide text-green-200 mb-3">
             Truy cap nhanh
           </p>
           <div className="flex flex-col gap-2">

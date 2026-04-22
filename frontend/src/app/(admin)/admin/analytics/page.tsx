@@ -142,7 +142,7 @@ export default function AnalyticsPage() {
                 </>
               )}
             </div>
-            <div className="flex gap-4 mt-2 text-xs text-slate-500">
+            <div className="flex gap-4 mt-2 text-sm text-slate-500">
               <span className="flex items-center gap-1">
                 <span className="w-2 h-2 rounded-full bg-blue-500 inline-block" /> Desktop {pct(data.desktopViews, totalNonBot)}%
               </span>
@@ -235,9 +235,9 @@ export default function AnalyticsPage() {
 function StatCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-4">
-      <p className="text-xs text-slate-500 mb-1">{label}</p>
+      <p className="text-sm text-slate-500 mb-1">{label}</p>
       <p className="text-2xl font-bold text-slate-900">{value}</p>
-      {sub && <p className="text-xs text-slate-400 mt-0.5">{sub}</p>}
+      {sub && <p className="text-sm text-slate-400 mt-0.5">{sub}</p>}
     </div>
   );
 }

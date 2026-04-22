@@ -12,7 +12,11 @@ import { ok } from '@/common/helpers/response.helper';
 export class ContactsController {
   constructor(private readonly contactsService: ContactsService) {}
 
-  /** Khach gui lien he — public, gioi han 3 request/phut */
+  /**
+   * Khach gui lien he — public, gioi han 3 request/phut.
+   * CSRF: bat buoc co header `x-csrf-token` trung voi cookie `csrf-token`
+   * (enforce trong CsrfMiddleware, app.module.ts forRoutes { path: 'contacts', POST }).
+   */
   @Post()
   @Public()
   @Throttle({ default: { limit: 3, ttl: 60000 } })

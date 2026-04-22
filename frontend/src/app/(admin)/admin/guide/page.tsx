@@ -576,7 +576,7 @@ const sections: GuideSection[] = [
           <li>Nen anh truoc khi tai len (dung <a href="https://squoosh.app" target="_blank" rel="noopener noreferrer" className="text-green-700 underline">squoosh.app</a> hoac <a href="https://tinypng.com" target="_blank" rel="noopener noreferrer" className="text-green-700 underline">tinypng.com</a>).</li>
           <li>Su dung dinh dang WebP de giam dung luong ma van giu chat luong.</li>
           <li>Toi da 500KB cho anh thuong, 1MB cho anh slider.</li>
-          <li>Dat ten file co y nghia: <code className="bg-slate-100 px-1 rounded text-xs">khai-giang-2026.jpg</code> thay vi <code className="bg-slate-100 px-1 rounded text-xs">IMG_1234.jpg</code>.</li>
+          <li>Dat ten file co y nghia: <code className="bg-slate-100 px-1 rounded text-sm">khai-giang-2026.jpg</code> thay vi <code className="bg-slate-100 px-1 rounded text-sm">IMG_1234.jpg</code>.</li>
         </ul>
 
         <h4 className="font-semibold text-slate-800 mt-4 mb-2">SEO tot hon</h4>
@@ -589,10 +589,10 @@ const sections: GuideSection[] = [
 
         <h4 className="font-semibold text-slate-800 mt-4 mb-2">Phim tat huu ich</h4>
         <ul className="list-disc list-inside text-sm text-slate-700 space-y-1">
-          <li><kbd className="bg-slate-100 border border-slate-300 rounded px-1.5 py-0.5 text-xs font-mono">Ctrl + S</kbd> — Luu nhanh (trong trinh soan thao).</li>
-          <li><kbd className="bg-slate-100 border border-slate-300 rounded px-1.5 py-0.5 text-xs font-mono">Ctrl + Z</kbd> — Hoan tac thao tac vua thuc hien.</li>
-          <li><kbd className="bg-slate-100 border border-slate-300 rounded px-1.5 py-0.5 text-xs font-mono">Ctrl + B</kbd> — In dam van ban dang chon.</li>
-          <li><kbd className="bg-slate-100 border border-slate-300 rounded px-1.5 py-0.5 text-xs font-mono">Ctrl + K</kbd> — Chen lien ket.</li>
+          <li><kbd className="bg-slate-100 border border-slate-300 rounded px-1.5 py-0.5 text-sm font-mono">Ctrl + S</kbd> — Luu nhanh (trong trinh soan thao).</li>
+          <li><kbd className="bg-slate-100 border border-slate-300 rounded px-1.5 py-0.5 text-sm font-mono">Ctrl + Z</kbd> — Hoan tac thao tac vua thuc hien.</li>
+          <li><kbd className="bg-slate-100 border border-slate-300 rounded px-1.5 py-0.5 text-sm font-mono">Ctrl + B</kbd> — In dam van ban dang chon.</li>
+          <li><kbd className="bg-slate-100 border border-slate-300 rounded px-1.5 py-0.5 text-sm font-mono">Ctrl + K</kbd> — Chen lien ket.</li>
         </ul>
 
         <h4 className="font-semibold text-slate-800 mt-4 mb-2">Thuc hanh tot</h4>
@@ -637,21 +637,21 @@ export default function AdminGuidePage() {
         <div className="flex items-center gap-2">
           <button
             onClick={expandAll}
-            className="text-xs text-green-700 hover:underline"
+            className="text-sm text-green-700 hover:underline"
           >
             Mo tat ca
           </button>
           <span className="text-slate-300">|</span>
           <button
             onClick={collapseAll}
-            className="text-xs text-green-700 hover:underline"
+            className="text-sm text-green-700 hover:underline"
           >
             Dong tat ca
           </button>
           <span className="text-slate-300">|</span>
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-700"
+            className="flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700"
           >
             <Printer className="w-3.5 h-3.5" />
             In trang
@@ -728,7 +728,7 @@ export default function AdminGuidePage() {
       </div>
 
       {/* Footer */}
-      <div className="mt-8 mb-12 text-center text-xs text-slate-400">
+      <div className="mt-8 mb-12 text-center text-sm text-slate-400">
         Phien ban huong dan: 1.0 — Cap nhat thang 4/2026
       </div>
 

@@ -31,7 +31,7 @@ export default function FloatingButtons() {
     },
     {
       href: 'https://zalo.me',
-      icon: <span className="text-[10px] font-extrabold tracking-tight">Zalo</span>,
+      icon: <span className="text-sm font-extrabold tracking-tight">Zalo</span>,
       label: 'Zalo',
       bg: 'bg-blue-600 hover:bg-blue-700',
     },
@@ -89,7 +89,7 @@ export default function FloatingButtons() {
               rel={btn.href.startsWith('http') ? 'noopener noreferrer' : undefined}
             >
               <span className="text-red-600">{btn.icon}</span>
-              <span className="text-[10px]">{btn.label}</span>
+              <span className="text-sm">{btn.label}</span>
             </a>
           ))}
         </div>

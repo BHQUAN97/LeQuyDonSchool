@@ -143,7 +143,7 @@ function ChangePassword() {
           />
           {/* Realtime password checklist */}
           {form.newPassword.length > 0 && (
-            <ul className="mt-2 space-y-1 text-xs">
+            <ul className="mt-2 space-y-1 text-sm">
               <li className={checks.minLength ? 'text-green-600' : 'text-slate-400'}>
                 {checks.minLength ? '✓' : '○'} Tối thiểu 8 ký tự
               </li>
@@ -159,7 +159,7 @@ function ChangePassword() {
             </ul>
           )}
           {form.newPassword.length === 0 && (
-            <p className="text-xs text-slate-400 mt-1">Tối thiểu 8 ký tự, có chữ hoa, chữ thường và số</p>
+            <p className="text-sm text-slate-400 mt-1">Tối thiểu 8 ký tự, có chữ hoa, chữ thường và số</p>
           )}
         </div>
         <div>
@@ -171,7 +171,7 @@ function ChangePassword() {
             required
           />
           {form.confirmPassword.length > 0 && form.newPassword !== form.confirmPassword && (
-            <p className="text-xs text-red-500 mt-1">Mật khẩu xác nhận không khớp</p>
+            <p className="text-sm text-red-500 mt-1">Mật khẩu xác nhận không khớp</p>
           )}
         </div>
 

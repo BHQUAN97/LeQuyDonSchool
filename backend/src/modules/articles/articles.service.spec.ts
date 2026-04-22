@@ -7,6 +7,7 @@ function createMockRepo() {
   const qb = {
     where: jest.fn().mockReturnThis(),
     andWhere: jest.fn().mockReturnThis(),
+    leftJoinAndSelect: jest.fn().mockReturnThis(),
     orderBy: jest.fn().mockReturnThis(),
     skip: jest.fn().mockReturnThis(),
     take: jest.fn().mockReturnThis(),
@@ -144,6 +145,60 @@ describe('ArticlesService', () => {
 
       await service.findAll({ page: 1, limit: 10, search: 'test', order: 'DESC' } as any);
       expect(repo._qb.andWhere).toHaveBeenCalledWith('a.title LIKE :search', { search: '%test%' });
+    });
+
+    it('should leftJoinAndSelect category relation to avoid N+1 in admin list', async () => {
+      repo._qb.getCount.mockResolvedValue(0);
+      repo._qb.getMany.mockResolvedValue([]);
+
+      await service.findAll({ page: 1, limit: 10, order: 'DESC' } as any);
+      expect(repo._qb.leftJoinAndSelect).toHaveBeenCalledWith('a.category', 'category');
+    });
+
+    it('should apply category filter when categoryId provided', async () => {
+      repo._qb.getCount.mockResolvedValue(0);
+      repo._qb.getMany.mockResolvedValue([]);
+
+      await service.findAll({ page: 1, limit: 10, categoryId: 'cat-1', order: 'DESC' } as any);
+      expect(repo._qb.andWhere).toHaveBeenCalledWith('a.category_id = :categoryId', {
+        categoryId: 'cat-1',
+      });
+    });
+  });
+
+  describe('findAllPublic()', () => {
+    it('should filter only PUBLISHED articles', async () => {
+      repo._qb.getCount.mockResolvedValue(0);
+      repo._qb.getMany.mockResolvedValue([]);
+
+      await service.findAllPublic({ page: 1, limit: 10, order: 'DESC' } as any);
+      // Kiem tra da filter theo status = published
+      expect(repo._qb.andWhere).toHaveBeenCalledWith('a.status = :status', {
+        status: ArticleStatus.PUBLISHED,
+      });
+    });
+
+    it('should filter by category slug when `category` is provided', async () => {
+      repo._qb.getCount.mockResolvedValue(0);
+      repo._qb.getMany.mockResolvedValue([]);
+
+      await service.findAllPublic({
+        page: 1,
+        limit: 10,
+        category: 'tin-tuc',
+        order: 'DESC',
+      } as any);
+      expect(repo._qb.andWhere).toHaveBeenCalledWith('cat.slug = :categorySlug', {
+        categorySlug: 'tin-tuc',
+      });
+    });
+
+    it('should leftJoinAndSelect category alias `cat`', async () => {
+      repo._qb.getCount.mockResolvedValue(0);
+      repo._qb.getMany.mockResolvedValue([]);
+
+      await service.findAllPublic({ page: 1, limit: 10, order: 'DESC' } as any);
+      expect(repo._qb.leftJoinAndSelect).toHaveBeenCalledWith('a.category', 'cat');
     });
   });
 

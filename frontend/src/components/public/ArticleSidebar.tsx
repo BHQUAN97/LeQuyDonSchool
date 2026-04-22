@@ -67,7 +67,7 @@ export default async function ArticleSidebar() {
                   {cover ? (
                     <Image src={cover} alt={a.title} fill className="object-cover" sizes="80px" />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-green-50 to-red-50 flex items-center justify-center text-[10px] text-gray-400">
+                    <div className="w-full h-full bg-gradient-to-br from-green-50 to-red-50 flex items-center justify-center text-sm text-gray-400">
                       Ảnh
                     </div>
                   )}
@@ -76,7 +76,7 @@ export default async function ArticleSidebar() {
                   <p className="text-sm font-medium text-gray-900 line-clamp-2 group-hover:text-green-700 transition-colors leading-snug">
                     {a.title}
                   </p>
-                  <p className="text-[11px] text-gray-400 mt-1">
+                  <p className="text-sm text-gray-400 mt-1">
                     &#128197; {date}
                   </p>
                 </div>
@@ -94,11 +94,11 @@ export default async function ArticleSidebar() {
             {events.map((e: any) => (
               <div key={e.id} className="bg-green-700 rounded-lg overflow-hidden text-white">
                 <div className="p-4">
-                  <p className="text-xs uppercase tracking-wider text-green-200 mb-1">
+                  <p className="text-sm uppercase tracking-wider text-green-200 mb-1">
                     {e.category || 'Sự kiện'}
                   </p>
                   <p className="text-sm font-bold leading-snug mb-2">{e.title}</p>
-                  <p className="text-[11px] text-white/70">
+                  <p className="text-sm text-white/70">
                     {new Date(e.event_date || e.start_date).toLocaleDateString('vi-VN')}
                     {e.location && ` • ${e.location}`}
                   </p>
@@ -117,7 +117,7 @@ export default async function ArticleSidebar() {
           <span className="text-5xl font-black text-green-700 leading-none">3</span>
           <div>
             <p className="text-lg font-bold text-red-600 leading-tight">SẴN SÀNG</p>
-            <p className="text-xs text-gray-500">cùng con vào...</p>
+            <p className="text-sm text-gray-500">cùng con vào...</p>
           </div>
         </div>
         <div className="flex items-center gap-1">
@@ -125,8 +125,8 @@ export default async function ArticleSidebar() {
           <span className="text-3xl font-black text-red-600">1</span>
         </div>
         <div className="mt-3 bg-green-700 rounded-lg p-3 text-white">
-          <p className="text-xs font-bold mb-1">Hội thảo 3 SẴN SÀNG cùng con vào lớp 1</p>
-          <p className="text-[10px] opacity-80">
+          <p className="text-sm font-bold mb-1">Hội thảo 3 SẴN SÀNG cùng con vào lớp 1</p>
+          <p className="text-sm opacity-80">
             Trường Tiểu học Lê Quý Đôn
           </p>
         </div>

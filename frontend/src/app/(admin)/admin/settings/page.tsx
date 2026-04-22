@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -102,9 +103,12 @@ export default function SettingsAdminPage() {
         body: JSON.stringify({ items }),
       });
 
+      toast.success('Đã lưu cấu hình thành công');
       setSettingsMsg({ type: 'success', text: 'Đã lưu cấu hình thành công' });
-    } catch (err: any) {
-      setSettingsMsg({ type: 'error', text: err.message || 'Lỗi khi lưu' });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Lỗi khi lưu';
+      setSettingsMsg({ type: 'error', text: message });
+      toast.error(message);
     } finally {
       setSaving(false);
     }
@@ -187,7 +191,7 @@ export default function SettingsAdminPage() {
                   className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 {field.maxLength && (
-                  <p className={`text-xs mt-1 ${(values[field.key] || '').length >= field.maxLength - 20 ? 'text-orange-500' : 'text-slate-400'}`}>
+                  <p className={`text-sm mt-1 ${(values[field.key] || '').length >= field.maxLength - 20 ? 'text-orange-500' : 'text-slate-400'}`}>
                     {(values[field.key] || '').length}/{field.maxLength}
                   </p>
                 )}
@@ -199,7 +203,7 @@ export default function SettingsAdminPage() {
               />
             )}
             {field.help && (
-              <p className="text-xs text-slate-400 mt-1">{field.help}</p>
+              <p className="text-sm text-slate-400 mt-1">{field.help}</p>
             )}
           </div>
         ))}

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { CheckCircle } from 'lucide-react';
 import { api } from '@/lib/api';
+import { getCsrfToken } from '@/lib/csrf';
 
 /** Form lien he — client component tach ra tu page.tsx de page giu duoc metadata */
 export default function ContactForm() {
@@ -51,9 +52,13 @@ export default function ContactForm() {
     }
 
     try {
-      // Gui form lien he len backend POST /api/contacts
+      // Lay CSRF token (doc cookie hoac fetch /api/csrf-token) truoc khi POST
+      const csrfToken = await getCsrfToken();
+
+      // Gui form lien he len backend POST /api/contacts — kem header CSRF
       await api('/contacts', {
         method: 'POST',
+        headers: { 'x-csrf-token': csrfToken },
         body: JSON.stringify({
           fullName: formData.name,
           email: formData.email,

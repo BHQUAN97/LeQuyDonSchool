@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { toast } from 'sonner';
 import { api } from '@/lib/api';
 import type { Category, PaginatedResponse, ApiResponse } from '@/types';
 import { Plus, Pencil, Trash2, ChevronLeft, ChevronRight, X, Search } from 'lucide-react';
 import { generateSlug } from '@/lib/slug';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import SortableList from '@/components/admin/SortableList';
 
 interface CategoryForm {
   name: string;
@@ -43,6 +45,9 @@ export default function CategoriesPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [catError, setCatError] = useState('');
+
+  // Reorder state — disable DnD while sending PATCH
+  const [reordering, setReordering] = useState(false);
 
   // Lay danh sach danh muc phan trang
   const fetchCategories = useCallback(async (page = 1, searchQuery = '') => {
@@ -182,6 +187,46 @@ export default function CategoriesPage() {
       setError(err.message || 'Có lỗi xảy ra');
     } finally {
       setSaving(false);
+    }
+  }
+
+  // Drag-drop reorder — cap nhat thu tu hien thi cua cac danh muc trong trang hien tai
+  // Tinh lai displayOrder cho tung item dua vao index moi, PATCH tung item bi thay doi
+  async function handleReorder(newItems: Category[]) {
+    // Cap nhat UI truoc (optimistic)
+    const prev = categories;
+    setCategories(newItems);
+    setReordering(true);
+
+    try {
+      // Tinh displayOrder moi — dung index nhan 10 de chua cho chen them sau nay
+      const updates: Array<{ id: string; displayOrder: number }> = [];
+      newItems.forEach((item, idx) => {
+        const newOrder = idx * 10;
+        if (item.display_order !== newOrder) {
+          updates.push({ id: item.id, displayOrder: newOrder });
+        }
+      });
+
+      // Gui tung PATCH song song — backend dung PUT cho /categories/:id
+      await Promise.all(
+        updates.map((u) =>
+          api(`/categories/${u.id}`, {
+            method: 'PUT',
+            body: JSON.stringify({ displayOrder: u.displayOrder }),
+          }),
+        ),
+      );
+
+      toast.success('Đã cập nhật thứ tự');
+      // Fetch lai de dong bo display_order moi tu server
+      fetchCategories(pagination.page, search);
+    } catch (err: any) {
+      console.error('Loi khi cap nhat thu tu:', err);
+      toast.error('Lỗi cập nhật thứ tự');
+      setCategories(prev); // Rollback UI
+    } finally {
+      setReordering(false);
     }
   }
 
@@ -342,72 +387,51 @@ export default function CategoriesPage() {
         </div>
       )}
 
-      {/* Table */}
+      {/* Sortable list — header + rows nhu bang nhung hien bang div de drag-drop on dinh */}
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[700px]">
-            <thead className="sticky top-0 z-10">
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                  Tên
-                </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                  Slug
-                </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider hidden md:table-cell">
-                  Danh mục cha
-                </th>
-                <th className="text-center px-4 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider hidden sm:table-cell">
-                  Số bài viết
-                </th>
-                <th className="text-center px-4 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                  Thứ tự
-                </th>
-                <th className="text-center px-4 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                  Trạng thái
-                </th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                  Thao tác
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {loading ? (
-                <tr>
-                  <td colSpan={7} className="px-4 py-12 text-center text-slate-400 text-sm">
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="w-5 h-5 border-2 border-green-700 border-t-transparent rounded-full animate-spin" />
-                      Đang tải...
-                    </div>
-                  </td>
-                </tr>
-              ) : categories.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="px-4 py-12 text-center text-slate-400 text-sm">
-                    Chưa có danh mục nào
-                  </td>
-                </tr>
-              ) : (
-                categories.map((cat) => (
-                  <tr key={cat.id} className="hover:bg-slate-50 transition-colors">
-                    <td className="px-4 py-3">
-                      <span className="text-sm font-medium text-slate-900">{cat.name}</span>
-                    </td>
-                    <td className="px-4 py-3">
-                      <span className="text-sm text-slate-500 font-mono">{cat.slug}</span>
-                    </td>
-                    <td className="px-4 py-3 hidden md:table-cell">
-                      <span className="text-sm text-slate-500">{getParentName(cat.parent_id)}</span>
-                    </td>
-                    <td className="px-4 py-3 text-center hidden sm:table-cell">
-                      <span className="text-sm text-slate-500">0</span>
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      <span className="text-sm text-slate-700">{cat.display_order}</span>
-                    </td>
-                    <td className="px-4 py-3 text-center">
+          <div className="min-w-[700px]">
+            {/* Header row */}
+            <div className="grid grid-cols-[32px_minmax(0,2fr)_minmax(0,1.5fr)_minmax(0,1fr)_80px_80px_100px_100px] items-center gap-2 border-b border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold uppercase tracking-wider text-slate-600">
+              <span className="sr-only">Kéo</span>
+              <span className="text-left">Tên</span>
+              <span className="text-left">Slug</span>
+              <span className="text-left hidden md:block">Danh mục cha</span>
+              <span className="text-center hidden sm:block">Số bài viết</span>
+              <span className="text-center">Thứ tự</span>
+              <span className="text-center">Trạng thái</span>
+              <span className="text-right">Thao tác</span>
+            </div>
+
+            {/* Body */}
+            {loading ? (
+              <div className="px-4 py-12 text-center text-sm text-slate-400">
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-5 h-5 border-2 border-green-700 border-t-transparent rounded-full animate-spin" />
+                  Đang tải...
+                </div>
+              </div>
+            ) : categories.length === 0 ? (
+              <div className="px-4 py-12 text-center text-sm text-slate-400">
+                Chưa có danh mục nào
+              </div>
+            ) : (
+              <SortableList
+                items={categories}
+                getId={(c) => c.id}
+                onReorder={handleReorder}
+                disabled={reordering}
+                renderItem={(cat, dragHandle) => (
+                  <div className="grid grid-cols-[32px_minmax(0,2fr)_minmax(0,1.5fr)_minmax(0,1fr)_80px_80px_100px_100px] items-center gap-2 border-b border-slate-100 bg-white px-4 py-3 hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center">{dragHandle}</div>
+                    <span className="text-sm font-medium text-slate-900 truncate">{cat.name}</span>
+                    <span className="text-sm text-slate-500 font-mono truncate">{cat.slug}</span>
+                    <span className="text-sm text-slate-500 hidden md:block truncate">{getParentName(cat.parent_id)}</span>
+                    <span className="text-sm text-slate-500 text-center hidden sm:block">0</span>
+                    <span className="text-sm text-slate-700 text-center">{cat.display_order}</span>
+                    <span className="text-center">
                       <span
-                        className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                        className={`inline-flex items-center px-2 py-0.5 rounded-full text-sm font-medium ${
                           cat.status === 'active'
                             ? 'bg-green-50 text-green-700 border border-green-200'
                             : 'bg-slate-100 text-slate-500 border border-slate-200'
@@ -415,30 +439,28 @@ export default function CategoriesPage() {
                       >
                         {cat.status === 'active' ? 'Hoạt động' : 'Tạm ẩn'}
                       </span>
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      <div className="flex items-center justify-end gap-1">
-                        <button
-                          onClick={() => openEditForm(cat)}
-                          className="p-1.5 text-slate-400 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors"
-                          title="Sửa"
-                        >
-                          <Pencil className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => setDeleteId(cat.id)}
-                          className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                          title="Xóa"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                    </span>
+                    <div className="flex items-center justify-end gap-1">
+                      <button
+                        onClick={() => openEditForm(cat)}
+                        className="p-1.5 text-slate-400 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors"
+                        title="Sửa"
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => setDeleteId(cat.id)}
+                        className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Xóa"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              />
+            )}
+          </div>
         </div>
 
         {/* Pagination */}

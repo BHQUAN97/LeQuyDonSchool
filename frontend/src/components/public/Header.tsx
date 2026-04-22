@@ -112,10 +112,10 @@ export default function Header() {
           {/* Logo — mobile: giua, desktop: trai */}
           <Link href="/" className="flex items-center gap-3 shrink-0 lg:mr-auto">
             <div className="w-11 h-11 lg:w-12 lg:h-12 rounded-full bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center border-2 border-yellow-500 shadow-sm">
-              <span className="text-white font-bold text-[10px] lg:text-xs leading-none">LQD</span>
+              <span className="text-white font-bold text-sm leading-none">LQD</span>
             </div>
             <div className="hidden sm:block">
-              <p className="text-[10px] text-green-700 font-semibold uppercase tracking-wide leading-tight">
+              <p className="text-sm text-green-700 font-semibold uppercase tracking-wide leading-tight">
                 Hệ thống Trường liên cấp Lê Quý Đôn
               </p>
               <p className="text-sm lg:text-[15px] font-bold text-red-600 leading-tight tracking-tight">
@@ -131,7 +131,7 @@ export default function Header() {
                 <Link
                   href={item.children ? item.children[0].href : item.href}
                   className={cn(
-                    'flex items-center px-3 xl:px-4 py-2 text-[13px] xl:text-sm font-bold uppercase tracking-wide transition-colors border-b-2',
+                    'flex items-center px-3 xl:px-4 py-2 text-sm font-bold uppercase tracking-wide transition-colors border-b-2',
                     isActive(item.href)
                       ? 'text-green-700 border-green-700'
                       : 'text-red-700 hover:text-green-700 border-transparent',

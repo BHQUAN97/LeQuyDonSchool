@@ -327,7 +327,7 @@ export default function HomepageAdminPage() {
             open={openSections.hero}
             onToggle={() => toggleSection('hero')}
           >
-            <p className="text-xs text-slate-500 mb-4">
+            <p className="text-sm text-slate-500 mb-4">
               Quản lý các slide hiển thị ở banner đầu trang. Kéo thứ tự bằng nút mũi tên.
             </p>
 
@@ -398,7 +398,7 @@ export default function HomepageAdminPage() {
             open={openSections.testimonials}
             onToggle={() => toggleSection('testimonials')}
           >
-            <p className="text-xs text-slate-500 mb-4">
+            <p className="text-sm text-slate-500 mb-4">
               Các lời nhận xét / cảm nhận từ phụ huynh hiển thị trên trang chủ.
             </p>
 
@@ -455,7 +455,7 @@ export default function HomepageAdminPage() {
             open={openSections.stats}
             onToggle={() => toggleSection('stats')}
           >
-            <p className="text-xs text-slate-500 mb-4">
+            <p className="text-sm text-slate-500 mb-4">
               Các con số thống kê hiển thị trên trang chủ (VD: 1200+ học sinh).
             </p>
 
@@ -477,7 +477,7 @@ export default function HomepageAdminPage() {
             open={openSections.featured_event}
             onToggle={() => toggleSection('featured_event')}
           >
-            <p className="text-xs text-slate-500 mb-4">
+            <p className="text-sm text-slate-500 mb-4">
               Chọn sự kiện hiển thị nổi bật trên sidebar trang chủ. Để trống nếu không muốn hiển thị.
             </p>
 
@@ -507,7 +507,7 @@ export default function HomepageAdminPage() {
         <div className="space-y-4">
           <div className="bg-white rounded-xl border border-slate-200 p-5">
             <h3 className="text-sm font-semibold text-slate-700 mb-1">Sắp xếp các khối trang chủ</h3>
-            <p className="text-xs text-slate-400 mb-4">
+            <p className="text-sm text-slate-400 mb-4">
               Kéo thả để thay đổi thứ tự. Bấm biểu tượng mắt để ẩn/hiện.
             </p>
             <BlockSortableList
@@ -530,7 +530,7 @@ export default function HomepageAdminPage() {
         <div className="space-y-4">
           <div className="bg-white rounded-xl border border-slate-200 p-5">
             <h3 className="text-sm font-semibold text-slate-700 mb-1">Chọn kiểu bố cục cho từng khối</h3>
-            <p className="text-xs text-slate-400 mb-4">
+            <p className="text-sm text-slate-400 mb-4">
               Mỗi khối có nhiều kiểu hiển thị khác nhau. Chọn kiểu phù hợp nhất.
             </p>
           </div>
@@ -581,15 +581,15 @@ export default function HomepageAdminPage() {
                       <Image src={slide.image_url} alt="" width={0} height={0} sizes="100vw" className="w-full h-36 object-cover" />
                     ) : (
                       <div className="w-full h-36 bg-gradient-to-br from-green-600 to-green-800 flex items-center justify-center">
-                        <span className="text-white/50 text-xs">No image</span>
+                        <span className="text-white/50 text-sm">No image</span>
                       </div>
                     )}
                     <div className="p-3 space-y-1">
                       <p className="text-sm font-bold text-slate-900">{slide.title || '(Chưa có tiêu đề)'}</p>
-                      {slide.subtitle && <p className="text-xs text-green-700 font-medium">{slide.subtitle}</p>}
-                      {slide.description && <p className="text-xs text-slate-500 line-clamp-2">{slide.description}</p>}
+                      {slide.subtitle && <p className="text-sm text-green-700 font-medium">{slide.subtitle}</p>}
+                      {slide.description && <p className="text-sm text-slate-500 line-clamp-2">{slide.description}</p>}
                       {slide.cta_text && (
-                        <span className="inline-block mt-1 px-2 py-0.5 bg-green-600 text-white text-xs rounded">
+                        <span className="inline-block mt-1 px-2 py-0.5 bg-green-600 text-white text-sm rounded">
                           {slide.cta_text}
                         </span>
                       )}
@@ -607,15 +607,15 @@ export default function HomepageAdminPage() {
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
                   <p className="text-2xl font-bold text-green-700">{statStudents || '—'}</p>
-                  <p className="text-xs text-slate-500">Học sinh</p>
+                  <p className="text-sm text-slate-500">Học sinh</p>
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-green-700">{statTeachers || '—'}</p>
-                  <p className="text-xs text-slate-500">Giáo viên</p>
+                  <p className="text-sm text-slate-500">Giáo viên</p>
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-green-700">{statYears || '—'}</p>
-                  <p className="text-xs text-slate-500">Năm thành lập</p>
+                  <p className="text-sm text-slate-500">Năm thành lập</p>
                 </div>
               </div>
             </div>
@@ -637,8 +637,8 @@ export default function HomepageAdminPage() {
                     )}
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-slate-900">{t.name}</p>
-                      <p className="text-xs text-slate-400">{t.title}</p>
-                      <p className="text-xs text-slate-600 mt-1 line-clamp-3">{t.content}</p>
+                      <p className="text-sm text-slate-400">{t.title}</p>
+                      <p className="text-sm text-slate-600 mt-1 line-clamp-3">{t.content}</p>
                     </div>
                   </div>
                 ))}
@@ -650,7 +650,7 @@ export default function HomepageAdminPage() {
           <div className="bg-white rounded-xl border border-slate-200 p-5">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-semibold text-slate-700">Bài viết hiển thị trên trang chủ</h3>
-              <a href="/admin/articles" className="text-xs text-green-700 hover:underline">
+              <a href="/admin/articles" className="text-sm text-green-700 hover:underline">
                 Quản lý bài viết
               </a>
             </div>
@@ -664,13 +664,13 @@ export default function HomepageAdminPage() {
                     {article.thumbnail_url ? (
                       <Image src={article.thumbnail_url} alt="" width={64} height={64} className="w-16 h-16 rounded object-cover flex-shrink-0" />
                     ) : (
-                      <div className="w-16 h-16 rounded bg-slate-100 flex items-center justify-center flex-shrink-0 text-slate-300 text-xs">
+                      <div className="w-16 h-16 rounded bg-slate-100 flex items-center justify-center flex-shrink-0 text-slate-300 text-sm">
                         N/A
                       </div>
                     )}
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-slate-900 line-clamp-2">{article.title}</p>
-                      <p className="text-xs text-slate-400 mt-1">
+                      <p className="text-sm text-slate-400 mt-1">
                         {new Date(article.created_at).toLocaleDateString('vi-VN')}
                         {' · '}
                         {article.view_count} lượt xem
@@ -686,7 +686,7 @@ export default function HomepageAdminPage() {
           <div className="bg-white rounded-xl border border-slate-200 p-5">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-semibold text-slate-700">Sự kiện sắp diễn ra</h3>
-              <a href="/admin/events" className="text-xs text-green-700 hover:underline">
+              <a href="/admin/events" className="text-sm text-green-700 hover:underline">
                 Quản lý sự kiện
               </a>
             </div>
@@ -699,7 +699,7 @@ export default function HomepageAdminPage() {
                   <div key={event.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-slate-900">{event.title}</p>
-                      <p className="text-xs text-slate-400">{event.location || 'Chưa có địa điểm'}</p>
+                      <p className="text-sm text-slate-400">{event.location || 'Chưa có địa điểm'}</p>
                     </div>
                     <div className="text-right flex-shrink-0 ml-3">
                       <p className="text-sm font-medium text-green-700">
@@ -707,7 +707,7 @@ export default function HomepageAdminPage() {
                           day: '2-digit', month: '2-digit', year: 'numeric',
                         })}
                       </p>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-sm text-slate-400">
                         {new Date(event.start_date).toLocaleTimeString('vi-VN', {
                           hour: '2-digit', minute: '2-digit',
                         })}
@@ -744,7 +744,7 @@ function SectionAccordion({
       >
         <div>
           <span className="text-sm font-semibold text-slate-900">{title}</span>
-          <span className="ml-2 text-xs text-slate-400">{subtitle}</span>
+          <span className="ml-2 text-sm text-slate-400">{subtitle}</span>
         </div>
         <span className={`text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`}>
           &#9660;
@@ -766,7 +766,7 @@ function FieldInput({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-slate-600 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-slate-600 mb-1">{label}</label>
       <Input
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -789,7 +789,7 @@ function FieldTextarea({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-slate-600 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-slate-600 mb-1">{label}</label>
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}

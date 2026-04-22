@@ -50,7 +50,8 @@ export class AuthController {
   async logout(@CurrentUser('id') userId: string, @Req() req: Request, @Res() res: Response) {
     const ip = req.ip || '0.0.0.0';
     const result = await this.authService.logout(userId, ip);
-    res.clearCookie('refreshToken', { path: '/' });
+    const { maxAge: _m, ...clearOpts } = this.authService.getRefreshCookieOptions();
+    res.clearCookie('refreshToken', clearOpts);
     res.json({ success: true, data: null, message: result.message });
   }
 

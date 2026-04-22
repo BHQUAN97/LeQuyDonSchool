@@ -21,11 +21,16 @@ export class ArticlesService {
 
   /**
    * Danh sach bai viet cho admin — phan trang, search, filter.
+   * Eager-load category de admin table hien ten danh muc khong can N+1 query.
    */
   async findAll(query: QueryArticleDto) {
     const { page, limit, search, status, categoryId, dateFrom, dateTo, sort, order } = query;
 
-    const qb = this.articleRepo.createQueryBuilder('a').where('a.deleted_at IS NULL');
+    const qb = this.articleRepo
+      .createQueryBuilder('a')
+      // Fix N+1: eager join category cho admin list view
+      .leftJoinAndSelect('a.category', 'category')
+      .where('a.deleted_at IS NULL');
 
     if (search) {
       qb.andWhere('a.title LIKE :search', { search: `%${escapeLike(search)}%` });

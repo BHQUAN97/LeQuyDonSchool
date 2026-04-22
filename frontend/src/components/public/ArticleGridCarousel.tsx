@@ -122,8 +122,8 @@ export default function ArticleGridCarousel({
                 <h3 className="text-sm font-bold text-gray-900 line-clamp-2 mb-2 group-hover:text-green-700 transition-colors">
                   {title}
                 </h3>
-                <p className="text-xs text-gray-500 line-clamp-2 mb-2">{desc}</p>
-                <p className="text-[11px] text-gray-400">
+                <p className="text-sm text-gray-500 line-clamp-2 mb-2">{desc}</p>
+                <p className="text-sm text-gray-400">
                   {date} &nbsp;&bull;&nbsp; {category}
                 </p>
               </div>

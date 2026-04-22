@@ -250,7 +250,7 @@ function AccessLogsTab() {
             ? 'bg-blue-100 text-blue-700'
             : 'bg-green-100 text-green-700';
     return (
-      <span className={`inline-block px-1.5 py-0.5 rounded text-xs font-mono ${cls}`}>
+      <span className={`inline-block px-1.5 py-0.5 rounded text-sm font-mono ${cls}`}>
         {code}
       </span>
     );
@@ -351,7 +351,7 @@ function AccessLogsTab() {
             <div>
               <span className="font-medium text-slate-600">Level:</span>{' '}
               <span
-                className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${LEVEL_CONFIG[selectedLog.level]?.class}`}
+                className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${LEVEL_CONFIG[selectedLog.level]?.class}`}
               >
                 {LEVEL_CONFIG[selectedLog.level]?.text}
               </span>
@@ -362,7 +362,7 @@ function AccessLogsTab() {
             </div>
             <div>
               <span className="font-medium text-slate-600">Endpoint:</span>{' '}
-              <span className="text-slate-900 font-mono text-xs">
+              <span className="text-slate-900 font-mono text-sm">
                 {selectedLog.endpoint || 'N/A'}
               </span>
             </div>
@@ -374,17 +374,17 @@ function AccessLogsTab() {
             </div>
             <div>
               <span className="font-medium text-slate-600">IP:</span>{' '}
-              <span className="text-slate-900 font-mono text-xs">{selectedLog.ip || 'N/A'}</span>
+              <span className="text-slate-900 font-mono text-sm">{selectedLog.ip || 'N/A'}</span>
             </div>
             <div>
               <span className="font-medium text-slate-600">User ID:</span>{' '}
-              <span className="text-slate-900 font-mono text-xs">
+              <span className="text-slate-900 font-mono text-sm">
                 {selectedLog.user_id || 'N/A'}
               </span>
             </div>
             <div className="md:col-span-2">
               <span className="font-medium text-slate-600">User Agent:</span>{' '}
-              <span className="text-slate-500 text-xs">{selectedLog.user_agent || 'N/A'}</span>
+              <span className="text-slate-500 text-sm">{selectedLog.user_agent || 'N/A'}</span>
             </div>
           </div>
 
@@ -400,7 +400,7 @@ function AccessLogsTab() {
           {selectedLog.stack_trace && (
             <div>
               <span className="block font-medium text-slate-600 text-sm mb-1">Stack trace:</span>
-              <pre className="bg-slate-900 text-green-400 rounded-lg p-4 text-xs overflow-x-auto whitespace-pre-wrap">
+              <pre className="bg-slate-900 text-green-400 rounded-lg p-4 text-sm overflow-x-auto whitespace-pre-wrap">
                 {selectedLog.stack_trace}
               </pre>
             </div>
@@ -410,7 +410,7 @@ function AccessLogsTab() {
           {selectedLog.context && (
             <div>
               <span className="block font-medium text-slate-600 text-sm mb-1">Context:</span>
-              <pre className="bg-slate-50 rounded-lg p-4 text-xs overflow-x-auto">
+              <pre className="bg-slate-50 rounded-lg p-4 text-sm overflow-x-auto">
                 {JSON.stringify(selectedLog.context, null, 2)}
               </pre>
             </div>
@@ -474,7 +474,7 @@ function AccessLogsTab() {
                       </td>
                       <td className="px-4 py-3">
                         <span
-                          className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${lv.class}`}
+                          className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${lv.class}`}
                         >
                           {lv.text}
                         </span>
@@ -482,14 +482,14 @@ function AccessLogsTab() {
                       <td className="px-4 py-3 text-slate-700 max-w-[250px]">
                         {truncate(log.message, 60)}
                       </td>
-                      <td className="px-4 py-3 text-slate-500 font-mono text-xs">
+                      <td className="px-4 py-3 text-slate-500 font-mono text-sm">
                         {log.endpoint ? truncate(log.endpoint, 30) : '-'}
                       </td>
                       <td className="px-4 py-3">{statusBadge(log.status_code) || '-'}</td>
-                      <td className="px-4 py-3 text-slate-500 font-mono text-xs">
+                      <td className="px-4 py-3 text-slate-500 font-mono text-sm">
                         {log.ip || '-'}
                       </td>
-                      <td className="px-4 py-3 text-slate-500 text-xs">
+                      <td className="px-4 py-3 text-slate-500 text-sm">
                         {formatDate(log.created_at)}
                       </td>
                       <td className="px-4 py-3 text-right">
@@ -741,7 +741,7 @@ function AdminActionsTab() {
             <div>
               <span className="font-medium text-slate-600">Hanh dong:</span>{' '}
               <span
-                className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
+                className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${
                   (ACTION_CONFIG[selectedAction.action] || ACTION_CONFIG.create).class
                 }`}
               >
@@ -754,7 +754,7 @@ function AdminActionsTab() {
             </div>
             <div>
               <span className="font-medium text-slate-600">Doi tuong:</span>{' '}
-              <span className="text-slate-900 font-mono text-xs">
+              <span className="text-slate-900 font-mono text-sm">
                 {selectedAction.entity_type}
                 {selectedAction.entity_id && ` #${selectedAction.entity_id}`}
               </span>
@@ -767,11 +767,11 @@ function AdminActionsTab() {
             </div>
             <div>
               <span className="font-medium text-slate-600">IP:</span>{' '}
-              <span className="text-slate-900 font-mono text-xs">{selectedAction.ip || 'N/A'}</span>
+              <span className="text-slate-900 font-mono text-sm">{selectedAction.ip || 'N/A'}</span>
             </div>
             <div>
               <span className="font-medium text-slate-600">ID:</span>{' '}
-              <span className="text-slate-500 font-mono text-xs">{selectedAction.id}</span>
+              <span className="text-slate-500 font-mono text-sm">{selectedAction.id}</span>
             </div>
           </div>
 
@@ -787,7 +787,7 @@ function AdminActionsTab() {
           {selectedAction.changes && (
             <div>
               <span className="block font-medium text-slate-600 text-sm mb-1">Thay doi:</span>
-              <pre className="bg-slate-900 text-green-400 rounded-lg p-4 text-xs overflow-x-auto whitespace-pre-wrap">
+              <pre className="bg-slate-900 text-green-400 rounded-lg p-4 text-sm overflow-x-auto whitespace-pre-wrap">
                 {JSON.stringify(selectedAction.changes, null, 2)}
               </pre>
             </div>
@@ -829,24 +829,24 @@ function AdminActionsTab() {
                   return (
                     <tr key={a.id} className="border-b border-slate-100 hover:bg-slate-50">
                       <td className="px-4 py-3">
-                        <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${cfg.class}`}>
+                        <span className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${cfg.class}`}>
                           {cfg.text}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-slate-700 max-w-[300px]">
                         {a.description}
                       </td>
-                      <td className="px-4 py-3 text-slate-500 font-mono text-xs">
+                      <td className="px-4 py-3 text-slate-500 font-mono text-sm">
                         {a.entity_type}
                         {a.entity_id && <span className="text-slate-400"> #{a.entity_id.slice(0, 8)}</span>}
                       </td>
-                      <td className="px-4 py-3 text-slate-700 text-xs">
+                      <td className="px-4 py-3 text-slate-700 text-sm">
                         {a.user_name || a.user_id.slice(0, 8)}
                       </td>
-                      <td className="px-4 py-3 text-slate-500 font-mono text-xs">
+                      <td className="px-4 py-3 text-slate-500 font-mono text-sm">
                         {a.ip || '-'}
                       </td>
-                      <td className="px-4 py-3 text-slate-500 text-xs">
+                      <td className="px-4 py-3 text-slate-500 text-sm">
                         {formatDate(a.created_at)}
                       </td>
                       <td className="px-4 py-3 text-right">

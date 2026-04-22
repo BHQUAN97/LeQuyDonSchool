@@ -57,14 +57,14 @@ function TestimonialYearBanner() {
           <div className="mt-6 w-72 h-56 mx-auto bg-white/15 rounded-2xl flex items-center justify-center text-white/40 text-sm overflow-hidden relative">
             <div className="text-center">
               <p className="text-3xl mb-2">&#128106;</p>
-              <p className="text-xs">Anh gia dinh hoc sinh</p>
+              <p className="text-sm">Anh gia dinh hoc sinh</p>
             </div>
           </div>
         </div>
         {/* Emblem goc trai tren */}
         <div className="absolute top-4 left-4 flex items-center gap-2">
           <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'color-mix(in srgb, var(--hp-primary, #15803d) 80%, transparent)' }}>
-            <span className="text-white font-bold text-[7px]">LQD</span>
+            <span className="text-white font-bold text-sm">LQD</span>
           </div>
         </div>
       </div>
@@ -125,7 +125,7 @@ function TestimonialSimpleCarousel() {
                   </div>
                   <div className="text-left">
                     <p className="font-bold text-gray-900 text-sm">{t.name}</p>
-                    <p className="text-xs text-gray-500 leading-snug max-w-xs">{t.title}</p>
+                    <p className="text-sm text-gray-500 leading-snug max-w-xs">{t.title}</p>
                   </div>
                 </div>
               </div>
@@ -181,7 +181,7 @@ function TestimonialCards() {
                 </div>
                 <div>
                   <p className="font-bold text-gray-900 text-sm">{t.name}</p>
-                  <p className="text-[11px] text-gray-500 leading-snug">{t.title}</p>
+                  <p className="text-sm text-gray-500 leading-snug">{t.title}</p>
                 </div>
               </div>
             </div>

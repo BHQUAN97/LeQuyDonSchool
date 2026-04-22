@@ -28,7 +28,8 @@ services:
       - ./frontend/src:/app/src
     ports:
       - "3200:3000"
-    command: npm run dev
+    # override: package.json "dev" dung -p 3200 (cho local), trong Docker chay port 3000 de match compose map
+    command: npx next dev -p 3000
     depends_on:
       backend:
         condition: service_healthy

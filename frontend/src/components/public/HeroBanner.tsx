@@ -103,13 +103,13 @@ export default function HeroBanner() {
                   <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm transform rotate-1 hover:rotate-0 transition-transform">
                     <div className="flex items-center gap-3 mb-5">
                       <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center border-2 border-yellow-500">
-                        <span className="text-white font-bold text-[10px]">LQD</span>
+                        <span className="text-white font-bold text-sm">LQD</span>
                       </div>
                       <div>
-                        <p className="text-[9px] text-green-700 font-semibold uppercase tracking-wide leading-tight">
+                        <p className="text-sm text-green-700 font-semibold uppercase tracking-wide leading-tight">
                           Hệ thống Trường liên cấp Lê Quý Đôn
                         </p>
-                        <p className="text-xs font-bold text-red-600 leading-tight">
+                        <p className="text-sm font-bold text-red-600 leading-tight">
                           Trường Tiểu học Lê Quý Đôn
                         </p>
                       </div>

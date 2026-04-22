@@ -32,7 +32,7 @@ export default function ArticleCard({
             {imageLabel}
           </div>
           <div className="p-4 flex flex-col flex-1 min-w-0">
-            <p className="text-xs text-green-700 font-medium mb-2">
+            <p className="text-sm text-green-700 font-medium mb-2">
               {category} • {date}
             </p>
             <h3 className="text-base font-semibold text-slate-900 line-clamp-2 mb-2 group-hover:text-green-700 transition-colors">
@@ -52,13 +52,13 @@ export default function ArticleCard({
           {imageLabel}
         </div>
         <div className="p-4 flex flex-col flex-1">
-          <p className="text-xs text-green-700 font-medium mb-2">
+          <p className="text-sm text-green-700 font-medium mb-2">
             {category} • {date}
           </p>
           <h3 className="text-sm font-semibold text-slate-900 line-clamp-2 mb-2 group-hover:text-green-700 transition-colors">
             {title}
           </h3>
-          <p className="text-xs text-slate-500 line-clamp-2 mt-auto">{description}</p>
+          <p className="text-sm text-slate-500 line-clamp-2 mt-auto">{description}</p>
         </div>
       </article>
     </Link>

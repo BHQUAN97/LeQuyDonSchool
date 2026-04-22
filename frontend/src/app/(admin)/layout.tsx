@@ -1,5 +1,11 @@
 import { AuthProvider } from '@/contexts/AuthContext';
+import { Toaster } from 'sonner';
 
 export default function AdminGroupLayout({ children }: { children: React.ReactNode }) {
-  return <AuthProvider>{children}</AuthProvider>;
+  return (
+    <AuthProvider>
+      {children}
+      <Toaster position="top-right" richColors closeButton />
+    </AuthProvider>
+  );
 }

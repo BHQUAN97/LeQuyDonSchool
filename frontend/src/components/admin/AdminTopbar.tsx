@@ -91,7 +91,7 @@ export default function AdminTopbar({ onMenuClick }: Props) {
             <button className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
               <Avatar className="w-8 h-8">
                 <AvatarImage src={user?.avatar_url || undefined} />
-                <AvatarFallback className="bg-green-700 text-white text-xs">{initials}</AvatarFallback>
+                <AvatarFallback className="bg-green-700 text-white text-sm">{initials}</AvatarFallback>
               </Avatar>
               <span className="hidden sm:block text-sm text-slate-700 max-w-[120px] truncate">
                 {user?.full_name}
@@ -99,7 +99,7 @@ export default function AdminTopbar({ onMenuClick }: Props) {
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
-            <div className="px-2 py-1.5 text-xs text-slate-500">
+            <div className="px-2 py-1.5 text-sm text-slate-500">
               {user?.email}
             </div>
             <DropdownMenuSeparator />

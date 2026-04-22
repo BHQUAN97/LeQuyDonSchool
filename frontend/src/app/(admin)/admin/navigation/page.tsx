@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { toast } from 'sonner';
 import { api } from '@/lib/api';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import SortableList from '@/components/admin/SortableList';
 
 interface MenuNode {
   id: string;
@@ -181,6 +183,40 @@ export default function NavigationPage() {
     }
   };
 
+  /**
+   * Drag-drop reorder trong cung level.
+   * parentId = null → reorder root level.
+   * parentId = string → reorder children cua node do.
+   * Cap nhat displayOrder cho tung item trong level, PUT ca tree len server.
+   */
+  const handleReorder = async (parentId: string | null, newChildren: MenuNode[]) => {
+    setSaving(true);
+    const prev = menuTree;
+    try {
+      // Gan lai displayOrder theo index moi
+      const withOrder = newChildren.map((c, idx) => ({ ...c, displayOrder: idx * 10 }));
+      const cloneTree = JSON.parse(JSON.stringify(menuTree)) as MenuNode[];
+      replaceSiblings(cloneTree, parentId, withOrder);
+
+      // Optimistic UI
+      setMenuTree(cloneTree);
+
+      await api('/navigation/menu', {
+        method: 'PUT',
+        body: JSON.stringify({ items: cloneTree }),
+      });
+
+      toast.success('Đã cập nhật thứ tự');
+      fetchMenu();
+    } catch (err: any) {
+      console.error('Loi khi cap nhat thu tu menu:', err);
+      toast.error('Lỗi cập nhật thứ tự');
+      setMenuTree(prev);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   /** Toggle an/hien */
   const handleToggleVisible = async (node: MenuNode) => {
     setSaving(true);
@@ -305,25 +341,23 @@ export default function NavigationPage() {
         </div>
       )}
 
-      {/* Menu tree display */}
+      {/* Menu tree display — drag-drop trong cung level */}
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         {loading ? (
           <div className="p-8 text-center text-slate-500">Đang tải...</div>
         ) : menuTree.length === 0 ? (
           <div className="p-8 text-center text-slate-500">Chưa có mục menu nào</div>
         ) : (
-          <div className="divide-y divide-slate-100">
-            {menuTree.map((node) => (
-              <MenuRow
-                key={node.id}
-                node={node}
-                depth={0}
-                onEdit={handleEdit}
-                onDelete={(id, label) => setDeleteTarget({ id, label })}
-                onToggleVisible={handleToggleVisible}
-              />
-            ))}
-          </div>
+          <MenuLevel
+            nodes={menuTree}
+            parentId={null}
+            depth={0}
+            disabled={saving}
+            onReorder={handleReorder}
+            onEdit={handleEdit}
+            onDelete={(id, label) => setDeleteTarget({ id, label })}
+            onToggleVisible={handleToggleVisible}
+          />
         )}
       </div>
 
@@ -354,76 +388,97 @@ export default function NavigationPage() {
   );
 }
 
-// ─── MENU ROW (de quy render tree) ────────────────────────
+// ─── MENU LEVEL (SortableList cho cac anh em cung parent) ─────────────
 
-function MenuRow({
-  node,
-  depth,
-  onEdit,
-  onDelete,
-  onToggleVisible,
-}: {
-  node: MenuNode;
+interface MenuLevelProps {
+  nodes: MenuNode[];
+  parentId: string | null;
   depth: number;
+  disabled: boolean;
+  onReorder: (parentId: string | null, newChildren: MenuNode[]) => void;
   onEdit: (node: MenuNode) => void;
   onDelete: (id: string, label: string) => void;
   onToggleVisible: (node: MenuNode) => void;
-}) {
+}
+
+function MenuLevel({
+  nodes,
+  parentId,
+  depth,
+  disabled,
+  onReorder,
+  onEdit,
+  onDelete,
+  onToggleVisible,
+}: MenuLevelProps) {
   return (
-    <>
-      <div className={`flex items-center px-4 py-3 hover:bg-slate-50 ${!node.isVisible ? 'opacity-50' : ''}`}>
-        {/* Indent */}
-        <div style={{ width: depth * 24 }} className="flex-shrink-0" />
+    <SortableList
+      items={nodes}
+      getId={(n) => n.id}
+      onReorder={(newItems) => onReorder(parentId, newItems)}
+      disabled={disabled}
+      renderItem={(node, dragHandle) => (
+        <div>
+          <div className={`flex items-center px-4 py-3 hover:bg-slate-50 border-b border-slate-100 ${!node.isVisible ? 'opacity-50' : ''}`}>
+            {/* Indent */}
+            <div style={{ width: depth * 24 }} className="flex-shrink-0" />
 
-        {/* Arrow icon cho children */}
-        {depth > 0 && (
-          <span className="text-slate-300 mr-2 text-xs">└</span>
-        )}
+            {/* Drag handle */}
+            <div className="mr-2 flex-shrink-0">{dragHandle}</div>
 
-        {/* Label + URL */}
-        <div className="flex-1 min-w-0">
-          <div className="font-medium text-slate-900 text-sm">{node.label}</div>
-          <div className="text-xs text-slate-400 truncate">{node.url}</div>
+            {/* Arrow icon cho children */}
+            {depth > 0 && (
+              <span className="text-slate-300 mr-2 text-sm">└</span>
+            )}
+
+            {/* Label + URL */}
+            <div className="flex-1 min-w-0">
+              <div className="font-medium text-slate-900 text-sm">{node.label}</div>
+              <div className="text-sm text-slate-400 truncate">{node.url}</div>
+            </div>
+
+            {/* Target badge */}
+            {node.target === '_blank' && (
+              <span className="mx-2 px-1.5 py-0.5 rounded text-sm bg-slate-100 text-slate-500 whitespace-nowrap">_blank</span>
+            )}
+
+            {/* Visible toggle */}
+            <button
+              onClick={() => onToggleVisible(node)}
+              className={`mx-2 w-10 h-5 rounded-full transition-colors relative flex-shrink-0 ${
+                node.isVisible ? 'bg-green-500' : 'bg-slate-300'
+              }`}
+            >
+              <span
+                className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${
+                  node.isVisible ? 'translate-x-5' : 'translate-x-0.5'
+                }`}
+              />
+            </button>
+
+            {/* Actions */}
+            <div className="flex items-center gap-2 ml-2 flex-shrink-0">
+              <button onClick={() => onEdit(node)} className="text-sm text-blue-600 hover:text-blue-800 font-medium">Sửa</button>
+              <button onClick={() => onDelete(node.id, node.label)} className="text-sm text-red-600 hover:text-red-800 font-medium">Xóa</button>
+            </div>
+          </div>
+
+          {/* Children — recursive, moi level la 1 SortableList rieng */}
+          {node.children?.length ? (
+            <MenuLevel
+              nodes={node.children}
+              parentId={node.id}
+              depth={depth + 1}
+              disabled={disabled}
+              onReorder={onReorder}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onToggleVisible={onToggleVisible}
+            />
+          ) : null}
         </div>
-
-        {/* Target badge */}
-        {node.target === '_blank' && (
-          <span className="mx-2 px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-500 whitespace-nowrap">_blank</span>
-        )}
-
-        {/* Visible toggle */}
-        <button
-          onClick={() => onToggleVisible(node)}
-          className={`mx-2 w-10 h-5 rounded-full transition-colors relative flex-shrink-0 ${
-            node.isVisible ? 'bg-green-500' : 'bg-slate-300'
-          }`}
-        >
-          <span
-            className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${
-              node.isVisible ? 'translate-x-5' : 'translate-x-0.5'
-            }`}
-          />
-        </button>
-
-        {/* Actions */}
-        <div className="flex items-center gap-2 ml-2 flex-shrink-0">
-          <button onClick={() => onEdit(node)} className="text-sm text-blue-600 hover:text-blue-800 font-medium">Sửa</button>
-          <button onClick={() => onDelete(node.id, node.label)} className="text-sm text-red-600 hover:text-red-800 font-medium">Xóa</button>
-        </div>
-      </div>
-
-      {/* Children */}
-      {node.children?.map((child) => (
-        <MenuRow
-          key={child.id}
-          node={child}
-          depth={depth + 1}
-          onEdit={onEdit}
-          onDelete={onDelete}
-          onToggleVisible={onToggleVisible}
-        />
-      ))}
-    </>
+      )}
+    />
   );
 }
 
@@ -496,6 +551,32 @@ function toggleVisibleInTree(tree: MenuNode[], id: string): boolean {
     }
     if (node.children?.length) {
       if (toggleVisibleInTree(node.children, id)) return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Thay the toan bo danh sach anh em cua parent da cho.
+ * parentId = null → replace root level cua tree.
+ * Mutate tree tai cho; ham nay duoc goi tren clone nen an toan.
+ */
+function replaceSiblings(
+  tree: MenuNode[],
+  parentId: string | null,
+  newSiblings: MenuNode[],
+): boolean {
+  if (parentId === null) {
+    tree.splice(0, tree.length, ...newSiblings);
+    return true;
+  }
+  for (const node of tree) {
+    if (node.id === parentId) {
+      node.children = newSiblings;
+      return true;
+    }
+    if (node.children?.length) {
+      if (replaceSiblings(node.children, parentId, newSiblings)) return true;
     }
   }
   return false;

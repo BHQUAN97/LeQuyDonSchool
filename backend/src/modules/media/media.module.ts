@@ -7,6 +7,7 @@ import * as path from 'path';
 import { MediaController } from './media.controller';
 import { MediaService } from './media.service';
 import { R2Service } from './r2.service';
+import { ImageProcessorService } from './image-processor.service';
 import { Media } from './entities/media.entity';
 
 // Mime types cho phep upload (SVG removed — XSS risk)
@@ -71,7 +72,7 @@ const EXT_MIME_MAP: Record<string, string[]> = {
     }),
   ],
   controllers: [MediaController],
-  providers: [MediaService, R2Service],
-  exports: [MediaService],
+  providers: [MediaService, R2Service, ImageProcessorService],
+  exports: [MediaService, R2Service, ImageProcessorService],
 })
 export class MediaModule {}

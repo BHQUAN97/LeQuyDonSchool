@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { toast } from 'sonner';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import RichTextEditor from '@/components/admin/RichTextEditor';
+import RichTextEditor from '@/components/admin/RichTextEditorDynamic';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface Page {
@@ -125,13 +126,17 @@ export default function PagesAdminPage() {
       if (formData.slug) body.slug = formData.slug;
       if (editingId) {
         await api(`/pages/${editingId}`, { method: 'PUT', body: JSON.stringify(body) });
+        toast.success('Đã cập nhật trang');
       } else {
         await api('/pages', { method: 'POST', body: JSON.stringify(body) });
+        toast.success('Đã tạo trang');
       }
       setShowForm(false);
       fetchPages();
-    } catch (err: any) {
-      setPageError(err.message || 'Lỗi khi lưu');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Lỗi khi lưu';
+      setPageError(message);
+      toast.error(message);
     } finally {
       setSaving(false);
     }
@@ -142,11 +147,14 @@ export default function PagesAdminPage() {
     if (!deleteTarget) return;
     try {
       await api(`/pages/${deleteTarget.id}`, { method: 'DELETE' });
+      toast.success('Đã xóa trang');
       setDeleteTarget(null);
       fetchPages();
-    } catch (err: any) {
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Lỗi khi xóa';
       setDeleteTarget(null);
-      setPageError(err.message || 'Lỗi khi xóa');
+      setPageError(message);
+      toast.error(message);
     }
   };
 
@@ -194,7 +202,7 @@ export default function PagesAdminPage() {
                 onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                 placeholder="Tự động tạo từ tiêu đề, hoặc nhập tùy chỉnh (VD: tong-quan/tam-nhin)"
               />
-              <p className="text-xs text-slate-400 mt-1">Để trống để tự động tạo. Hỗ trợ nested: tong-quan/tam-nhin-su-menh</p>
+              <p className="text-sm text-slate-400 mt-1">Để trống để tự động tạo. Hỗ trợ nested: tong-quan/tam-nhin-su-menh</p>
             </div>
           </div>
 
@@ -212,7 +220,7 @@ export default function PagesAdminPage() {
               <label className="block text-sm font-medium text-slate-700 mb-1">Trạng thái</label>
               <select
                 value={formData.status}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
+                onChange={(e) => setFormData({ ...formData, status: e.target.value as 'draft' | 'published' | 'hidden' })}
                 className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="draft">Nháp</option>
@@ -275,9 +283,9 @@ export default function PagesAdminPage() {
                   return (
                     <tr key={p.id} className="border-b border-slate-100 hover:bg-slate-50">
                       <td className="px-4 py-3 font-medium text-slate-900">{p.title}</td>
-                      <td className="px-4 py-3 text-slate-500 font-mono text-xs">/{p.slug}</td>
+                      <td className="px-4 py-3 text-slate-500 font-mono text-sm">/{p.slug}</td>
                       <td className="px-4 py-3">
-                        <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${st.class}`}>
+                        <span className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${st.class}`}>
                           {st.text}
                         </span>
                       </td>

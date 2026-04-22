@@ -46,42 +46,152 @@ const pages = [
     slug: 'trang-chu',
     status: 'published',
     content: `
-      <div class="not-prose max-w-5xl mx-auto py-8">
-        <h1 class="text-4xl md:text-5xl font-extrabold text-blue-900 text-center mb-6">Hệ Thống Giáo Dục Lê Quý Đôn</h1>
-        <p class="text-lg md:text-xl text-slate-600 text-center max-w-3xl mx-auto mb-12">
-          Nơi ươm mầm tài năng, nuôi dưỡng tình yêu học tập và trang bị những kỹ năng thiết yếu cho công dân toàn cầu trong thế kỷ 21.
-        </p>
-        <div class="rounded-xl overflow-hidden shadow-2xl mb-12">
-          <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=1200" alt="LQD Campus" class="w-full h-auto object-cover" />
+      <div class="not-prose">
+        <!-- HERO BANNER — gradient do/hong theo mockup -->
+        <div class="relative overflow-hidden" style="background: linear-gradient(135deg, #D32F2F 0%, #E91E63 50%, #F06292 100%);">
+          <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 px-6 py-12 lg:py-16">
+            <div class="text-white flex flex-col justify-center">
+              <p class="text-sm uppercase tracking-widest text-red-200 mb-3">Hệ thống Trường liên cấp</p>
+              <h1 class="text-3xl lg:text-5xl font-extrabold leading-tight mb-4 m-0">Thông Báo Tuyển Sinh<br/>Năm Học 2026 - 2027</h1>
+              <p class="text-lg text-red-100 mb-6">Thông tin tuyển sinh năm học 2026 - 2027</p>
+              <a href="/tuyen-sinh" class="inline-block bg-white text-red-700 font-bold px-8 py-3 rounded-lg hover:bg-red-50 transition shadow-lg w-fit">Xem chi tiết</a>
+            </div>
+            <div class="flex items-center justify-center">
+              <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-white text-center border border-white/20">
+                <p class="text-sm uppercase tracking-wide text-yellow-300 font-semibold mb-2">Thông báo</p>
+                <p class="text-5xl lg:text-7xl font-black mb-1">2026 - 2027</p>
+                <p class="text-xl font-bold text-yellow-300">Đợt 2: 21/03/2026</p>
+              </div>
+            </div>
+          </div>
         </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          <div class="bg-blue-50 rounded-2xl text-center shadow-sm hover:shadow-md transition overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600" alt="Chuẩn Quốc Tế" class="w-full h-48 object-cover" />
-            <div class="p-8">
-              <h3 class="text-xl font-bold text-blue-800 mb-4">Chương Trình Chuẩn Quốc Tế</h3>
-              <p class="text-slate-600">Kết hợp giữa chương trình của Bộ GD&ĐT cùng khung năng lực Cambridge.</p>
+
+        <!-- TIN TUC — Moi cap nhat -->
+        <div class="max-w-6xl mx-auto px-6 py-12">
+          <div class="flex items-center justify-between mb-8">
+            <div>
+              <p class="text-sm font-bold text-red-600 uppercase tracking-wide mb-1 m-0">Tin tức 🇻🇳</p>
+              <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 m-0">Mới cập nhật</h2>
+            </div>
+            <a href="/tin-tuc" class="text-green-700 font-semibold hover:underline">Xem tất cả →</a>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition">
+              <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400" alt="Tin 1" class="w-full h-40 object-cover m-0" />
+              <div class="p-4">
+                <p class="text-xs text-slate-400 mb-2 m-0">15/03/2026</p>
+                <h3 class="text-base font-bold text-slate-800 m-0 leading-snug">Trường Tiểu học Lê Quý Đôn khai giảng đợt tuyển sinh</h3>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition">
+              <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=400" alt="Tin 2" class="w-full h-40 object-cover m-0" />
+              <div class="p-4">
+                <p class="text-xs text-slate-400 mb-2 m-0">10/03/2026</p>
+                <h3 class="text-base font-bold text-slate-800 m-0 leading-snug">Lễ khai mạc Hội khỏe 5 điểm — Năm học 2025-2026</h3>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition">
+              <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=400" alt="Tin 3" class="w-full h-40 object-cover m-0" />
+              <div class="p-4">
+                <p class="text-xs text-slate-400 mb-2 m-0">05/03/2026</p>
+                <h3 class="text-base font-bold text-slate-800 m-0 leading-snug">Tham quan Trang 11 Dreams — Hành trình ngoại khóa đầy ý nghĩa</h3>
+              </div>
+            </div>
+            <div class="bg-red-50 rounded-xl border-2 border-red-200 overflow-hidden flex flex-col items-center justify-center p-6 text-center">
+              <p class="text-6xl font-black text-red-600 m-0">3</p>
+              <p class="text-xl font-bold text-red-700 m-0">SẴN SÀNG</p>
+              <p class="text-sm text-red-500 mt-1 m-0">cùng con yêu</p>
+              <div class="mt-4 text-left w-full">
+                <p class="text-xs text-slate-500 m-0">Hội nhập 3 SẴN SÀNG cùng 1 năm đầu tiên</p>
+                <p class="text-xs text-slate-500 m-0">tại Lê Quý Đôn</p>
+              </div>
             </div>
           </div>
-          <div class="bg-blue-50 rounded-2xl text-center shadow-sm hover:shadow-md transition overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600" alt="Cơ Sở Vật Chất" class="w-full h-48 object-cover" />
-            <div class="p-8">
-              <h3 class="text-xl font-bold text-blue-800 mb-4">Cơ Sở Vật Chất Hiện Đại</h3>
-              <p class="text-slate-600">Khuôn viên 6000m² với phòng Lab STEM, thư viện số và không gian mở.</p>
+        </div>
+
+        <!-- CHI CO TAI — Features section (nen xanh la theo mockup) -->
+        <div style="background: #2E7D32;" class="text-white">
+          <div class="max-w-6xl mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              <!-- Ben trai: feature cards -->
+              <div>
+                <p class="text-sm font-bold uppercase tracking-wide text-green-200 mb-1 m-0">Chỉ có tại 🇻🇳</p>
+                <h2 class="text-2xl lg:text-3xl font-bold text-white mb-8 m-0">Trường Tiểu học Lê Quý Đôn</h2>
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/20 hover:bg-white/20 transition">
+                    <div class="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center mb-3 text-xl">🎓</div>
+                    <p class="font-semibold text-sm m-0">Hệ thống giáo dục từ Mầm non đến THPT</p>
+                  </div>
+                  <div class="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/20 hover:bg-white/20 transition">
+                    <div class="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center mb-3 text-xl">⭐</div>
+                    <p class="font-semibold text-sm m-0">Nhân sự đặc sắc</p>
+                  </div>
+                  <div class="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/20 hover:bg-white/20 transition">
+                    <div class="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center mb-3 text-xl">🏆</div>
+                    <p class="font-semibold text-sm m-0">Tiên phong & ảnh hưởng</p>
+                  </div>
+                  <div class="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/20 hover:bg-white/20 transition">
+                    <div class="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center mb-3 text-xl">🌏</div>
+                    <p class="font-semibold text-sm m-0">Hợp tác toàn diện cùng PLC Sydney</p>
+                  </div>
+                  <div class="bg-yellow-600/40 backdrop-blur-sm rounded-xl p-5 border border-yellow-400/30 col-span-2 hover:bg-yellow-600/50 transition">
+                    <div class="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center mb-3 text-xl">🏫</div>
+                    <p class="font-semibold text-sm m-0">Khuôn viên 6000m² tại tọa độ lý tưởng</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Ben phai: mo ta chi tiet -->
+              <div class="flex flex-col justify-center">
+                <div class="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mb-6 text-3xl">🎓</div>
+                <h3 class="text-xl lg:text-2xl font-bold mb-4 m-0">Hệ thống giáo dục từ Mầm non đến THPT</h3>
+                <p class="text-green-100 leading-relaxed mb-6 m-0">
+                  Hệ thống Giáo dục Lê Quý Đôn cung cấp lộ trình học liên thông từ Mầm non, Tiểu học đến THCS và THPT với ba cơ sở riêng biệt tại quận Nam Từ Liêm, Hà Nội. Các trường trong hệ thống đều được đầu tư bài bản về cơ sở vật chất, chương trình đào tạo hiện đại và đội ngũ giáo viên chất lượng cao.
+                </p>
+                <a href="/tong-quan" class="inline-block border-2 border-white text-white font-bold px-6 py-3 rounded-lg hover:bg-white hover:text-green-800 transition w-fit">Xem chi tiết</a>
+              </div>
             </div>
           </div>
-          <div class="bg-blue-50 rounded-2xl text-center shadow-sm hover:shadow-md transition overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600" alt="Phát Triển Toàn Diện" class="w-full h-48 object-cover" />
-            <div class="p-8">
-              <h3 class="text-xl font-bold text-blue-800 mb-4">Phát Triển Toàn Diện</h3>
-              <p class="text-slate-600">Chú trọng ngoại ngữ, kỹ năng mềm, thể chất và tư duy thực tiễn.</p>
+        </div>
+
+        <!-- NAM HOC BANNER — so lon noi bat -->
+        <div style="background: linear-gradient(90deg, #2E7D32 0%, #1B5E20 100%);" class="py-8">
+          <div class="max-w-6xl mx-auto px-6 text-center">
+            <p class="text-8xl lg:text-9xl font-black text-white/20 tracking-wider m-0">2025-2026</p>
+          </div>
+        </div>
+
+        <!-- TU CONG DONG — Testimonials (nen do theo mockup) -->
+        <div style="background: #D32F2F;" class="text-white">
+          <div class="max-w-6xl mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              <!-- Ben trai: hinh anh -->
+              <div class="flex items-center justify-center">
+                <div class="rounded-2xl overflow-hidden shadow-2xl">
+                  <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=600" alt="Gia dinh" class="w-full h-auto object-cover m-0" />
+                </div>
+              </div>
+
+              <!-- Ben phai: noi dung cam nhan -->
+              <div class="flex flex-col justify-center">
+                <p class="text-6xl font-serif text-red-300 mb-4 m-0">"</p>
+                <p class="text-sm font-bold uppercase tracking-wide text-red-200 mb-1 m-0">Từ cộng đồng 🇻🇳</p>
+                <h2 class="text-2xl lg:text-3xl font-bold text-white mb-6 m-0">Lê Quý Đôn</h2>
+                <div class="bg-white/10 rounded-xl p-6 border border-white/20 mb-6">
+                  <p class="font-bold text-lg mb-1 m-0">Anh Hoàng Hữu Thắng</p>
+                  <p class="text-xs text-red-200 mb-4 m-0">Chủ tịch HĐQT Intech Group | Phó Chủ tịch CLB Doanh nhân Việt Nam</p>
+                  <p class="text-red-100 leading-relaxed m-0">
+                    "Tôi nhận thấy con mình sau khi vào trường đã thay đổi rõ rệt. Không chỉ về kiến thức mà còn là kỹ năng sống, tính tự lập và đặc biệt là tình yêu thương. Trường Tiểu học Lê Quý Đôn thực sự là ngôi nhà thứ hai ấm áp và đáng tin cậy."
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     `,
     seoTitle: 'Trang chủ | Hệ Thống Giáo Dục Lê Quý Đôn',
-    seoDescription: 'Nơi ươm mầm tài năng công dân toàn cầu thế kỷ 21.',
+    seoDescription: 'Hệ thống Trường liên cấp Lê Quý Đôn — Nơi ươm mầm tài năng công dân toàn cầu thế kỷ 21.',
   },
   {
     title: 'Tầm nhìn và Sứ mệnh',

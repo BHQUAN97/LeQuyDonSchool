@@ -198,5 +198,96 @@ describe('AuthService', () => {
       expect(options.path).toBe('/');
       expect(options.sameSite).toBe('lax');
     });
+
+    it('should use sameSite="strict" and secure=true in production', () => {
+      // Re-config mock: NODE_ENV=production
+      deps.configService.get.mockImplementation((key: string, defaultValue?: any) => {
+        if (key === 'app.nodeEnv') return 'production';
+        return defaultValue;
+      });
+
+      const options = service.getRefreshCookieOptions();
+      expect(options.sameSite).toBe('strict');
+      expect(options.secure).toBe(true);
+      expect(options.httpOnly).toBe(true);
+    });
+
+    it('should use sameSite="lax" and secure=false in dev/test', () => {
+      deps.configService.get.mockImplementation((key: string, defaultValue?: any) => {
+        if (key === 'app.nodeEnv') return 'development';
+        return defaultValue;
+      });
+
+      const options = service.getRefreshCookieOptions();
+      expect(options.sameSite).toBe('lax');
+      expect(options.secure).toBe(false);
+    });
+  });
+
+  describe('refresh() — rotation', () => {
+    const validPayload = { sub: 'user-1', type: 'refresh' };
+
+    it('should invalidate old refresh token after successful rotation', async () => {
+      deps.jwtService.verify.mockReturnValue(validPayload);
+
+      const storedToken = {
+        id: 'rt-old',
+        user_id: 'user-1',
+        token_hash: 'old-hash',
+      };
+      deps.refreshRepo.find.mockResolvedValue([storedToken]);
+      // Token cu khop
+      bcrypt.compare.mockResolvedValue(true);
+      deps.userRepo.findOne.mockResolvedValue({
+        id: 'user-1',
+        email: 'admin@test.com',
+        role: 'admin',
+        status: 'active',
+      });
+
+      const result = await service.refresh('old-refresh-token', '127.0.0.1', 'UA');
+
+      // Token cu phai bi xoa khoi DB (rotation)
+      expect(deps.refreshRepo.delete).toHaveBeenCalledWith('rt-old');
+      // Token moi duoc tao
+      expect(result.accessToken).toBeDefined();
+      expect(result.refreshToken).toBeDefined();
+      // Co ghi token moi vao DB
+      expect(deps.refreshRepo.save).toHaveBeenCalled();
+    });
+
+    it('should detect token theft — delete ALL tokens if refresh does not match any stored', async () => {
+      deps.jwtService.verify.mockReturnValue(validPayload);
+      deps.refreshRepo.find.mockResolvedValue([
+        { id: 'rt-a', user_id: 'user-1', token_hash: 'hash-a' },
+        { id: 'rt-b', user_id: 'user-1', token_hash: 'hash-b' },
+      ]);
+      // Khong co token nao match
+      bcrypt.compare.mockResolvedValue(false);
+
+      await expect(service.refresh('stolen-token', '127.0.0.1', 'UA')).rejects.toThrow(
+        UnauthorizedException,
+      );
+      // Xoa het tokens cua user — theft detection
+      expect(deps.refreshRepo.delete).toHaveBeenCalledWith({ user_id: 'user-1' });
+    });
+
+    it('should throw UnauthorizedException when refresh token is invalid/expired', async () => {
+      deps.jwtService.verify.mockImplementation(() => {
+        throw new Error('jwt expired');
+      });
+
+      await expect(service.refresh('bad-token', '127.0.0.1', 'UA')).rejects.toThrow(
+        UnauthorizedException,
+      );
+    });
+
+    it('should throw UnauthorizedException when token type is not refresh', async () => {
+      deps.jwtService.verify.mockReturnValue({ sub: 'user-1', type: 'access' });
+
+      await expect(service.refresh('access-token', '127.0.0.1', 'UA')).rejects.toThrow(
+        UnauthorizedException,
+      );
+    });
   });
 });

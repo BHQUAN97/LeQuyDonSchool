@@ -35,7 +35,7 @@ export default function ThemeEditor({ theme, onChange }: Props) {
 
         {/* Preview swatch */}
         <div className="mt-4 flex items-center gap-3">
-          <span className="text-xs text-slate-500">Xem trước:</span>
+          <span className="text-sm text-slate-500">Xem trước:</span>
           <div
             className="w-8 h-8 rounded-md border border-slate-200"
             style={{ backgroundColor: theme.primaryColor }}
@@ -86,7 +86,7 @@ export default function ThemeEditor({ theme, onChange }: Props) {
         )}
 
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">URL Logo</label>
+          <label className="block text-sm font-medium text-slate-600 mb-1">URL Logo</label>
           <input
             type="text"
             value={theme.logoUrl || ''}
@@ -135,7 +135,7 @@ function ColorField({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-slate-600 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-slate-600 mb-1">{label}</label>
       <div className="flex items-center gap-2">
         <input
           type="color"
@@ -169,7 +169,7 @@ function SelectField({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-slate-600 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-slate-600 mb-1">{label}</label>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}

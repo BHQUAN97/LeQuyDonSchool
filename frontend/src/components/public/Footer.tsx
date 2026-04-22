@@ -14,7 +14,7 @@ export default function Footer() {
                 <span className="text-red-600 font-bold text-sm">LQĐ</span>
               </div>
               <div>
-                <p className="text-[11px] uppercase opacity-80 tracking-wide leading-tight">
+                <p className="text-sm uppercase opacity-80 tracking-wide leading-tight">
                   Hệ thống Trường liên cấp Lê Quý Đôn
                 </p>
                 <p className="font-bold text-base leading-tight">Trường Tiểu học Lê Quý Đôn</p>
@@ -123,7 +123,7 @@ export default function Footer() {
       </div>
 
       {/* Copyright bar */}
-      <div className="bg-[#145524] text-white/70 text-center text-xs py-3 px-4">
+      <div className="bg-[#145524] text-white/70 text-center text-sm py-3 px-4">
         © {new Date().getFullYear()} Trường Tiểu học Lê Quý Đôn. Tất cả quyền được bảo lưu.
       </div>
     </footer>

@@ -127,7 +127,7 @@ export default function DashboardPage() {
         <div className="bg-white rounded-xl border border-slate-200 p-5">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-medium text-slate-700">Liên hệ mới nhất</h3>
-            <Link href="/admin/contacts" className="text-xs text-green-700 hover:underline">
+            <Link href="/admin/contacts" className="text-sm text-green-700 hover:underline">
               Xem tất cả
             </Link>
           </div>
@@ -150,9 +150,9 @@ export default function DashboardPage() {
                 <div key={c.id} className="flex items-start justify-between text-sm">
                   <div className="min-w-0">
                     <p className="font-medium text-slate-900 truncate">{c.full_name}</p>
-                    <p className="text-slate-500 text-xs truncate">{c.email}</p>
+                    <p className="text-slate-500 text-sm truncate">{c.email}</p>
                   </div>
-                  <span className="text-xs text-slate-400 whitespace-nowrap ml-2">
+                  <span className="text-sm text-slate-400 whitespace-nowrap ml-2">
                     {new Date(c.created_at).toLocaleDateString('vi-VN')}
                   </span>
                 </div>
@@ -167,7 +167,7 @@ export default function DashboardPage() {
         <div className="bg-white rounded-xl border border-slate-200 p-5">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-medium text-slate-700">Bài viết mới nhất</h3>
-            <Link href="/admin/articles" className="text-xs text-green-700 hover:underline">
+            <Link href="/admin/articles" className="text-sm text-green-700 hover:underline">
               Xem tất cả
             </Link>
           </div>
@@ -187,13 +187,13 @@ export default function DashboardPage() {
                 <div key={a.id} className="flex items-center justify-between text-sm">
                   <div className="min-w-0 flex-1">
                     <p className="font-medium text-slate-900 truncate">{a.title}</p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-sm text-slate-400">
                       {a.status === 'published' ? 'Đã đăng' : a.status === 'draft' ? 'Nháp' : 'Ẩn'}
                       {' · '}
                       {a.view_count} lượt xem
                     </p>
                   </div>
-                  <span className="text-xs text-slate-400 whitespace-nowrap ml-2">
+                  <span className="text-sm text-slate-400 whitespace-nowrap ml-2">
                     {new Date(a.created_at).toLocaleDateString('vi-VN')}
                   </span>
                 </div>
@@ -206,7 +206,7 @@ export default function DashboardPage() {
         <div className="bg-white rounded-xl border border-slate-200 p-5">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-medium text-slate-700">Đăng ký tuyển sinh mới</h3>
-            <Link href="/admin/admissions" className="text-xs text-green-700 hover:underline">
+            <Link href="/admin/admissions" className="text-sm text-green-700 hover:underline">
               Xem tất cả
             </Link>
           </div>
@@ -229,9 +229,9 @@ export default function DashboardPage() {
                 <div key={r.id} className="flex items-center justify-between text-sm">
                   <div className="min-w-0">
                     <p className="font-medium text-slate-900 truncate">{r.full_name}</p>
-                    <p className="text-xs text-slate-400">Lớp {r.grade} · {r.phone}</p>
+                    <p className="text-sm text-slate-400">Lớp {r.grade} · {r.phone}</p>
                   </div>
-                  <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ${
+                  <span className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium whitespace-nowrap ${
                     r.status === 'new' ? 'bg-blue-100 text-blue-800' :
                     r.status === 'contacted' ? 'bg-yellow-100 text-yellow-800' :
                     'bg-green-100 text-green-800'

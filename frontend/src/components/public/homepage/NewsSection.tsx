@@ -108,7 +108,7 @@ function NewsFeaturedGrid({ articles = [] }: { articles: ArticleItem[] }) {
                   <div className="text-center p-6">
                     <p className="text-4xl mb-2">&#128240;</p>
                     <p className="text-sm font-bold text-green-800 uppercase">Thu ngo</p>
-                    <p className="text-xs text-red-600 mt-1">
+                    <p className="text-sm text-red-600 mt-1">
                       V/v dam bao an toan thuc pham tai Nha truong
                     </p>
                   </div>
@@ -136,7 +136,7 @@ function NewsFeaturedGrid({ articles = [] }: { articles: ArticleItem[] }) {
             </div>
             <div className="p-6 lg:p-8 flex flex-col justify-between h-full relative z-10">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-green-200 mb-3">
+                <p className="text-sm font-semibold uppercase tracking-wider text-green-200 mb-3">
                   Chao don 20 nam thanh lap
                 </p>
                 <h3 className="text-lg lg:text-xl font-bold mb-3 leading-snug">
@@ -151,14 +151,14 @@ function NewsFeaturedGrid({ articles = [] }: { articles: ArticleItem[] }) {
                     <p className="text-sm font-bold text-yellow-300 uppercase tracking-wider">
                       to Blooming
                     </p>
-                    <p className="text-[10px] text-white/60 mt-2 italic">
+                    <p className="text-sm text-white/60 mt-2 italic">
                       Dung xay ngan hoa
                     </p>
                   </div>
                 </div>
               </div>
               <div>
-                <p className="text-xs text-white/70 mb-1">
+                <p className="text-sm text-white/70 mb-1">
                   &#128197; 04/08/2025 08:00 &nbsp;&bull;&nbsp; Truong Tieu hoc Le Quy Don
                 </p>
                 <p className="text-sm text-white/90 leading-relaxed">
@@ -293,10 +293,10 @@ function NewsList({ articles = [] }: { articles: ArticleItem[] }) {
                 {/* Noi dung ben phai */}
                 <div className="sm:col-span-2 p-5 flex flex-col justify-center">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xs font-medium text-[var(--hp-primary,#15803d)] bg-green-50 px-2 py-0.5 rounded">
+                    <span className="text-sm font-medium text-[var(--hp-primary,#15803d)] bg-green-50 px-2 py-0.5 rounded">
                       {category}
                     </span>
-                    <span className="text-xs text-gray-400">{date}</span>
+                    <span className="text-sm text-gray-400">{date}</span>
                   </div>
                   <h3 className="text-base font-bold text-gray-900 mb-2 group-hover:text-[var(--hp-primary,#15803d)] transition-colors leading-snug line-clamp-2">
                     {title}

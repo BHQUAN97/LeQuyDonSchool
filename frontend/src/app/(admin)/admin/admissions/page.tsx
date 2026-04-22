@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { toast } from 'sonner';
 import { api } from '@/lib/api';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
 import ImagePicker from '@/components/admin/ImagePicker';
+import SortableList from '@/components/admin/SortableList';
 
 // ─── TYPES ─────────────────────────────────────────────────
 
@@ -178,8 +180,10 @@ function PostsTab() {
       });
       setEditingId(id);
       setShowForm(true);
-    } catch (err: any) {
-      setPostError(err.message || 'Lỗi khi tải bài đăng');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Lỗi khi tải bài đăng';
+      setPostError(message);
+      toast.error(message);
     }
   };
 
@@ -190,7 +194,7 @@ function PostsTab() {
     }
     setSaving(true);
     try {
-      const body: any = {
+      const body: Record<string, string> = {
         title: form.title,
         content: form.content,
         status: form.status,
@@ -200,13 +204,17 @@ function PostsTab() {
 
       if (editingId) {
         await api(`/admissions/posts/${editingId}`, { method: 'PUT', body: JSON.stringify(body) });
+        toast.success('Đã cập nhật bài đăng');
       } else {
         await api('/admissions/posts', { method: 'POST', body: JSON.stringify(body) });
+        toast.success('Đã tạo bài đăng');
       }
       setShowForm(false);
       fetchPosts();
-    } catch (err: any) {
-      setPostError(err.message || 'Không thể lưu bài đăng');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Không thể lưu bài đăng';
+      setPostError(message);
+      toast.error(message);
     } finally {
       setSaving(false);
     }
@@ -216,11 +224,14 @@ function PostsTab() {
     if (!deleteTarget) return;
     try {
       await api(`/admissions/posts/${deleteTarget.id}`, { method: 'DELETE' });
+      toast.success('Đã xóa bài đăng');
       setDeleteTarget(null);
       fetchPosts();
-    } catch (err: any) {
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Không thể xóa bài đăng';
       setDeleteTarget(null);
-      setPostError(err.message || 'Không thể xóa bài đăng');
+      setPostError(message);
+      toast.error(message);
     }
   };
 
@@ -287,7 +298,7 @@ function PostsTab() {
                 <label className="block text-sm font-medium text-slate-700 mb-1">Trạng thái</label>
                 <select
                   value={form.status}
-                  onChange={(e) => setForm({ ...form, status: e.target.value as any })}
+                  onChange={(e) => setForm({ ...form, status: e.target.value as 'draft' | 'published' })}
                   className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
                 >
                   <option value="draft">Nháp</option>
@@ -327,10 +338,10 @@ function PostsTab() {
                   <tr key={post.id} className="border-b border-slate-100 hover:bg-slate-50">
                     <td className="px-4 py-3">
                       <div className="font-medium text-slate-900 line-clamp-1">{post.title}</div>
-                      <div className="text-xs text-slate-400 mt-0.5">/{post.slug}</div>
+                      <div className="text-sm text-slate-400 mt-0.5">/{post.slug}</div>
                     </td>
                     <td className="px-4 py-3">
-                      <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${POST_STATUS_BADGE[post.status]?.className || ''}`}>
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${POST_STATUS_BADGE[post.status]?.className || ''}`}>
                         {POST_STATUS_BADGE[post.status]?.label || post.status}
                       </span>
                     </td>
@@ -404,6 +415,9 @@ function FaqTab() {
   const [form, setForm] = useState(EMPTY_FAQ_FORM);
   const [saving, setSaving] = useState(false);
 
+  // Reorder state
+  const [reordering, setReordering] = useState(false);
+
   const fetchFaqs = useCallback(async () => {
     setLoading(true);
     try {
@@ -451,13 +465,17 @@ function FaqTab() {
 
       if (editingId) {
         await api(`/admissions/faq/${editingId}`, { method: 'PUT', body: JSON.stringify(body) });
+        toast.success('Đã cập nhật Q&A');
       } else {
         await api('/admissions/faq', { method: 'POST', body: JSON.stringify(body) });
+        toast.success('Đã tạo Q&A');
       }
       setShowForm(false);
       fetchFaqs();
-    } catch (err: any) {
-      setFaqError(err.message || 'Không thể lưu FAQ');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Không thể lưu FAQ';
+      setFaqError(message);
+      toast.error(message);
     } finally {
       setSaving(false);
     }
@@ -467,11 +485,48 @@ function FaqTab() {
     if (!deleteFaqId) return;
     try {
       await api(`/admissions/faq/${deleteFaqId}`, { method: 'DELETE' });
+      toast.success('Đã xóa Q&A');
       setDeleteFaqId(null);
       fetchFaqs();
-    } catch (err: any) {
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Không thể xóa FAQ';
       setDeleteFaqId(null);
-      setFaqError(err.message || 'Không thể xóa FAQ');
+      setFaqError(message);
+      toast.error(message);
+    }
+  };
+
+  /** Drag-drop reorder — cap nhat thu tu Q&A, PATCH tung item bi thay doi */
+  const handleReorder = async (newItems: Faq[]) => {
+    const prev = faqs;
+    setFaqs(newItems);
+    setReordering(true);
+    try {
+      const updates: Array<{ id: string; displayOrder: number }> = [];
+      newItems.forEach((item, idx) => {
+        const newOrder = idx * 10;
+        if (item.display_order !== newOrder) {
+          updates.push({ id: item.id, displayOrder: newOrder });
+        }
+      });
+
+      await Promise.all(
+        updates.map((u) =>
+          api(`/admissions/faq/${u.id}`, {
+            method: 'PUT',
+            body: JSON.stringify({ displayOrder: u.displayOrder }),
+          }),
+        ),
+      );
+
+      toast.success('Đã cập nhật thứ tự');
+      fetchFaqs();
+    } catch (err) {
+      console.error('Loi khi cap nhat thu tu FAQ:', err);
+      toast.error('Lỗi cập nhật thứ tự');
+      setFaqs(prev);
+    } finally {
+      setReordering(false);
     }
   };
 
@@ -483,8 +538,10 @@ function FaqTab() {
         body: JSON.stringify({ isVisible: !faq.is_visible }),
       });
       fetchFaqs();
-    } catch (err: any) {
-      setFaqError(err.message || 'Không thể cập nhật');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Không thể cập nhật';
+      setFaqError(message);
+      toast.error(message);
     }
   };
 
@@ -559,7 +616,7 @@ function FaqTab() {
         </div>
       )}
 
-      {/* FAQ list */}
+      {/* FAQ list — drag-drop de sap xep thu tu */}
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         {loading ? (
           <div className="p-8 text-center text-slate-500">Đang tải...</div>
@@ -567,32 +624,34 @@ function FaqTab() {
           <div className="p-8 text-center text-slate-500">Chưa có câu hỏi nào</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[600px] text-sm">
-              <thead className="sticky top-0 z-10">
-                <tr className="border-b border-slate-200 bg-slate-50">
-                  <th className="px-4 py-3 text-left font-medium text-slate-600">Câu hỏi</th>
-                  <th className="px-4 py-3 text-left font-medium text-slate-600">Trả lời</th>
-                  <th className="px-4 py-3 text-center font-medium text-slate-600 w-20">Thứ tự</th>
-                  <th className="px-4 py-3 text-center font-medium text-slate-600 w-24">Hiển thị</th>
-                  <th className="px-4 py-3 text-right font-medium text-slate-600">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody>
-                {faqs.map((faq) => (
-                  <tr key={faq.id} className="border-b border-slate-100 hover:bg-slate-50">
-                    <td className="px-4 py-3 font-medium text-slate-900 max-w-xs">
-                      <div className="line-clamp-2">{faq.question}</div>
-                    </td>
-                    <td className="px-4 py-3 text-slate-600 max-w-sm">
-                      <div className="line-clamp-2">{faq.answer}</div>
-                    </td>
-                    <td className="px-4 py-3 text-center text-slate-600">{faq.display_order}</td>
-                    <td className="px-4 py-3 text-center">
+            <div className="min-w-[600px] text-sm">
+              {/* Header */}
+              <div className="grid grid-cols-[32px_minmax(0,2fr)_minmax(0,2fr)_70px_80px_100px] items-center gap-2 border-b border-slate-200 bg-slate-50 px-4 py-3 font-medium text-slate-600">
+                <span className="sr-only">Kéo</span>
+                <span>Câu hỏi</span>
+                <span>Trả lời</span>
+                <span className="text-center">Thứ tự</span>
+                <span className="text-center">Hiển thị</span>
+                <span className="text-right">Thao tác</span>
+              </div>
+              <SortableList
+                items={faqs}
+                getId={(f) => f.id}
+                onReorder={handleReorder}
+                disabled={reordering}
+                renderItem={(faq, dragHandle) => (
+                  <div className="grid grid-cols-[32px_minmax(0,2fr)_minmax(0,2fr)_70px_80px_100px] items-center gap-2 border-b border-slate-100 bg-white px-4 py-3 hover:bg-slate-50">
+                    <div className="flex items-center">{dragHandle}</div>
+                    <div className="font-medium text-slate-900 line-clamp-2">{faq.question}</div>
+                    <div className="text-slate-600 line-clamp-2">{faq.answer}</div>
+                    <div className="text-center text-slate-600">{faq.display_order}</div>
+                    <div className="text-center">
                       <button
                         onClick={() => handleToggleVisible(faq)}
                         className={`inline-block w-10 h-5 rounded-full transition-colors relative ${
                           faq.is_visible ? 'bg-green-500' : 'bg-slate-300'
                         }`}
+                        aria-label={faq.is_visible ? 'Đang hiển thị' : 'Đang ẩn'}
                       >
                         <span
                           className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${
@@ -600,17 +659,15 @@ function FaqTab() {
                           }`}
                         />
                       </button>
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <button onClick={() => handleEdit(faq)} className="text-sm text-blue-600 hover:text-blue-800 font-medium">Sửa</button>
-                        <button onClick={() => setDeleteFaqId(faq.id)} className="text-sm text-red-600 hover:text-red-800 font-medium">Xóa</button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    </div>
+                    <div className="flex items-center justify-end gap-2">
+                      <button onClick={() => handleEdit(faq)} className="text-sm text-blue-600 hover:text-blue-800 font-medium">Sửa</button>
+                      <button onClick={() => setDeleteFaqId(faq.id)} className="text-sm text-red-600 hover:text-red-800 font-medium">Xóa</button>
+                    </div>
+                  </div>
+                )}
+              />
+            </div>
           </div>
         )}
       </div>
@@ -692,9 +749,12 @@ function RegistrationsTab() {
         method: 'PUT',
         body: JSON.stringify({ status: newStatus }),
       });
+      toast.success('Đã cập nhật trạng thái');
       fetchRegistrations();
-    } catch (err: any) {
-      setRegError(err.message || 'Không thể cập nhật trạng thái');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Không thể cập nhật trạng thái';
+      setRegError(message);
+      toast.error(message);
     }
   };
 
@@ -747,7 +807,7 @@ function RegistrationsTab() {
                     <td className="px-4 py-3 font-medium text-slate-900">
                       {reg.full_name}
                       {reg.is_club_member && (
-                        <span className="ml-1 text-xs text-orange-600 font-normal">(CLB)</span>
+                        <span className="ml-1 text-sm text-orange-600 font-normal">(CLB)</span>
                       )}
                     </td>
                     <td className="px-4 py-3 text-slate-600">{reg.grade}</td>
@@ -757,7 +817,7 @@ function RegistrationsTab() {
                       {new Date(reg.created_at).toLocaleDateString('vi-VN')}
                     </td>
                     <td className="px-4 py-3">
-                      <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${REG_STATUS_BADGE[reg.status]?.className || ''}`}>
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${REG_STATUS_BADGE[reg.status]?.className || ''}`}>
                         {REG_STATUS_BADGE[reg.status]?.label || reg.status}
                       </span>
                     </td>
@@ -765,7 +825,7 @@ function RegistrationsTab() {
                       <select
                         value={reg.status}
                         onChange={(e) => handleUpdateStatus(reg.id, e.target.value)}
-                        className="rounded border border-slate-300 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-green-600"
+                        className="rounded border border-slate-300 px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-green-600"
                       >
                         <option value="new">Mới</option>
                         <option value="contacted">Đã liên hệ</option>

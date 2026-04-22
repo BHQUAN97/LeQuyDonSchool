@@ -1,10 +1,12 @@
-import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, ForbiddenException, Logger } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import { UserRole } from '@/modules/users/entities/user.entity';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
+  private readonly logger = new Logger(RolesGuard.name);
+
   constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
@@ -13,8 +15,13 @@ export class RolesGuard implements CanActivate {
       context.getClass(),
     ]);
 
-    // Khong co @Roles() → cho phep tat ca authenticated users
-    if (!requiredRoles || requiredRoles.length === 0) return true;
+    const handlerName = `${context.getClass().name}.${context.getHandler().name}`;
+
+    // Default deny: route co attach RolesGuard nhung thieu @Roles() → chan
+    if (!requiredRoles || requiredRoles.length === 0) {
+      this.logger.warn(`RolesGuard invoked without @Roles() metadata on ${handlerName} — denying`);
+      throw new ForbiddenException('Không có quyền truy cập');
+    }
 
     const { user } = context.switchToHttp().getRequest();
     if (!user?.role) throw new ForbiddenException('Không có quyền truy cập');

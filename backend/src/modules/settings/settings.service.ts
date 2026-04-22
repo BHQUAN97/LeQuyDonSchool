@@ -1,5 +1,7 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Inject, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import type { Cache } from 'cache-manager';
 import { Repository } from 'typeorm';
 import * as crypto from 'crypto';
 import { Setting, SettingGroup } from './entities/setting.entity';
@@ -7,10 +9,17 @@ import { generateUlid } from '@/common/utils/ulid';
 import { HomepageConfig, DEFAULT_HOMEPAGE_CONFIG, VALID_BLOCK_VARIANTS } from './homepage-config';
 import { UpdateHomepageConfigDto } from './dto/homepage-config.dto';
 
+/** Cache key cho public settings — TTL 1h */
+const CACHE_KEY_PUBLIC_SETTINGS = 'settings:public';
+const CACHE_TTL_PUBLIC_SETTINGS = 3600_000; // 1h in ms
+
 @Injectable()
 export class SettingsService {
+  private readonly logger = new Logger(SettingsService.name);
+
   constructor(
     @InjectRepository(Setting) private readonly settingRepo: Repository<Setting>,
+    @Inject(CACHE_MANAGER) private readonly cache: Cache,
   ) {}
 
   /**
@@ -44,7 +53,9 @@ export class SettingsService {
     if (setting) {
       setting.value = value;
       setting.group = group;
-      return this.settingRepo.save(setting);
+      const saved = await this.settingRepo.save(setting);
+      await this.invalidatePublicSettingsCache();
+      return saved;
     }
 
     setting = this.settingRepo.create({
@@ -53,7 +64,9 @@ export class SettingsService {
       value,
       group,
     });
-    return this.settingRepo.save(setting);
+    const created = await this.settingRepo.save(setting);
+    await this.invalidatePublicSettingsCache();
+    return created;
   }
 
   /**
@@ -65,14 +78,25 @@ export class SettingsService {
       const setting = await this.upsert(item.key, item.value, item.group);
       results.push(setting);
     }
+    // invalidate them 1 lan cuoi de chac chan (upsert da goi roi, day la safety net)
+    await this.invalidatePublicSettingsCache();
     return results;
   }
 
   /**
    * Lay cac settings public — hien thi tren trang cong khai.
    * Chi tra ve cac key can thiet: ten truong, thong tin lien he, mang xa hoi.
+   * Cache trong Redis key `settings:public`, TTL 1h, invalidate khi admin update.
    */
   async getPublicSettings(): Promise<Record<string, string>> {
+    // Thu cache truoc
+    try {
+      const cached = await this.cache.get<Record<string, string>>(CACHE_KEY_PUBLIC_SETTINGS);
+      if (cached) return cached;
+    } catch (err) {
+      this.logger.warn(`Cache get failed: ${(err as Error).message}`);
+    }
+
     const publicKeys = [
       'school_name', 'slogan', 'logo_url', 'favicon_url',
       'address', 'phone', 'email', 'google_maps_url',
@@ -92,7 +116,26 @@ export class SettingsService {
     for (const s of settings) {
       result[s.key] = s.value;
     }
+
+    // Set cache
+    try {
+      await this.cache.set(CACHE_KEY_PUBLIC_SETTINGS, result, CACHE_TTL_PUBLIC_SETTINGS);
+    } catch (err) {
+      this.logger.warn(`Cache set failed: ${(err as Error).message}`);
+    }
+
     return result;
+  }
+
+  /**
+   * Invalidate cache public settings — goi sau khi upsert/update.
+   */
+  private async invalidatePublicSettingsCache() {
+    try {
+      await this.cache.del(CACHE_KEY_PUBLIC_SETTINGS);
+    } catch (err) {
+      this.logger.warn(`Cache del failed: ${(err as Error).message}`);
+    }
   }
 
   // --- Homepage config ---

@@ -126,43 +126,42 @@ jobs:
               exit 0
             fi
 
-            MYSQL_ROOT_PWD=\$(grep '^MYSQL_ROOT_PASSWORD=' ${INFRA_DIR}/.env | cut -d= -f2-)
             LQD_PWD=\$(grep '^LQD_DB_PASSWORD=' ${APP_DIR}/.env | cut -d= -f2-)
 
             echo 'Restoring lqd database...'
 
-            # Dam bao DB + user ton tai
-            docker exec -i shared-mysql mysql -u root -p\${MYSQL_ROOT_PWD} <<EOSQL
-              CREATE DATABASE IF NOT EXISTS lqd CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+            # Dam bao DB + user ton tai — dung container MYSQL_ROOT_PASSWORD env var
+            docker exec shared-mysql bash -c \"
+              INIT_SQL=\\\"CREATE DATABASE IF NOT EXISTS lqd CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
               CREATE USER IF NOT EXISTS 'lqd'@'%' IDENTIFIED BY '\${LQD_PWD}';
               GRANT ALL PRIVILEGES ON lqd.* TO 'lqd'@'%';
-              FLUSH PRIVILEGES;
-          EOSQL
+              FLUSH PRIVILEGES;\\\"
+              echo \\\"\$INIT_SQL\\\" | MYSQL_PWD=\\\"\\\$MYSQL_ROOT_PASSWORD\\\" mysql -u root
+            \" 2>&1
 
             # Safety backup truoc khi DROP
             PRE_RESTORE=/tmp/pre-restore-lqd-\$(date +%Y%m%d_%H%M%S).sql.gz
             echo \"Creating safety backup → \${PRE_RESTORE}\"
-            docker exec shared-mysql mysqldump -u root -p\${MYSQL_ROOT_PWD} \
-              --single-transaction --quick lqd 2>/dev/null | gzip > \${PRE_RESTORE}
+            docker exec shared-mysql bash -c 'MYSQL_PWD=\"$MYSQL_ROOT_PASSWORD\" mysqldump -u root --single-transaction --quick lqd 2>/dev/null' | gzip > \${PRE_RESTORE}
             echo \"Safety backup: \$(du -h \${PRE_RESTORE} | cut -f1)\"
 
-            # Drop + recreate
-            docker exec -i shared-mysql mysql -u root -p\${MYSQL_ROOT_PWD} -e 'DROP DATABASE lqd; CREATE DATABASE lqd CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'
+            # Drop + recreate de restore sach
+            docker exec shared-mysql bash -c 'MYSQL_PWD=\"$MYSQL_ROOT_PASSWORD\" mysql -u root -e \"DROP DATABASE lqd; CREATE DATABASE lqd CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\"'
 
             # Import dump — rollback neu fail
-            if gunzip -c \$DUMP | docker exec -i shared-mysql mysql -u root -p\${MYSQL_ROOT_PWD} lqd; then
+            if gunzip -c \$DUMP | docker exec -i shared-mysql bash -c 'MYSQL_PWD=\"$MYSQL_ROOT_PASSWORD\" mysql -u root lqd'; then
               echo 'Database restored!'
               rm -f \${PRE_RESTORE}
             else
               echo 'RESTORE FAILED — rolling back from safety backup...'
-              docker exec -i shared-mysql mysql -u root -p\${MYSQL_ROOT_PWD} -e 'DROP DATABASE IF EXISTS lqd; CREATE DATABASE lqd CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'
-              gunzip -c \${PRE_RESTORE} | docker exec -i shared-mysql mysql -u root -p\${MYSQL_ROOT_PWD} lqd
+              docker exec shared-mysql bash -c 'MYSQL_PWD=\"$MYSQL_ROOT_PASSWORD\" mysql -u root -e \"DROP DATABASE IF EXISTS lqd; CREATE DATABASE lqd CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\"'
+              gunzip -c \${PRE_RESTORE} | docker exec -i shared-mysql bash -c 'MYSQL_PWD=\"$MYSQL_ROOT_PASSWORD\" mysql -u root lqd'
               echo 'Rollback complete. Original data preserved.'
               exit 1
             fi
 
             # Verify
-            TABLES=\$(docker exec shared-mysql mysql -u root -p\${MYSQL_ROOT_PWD} -N -e 'SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=\"lqd\"' 2>/dev/null)
+            TABLES=\$(docker exec shared-mysql bash -c 'MYSQL_PWD=\"\$MYSQL_ROOT_PASSWORD\" mysql -u root -N -e \"SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=\\\"lqd\\\"\"' 2>/dev/null)
             echo \"Tables: \${TABLES}\"
             if [ \"\${TABLES}\" -lt 1 ]; then
               echo 'WARNING: No tables found after restore!'

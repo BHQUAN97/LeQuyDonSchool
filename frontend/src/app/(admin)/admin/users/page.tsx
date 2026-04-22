@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { toast } from 'sonner';
 import { api } from '@/lib/api';
 import type { User, PaginatedResponse } from '@/types';
 import Image from 'next/image';
@@ -131,6 +132,7 @@ export default function UsersPage() {
         };
         if (form.phone) body.phone = form.phone;
         await api(`/users/${editingId}`, { method: 'PUT', body: JSON.stringify(body) });
+        toast.success('Đã cập nhật tài khoản');
       } else {
         // Tao moi — can password
         const body: Record<string, string> = {
@@ -141,12 +143,15 @@ export default function UsersPage() {
         };
         if (form.phone) body.phone = form.phone;
         await api('/users', { method: 'POST', body: JSON.stringify(body) });
+        toast.success('Đã tạo tài khoản');
       }
 
       setShowForm(false);
       fetchUsers();
-    } catch (err: any) {
-      setFormError(err.message || 'Có lỗi xảy ra');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Có lỗi xảy ra';
+      setFormError(message);
+      toast.error(message);
     } finally {
       setSaving(false);
     }
@@ -161,11 +166,14 @@ export default function UsersPage() {
     if (!deleteTarget) return;
     try {
       await api(`/users/${deleteTarget.id}`, { method: 'DELETE' });
+      toast.success('Đã xóa tài khoản');
       setDeleteTarget(null);
       fetchUsers();
-    } catch (err: any) {
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Không thể xóa tài khoản';
       setDeleteTarget(null);
-      setErrorMsg(err.message || 'Không thể xóa tài khoản');
+      setErrorMsg(message);
+      toast.error(message);
     }
   };
 
@@ -177,9 +185,12 @@ export default function UsersPage() {
         method: 'PUT',
         body: JSON.stringify({ status: newStatus }),
       });
+      toast.success(newStatus === 'active' ? 'Đã mở khóa tài khoản' : 'Đã khóa tài khoản');
       fetchUsers();
-    } catch (err: any) {
-      setErrorMsg(err.message || 'Không thể cập nhật trạng thái');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Không thể cập nhật trạng thái';
+      setErrorMsg(message);
+      toast.error(message);
     }
   };
 
@@ -270,7 +281,7 @@ export default function UsersPage() {
                   <label className="block text-sm font-medium text-slate-700 mb-1">Vai trò</label>
                   <select
                     value={form.role}
-                    onChange={(e) => setForm({ ...form, role: e.target.value as any })}
+                    onChange={(e) => setForm({ ...form, role: e.target.value as UserForm['role'] })}
                     className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
                   >
                     <option value="editor">Biên tập viên</option>
@@ -283,7 +294,7 @@ export default function UsersPage() {
                     <label className="block text-sm font-medium text-slate-700 mb-1">Trạng thái</label>
                     <select
                       value={form.status}
-                      onChange={(e) => setForm({ ...form, status: e.target.value as any })}
+                      onChange={(e) => setForm({ ...form, status: e.target.value as UserForm['status'] })}
                       className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
                     >
                       <option value="active">Hoạt động</option>
@@ -351,7 +362,7 @@ export default function UsersPage() {
                         {user.avatar_url ? (
                           <Image src={user.avatar_url} alt="" width={32} height={32} className="w-8 h-8 rounded-full object-cover" />
                         ) : (
-                          <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-700 text-xs font-bold">
+                          <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-700 text-sm font-bold">
                             {user.full_name.charAt(0).toUpperCase()}
                           </div>
                         )}
@@ -361,19 +372,19 @@ export default function UsersPage() {
                     <td className="px-4 py-3 text-slate-600">{user.email}</td>
                     <td className="px-4 py-3 text-slate-600">{user.phone || '—'}</td>
                     <td className="px-4 py-3">
-                      <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${ROLE_BADGE[user.role]?.className || ''}`}>
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${ROLE_BADGE[user.role]?.className || ''}`}>
                         {ROLE_BADGE[user.role]?.label || user.role}
                       </span>
                     </td>
                     <td className="px-4 py-3">
                       <button
                         onClick={() => handleToggleStatus(user)}
-                        className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium cursor-pointer hover:opacity-80 ${STATUS_BADGE[user.status]?.className || ''}`}
+                        className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium cursor-pointer hover:opacity-80 ${STATUS_BADGE[user.status]?.className || ''}`}
                       >
                         {STATUS_BADGE[user.status]?.label || user.status}
                       </button>
                     </td>
-                    <td className="px-4 py-3 text-slate-500 text-xs">
+                    <td className="px-4 py-3 text-slate-500 text-sm">
                       {user.last_login_at
                         ? new Date(user.last_login_at).toLocaleDateString('vi-VN', {
                             day: '2-digit', month: '2-digit', year: 'numeric',

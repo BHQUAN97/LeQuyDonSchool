@@ -2,23 +2,22 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { api } from '@/lib/api';
-import RichTextEditor from '@/components/admin/RichTextEditor';
+import RichTextEditor from '@/components/admin/RichTextEditorDynamic';
 import { generateSlug } from '@/lib/slug';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
 import ImagePicker from '@/components/admin/ImagePicker';
-
-interface ApiResponse {
-  success: boolean;
-  data: any;
-  message: string;
-}
+import type { ApiResponse } from '@/types';
 
 interface Category {
   id: string;
   name: string;
   slug: string;
 }
+
+// API /categories may return either a bare array or a wrapped response
+type CategoriesPayload = Category[] | { data?: Category[] };
 
 export default function CreateArticlePage() {
   const router = useRouter();
@@ -43,10 +42,10 @@ export default function CreateArticlePage() {
 
   // Fetch categories on mount
   useEffect(() => {
-    api<Category[]>('/categories')
+    api<CategoriesPayload>('/categories')
       .then((data) => {
         // API co the tra ve { success, data } hoac array truc tiep
-        const list = Array.isArray(data) ? data : (data as any)?.data || [];
+        const list = Array.isArray(data) ? data : data?.data ?? [];
         setCategories(list);
       })
       .catch(() => {});
@@ -72,7 +71,7 @@ export default function CreateArticlePage() {
 
     setSaving(true);
     try {
-      const body: Record<string, any> = {
+      const body: Record<string, string> = {
         title: title.trim(),
         content,
         status: saveStatus,
@@ -85,13 +84,16 @@ export default function CreateArticlePage() {
       if (seoDescription) body.seoDescription = seoDescription;
       if (publishedAt) body.publishedAt = publishedAt;
 
-      await api<ApiResponse>('/articles', {
+      await api<ApiResponse<unknown>>('/articles', {
         method: 'POST',
         body: JSON.stringify(body),
       });
+      toast.success(saveStatus === 'published' ? 'Đã đăng bài viết' : 'Đã lưu nháp');
       router.push('/admin/articles');
-    } catch (err: any) {
-      setCreateError(err.message || 'Không thể tạo bài viết');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Không thể tạo bài viết';
+      setCreateError(message);
+      toast.error(message);
     } finally {
       setSaving(false);
     }
@@ -127,7 +129,7 @@ export default function CreateArticlePage() {
                 placeholder="Nhập tiêu đề bài viết..."
                 className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent ${errors.title ? 'border-red-500' : 'border-slate-300'}`}
               />
-              {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
+              {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
             </div>
 
             {/* Slug */}
@@ -149,7 +151,7 @@ export default function CreateArticlePage() {
                     setSlugManual(false);
                     setSlug(generateSlug(title));
                   }}
-                  className="text-xs text-blue-600 hover:underline mt-1"
+                  className="text-sm text-blue-600 hover:underline mt-1"
                 >
                   Tự động tạo lại từ tiêu đề
                 </button>
@@ -179,7 +181,7 @@ export default function CreateArticlePage() {
                 maxLength={300}
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent resize-y"
               />
-              <p className={`text-xs mt-1 ${excerpt.length >= 280 ? 'text-orange-500' : 'text-slate-400'}`}>{excerpt.length}/300</p>
+              <p className={`text-sm mt-1 ${excerpt.length >= 280 ? 'text-orange-500' : 'text-slate-400'}`}>{excerpt.length}/300</p>
             </div>
           </div>
         </div>
@@ -240,7 +242,7 @@ export default function CreateArticlePage() {
                 maxLength={60}
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
               />
-              <p className={`text-xs mt-1 ${seoTitle.length >= 50 ? 'text-orange-500' : 'text-slate-400'}`}>{seoTitle.length}/60</p>
+              <p className={`text-sm mt-1 ${seoTitle.length >= 50 ? 'text-orange-500' : 'text-slate-400'}`}>{seoTitle.length}/60</p>
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">SEO Description</label>
@@ -252,7 +254,7 @@ export default function CreateArticlePage() {
                 maxLength={160}
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent resize-y"
               />
-              <p className={`text-xs mt-1 ${seoDescription.length >= 140 ? 'text-orange-500' : 'text-slate-400'}`}>{seoDescription.length}/160</p>
+              <p className={`text-sm mt-1 ${seoDescription.length >= 140 ? 'text-orange-500' : 'text-slate-400'}`}>{seoDescription.length}/160</p>
             </div>
           </div>
 

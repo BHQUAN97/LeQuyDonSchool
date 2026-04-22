@@ -97,7 +97,12 @@ describe('AuthController', () => {
       await controller.logout('user-1', mockReq, mockRes);
 
       expect(service.logout).toHaveBeenCalledWith('user-1', '127.0.0.1');
-      expect(mockRes.clearCookie).toHaveBeenCalledWith('refreshToken', { path: '/' });
+      expect(mockRes.clearCookie).toHaveBeenCalledWith('refreshToken', {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax',
+        path: '/',
+      });
       expect(mockRes.json).toHaveBeenCalledWith(
         expect.objectContaining({ success: true }),
       );
