@@ -547,7 +547,11 @@ SECRETS_EOF
           echo "Waiting for backend..."
           for i in $(seq 1 30); do
             sshpass -e ssh -p $PORT $VPS "curl -sf http://localhost:4200/api/health" > /dev/null 2>&1 && { echo "Backend ready!"; break; }
-            [ $i -eq 30 ] && { echo "::warning::Backend not ready after 60s"; }
+            if [ $i -eq 30 ]; then
+              echo "::error::Backend not ready after 60s post-migration"
+              sshpass -e ssh -p $PORT $VPS "docker logs lqd-api --tail 30" 2>&1
+              exit 1
+            fi
             sleep 2
           done
 
