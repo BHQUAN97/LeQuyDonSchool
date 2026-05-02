@@ -19,7 +19,7 @@ concurrency:
 
 env:
   APP_DIR: /opt/lqd
-  WEBPHOTO_DIR: /opt/webphoto
+  INFRA_DIR: /opt/infra
 
 # ══════════════════════════════════════════════════════
 # Pipeline: typecheck → build → deploy → verify
@@ -80,7 +80,6 @@ jobs:
         run: |
           VPS="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
           PORT="${{ secrets.VPS_PORT }}"
-          # Check API health — UPDATE only if API actually responds (not restart-loop state)
           if sshpass -e ssh -p $PORT $VPS "curl -sf http://localhost:4200/api/health > /dev/null 2>&1"; then
             echo "mode=update" >> $GITHUB_OUTPUT
             echo "Deploy mode: UPDATE (API healthy)"
@@ -144,7 +143,6 @@ jobs:
         run: |
           VPS="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
           PORT="${{ secrets.VPS_PORT }}"
-          # Build full .env: non-sensitive from config/env + secrets appended
           grep -v '^\s*#' config/env | grep -v '^\s*$' > /tmp/prod.env
           {
             echo "LQD_DB_PASSWORD=${{ secrets.LQD_DB_PASSWORD }}"
@@ -162,13 +160,12 @@ jobs:
         run: |
           VPS="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
           PORT="${{ secrets.VPS_PORT }}"
-          # Stop + remove any crashed/restart-looping containers before fresh INIT
           sshpass -e ssh -p $PORT $VPS "
             export PATH=\$PATH:/usr/local/bin
             docker stop lqd-api lqd-frontend 2>/dev/null || true
             docker rm lqd-api lqd-frontend 2>/dev/null || true
           "
-          sshpass -e ssh -p $PORT $VPS "mkdir -p ${APP_DIR}/{backend,frontend,nginx/conf.d,scripts,db,config}"
+          sshpass -e ssh -p $PORT $VPS "mkdir -p ${APP_DIR}/{backend,frontend,nginx/conf.d,scripts,db,config} ${INFRA_DIR}/nginx/conf.d"
 
           sshpass -e scp -P $PORT docker-compose.prod.yml $VPS:${APP_DIR}/
 
@@ -184,9 +181,9 @@ jobs:
             frontend/tsconfig.json frontend/postcss.config.mjs 2>/dev/null | \
             sshpass -e ssh -p $PORT $VPS "tar xzf - -C ${APP_DIR}/"
 
-          echo "  Uploading nginx + db + scripts..."
-          sshpass -e ssh -p $PORT $VPS "mkdir -p ${WEBPHOTO_DIR}/nginx/conf.d"
-          sshpass -e scp -P $PORT nginx/conf.d/lqd.bhquan.store.conf $VPS:${WEBPHOTO_DIR}/nginx/conf.d/
+          echo "  Uploading nginx + infra + db + scripts..."
+          sshpass -e scp -P $PORT nginx/conf.d/lqd.bhquan.store.conf $VPS:${INFRA_DIR}/nginx/conf.d/lqd.bhquan.store.conf
+          sshpass -e scp -P $PORT infra/nginx/nginx.conf $VPS:${INFRA_DIR}/nginx/nginx.conf
           sshpass -e scp -P $PORT -r db/changelog $VPS:${APP_DIR}/db/ 2>/dev/null || true
           tar czf - scripts/ 2>/dev/null | sshpass -e ssh -p $PORT $VPS "tar xzf - -C ${APP_DIR}/"
 
@@ -200,11 +197,8 @@ jobs:
         run: |
           VPS="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
           PORT="${{ secrets.VPS_PORT }}"
-          INFRA_DIR=/opt/infra
-
-          sshpass -e ssh -p $PORT $VPS "mkdir -p ${INFRA_DIR}"
+          sshpass -e ssh -p $PORT $VPS "mkdir -p ${INFRA_DIR}/nginx/conf.d"
           sshpass -e scp -P $PORT infra/docker-compose.yml $VPS:${INFRA_DIR}/docker-compose.yml
-          # SCP raw password (no quoting) — bypasses .env quote parsing issues
           printf '%s' "$MYSQL_ROOT_PASSWORD" > /tmp/mysql_root_pass.txt
           sshpass -e scp -P $PORT /tmp/mysql_root_pass.txt $VPS:/tmp/mysql_root_pass.txt
           rm -f /tmp/mysql_root_pass.txt
@@ -213,19 +207,42 @@ jobs:
             export PATH=\$PATH:/usr/local/bin
             docker network create webphoto_backend 2>/dev/null || true
             docker network create lqd_frontend 2>/dev/null || true
+            mkdir -p /opt/webphoto/photo-storage/dist
 
-            # Neu shared-mysql da chay thi khong can start lai
-            if docker ps --filter name=shared-mysql --filter status=running --format '{{.Names}}' | grep -q shared-mysql; then
-              echo 'shared-mysql already running — skip infra start'
+            MYSQL_OK=\$(docker ps --filter name=shared-mysql --filter status=running --format '{{.Names}}' | grep -c shared-mysql || echo 0)
+            NGINX_OK=\$(docker ps --filter name=shared-nginx --filter status=running --format '{{.Names}}' | grep -c shared-nginx || echo 0)
+
+            if [ \"\$MYSQL_OK\" -gt 0 ] && [ \"\$NGINX_OK\" -gt 0 ]; then
+              echo 'Infra already running — skip'
               rm -f /tmp/mysql_root_pass.txt
             else
               echo 'Starting shared infra...'
+              docker pull nginx:1.27-alpine 2>&1 | tail -1
+              echo '--- Pre-start: placeholder cert for lqd.bhquan.store (nginx needs cert to start) ---'
+              docker run --rm \
+                -v shared_certbot_data:/etc/letsencrypt \
+                certbot/certbot sh -c '
+                  CERT=/etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem
+                  if openssl x509 -in \$CERT -noout -checkend 3600 2>/dev/null; then
+                    echo Cert already valid for lqd.bhquan.store
+                  else
+                    mkdir -p /etc/letsencrypt/live/lqd.bhquan.store
+                    openssl req -x509 -nodes -days 90 -newkey rsa:2048 \
+                      -keyout /etc/letsencrypt/live/lqd.bhquan.store/privkey.pem \
+                      -out \$CERT -subj /CN=lqd.bhquan.store 2>/dev/null && echo Placeholder OK
+                  fi
+                ' 2>&1 || echo '::warning::Placeholder cert failed — nginx may not start'
               MYSQL_ROOT_PASSWORD=\$(cat /tmp/mysql_root_pass.txt) docker compose -f ${INFRA_DIR}/docker-compose.yml up -d 2>&1
               rm -f /tmp/mysql_root_pass.txt
               for i in \$(seq 1 60); do
                 docker exec shared-mysql mysqladmin ping -h localhost --silent 2>/dev/null && { echo 'MySQL ready!'; break; }
                 [ \$i -eq 60 ] && { echo 'ERROR: MySQL not ready'; docker logs shared-mysql --tail 20; exit 1; }
                 sleep 1
+              done
+              for i in \$(seq 1 20); do
+                docker exec shared-nginx nginx -t 2>/dev/null && { echo 'Nginx ready!'; break; }
+                [ \$i -eq 20 ] && { echo '::warning::Nginx not ready yet — continuing'; break; }
+                sleep 2
               done
             fi
           "
@@ -237,7 +254,6 @@ jobs:
         run: |
           VPS="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
           PORT="${{ secrets.VPS_PORT }}"
-          # Build SQL using env vars (safe printf %s — handles special chars)
           printf "CREATE DATABASE IF NOT EXISTS lqd CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\nCREATE USER IF NOT EXISTS 'lqd'@'%%' IDENTIFIED BY '%s';\nGRANT ALL PRIVILEGES ON lqd.* TO 'lqd'@'%%';\nFLUSH PRIVILEGES;\n" "$LQD_DB_PASSWORD" > /tmp/create_lqd.sql
           sshpass -e scp -P $PORT /tmp/create_lqd.sql $VPS:/tmp/create_lqd.sql
           rm -f /tmp/create_lqd.sql
@@ -249,28 +265,29 @@ jobs:
             rm -f /tmp/create_lqd.sql
           "
 
-      - name: "[INIT] SSL certs"
+      - name: "[INIT] SSL placeholder cert"
         if: needs.build.outputs.mode == 'init'
         run: |
           VPS="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
           PORT="${{ secrets.VPS_PORT }}"
-          HAS_WP=$(sshpass -e ssh -p $PORT $VPS "test -f ${WEBPHOTO_DIR}/docker-compose.prod.yml && echo yes || echo no")
-          [ "$HAS_WP" != "yes" ] && { echo "WebPhoto not deployed — skip SSL"; exit 0; }
-
           sshpass -e ssh -p $PORT $VPS "
-            cd ${WEBPHOTO_DIR}
-            CERT_EXISTS=\$(docker compose -f docker-compose.prod.yml run --rm --entrypoint '' certbot \
-              test -f /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem 2>/dev/null && echo yes || echo no)
-            if [ \"\$CERT_EXISTS\" = 'no' ]; then
-              echo 'Generating placeholder cert...'
-              docker compose -f docker-compose.prod.yml run --rm --entrypoint '' certbot sh -c '
+            DC='docker compose -f ${INFRA_DIR}/docker-compose.yml'
+            CERT_VALID=\$(\$DC run --rm --entrypoint '' certbot sh -c \
+              'openssl x509 -in /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem -noout -checkend 3600 2>/dev/null && echo yes || echo no' \
+              2>/dev/null || echo no)
+            if [ \"\$CERT_VALID\" = 'no' ]; then
+              echo 'Creating placeholder cert for lqd.bhquan.store...'
+              \$DC run --rm --entrypoint '' certbot sh -c '
                 mkdir -p /etc/letsencrypt/live/lqd.bhquan.store
-                openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
+                openssl req -x509 -nodes -days 90 -newkey rsa:2048 \
                   -keyout /etc/letsencrypt/live/lqd.bhquan.store/privkey.pem \
                   -out /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem \
-                  -subj /CN=lqd.bhquan.store 2>/dev/null
-              '
+                  -subj /CN=lqd.bhquan.store 2>/dev/null && echo Placeholder OK
+              ' || echo '::error::Failed to create placeholder cert'
+            else
+              echo 'Cert still valid for lqd.bhquan.store'
             fi
+            docker exec shared-nginx nginx -s reload 2>/dev/null || true
           "
 
       - name: "[INIT] Build & Start services"
@@ -281,14 +298,10 @@ jobs:
 
           echo "=== VPS diagnostics ==="
           sshpass -e ssh -p $PORT $VPS "
-            echo '--- Memory ---'
-            free -h
-            echo '--- Disk ---'
-            df -h /
-            echo '--- Docker disk ---'
-            docker system df
-            echo '--- Running containers ---'
-            docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Size}}'
+            echo '--- Memory ---'; free -h
+            echo '--- Disk ---'; df -h /
+            echo '--- Docker disk ---'; docker system df
+            echo '--- Running containers ---'; docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Size}}'
           "
 
           echo ""
@@ -316,10 +329,8 @@ jobs:
             echo "::error::Docker start failed"
             sshpass -e ssh -p $PORT $VPS "
               docker ps -a --format 'table {{.Names}}\t{{.Status}}' | grep -E 'lqd|shared'
-              echo '--- Backend logs ---'
-              docker logs lqd-api --tail 30 2>&1
-              echo '--- Frontend logs ---'
-              docker logs lqd-frontend --tail 30 2>&1
+              echo '--- Backend logs ---'; docker logs lqd-api --tail 30 2>&1
+              echo '--- Frontend logs ---'; docker logs lqd-frontend --tail 30 2>&1
             "
             exit 1
           fi
@@ -334,55 +345,38 @@ jobs:
         run: |
           VPS="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
           PORT="${{ secrets.VPS_PORT }}"
-
+          sleep 5
           sshpass -e ssh -p $PORT $VPS "
-            CERT_VOL=\$(docker inspect shared-nginx --format '{{range .Mounts}}{{if eq .Destination \"/etc/letsencrypt\"}}{{.Name}}{{end}}{{end}}' 2>/dev/null)
-            if [ -z \"\$CERT_VOL\" ]; then
-              echo 'WARN: No cert volume found on shared-nginx, using host path'
-              CERT_VOL='/etc/letsencrypt'
-            fi
-            echo \"Using cert volume: \$CERT_VOL\"
-
-            echo '=== Removing old/placeholder cert ==='
-            docker run --rm -v \${CERT_VOL}:/etc/letsencrypt alpine sh -c '
-              rm -rf /etc/letsencrypt/live/lqd.bhquan.store*
-              rm -rf /etc/letsencrypt/archive/lqd.bhquan.store*
-              rm -rf /etc/letsencrypt/renewal/lqd.bhquan.store*.conf
-            '
-
-            echo '=== Stopping nginx to free port 80 ==='
-            docker stop shared-nginx 2>/dev/null || true
-
-            echo '=== Running certbot into Docker volume ==='
-            docker run --rm \
-              -v \${CERT_VOL}:/etc/letsencrypt \
-              -p 80:80 \
-              certbot/certbot certonly --standalone \
-              --non-interactive \
-              --cert-name lqd.bhquan.store \
-              --email admin@bhquan.site \
-              --agree-tos --no-eff-email \
-              -d lqd.bhquan.store \
-              2>&1 || {
-              echo 'Certbot failed — creating placeholder in volume'
-              docker run --rm -v \${CERT_VOL}:/etc/letsencrypt alpine sh -c '
-                mkdir -p /etc/letsencrypt/live/lqd.bhquan.store
-                apk add --no-cache openssl >/dev/null 2>&1
-                openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
-                  -keyout /etc/letsencrypt/live/lqd.bhquan.store/privkey.pem \
-                  -out /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem \
-                  -subj /CN=lqd.bhquan.store 2>/dev/null
+            DC='docker compose -f ${INFRA_DIR}/docker-compose.yml'
+            IS_REAL=\$(\$DC run --rm --entrypoint '' certbot sh -c '
+              CERT=/etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem
+              [ ! -f \"\$CERT\" ] && echo no && exit 0
+              openssl x509 -in \"\$CERT\" -noout -checkend 2592000 2>/dev/null || { echo no; exit 0; }
+              openssl x509 -in \"\$CERT\" -noout -issuer 2>/dev/null | grep -qiE \"let.s encrypt|R3|R10|R11|E5|E6\" && echo yes || echo no
+            ' 2>/dev/null || echo no)
+            if [ \"\$IS_REAL\" = 'yes' ]; then
+              echo 'LE cert valid for lqd.bhquan.store — skip'
+            else
+              echo 'Requesting LE cert for lqd.bhquan.store...'
+              \$DC run --rm --entrypoint '' certbot sh -c '
+                rm -rf /etc/letsencrypt/live/lqd.bhquan.store  /etc/letsencrypt/live/lqd.bhquan.store-*
+                rm -rf /etc/letsencrypt/archive/lqd.bhquan.store /etc/letsencrypt/archive/lqd.bhquan.store-*
+                rm -f  /etc/letsencrypt/renewal/lqd.bhquan.store.conf /etc/letsencrypt/renewal/lqd.bhquan.store-*.conf
               '
-            }
-
-            echo '=== Restarting nginx ==='
-            docker start shared-nginx
-            sleep 2
-            docker exec shared-nginx nginx -t && docker exec shared-nginx nginx -s reload
-
-            echo '=== Verify cert in nginx ==='
-            docker exec shared-nginx sh -c 'openssl x509 -in /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem -noout -subject -dates' 2>&1 || true
-          "
+              if timeout 120 \$DC run --rm --entrypoint '' certbot \
+                certbot certonly --webroot -w /var/www/certbot \
+                --non-interactive --cert-name lqd.bhquan.store \
+                --email admin@bhquan.site --agree-tos --no-eff-email \
+                -d lqd.bhquan.store 2>&1; then
+                echo 'LE cert OK for lqd.bhquan.store'
+              else
+                echo '::warning::LE failed for lqd.bhquan.store — keeping placeholder cert'
+              fi
+              if docker inspect shared-nginx --format '{{.State.Running}}' 2>/dev/null | grep -q true; then
+                docker exec shared-nginx nginx -s reload 2>/dev/null && echo 'Nginx reloaded OK' || true
+              fi
+            fi
+          " || true
 
       # ── UPDATE: Upload changed files ─────────────
       - name: "[UPDATE] Upload frontend"
@@ -421,24 +415,39 @@ jobs:
         run: |
           VPS="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
           PORT="${{ secrets.VPS_PORT }}"
-          sshpass -e scp -P $PORT nginx/conf.d/lqd.bhquan.store.conf $VPS:${WEBPHOTO_DIR}/nginx/conf.d/ 2>/dev/null && {
-            sshpass -e ssh -p $PORT $VPS "
-              CERT_EXISTS=\$(docker exec shared-nginx test -f /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem 2>/dev/null && echo yes || echo no)
-              if [ \"\$CERT_EXISTS\" = 'no' ]; then
-                echo 'No SSL cert found in volume — creating placeholder'
-                CERT_VOL=\$(docker inspect shared-nginx --format '{{range .Mounts}}{{if eq .Destination \"/etc/letsencrypt\"}}{{.Name}}{{end}}{{end}}' 2>/dev/null || echo '/etc/letsencrypt')
-                docker run --rm -v \${CERT_VOL}:/etc/letsencrypt alpine sh -c '
-                  mkdir -p /etc/letsencrypt/live/lqd.bhquan.store
-                  apk add --no-cache openssl >/dev/null 2>&1
-                  openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
-                    -keyout /etc/letsencrypt/live/lqd.bhquan.store/privkey.pem \
-                    -out /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem \
-                    -subj /CN=lqd.bhquan.store 2>/dev/null
-                '
+          sshpass -e ssh -p $PORT $VPS "mkdir -p ${INFRA_DIR}/nginx/conf.d"
+          sshpass -e scp -P $PORT nginx/conf.d/lqd.bhquan.store.conf $VPS:${INFRA_DIR}/nginx/conf.d/lqd.bhquan.store.conf
+          sshpass -e ssh -p $PORT $VPS "
+            DC='docker compose -f ${INFRA_DIR}/docker-compose.yml'
+            CERT_VALID=\$(\$DC run --rm --entrypoint '' certbot sh -c \
+              'openssl x509 -in /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem -noout -checkend 3600 2>/dev/null && echo yes || echo no' \
+              2>/dev/null || echo no)
+            if [ \"\$CERT_VALID\" = 'no' ]; then
+              echo 'No valid cert — creating placeholder'
+              \$DC run --rm --entrypoint '' certbot sh -c '
+                mkdir -p /etc/letsencrypt/live/lqd.bhquan.store
+                openssl req -x509 -nodes -days 90 -newkey rsa:2048 \
+                  -keyout /etc/letsencrypt/live/lqd.bhquan.store/privkey.pem \
+                  -out /etc/letsencrypt/live/lqd.bhquan.store/fullchain.pem \
+                  -subj /CN=lqd.bhquan.store 2>/dev/null
+              ' || true
+            fi
+            echo '--- nginx config test ---'
+            docker exec shared-nginx nginx -t 2>&1 || true
+            if docker inspect shared-nginx --format '{{.State.Running}}' 2>/dev/null | grep -q true; then
+              docker exec shared-nginx nginx -s reload 2>/dev/null && echo 'Nginx reloaded OK' || echo '::warning::nginx reload failed'
+              sleep 3
+              NGINX_STATUS=\$(docker inspect shared-nginx --format '{{.State.Status}}' 2>/dev/null || echo missing)
+              if [ \"\$NGINX_STATUS\" != 'running' ]; then
+                echo '::error::shared-nginx not running after config update (status='\$NGINX_STATUS')'
+                docker logs shared-nginx --tail 20 2>&1 || true
+                exit 1
               fi
-              docker exec shared-nginx nginx -t 2>&1 | tail -1 && docker exec shared-nginx nginx -s reload
-            "
-          } || true
+              echo 'nginx: OK'
+            else
+              echo '::warning::shared-nginx not running — skip reload'
+            fi
+          "
 
       - name: "[UPDATE] Sync infra"
         if: needs.build.outputs.mode == 'update' && needs.build.outputs.infra == 'true'
@@ -447,9 +456,9 @@ jobs:
         run: |
           VPS="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
           PORT="${{ secrets.VPS_PORT }}"
-          INFRA_DIR=/opt/infra
-          sshpass -e ssh -p $PORT $VPS "mkdir -p ${INFRA_DIR}"
+          sshpass -e ssh -p $PORT $VPS "mkdir -p ${INFRA_DIR}/nginx/conf.d"
           sshpass -e scp -P $PORT infra/docker-compose.yml $VPS:${INFRA_DIR}/
+          sshpass -e scp -P $PORT infra/nginx/nginx.conf $VPS:${INFRA_DIR}/nginx/nginx.conf
           printf "MYSQL_ROOT_PASSWORD='%s'\n" "$MYSQL_ROOT_PASSWORD" > /tmp/infra_update.env
           sshpass -e scp -P $PORT /tmp/infra_update.env $VPS:${INFRA_DIR}/.env
           sshpass -e ssh -p $PORT $VPS "chmod 600 ${INFRA_DIR}/.env"
@@ -457,6 +466,8 @@ jobs:
           sshpass -e ssh -p $PORT $VPS "
             export PATH=\$PATH:/usr/local/bin
             docker network create webphoto_backend 2>/dev/null || true
+            docker network create lqd_frontend 2>/dev/null || true
+            docker pull nginx:1.27-alpine 2>&1 | tail -1
             cd ${INFRA_DIR} && docker compose up -d --force-recreate 2>&1 | tail -5
             for i in \$(seq 1 30); do
               docker exec shared-mysql mysqladmin ping -h localhost --silent 2>/dev/null && break
@@ -472,7 +483,6 @@ jobs:
           PORT="${{ secrets.VPS_PORT }}"
           echo "=== VPS resources before backend build ==="
           sshpass -e ssh -p $PORT $VPS "free -h; df -h /" 2>&1
-          echo ""
           sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml build backend 2>&1"
           if [ $? -ne 0 ]; then
             echo "::error::Backend build failed"
@@ -488,7 +498,6 @@ jobs:
           PORT="${{ secrets.VPS_PORT }}"
           echo "=== VPS resources before frontend build ==="
           sshpass -e ssh -p $PORT $VPS "free -h; df -h /" 2>&1
-          echo ""
           sshpass -e ssh -p $PORT $VPS "cd ${APP_DIR} && docker compose -f docker-compose.prod.yml build frontend 2>&1"
           if [ $? -ne 0 ]; then
             echo "::error::Frontend build failed"
@@ -507,7 +516,31 @@ jobs:
             docker exec shared-nginx nginx -s reload 2>/dev/null || true
           "
 
-      # ── SHARED: Config + DB ──────────────────────
+      # ── SHARED: Crontab + DB ─────────────────────
+      - name: Install crontab (idempotent)
+        run: |
+          VPS="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
+          PORT="${{ secrets.VPS_PORT }}"
+          sshpass -e ssh -p $PORT $VPS "mkdir -p ${APP_DIR}/scripts"
+          sshpass -e scp -P $PORT scripts/crontab.example $VPS:${APP_DIR}/scripts/crontab.example
+          sshpass -e ssh -p $PORT $VPS "
+            mkdir -p /var/log/lqd
+            if [ ! -f /etc/cron.d/lqd ]; then
+              if cp ${APP_DIR}/scripts/crontab.example /etc/cron.d/lqd 2>/dev/null; then
+                chmod 644 /etc/cron.d/lqd
+                chown root:root /etc/cron.d/lqd 2>/dev/null || true
+                echo 'Crontab installed: /etc/cron.d/lqd'
+                ls -la /etc/cron.d/lqd
+              else
+                echo '::warning::Cannot write /etc/cron.d/lqd — manual install needed:'
+                echo '  sudo cp ${APP_DIR}/scripts/crontab.example /etc/cron.d/lqd && sudo chmod 644 /etc/cron.d/lqd'
+              fi
+            else
+              echo 'Crontab already exists — skip (/etc/cron.d/lqd)'
+              ls -la /etc/cron.d/lqd
+            fi
+          "
+
       - name: Ensure DB + user
         env:
           LQD_DB_PASSWORD: ${{ secrets.LQD_DB_PASSWORD }}
@@ -541,11 +574,7 @@ jobs:
           for f in $(find db/changelog/_init -name '*.sql' -type f 2>/dev/null | sort); do
             echo -n "  $(basename $f) ... "
             OUTPUT=$(sshpass -e ssh -p $PORT $VPS "$MYSQL_CMD" < "$f" 2>&1)
-            if [ $? -eq 0 ]; then
-              echo "OK"
-            else
-              echo "FAILED"; echo "$OUTPUT" | tail -3 | sed 's/^/    /'
-            fi
+            if [ $? -eq 0 ]; then echo "OK"; else echo "FAILED"; echo "$OUTPUT" | tail -3 | sed 's/^/    /'; fi
           done
 
           echo "=== Running versioned migrations ==="
@@ -598,77 +627,17 @@ jobs:
         run: |
           VPS="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
           PORT="${{ secrets.VPS_PORT }}"
-
           for i in $(seq 1 15); do
             sshpass -e ssh -p $PORT $VPS "curl -sf http://localhost:4200/api/health" > /dev/null 2>&1 && break
             sleep 2
           done
 
-          echo "=== Seeding admin ==="
-          sshpass -e ssh -p $PORT $VPS "
-            cd ${APP_DIR}
-            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/admin-seed.js 2>&1
-          " || echo "::warning::Admin seed failed"
-
-          echo "=== Seeding content ==="
-          sshpass -e ssh -p $PORT $VPS "
-            cd ${APP_DIR}
-            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/content-seed.js 2>&1
-          " || echo "::warning::Content seed failed"
-
-          echo "=== Seeding categories + articles ==="
-          sshpass -e ssh -p $PORT $VPS "
-            cd ${APP_DIR}
-            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-categories-articles.js 2>&1
-          " || echo "::warning::Categories+articles seed failed"
-
-          echo "=== Seeding events ==="
-          sshpass -e ssh -p $PORT $VPS "
-            cd ${APP_DIR}
-            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-events.js 2>&1
-          " || echo "::warning::Events seed failed"
-
-          echo "=== Seeding contacts, settings, navigation ==="
-          sshpass -e ssh -p $PORT $VPS "
-            cd ${APP_DIR}
-            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-contacts-settings-nav.js 2>&1
-          " || echo "::warning::Contacts+settings+nav seed failed"
-
-          echo "=== Seeding media ==="
-          sshpass -e ssh -p $PORT $VPS "
-            cd ${APP_DIR}
-            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-media.js 2>&1
-          " || echo "::warning::Media seed failed"
-
-          echo "=== Seeding pages (detailed) ==="
-          sshpass -e ssh -p $PORT $VPS "
-            cd ${APP_DIR}
-            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/pages-seed.js 2>&1
-          " || echo "::warning::Pages seed failed"
-
-          echo "=== Seeding pages part 1 ==="
-          sshpass -e ssh -p $PORT $VPS "
-            cd ${APP_DIR}
-            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-pages-part1.js 2>&1
-          " || echo "::warning::Pages part 1 seed failed"
-
-          echo "=== Seeding pages part 2 ==="
-          sshpass -e ssh -p $PORT $VPS "
-            cd ${APP_DIR}
-            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-pages-part2.js 2>&1
-          " || echo "::warning::Pages part 2 seed failed"
-
-          echo "=== Seeding pages part 3 ==="
-          sshpass -e ssh -p $PORT $VPS "
-            cd ${APP_DIR}
-            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-pages-part3.js 2>&1
-          " || echo "::warning::Pages part 3 seed failed"
-
-          echo "=== Seeding admissions ==="
-          sshpass -e ssh -p $PORT $VPS "
-            cd ${APP_DIR}
-            docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/seed-admissions.js 2>&1
-          " || echo "::warning::Admissions seed failed"
+          for SEED in admin-seed content-seed seed-categories-articles seed-events seed-contacts-settings-nav seed-media pages-seed seed-pages-part1 seed-pages-part2 seed-pages-part3 seed-admissions; do
+            sshpass -e ssh -p $PORT $VPS "
+              cd ${APP_DIR}
+              docker compose -f docker-compose.prod.yml exec -T backend node dist/database/seeds/${SEED}.js 2>&1
+            " || echo "::warning::${SEED}: skipped"
+          done
 
   # ─── STAGE 4: VERIFY ────────────────────────────
   verify:
@@ -709,10 +678,7 @@ jobs:
           done
 
           echo "::error::Backend health check failed after 30s"
-          echo "=== Backend logs ==="
           sshpass -e ssh -p $PORT $VPS "docker logs lqd-api --tail 50" 2>&1
-          echo "=== Backend inspect ==="
-          sshpass -e ssh -p $PORT $VPS "docker inspect lqd-api --format '{{.State.Status}} ExitCode:{{.State.ExitCode}}'" 2>&1
           exit 1
 
       - name: Frontend health
