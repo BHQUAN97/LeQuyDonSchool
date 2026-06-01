@@ -1,13 +1,13 @@
 # LE QUY DON — DEPLOYMENT GUIDE
 
-> Domain: lqd.bhquan.store | VPS: 134.122.21.251 | Stack: NestJS + Next.js + MySQL
+> Domain: lqd.bhquan.store | VPS: 159.223.77.247 | Stack: NestJS + Next.js + MySQL
 
 ---
 
 ## Kiến trúc Production
 
 ```
-  VPS Ubuntu (134.122.21.251)
+  VPS Ubuntu (159.223.77.247)
   ┌──────────────────────────────────────────────┐
   │  shared-nginx (Docker) :80/:443               │
   │  └─ lqd.bhquan.store → lqd-api + frontend   │
@@ -29,7 +29,7 @@
 
 ### Nginx routing
 
-Config: `/opt/webphoto/nginx/conf.d/lqd.bhquan.store.conf`
+Config: `/opt/infra/nginx/conf.d/lqd.bhquan.store.conf`
 - `/api/*` → `http://lqd-api:4000`
 - `/*` → `http://lqd-frontend:3000`
 
@@ -41,7 +41,7 @@ Secrets được lưu trong **repo settings** — không commit lên git.
 
 | Secret | Mô tả |
 |--------|-------|
-| `VPS_HOST` | IP VPS: `134.122.21.251` |
+| `VPS_HOST` | IP VPS: `159.223.77.247` |
 | `VPS_PORT` | SSH port: `22` |
 | `VPS_USER` | SSH user: `root` |
 | `VPS_PASSWORD` | Mật khẩu SSH VPS |
@@ -123,7 +123,7 @@ Các giá trị nhạy cảm (passwords, API keys) chỉ lưu trong GitHub Secre
 ## Quản lý trên VPS
 
 ```bash
-ssh root@134.122.21.251
+ssh root@159.223.77.247
 cd /opt/lqd
 
 # Xem logs
