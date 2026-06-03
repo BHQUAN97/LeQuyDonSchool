@@ -11,32 +11,32 @@ interface Props {
 /* Du lieu testimonials — giong TestimonialCarousel.tsx */
 const testimonials = [
   {
-    name: 'Anh Hoang Huu Thang',
+    name: 'Anh Hoàng Hữu Thắng',
     title:
-      'Chu tich HDQT Intech Group | Pho Chu tich CLB Dau tu & Khoi nghiep Viet Nam | PHHS khoa 2021 - 2026',
+      'Chủ tịch HĐQT Intech Group | Phó Chủ tịch CLB Đầu tư & Khởi nghiệp Việt Nam | PHHS khóa 2021 - 2026',
     content:
-      'Toi thay vui va hanh phuc moi khi con noi chuyen the hien su dam me, yeu thich ngoi truong. Moi lan den Truong Tieu hoc Van Coc de don con, toi lai thay su vui tuoi, hon nhien cua cac con. Toi tin tuong vao su phat trien toan dien ma nha truong mang lai cho con trai minh.',
+      'Tôi thấy vui và hạnh phúc mỗi khi con nói chuyện thể hiện sự đam mê, yêu thích ngôi trường. Mỗi lần đến Trường Tiểu học Vân Cốc để đón con, tôi lại thấy sự vui tươi, hồn nhiên của các con. Tôi tin tưởng vào sự phát triển toàn diện mà nhà trường mang lại cho con trai mình.',
   },
   {
-    name: 'Anh Nguyen Thanh Binh',
+    name: 'Anh Nguyễn Thanh Bình',
     title:
-      'Giam doc Nha may Cong ty TNHH Che bien thuc pham va banh keo Pham Nguyen | PHHS nien khoa 2011 - 2016, 2020 - 2025 va 2024 - 2029',
+      'Giám đốc Nhà máy Công ty TNHH Chế biến thực phẩm và bánh kẹo Phạm Nguyên | PHHS niên khóa 2011 - 2016, 2020 - 2025 và 2024 - 2029',
     content:
-      'La mot nguoi bo, toi luon cam thay vo cung biet on khi nhin thay nhung buoc di vung chac cua cac con minh tren con duong hoc van. Ba dua con toi deu hoc tai truong Tieu hoc Van Coc va noi day thuc su la mot ngoi nha thu hai cua cac con.',
+      'Là một người bố, tôi luôn cảm thấy vô cùng biết ơn khi nhìn thấy những bước đi vững chắc của các con mình trên con đường học vấn. Ba đứa con tôi đều học tại trường Tiểu học Vân Cốc và nơi đây thực sự là một ngôi nhà thứ hai của các con.',
   },
   {
-    name: 'Chi Tran Thi Minh Ha',
+    name: 'Chị Trần Thị Minh Hà',
     title:
-      'Pho Giam doc Ngan hang TMCP Ngoai thuong Viet Nam | PHHS nien khoa 2022 - 2027',
+      'Phó Giám đốc Ngân hàng TMCP Ngoại thương Việt Nam | PHHS niên khóa 2022 - 2027',
     content:
-      'Con gai toi tu mot be nhut nhat, it noi da tro nen tu tin, manh dan sau 2 nam hoc tai Van Coc. Chau rat thich cac hoat dong ngoai khoa, dac biet la CLB Tieng Anh va Robotics.',
+      'Con gái tôi từ một bé nhút nhát, ít nói đã trở nên tự tin, mạnh dạn sau 2 năm học tại Vân Cốc. Cháu rất thích các hoạt động ngoại khóa, đặc biệt là CLB Tiếng Anh và Robotics.',
   },
   {
-    name: 'Anh Le Van Duc',
+    name: 'Anh Lê Văn Đức',
     title:
-      'CEO Cong ty CP Cong nghe DTS | PHHS nien khoa 2023 - 2028',
+      'CEO Công ty CP Công nghệ DTS | PHHS niên khóa 2023 - 2028',
     content:
-      'Dieu toi an tuong nhat o Van Coc la su minh bach trong giao tiep giua nha truong va phu huynh. Moi thong tin ve hoc tap, suc khoe, bua an cua con deu duoc cap nhat kip thoi qua ung dung.',
+      'Điều tôi ấn tượng nhất ở Vân Cốc là sự minh bạch trong giao tiếp giữa nhà trường và phụ huynh. Mọi thông tin về học tập, sức khỏe, bữa ăn của con đều được cập nhật kịp thời qua ứng dụng.',
   },
 ];
 
@@ -90,14 +90,14 @@ function TestimonialSimpleCarousel() {
         <div className="text-center mb-10">
           <div className="flex items-center justify-center gap-2 mb-1">
             <span className="text-sm font-semibold text-gray-800 uppercase tracking-wide">
-              Tu cong dong
+              Từ cộng đồng
             </span>
             <div className="flex gap-0.5">
               <span className="w-5 h-1 bg-green-600 rounded-full" />
               <span className="w-5 h-1 bg-red-500 rounded-full" />
             </div>
           </div>
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Van Coc</h2>
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Vân Cốc</h2>
         </div>
 
         {/* Carousel */}
@@ -152,14 +152,14 @@ function TestimonialCards() {
         <div className="text-center mb-10">
           <div className="flex items-center justify-center gap-2 mb-1">
             <span className="text-sm font-semibold text-gray-800 uppercase tracking-wide">
-              Tu cong dong
+              Từ cộng đồng
             </span>
             <div className="flex gap-0.5">
               <span className="w-5 h-1 bg-green-600 rounded-full" />
               <span className="w-5 h-1 bg-red-500 rounded-full" />
             </div>
           </div>
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Van Coc</h2>
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Vân Cốc</h2>
         </div>
 
         {/* Grid cards */}

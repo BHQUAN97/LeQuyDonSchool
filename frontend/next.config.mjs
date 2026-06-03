@@ -26,6 +26,7 @@ const nextConfig = {
       { protocol: 'http', hostname: 'localhost' },
       { protocol: 'http', hostname: 'backend' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'picsum.photos' },
     ],
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 604800,

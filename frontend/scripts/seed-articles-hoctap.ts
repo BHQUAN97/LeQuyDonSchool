@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Seed 8 articles cho category "Hoạt động học tập".
  * Chay qua seed-runner.ts hoac truc tiep: npx tsx scripts/seed-articles-hoctap.ts
  */
@@ -22,7 +22,7 @@ const articles: Article[] = [
     slug: 'thanh-tich-thang-3-doners-xuat-sac-gianh-1536-giai',
     excerpt:
       'Tổng kết thành tích nổi bật của học sinh Vân Cốc trong tháng 3 với 1.536 giải thưởng các cấp.',
-    thumbnailUrl: 'https://picsum.photos/seed/hoctap01/800/450',
+    thumbnailUrl: '/images/design/news-award.png',
     publishedAt: '2026-03-31T08:00:00Z',
     content: `
 <h2>Tổng kết Thành tích Tháng 3 năm 2026</h2>
@@ -44,7 +44,7 @@ const articles: Article[] = [
     slug: 'hoc-sinh-lop-5-dat-giai-nhat-olympic-toan-cap-quan',
     excerpt:
       'Em Nguyễn Minh Anh lớp 5A xuất sắc giành giải Nhất kỳ thi Olympic Toán cấp Quận năm 2026.',
-    thumbnailUrl: 'https://picsum.photos/seed/hoctap02/800/450',
+    thumbnailUrl: '/images/design/intro-classroom.png',
     publishedAt: '2026-03-25T09:00:00Z',
     content: `
 <h2>Giải Nhất Olympic Toán cấp Quận 2026</h2>
@@ -66,7 +66,7 @@ const articles: Article[] = [
     slug: 'ket-qua-cambridge-flyers-dat-ty-le-95',
     excerpt:
       '95% học sinh khối 5 đạt chứng chỉ Cambridge Flyers, trong đó 32% đạt loại xuất sắc 15 khiên.',
-    thumbnailUrl: 'https://picsum.photos/seed/hoctap03/800/450',
+    thumbnailUrl: '/images/design/news-doi-khoi.png',
     publishedAt: '2026-03-18T10:00:00Z',
     content: `
 <h2>Kết quả kỳ thi Cambridge Flyers 2026</h2>
@@ -88,7 +88,7 @@ const articles: Article[] = [
     slug: 'du-an-stem-thanh-pho-thong-minh-lop-4a',
     excerpt:
       'Học sinh lớp 4A trình bày dự án mô hình Thành phố thông minh sử dụng Arduino và cảm biến.',
-    thumbnailUrl: 'https://picsum.photos/seed/hoctap04/800/450',
+    thumbnailUrl: '/images/design/news-health-check.png',
     publishedAt: '2026-03-10T08:30:00Z',
     content: `
 <h2>Dự án STEM: Thành phố thông minh — Smart City</h2>
@@ -110,7 +110,7 @@ const articles: Article[] = [
     slug: 'cuoc-thi-viet-chu-dep-cap-truong',
     excerpt:
       'Hơn 200 học sinh tham gia cuộc thi viết chữ đẹp cấp trường, tôn vinh nét chữ nết người.',
-    thumbnailUrl: 'https://picsum.photos/seed/hoctap05/800/450',
+    thumbnailUrl: '/images/design/news-letter-cover.png',
     publishedAt: '2026-03-05T09:00:00Z',
     content: `
 <h2>Cuộc thi Viết chữ đẹp cấp trường năm 2026</h2>
@@ -132,7 +132,7 @@ const articles: Article[] = [
     slug: 'thi-hung-bien-tieng-anh-lan-thu-3',
     excerpt:
       'Chung kết cuộc thi Hùng biện Tiếng Anh lần 3 với chủ đề "My Green Future" diễn ra sôi nổi.',
-    thumbnailUrl: 'https://picsum.photos/seed/hoctap06/800/450',
+    thumbnailUrl: '/images/design/intro-medical-check.png',
     publishedAt: '2026-02-28T14:00:00Z',
     content: `
 <h2>Chung kết Hùng biện Tiếng Anh lần thứ 3</h2>
@@ -154,7 +154,7 @@ const articles: Article[] = [
     slug: 'gio-hoc-trai-nghiem-stem-khoi-2',
     excerpt:
       'Học sinh khối 2 hào hứng với giờ học STEM chế tạo ô tô chạy bằng bóng bay và cầu giấy.',
-    thumbnailUrl: 'https://picsum.photos/seed/hoctap07/800/450',
+    thumbnailUrl: '/images/design/news-food-safety.png',
     publishedAt: '2026-02-20T08:00:00Z',
     content: `
 <h2>Giờ học trải nghiệm STEM — Khối 2</h2>
@@ -176,7 +176,7 @@ const articles: Article[] = [
     slug: 'tuan-le-doc-sach-books-for-fun',
     excerpt:
       'Tuần lễ đọc sách "Books for Fun" khuyến khích văn hóa đọc với nhiều hoạt động hấp dẫn.',
-    thumbnailUrl: 'https://picsum.photos/seed/hoctap08/800/450',
+    thumbnailUrl: '/images/design/testimonial-family.png',
     publishedAt: '2026-02-14T08:00:00Z',
     content: `
 <h2>Tuần lễ đọc sách "Books for Fun"</h2>
@@ -233,3 +233,4 @@ if (require.main === module) {
     console.log('Done.');
   })();
 }
+

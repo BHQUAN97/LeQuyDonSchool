@@ -107,6 +107,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
           { label: article.category, href: `/tin-tuc/${article.categorySlug}` },
           { label: article.title },
         ]}
+        imageSrc={imgUrl(article.thumbnail_url) ?? undefined}
       />
 
       <div className="max-w-7xl mx-auto px-4 py-8 lg:py-10">

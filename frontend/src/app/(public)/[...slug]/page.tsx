@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Breadcrumb from '@/components/public/Breadcrumb';
+import PageBanner from '@/components/public/PageBanner';
 import SafeHtml from '@/components/public/SafeHtml';
 import { buildPageMetadata } from '@/lib/seo-helpers';
 import { getInternalApiBase } from '@/lib/ssr-api';
@@ -95,15 +95,7 @@ export default async function DynamicPage({
 
   return (
     <>
-      {/* Hero banner */}
-      <section className="bg-gradient-to-r from-[#1a5276] to-[#2e86c1] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <Breadcrumb items={breadcrumbs} variant="light" />
-          <div className="pb-8 pt-2">
-            <h1 className="text-2xl md:text-3xl font-bold">{page.title}</h1>
-          </div>
-        </div>
-      </section>
+      <PageBanner title={page.title} breadcrumbItems={breadcrumbs} />
 
       {/* Noi dung trang — sanitize bang DOMPurify de chong XSS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12">

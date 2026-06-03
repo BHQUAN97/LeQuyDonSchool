@@ -29,10 +29,10 @@ function HeroWithSidebar() {
             </div>
             <div>
               <p className="text-sm uppercase tracking-wider text-green-200">
-                He thong Truong lien cap
+                Hệ thống Trường liên cấp
               </p>
               <p className="text-sm font-bold leading-tight">
-                Truong Tieu hoc Van Coc
+                Trường Tiểu học Vân Cốc
               </p>
             </div>
           </div>
@@ -40,10 +40,10 @@ function HeroWithSidebar() {
           {/* Thong bao */}
           <div className="bg-white/10 rounded-xl p-4 mb-4 border border-white/20">
             <p className="text-sm font-semibold uppercase tracking-wide text-yellow-300 mb-2">
-              Thong bao
+              Thông báo
             </p>
             <p className="text-sm leading-relaxed opacity-90">
-              Tuyen sinh nam hoc 2025–2026 da bat dau. Dang ky som de nhan uu dai dac biet.
+              Tuyển sinh năm học 2025–2026 đã bắt đầu. Đăng ký sớm để nhận ưu đãi đặc biệt.
             </p>
           </div>
         </div>
@@ -51,13 +51,13 @@ function HeroWithSidebar() {
         {/* Quick links */}
         <div>
           <p className="text-sm font-semibold uppercase tracking-wide text-green-200 mb-3">
-            Truy cap nhanh
+            Truy cập nhanh
           </p>
           <div className="flex flex-col gap-2">
             {[
-              { label: 'Tuyen sinh', href: '/tuyen-sinh' },
-              { label: 'Chuong trinh hoc', href: '/chuong-trinh-hoc' },
-              { label: 'Lien he', href: '/lien-he' },
+              { label: 'Tuyển sinh', href: '/tuyen-sinh' },
+              { label: 'Chương trình học', href: '/chuong-trinh-hoc' },
+              { label: 'Liên hệ', href: '/lien-he' },
             ].map((link) => (
               <Link
                 key={link.href}
@@ -92,20 +92,20 @@ function HeroMinimal() {
       {/* Content — centered */}
       <div className="relative z-20 text-center text-white px-4 max-w-3xl mx-auto">
         <p className="text-sm uppercase tracking-widest text-green-200 mb-3">
-          He thong Truong lien cap
+          Hệ thống Trường liên cấp
         </p>
         <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-4 leading-tight drop-shadow-lg">
-          Truong Tieu hoc{' '}
-          <span className="text-yellow-300">Van Coc</span>
+          Trường Tiểu học{' '}
+          <span className="text-yellow-300">Vân Cốc</span>
         </h1>
         <p className="text-base lg:text-lg opacity-90 mb-8 drop-shadow max-w-xl mx-auto">
-          Tu ky vong den tin yeu — moi ngay den truong la mot hanh trinh kham pha, sang tao va truong thanh.
+          Từ kỳ vọng đến tin yêu — mỗi ngày đến trường là một hành trình khám phá, sáng tạo và trưởng thành.
         </p>
         <Link
           href="/tuyen-sinh"
           className="inline-flex items-center px-8 py-4 bg-[var(--hp-accent,#D32F2F)] text-white font-bold rounded-lg hover:opacity-90 transition-colors shadow-lg text-sm"
         >
-          Tim hieu ngay
+          Tìm hiểu ngay
         </Link>
       </div>
     </section>

@@ -38,6 +38,8 @@ interface ArticleListLayoutProps {
   withSidebar?: boolean;
   grid?: boolean;
   imageFit?: 'cover' | 'contain';
+  /** URL anh nen cho PageBanner — khong co thi dung gradient mac dinh */
+  bannerImage?: string;
 }
 
 export default function ArticleListLayout({
@@ -52,10 +54,11 @@ export default function ArticleListLayout({
   withSidebar = true,
   grid = false,
   imageFit = 'cover',
+  bannerImage,
 }: ArticleListLayoutProps) {
   return (
     <div>
-      <PageBanner title={title} breadcrumbItems={breadcrumbs} />
+      <PageBanner title={title} breadcrumbItems={breadcrumbs} imageSrc={bannerImage} />
 
       <section className="max-w-7xl mx-auto px-4 pt-8 pb-14">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">

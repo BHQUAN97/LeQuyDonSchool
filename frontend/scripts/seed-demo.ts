@@ -58,8 +58,31 @@ function recentDate(daysAgo: number): string {
   return d.toISOString();
 }
 
+const THUMBNAIL_POOL = [
+  '/images/design/news-award.png',
+  '/images/design/intro-classroom.png',
+  '/images/design/news-doi-khoi.png',
+  '/images/design/news-health-check.png',
+  '/images/design/news-letter-cover.png',
+  '/images/design/intro-medical-check.png',
+  '/images/design/news-food-safety.png',
+  '/images/design/intro-campus-sanitizing.png',
+  '/images/design/intro-healthcare.png',
+  '/images/design/intro-lunch.png',
+  '/images/design/intro-safety-training.png',
+  '/images/design/testimonial-family.png',
+];
+
+/** Chon anh local dua tren slug — deterministic, khong dung external URL */
 function thumbnail(slug: string): string {
-  return `https://picsum.photos/seed/lqd-${slug}/800/500`;
+  const OVERRIDES: Record<string, string> = {
+    'event-3-san-sang': '/images/design/event-3-san-sang.png',
+    'event-20-nam':     '/images/design/testimonial-family.png',
+    'event-open-day':   '/images/design/hero-admission-2026.png',
+  };
+  if (OVERRIDES[slug]) return OVERRIDES[slug];
+  const hash = slug.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  return THUMBNAIL_POOL[hash % THUMBNAIL_POOL.length];
 }
 
 // ─── CATEGORIES ───────────────────────────────────────────

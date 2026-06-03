@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Seed 8 bai viet cho danh muc "Hoat dong ngoai khoa"
  * Chay: npx tsx scripts/seed-articles-ngoaikhoa.ts
  */
@@ -15,7 +15,7 @@ const articles = [
   {
     title: 'Hành Trình Khám Phá Của học sinh Vân Cốc Khối 5 Tại Bản Rôm',
     slug: 'hanh-trinh-kham-pha-doners-khoi-5-ban-rom',
-    thumbnailUrl: 'https://picsum.photos/seed/lqd-ngoaikhoa-1/800/500',
+    thumbnailUrl: '/images/design/intro-campus-sanitizing.png',
     publishedAt: '2026-01-10T08:00:00.000Z',
     excerpt:
       'Học sinh khối 5 trường Tiểu học Vân Cốc có chuyến dã ngoại đáng nhớ tại Bản Rôm, trải nghiệm văn hóa dân tộc và thiên nhiên vùng cao.',
@@ -37,7 +37,7 @@ const articles = [
   {
     title: 'Đại phim kể của học sinh Vân Cốc Sao — Nhảy mí là cả thế giới',
     slug: 'dai-phim-ke-doners-sao-nhay-mi-la-ca-the-gioi',
-    thumbnailUrl: 'https://picsum.photos/seed/lqd-ngoaikhoa-2/800/500',
+    thumbnailUrl: '/images/design/intro-healthcare.png',
     publishedAt: '2026-01-25T08:00:00.000Z',
     excerpt:
       'Dự án phim ngắn do chính học sinh học sinh Vân Cốc Sao thực hiện, kể câu chuyện về ước mơ và đam mê nhảy múa của các em nhỏ trường Vân Cốc.',
@@ -59,7 +59,7 @@ const articles = [
   {
     title: 'Biệt đội nhí — học sinh Vân Cốc kể sứ hiệp câu chuyện xanh',
     slug: 'biet-doi-nhi-doners-ke-su-hiep-cau-chuyen-xanh',
-    thumbnailUrl: 'https://picsum.photos/seed/lqd-ngoaikhoa-3/800/500',
+    thumbnailUrl: '/images/design/intro-lunch.png',
     publishedAt: '2026-02-14T08:00:00.000Z',
     excerpt:
       'Dự án môi trường "Câu chuyện xanh" với sự tham gia của hơn 300 học sinh, biến khuôn viên trường thành không gian xanh mát.',
@@ -81,7 +81,7 @@ const articles = [
   {
     title: 'Trại Xuân 2026 — Team Tên Trộm 3 học sinh Vân Cốc Mùa xuân ơi',
     slug: 'trai-xuan-2026-team-ten-trom-3-doners-mua-xuan-oi',
-    thumbnailUrl: 'https://picsum.photos/seed/lqd-ngoaikhoa-4/800/500',
+    thumbnailUrl: '/images/design/intro-safety-training.png',
     publishedAt: '2026-02-20T08:00:00.000Z',
     excerpt:
       'Trại Xuân 2026 với chủ đề "Mùa xuân ơi" mang đến 2 ngày trải nghiệm đầy sắc màu cho toàn thể học sinh nhà trường.',
@@ -103,7 +103,7 @@ const articles = [
   {
     title: 'Chuyến dã ngoại Ba Vì cho học sinh khối 4-5',
     slug: 'chuyen-da-ngoai-ba-vi-hoc-sinh-khoi-4-5',
-    thumbnailUrl: 'https://picsum.photos/seed/lqd-ngoaikhoa-5/800/500',
+    thumbnailUrl: '/images/design/event-3-san-sang.png',
     publishedAt: '2026-03-08T08:00:00.000Z',
     excerpt:
       'Hơn 250 học sinh khối 4-5 có chuyến trải nghiệm một ngày tại Vườn Quốc gia Ba Vì với nhiều hoạt động giáo dục bổ ích.',
@@ -125,7 +125,7 @@ const articles = [
   {
     title: 'CLB Robotics giành giải Nhất cuộc thi STEM cấp Thành phố',
     slug: 'clb-robotics-gianh-giai-nhat-stem-cap-thanh-pho',
-    thumbnailUrl: 'https://picsum.photos/seed/lqd-ngoaikhoa-6/800/500',
+    thumbnailUrl: '/images/design/intro-classroom.png',
     publishedAt: '2026-03-22T08:00:00.000Z',
     excerpt:
       'Đội tuyển Robotics trường Vân Cốc xuất sắc giành giải Nhất cuộc thi STEM cấp Thành phố Hà Nội năm 2026.',
@@ -147,7 +147,7 @@ const articles = [
   {
     title: 'Chương trình trao đổi học sinh với PLC Sydney',
     slug: 'chuong-trinh-trao-doi-hoc-sinh-plc-sydney',
-    thumbnailUrl: 'https://picsum.photos/seed/lqd-ngoaikhoa-7/800/500',
+    thumbnailUrl: '/images/design/news-doi-khoi.png',
     publishedAt: '2026-04-01T08:00:00.000Z',
     excerpt:
       'Lần đầu tiên trường Vân Cốc triển khai chương trình trao đổi học sinh quốc tế với trường PLC Sydney, Australia.',
@@ -169,7 +169,7 @@ const articles = [
   {
     title: 'Hội khỏe Phù Đổng cấp trường 2026',
     slug: 'hoi-khoe-phu-dong-cap-truong-2026',
-    thumbnailUrl: 'https://picsum.photos/seed/lqd-ngoaikhoa-8/800/500',
+    thumbnailUrl: '/images/design/news-health-check.png',
     publishedAt: '2026-04-05T08:00:00.000Z',
     excerpt:
       'Hội khỏe Phù Đổng cấp trường 2026 với sự tham gia của toàn bộ học sinh, thi đấu 12 môn thể thao trong 3 ngày sôi động.',
@@ -249,3 +249,4 @@ export default async function seedArticlesNgoaiKhoa() {
 
   console.log(`\nDone: ${success}/${articles.length} articles created.\n`);
 }
+

@@ -1,4 +1,4 @@
-import { AppDataSource } from '../data-source';
+﻿import { AppDataSource } from '../data-source';
 import { User, UserRole } from '../../modules/users/entities/user.entity';
 import { Category, CategoryStatus } from '../../modules/categories/entities/category.entity';
 import { Article, ArticleStatus } from '../../modules/articles/entities/article.entity';
@@ -181,7 +181,7 @@ async function seedArticles(adminId: string): Promise<void> {
 </ul>
 <p>Trong bài phát biểu xúc động, thầy Hiệu trưởng nhắn nhủ: <em>"Mỗi ngày đến trường là một ngày hạnh phúc. Thầy cô và nhà trường luôn đồng hành cùng các em trên con đường chinh phục tri thức."</em> Buổi lễ kết thúc bằng màn múa hát chào mừng sôi động của học sinh toàn trường.</p>`,
       excerpt: 'Sáng 5/9/2025, Trường Tiểu học Vân Cốc tổ chức Lễ khai giảng năm học 2025-2026 với sự tham dự của hơn 800 học sinh và đông đảo phụ huynh trong không khí trang trọng và vui tươi.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-1/800/400',
+      thumbnail_url: '/images/design/news-award.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'tin-tuc',
       view_count: 742,
@@ -208,7 +208,7 @@ async function seedArticles(adminId: string): Promise<void> {
 </ul>
 <p>Thầy Hiệu trưởng Nguyễn Văn Hùng bày tỏ lòng biết ơn sâu sắc đến Ban Phụ huynh học sinh và các mạnh thường quân đã đồng hành cùng nhà trường. Tập thể nhà trường hứa sẽ tiếp tục phấn đấu, không ngừng đổi mới sáng tạo để xứng đáng với sự tin tưởng của phụ huynh và học sinh.</p>`,
       excerpt: 'Trường Tiểu học Vân Cốc vinh dự được UBND Thành phố trao Bằng khen về thành tích xuất sắc trong công tác giáo dục và đào tạo năm học 2024-2025.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-2/800/400',
+      thumbnail_url: '/images/design/intro-classroom.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'tin-tuc',
       view_count: 589,
@@ -241,7 +241,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <h3>Lưu ý quan trọng</h3>
 <p>Phụ huynh cần chuẩn bị đầy đủ đồ dùng học tập theo danh sách nhà trường đã gửi. Học sinh mặc đồng phục theo quy định (áo trắng, quần/váy xanh navy). Mọi thắc mắc xin liên hệ văn phòng nhà trường qua số điện thoại <strong>024-3835-xxxx</strong> trong giờ hành chính từ 7h30 đến 17h00, thứ Hai đến thứ Sáu.</p>`,
       excerpt: 'Thông báo lịch tựu trường và các hoạt động đầu năm học 2025-2026 dành cho học sinh các khối lớp 1 đến 5 tại Trường Tiểu học Vân Cốc.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-3/800/400',
+      thumbnail_url: '/images/design/news-doi-khoi.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'tin-tuc',
       view_count: 412,
@@ -270,7 +270,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <p>Trong năm học 2024-2025, học sinh của trường đã tham gia và đạt nhiều thành tích xuất sắc tại các cuộc thi cấp quận, thành phố và quốc gia. Đặc biệt, <strong>em Nguyễn Minh Khôi</strong> (lớp 5A) đoạt Giải Nhất cuộc thi Toán Kangaroo cấp Quốc gia, đem lại niềm tự hào lớn cho nhà trường.</p>
 <p>Ban Giám hiệu trân trọng cảm ơn sự đồng hành của quý phụ huynh trong suốt năm học qua. Những kết quả này là minh chứng cho sự đổi mới không ngừng trong phương pháp giảng dạy của đội ngũ giáo viên và tinh thần học tập nghiêm túc, sáng tạo của học sinh toàn trường.</p>`,
       excerpt: 'Năm học 2024-2025, 98,5% học sinh Trường Tiểu học Vân Cốc đạt xếp loại Hoàn thành xuất sắc, tăng 2,3% so với năm học trước.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-4/800/400',
+      thumbnail_url: '/images/design/news-health-check.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'hoc-tap',
       view_count: 634,
@@ -297,7 +297,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <h3>Kế hoạch phát triển</h3>
 <p>Nhà trường dự kiến mở rộng mô hình này ra toàn bộ các khối lớp trong năm học 2025-2026, đồng thời tổ chức tập huấn chuyên sâu cho 100% giáo viên về phương pháp dạy học tích hợp STEM. Ban Giám hiệu đã ký kết hợp tác với Trường Đại học Bách Khoa Hà Nội để được hỗ trợ về tài liệu giảng dạy và tập huấn giáo viên — bước đi chiến lược nhằm nâng cao chất lượng giáo dục toàn diện, chuẩn bị cho học sinh bước vào kỷ nguyên công nghệ số.</p>`,
       excerpt: 'Trường Tiểu học Vân Cốc tiên phong tích hợp STEM vào các môn học cơ bản, giúp học sinh học qua trải nghiệm thực tế thay vì lý thuyết thuần túy.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-5/800/400',
+      thumbnail_url: '/images/design/news-letter-cover.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'hoc-tap',
       view_count: 387,
@@ -326,7 +326,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <h3>Ấn tượng từ khán giả</h3>
 <p>Phụ huynh em Lê Minh Đức chia sẻ: <em>"Tôi không ngờ con tôi có thể lập trình được một chiếc robot như vậy. Thật sự ấn tượng và tự hào."</em> Sự kiện thu hút hơn 500 phụ huynh tham dự, tạo không khí vui tươi, gắn kết giữa gia đình và nhà trường. Đây là minh chứng rõ ràng cho phương châm giáo dục toàn diện của trường: phát triển cả trí tuệ, thể chất và tâm hồn cho từng học sinh.</p>`,
       excerpt: 'Ngày hội Câu lạc bộ 2025 với chủ đề "Tài năng nhỏ, Ước mơ lớn" quy tụ hơn 300 học sinh từ 12 CLB trình diễn tài năng trước hơn 500 phụ huynh.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-6/800/400',
+      thumbnail_url: '/images/design/intro-medical-check.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'hoat-dong',
       view_count: 521,
@@ -355,7 +355,7 @@ async function seedArticles(adminId: string): Promise<void> {
 </ul>
 <p>Chuyến đi kết thúc thành công tốt đẹp. Mỗi em mang về một cuốn nhật ký tham quan đầy ắp hình ảnh và kỷ niệm đẹp về thiên nhiên đất nước Việt Nam.</p>`,
       excerpt: 'Học sinh khối 3 Trường Tiểu học Vân Cốc có chuyến tham quan hai ngày đến Vườn Quốc gia Cúc Phương và Tràng An, khám phá thiên nhiên và học về bảo vệ môi trường.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-7/800/400',
+      thumbnail_url: '/images/design/news-food-safety.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'hoat-dong',
       view_count: 298,
@@ -382,7 +382,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <p>Đặc biệt năm nay, nhà trường phối hợp với Hội Phụ nữ phường để tặng 50 phần quà Trung Thu cho trẻ em có hoàn cảnh khó khăn trong khu vực — một hành động ý nghĩa giáo dục lòng nhân ái từ sớm cho các em học sinh.</p>
 <p>Sự kiện kết thúc lúc 21 giờ trong tiếng vỗ tay và nụ cười của mọi người. Đây thực sự là một đêm hội đáng nhớ, góp phần bồi đắp tình yêu văn hóa dân tộc trong trái tim những học trò nhỏ.</p>`,
       excerpt: 'Đêm hội Trung Thu 2025 tại Trường Tiểu học Vân Cốc lung linh với màn rước đèn của 400 học sinh, múa lân và phá cỗ truyền thống.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-8/800/400',
+      thumbnail_url: '/images/design/testimonial-family.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'hoat-dong',
       view_count: 463,
@@ -471,7 +471,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <h3>Minh bạch thông tin</h3>
 <p>Thực đơn đầy đủ cả tháng được công khai trên bảng thông báo tại cổng trường và trên phần mềm quản lý bán trú. Phụ huynh có thể theo dõi khẩu phần ăn của con mỗi ngày. Mọi phản ánh về chất lượng bữa ăn, xin liên hệ trực tiếp với Ban Bán trú qua hotline của nhà trường trong giờ hành chính.</p>`,
       excerpt: 'Thực đơn bán trú tháng 11/2025 được xây dựng bởi chuyên gia dinh dưỡng BV Nhi TW, đảm bảo đủ dưỡng chất 600-700 kcal và đa dạng khẩu phần cho học sinh.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-11/800/400',
+      thumbnail_url: '/images/design/intro-campus-sanitizing.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'doi-song',
       view_count: 321,
@@ -500,7 +500,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <p>Kết quả cho thấy <strong>85% học sinh có sức khỏe tốt</strong>. Một số lưu ý đáng chú ý: 12% học sinh có biểu hiện cận thị nhẹ đến trung bình (cần đeo kính), 8% học sinh thừa cân cần điều chỉnh chế độ ăn và tăng cường vận động.</p>
 <p>Phiếu kết quả khám sức khỏe của từng học sinh được gửi về cho phụ huynh. Những học sinh cần theo dõi thêm sẽ được nhà trường thông báo trực tiếp và hỗ trợ chuyển giới thiệu đến các cơ sở y tế phù hợp.</p>`,
       excerpt: 'Toàn bộ học sinh Trường TH Vân Cốc được khám sức khỏe định kỳ từ ngày 15-30/9/2025, bao gồm thị lực, răng miệng, thính lực và đánh giá dinh dưỡng.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-12/800/400',
+      thumbnail_url: '/images/design/intro-healthcare.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'doi-song',
       view_count: 287,
@@ -528,7 +528,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <h3>Chặng đường luyện tập</h3>
 <p>Để đạt được những kết quả này, các em đã luyện tập kiên trì từ 5h30 sáng mỗi ngày tại Bể bơi Thủ Đô, dưới sự huấn luyện tận tâm của HLV Trần Văn Minh — cựu tuyển thủ bơi lội quốc gia. Đây là năm thứ 3 liên tiếp Vân Cốc dẫn đầu bảng tổng sắc giải bơi liên trường quận, khẳng định thế mạnh thể thao của nhà trường.</p>`,
       excerpt: 'Đội bơi Trường TH Vân Cốc giành 3 Huy chương Vàng, 1 Bạc, 1 Đồng tại Giải Bơi lội liên trường quận Ba Đình 2025, lần thứ 3 liên tiếp dẫn đầu bảng tổng sắc.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-13/800/400',
+      thumbnail_url: '/images/design/intro-lunch.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'the-thao',
       view_count: 576,
@@ -555,7 +555,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <h3>Kế hoạch phát triển</h3>
 <p>HLV bóng đá trường — thầy Lê Hải Nam — cho biết sẽ mở rộng CLB bóng đá từ 20 lên 35 thành viên trong năm học tới, tăng cường luyện tập kỹ thuật cá nhân và chiến thuật đội hình. Nhà trường đang xin phép nâng cấp sân bóng mini để các em có điều kiện tập luyện tốt hơn.</p>`,
       excerpt: 'Đội bóng đá mini Trường TH Vân Cốc vào đến bán kết Giải liên trường quận Ba Đình 2025 sau khi thắng cả 3 trận vòng bảng và vượt qua tứ kết.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-14/800/400',
+      thumbnail_url: '/images/design/intro-safety-training.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'the-thao',
       view_count: 354,
@@ -583,7 +583,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <h3>Thông tin CLB</h3>
 <p>CLB hoạt động <strong>2 buổi/tuần</strong> (thứ Ba và thứ Năm, 16h00-17h30), dưới sự hướng dẫn của HLV Nguyễn Thanh Bình — Đai Đen đẳng 5 Vovinam, từng đại diện Việt Nam thi đấu quốc tế. Khóa khai giảng đầu tiên có <strong>45 học sinh</strong> từ khối lớp 3 đến 5 tham gia. Phụ huynh có thể đăng ký tại văn phòng nhà trường từ nay đến hết tháng 10.</p>`,
       excerpt: 'Trường TH Vân Cốc khai giảng CLB Vovinam dưới sự hướng dẫn của HLV Đai Đen đẳng 5, với 45 học sinh khối 3-5 tham gia khóa đầu tiên.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-15/800/400',
+      thumbnail_url: '/images/design/event-3-san-sang.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'the-thao',
       view_count: 267,
@@ -611,7 +611,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <p>Em Bùi Ngọc Anh (lớp 3C), tác giả bức tranh "Mẹ và con" được nhiều người yêu thích nhất, chia sẻ: <em>"Con vẽ mẹ con đang đọc sách dưới cây táo trong sân nhà. Con muốn mọi người biết con yêu mẹ nhiều lắm."</em></p>
 <p>Giáo viên Mỹ thuật — cô Lê Phương Thảo — cho biết triển lãm là cơ hội để các em được nhìn nhận và trân trọng, đồng thời khơi dậy niềm đam mê nghệ thuật từ sớm. Dự kiến triển lãm sẽ được tổ chức thường niên vào cuối mỗi học kỳ I.</p>`,
       excerpt: 'Triển lãm "Màu sắc Vân Cốc" trưng bày hơn 200 tác phẩm hội họa và thủ công của học sinh từ lớp 1-5, là sân chơi nghệ thuật thường niên đầy ý nghĩa.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-16/800/400',
+      thumbnail_url: '/images/design/hero-admission-2026.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'nghe-thuat',
       view_count: 341,
@@ -639,7 +639,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <p>Chương trình kéo dài gần 2 tiếng đồng hồ với sự tham dự của hơn 300 khán giả — chủ yếu là phụ huynh và học sinh. Nhiều phụ huynh xúc động, không ít người đã rơi lệ trước những giọng ca trong sáng, hồn nhiên của con em mình.</p>
 <p>Toàn bộ số tiền bán vé (20.000đ/vé) được dùng để mua nhạc cụ cho CLB, đảm bảo không thu thêm bất kỳ khoản đóng góp nào từ phụ huynh.</p>`,
       excerpt: 'Đêm nhạc "Giai điệu tuổi thơ" của CLB Âm nhạc Vân Cốc thu hút hơn 300 khán giả với hợp xướng, độc tấu piano, nhạc cụ dân tộc và nhạc kịch thiếu nhi.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-17/800/400',
+      thumbnail_url: '/images/design/admission-2026-list.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'nghe-thuat',
       view_count: 412,
@@ -666,7 +666,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <p>Robot mang tên <em>"Vạn Lý"</em> được thiết kế để thực hiện nhiệm vụ phân loại rác thải tự động — chủ đề phù hợp với tinh thần bảo vệ môi trường. Đội đã dành hơn <strong>300 giờ</strong> nghiên cứu, thiết kế, lập trình và thử nghiệm trong vòng 6 tháng, trải qua không biết bao nhiêu lần thất bại và điều chỉnh.</p>
 <p>Với kết quả xuất sắc tại WRO Vietnam 2025, đội Robotics Vân Cốc được tuyển chọn vào đội tuyển quốc gia để tham dự <strong>WRO International Final 2025</strong> tại Panama. Đây là cột mốc lịch sử, lần đầu tiên một trường tiểu học Việt Nam được đại diện quốc gia tại đấu trường robotics quốc tế.</p>`,
       excerpt: 'Đội Robotics 3 thành viên của Trường TH Vân Cốc giành Huy chương Vàng WRO Vietnam 2025 và được tuyển chọn đại diện Việt Nam tại WRO International Final.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-18/800/400',
+      thumbnail_url: '/images/design/admission-2025-list.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'stem',
       view_count: 783,
@@ -693,7 +693,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <h3>Ban giám khảo và giải thưởng</h3>
 <p>Ban giám khảo gồm các giảng viên Đại học Khoa học Tự nhiên Hà Nội đã đánh giá cao chất lượng của các dự án. Dự án "Nước sạch từ chai nhựa tái chế" đoạt <strong>Giải Nhất</strong>, được đề cử tham gia Hội thi Khoa học Kỹ thuật cấp quận. Sự kiện thu hút hơn 600 khán giả tham dự trong ngày, trong đó có nhiều phụ huynh và học sinh các trường bạn.</p>`,
       excerpt: 'Hội chợ Khoa học 2025 của Trường TH Vân Cốc trưng bày hơn 60 dự án nghiên cứu do học sinh lớp 3-5 thực hiện, thu hút hơn 600 khán giả.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-19/800/400',
+      thumbnail_url: '/images/design/admission-2026-detail.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'stem',
       view_count: 456,
@@ -722,7 +722,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <h3>Lưu ý về an toàn dịp Tết</h3>
 <p>Nhà trường khuyến cáo phụ huynh chú ý an toàn giao thông, an toàn thực phẩm và phòng tránh đuối nước cho trẻ trong dịp nghỉ Tết. Nếu có sự cố khẩn cấp, phụ huynh có thể liên hệ Ban Giám hiệu qua số hotline trực ban. Chúc toàn thể gia đình học sinh một năm mới Bính Ngọ 2026 bình an, hạnh phúc và thịnh vượng!</p>`,
       excerpt: 'Trường TH Vân Cốc thông báo học sinh nghỉ Tết Nguyên Đán 2026 từ 23/1 đến 5/2/2026, học lại từ 6/2/2026 với kế hoạch học bù hai buổi sáng Thứ Bảy.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-20/800/400',
+      thumbnail_url: '/images/design/admission-process.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'thong-bao',
       view_count: 534,
@@ -750,7 +750,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <p>Em <strong>Nguyễn Minh Châu</strong> (lớp 4A) đoạt Giải Nhất môn Tiếng Việt với bài văn miêu tả được ban giám khảo đánh giá cao về xúc cảm và sự sáng tạo ngôn ngữ.</p>
 <p>Ban Giám hiệu trao thưởng và biểu dương toàn bộ 42 học sinh đoạt giải trong buổi chào cờ đầu tuần. Nhà trường đặt mục tiêu phấn đấu dẫn đầu toàn quận tại kỳ thi học sinh giỏi học kỳ II sắp tới.</p>`,
       excerpt: '42 học sinh Trường TH Vân Cốc đoạt giải tại kỳ thi học sinh giỏi cấp quận Ba Đình học kỳ I 2025-2026, xếp thứ 2 toàn quận về số lượng giải.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-21/800/400',
+      thumbnail_url: '/images/design/news-award.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'ket-qua-hoc-tap',
       view_count: 489,
@@ -779,7 +779,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <p>Thầy Hiệu trưởng phát biểu: <em>"Mỗi cuốn sách là một cuộc phiêu lưu. Chúng tôi muốn học sinh Vân Cốc trở thành những người bạn thân thiết của sách ngay từ những năm đầu đời — bởi thói quen đọc sách sẽ theo các em đến suốt cuộc đời."</em></p>
 <p>Sau sự kiện, thư viện nhà trường ghi nhận lượt mượn sách tăng <strong>240%</strong> so với tháng trước — minh chứng rõ nét cho hiệu quả của hoạt động.</p>`,
       excerpt: 'Ngày hội Đọc sách 2025 của Trường TH Vân Cốc kéo dài cả tuần với triển lãm sách, trao đổi sách và giao lưu tác giả, giúp lượt mượn sách thư viện tăng 240%.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-22/800/400',
+      thumbnail_url: '/images/design/intro-classroom.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'ngoai-khoa',
       view_count: 312,
@@ -808,7 +808,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <p>Tổng kinh phí dự kiến khoảng <strong>2,5 tỷ đồng</strong>, được huy động từ ngân sách nhà nước (50%), quỹ phụ huynh (30%) và các nhà tài trợ doanh nghiệp (20%). Lộ trình thực hiện từ tháng 6 đến tháng 8 năm 2026. Bản kế hoạch chi tiết đang được hoàn thiện và sẽ trình xin ý kiến Ban Phụ huynh trong cuộc họp tháng 3/2026.</p>
 <p><em>Lưu ý: Đây là tài liệu dự thảo, chưa công bố chính thức. Mọi thông tin có thể thay đổi sau khi được phê duyệt.</em></p>`,
       excerpt: 'Dự thảo kế hoạch cải tạo sân trường năm 2026 với 5 hạng mục lớn bao gồm khu STEAM, vườn sinh thái, sân đa năng, tổng kinh phí dự kiến 2,5 tỷ đồng.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-23/800/400',
+      thumbnail_url: '/images/design/news-doi-khoi.png',
       status: ArticleStatus.DRAFT,
       category_slug: 'tin-tuc',
       view_count: 0,
@@ -843,7 +843,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <h3>Số dư chuyển sang học kỳ II</h3>
 <p><strong>116.000.000đ</strong> — sẽ được dùng chủ yếu để đầu tư cho kế hoạch cải tạo sân trường năm 2026 và các hoạt động học kỳ II. Chi tiết từng khoản chi có phiếu chứng từ đầy đủ, lưu tại Văn phòng nhà trường, phụ huynh có thể đến kiểm tra trong giờ hành chính.</p>`,
       excerpt: 'Báo cáo nội bộ thu chi Quỹ Phụ huynh học kỳ I 2025-2026: tổng thu 456 triệu, tổng chi 340 triệu, số dư chuyển kỳ II là 116 triệu đồng.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-24/800/400',
+      thumbnail_url: '/images/design/news-health-check.png',
       status: ArticleStatus.HIDDEN,
       category_slug: 'noi-bo',
       view_count: 45,
@@ -871,7 +871,7 @@ async function seedArticles(adminId: string): Promise<void> {
 <h3>Thông điệp của Tuần lễ</h3>
 <p>Với khẩu hiệu <em>"Khỏe mạnh để học tốt — Học tốt để tương lai sáng"</em>, Tuần lễ Sức khỏe Học đường 2026 nhằm trang bị cho học sinh kiến thức và kỹ năng tự chăm sóc sức khỏe bản thân, đồng thời xây dựng thói quen vận động và dinh dưỡng lành mạnh ngay từ khi còn nhỏ. Phụ huynh được mời tham dự các buổi tọa đàm buổi chiều từ 16h00-17h30.</p>`,
       excerpt: 'Tuần lễ Sức khỏe Học đường 2026 (7-11/4) tại Trường TH Vân Cốc với các hoạt động giáo dục dinh dưỡng, sơ cứu, sức khỏe tâm thần và thể dục thể thao.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-25/800/400',
+      thumbnail_url: '/images/design/intro-campus-sanitizing.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'doi-song',
       view_count: 87,
@@ -920,3 +920,4 @@ seed().catch((e) => {
   console.error(e);
   process.exit(1);
 });
+

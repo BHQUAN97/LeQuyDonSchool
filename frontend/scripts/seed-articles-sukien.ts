@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Seed 10 bai viet cho chuyen muc "Tin tuc - Su kien"
  * Noi dung truong tieu hoc Van Coc
  */
@@ -73,7 +73,7 @@ const articles = [
   {
     title: 'Lễ khai giảng năm học 2025-2026 đầy ấn tượng',
     publishedAt: '2026-02-20',
-    thumbnailUrl: 'https://picsum.photos/seed/lqd-sukien-5/800/500',
+    thumbnailUrl: '/images/design/intro-campus-sanitizing.png',
     excerpt:
       'Trường Tiểu học Vân Cốc tổ chức lễ khai giảng năm học mới 2025-2026 với chủ đề "Vươn tới những ước mơ" đầy sáng tạo và ấn tượng.',
     content: `
@@ -89,7 +89,7 @@ const articles = [
   {
     title: 'Hội thao mùa xuân 2026 — Ngày hội của tình thân',
     publishedAt: '2026-02-28',
-    thumbnailUrl: 'https://picsum.photos/seed/lqd-sukien-6/800/500',
+    thumbnailUrl: '/images/design/intro-classroom.png',
     excerpt:
       'Hội thao mùa xuân 2026 với chủ đề "Ngày hội của tình thân" quy tụ hơn 2.000 học sinh và phụ huynh trong ngày hội thể thao sôi động.',
     content: `
@@ -105,7 +105,7 @@ const articles = [
   {
     title: 'Ngày hội sách Vân Cốc lần thứ 5',
     publishedAt: '2026-03-10',
-    thumbnailUrl: 'https://picsum.photos/seed/lqd-sukien-7/800/500',
+    thumbnailUrl: '/images/design/intro-healthcare.png',
     excerpt:
       'Ngày hội sách lần thứ 5 với chủ đề "Sách — Người bạn đồng hành" thu hút hơn 1.500 lượt tham gia, quyên góp được hơn 3.000 cuốn sách.',
     content: `
@@ -121,7 +121,7 @@ const articles = [
   {
     title: 'Tổng kết học kỳ I năm học 2025-2026',
     publishedAt: '2026-03-18',
-    thumbnailUrl: 'https://picsum.photos/seed/lqd-sukien-8/800/500',
+    thumbnailUrl: '/images/design/intro-lunch.png',
     excerpt:
       'Trường Tiểu học Vân Cốc tổ chức lễ tổng kết học kỳ I, ghi nhận kết quả học tập và rèn luyện ấn tượng của hơn 2.500 học sinh.',
     content: `
@@ -137,7 +137,7 @@ const articles = [
   {
     title: 'Lễ trao giải học sinh xuất sắc cấp Thành phố',
     publishedAt: '2026-03-28',
-    thumbnailUrl: 'https://picsum.photos/seed/lqd-sukien-9/800/500',
+    thumbnailUrl: '/images/design/intro-medical-check.png',
     excerpt:
       '15 học sinh Vân Cốc được vinh danh tại Lễ trao giải học sinh xuất sắc cấp Thành phố Hà Nội năm học 2025-2026.',
     content: `
@@ -153,7 +153,7 @@ const articles = [
   {
     title: 'Đêm nhạc Sắc màu tuổi thơ chào mừng 20/11',
     publishedAt: '2026-04-05',
-    thumbnailUrl: 'https://picsum.photos/seed/lqd-sukien-10/800/500',
+    thumbnailUrl: '/images/design/intro-safety-training.png',
     excerpt:
       'Đêm nhạc "Sắc màu tuổi thơ" chào mừng Ngày Nhà giáo Việt Nam 20/11 với hơn 30 tiết mục văn nghệ đặc sắc từ học sinh toàn trường.',
     content: `
@@ -207,3 +207,4 @@ export default async function seedArticlesSuKien() {
 
   console.log('--- Done: Tin tức - Sự kiện ---\n');
 }
+

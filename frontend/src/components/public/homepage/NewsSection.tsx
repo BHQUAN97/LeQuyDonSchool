@@ -79,21 +79,21 @@ function NewsFeaturedGrid({ articles = [] }: { articles: ArticleItem[] }) {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-sm font-semibold text-gray-800 uppercase tracking-wide">
-              Tin tuc
-            </span>
+              Tin tức
+</span>
             <div className="flex gap-0.5">
               <span className="w-5 h-1 bg-green-600 rounded-full" />
               <span className="w-5 h-1 bg-red-500 rounded-full" />
               <span className="w-5 h-1 bg-green-600 rounded-full" />
             </div>
           </div>
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Moi cap nhat</h2>
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Mới cập nhật</h2>
         </div>
         <Link
           href="/tin-tuc/su-kien"
           className="text-sm text-gray-500 hover:text-[var(--hp-primary,#15803d)] transition-colors font-medium"
         >
-          Xem tat ca &rarr;
+          Xem tất cả &rarr;
         </Link>
       </div>
 
@@ -118,7 +118,7 @@ function NewsFeaturedGrid({ articles = [] }: { articles: ArticleItem[] }) {
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-red-50 to-yellow-50 flex items-center justify-center text-gray-400 text-sm">
-                      Hinh anh
+                      Hình ảnh
                     </div>
                   )}
                 </div>
@@ -129,7 +129,7 @@ function NewsFeaturedGrid({ articles = [] }: { articles: ArticleItem[] }) {
                   <p className="text-sm text-gray-600 line-clamp-4 leading-relaxed">
                     {featuredArticle.excerpt ||
                       featuredArticle.description ||
-                      'Mo ta bai viet se hien thi o day...'}
+                      'Mô tả bài viết sẽ hiển thị ở đây...'}
                   </p>
                 </div>
               </div>
@@ -140,20 +140,20 @@ function NewsFeaturedGrid({ articles = [] }: { articles: ArticleItem[] }) {
                 <div className="h-56 sm:h-full bg-gradient-to-br from-red-50 to-yellow-50 flex items-center justify-center">
                   <div className="text-center p-6">
                     <p className="text-4xl mb-2">&#128240;</p>
-                    <p className="text-sm font-bold text-green-800 uppercase">Thu ngo</p>
+                    <p className="text-sm font-bold text-green-800 uppercase">Thư ngỏ</p>
                     <p className="text-sm text-red-600 mt-1">
-                      V/v dam bao an toan thuc pham tai Nha truong
+                      V/v đảm bảo an toàn thực phẩm tại Nhà trường
                     </p>
                   </div>
                 </div>
                 <div className="p-6 flex flex-col justify-center">
                   <h3 className="text-lg font-bold text-gray-900 mb-3 leading-snug">
-                    Thu ngo V/v Dam bao an toan thuc pham tai Nha truong
+                    Thư ngỏ V/v Đảm bảo an toàn thực phẩm tại Nhà trường
                   </h3>
                   <p className="text-sm text-gray-600 line-clamp-4 leading-relaxed">
-                    Truoc su quan tam va lo lang ve an toan thuc pham thoi gian gan day, Thay
-                    Viet thay mat Ban Lanh dao Nha truong thong tin toi CMHS ve nguon thuc pham
-                    va cong tac kiem soat chat luong thuc...
+                    Trước sự quan tâm và lo lắng về an toàn thực phẩm thời gian gần đây, nhà
+                    trường thông tin tới CMHS về nguồn thực phẩm và công tác kiểm soát chất
+                    lượng thực...
                   </p>
                 </div>
               </div>
@@ -217,21 +217,21 @@ function NewsGridOnly({ articles = [] }: { articles: ArticleItem[] }) {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-sm font-semibold text-gray-800 uppercase tracking-wide">
-              Tin tuc
-            </span>
+              Tin tức
+</span>
             <div className="flex gap-0.5">
               <span className="w-5 h-1 bg-green-600 rounded-full" />
               <span className="w-5 h-1 bg-red-500 rounded-full" />
               <span className="w-5 h-1 bg-green-600 rounded-full" />
             </div>
           </div>
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Moi cap nhat</h2>
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Mới cập nhật</h2>
         </div>
         <Link
           href="/tin-tuc/su-kien"
           className="text-sm text-gray-500 hover:text-[var(--hp-primary,#15803d)] transition-colors font-medium"
         >
-          Xem tat ca &rarr;
+          Xem tất cả &rarr;
         </Link>
       </div>
 
@@ -260,33 +260,33 @@ function NewsList({ articles = [] }: { articles: ArticleItem[] }) {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-sm font-semibold text-gray-800 uppercase tracking-wide">
-              Tin tuc
-            </span>
+              Tin tức
+</span>
             <div className="flex gap-0.5">
               <span className="w-5 h-1 bg-green-600 rounded-full" />
               <span className="w-5 h-1 bg-red-500 rounded-full" />
               <span className="w-5 h-1 bg-green-600 rounded-full" />
             </div>
           </div>
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Moi cap nhat</h2>
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Mới cập nhật</h2>
         </div>
         <Link
           href="/tin-tuc/su-kien"
           className="text-sm text-gray-500 hover:text-[var(--hp-primary,#15803d)] transition-colors font-medium"
         >
-          Xem tat ca &rarr;
+          Xem tất cả &rarr;
         </Link>
       </div>
 
       {/* Danh sach bai viet dang ngang */}
       <div className="flex flex-col gap-5">
         {displayArticles.map((item, i) => {
-          const title = item.title || `Bai viet ${i + 1}`;
+          const title = item.title || `Bài viết ${i + 1}`;
           const desc = item.excerpt || item.description || '';
           const date = new Date(
             item.published_at || item.created_at || Date.now(),
           ).toLocaleDateString('vi-VN');
-          const category = item.category?.name || 'Tin tuc';
+          const category = item.category?.name || 'Tin tức';
           const slug = item.slug || `bai-viet-${i}`;
           const cover = imageUrl(item.thumbnail_url);
 
@@ -309,7 +309,7 @@ function NewsList({ articles = [] }: { articles: ArticleItem[] }) {
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-green-50 to-red-50 flex items-center justify-center text-gray-400 text-sm group-hover:scale-105 transition-transform">
-                      Hinh anh
+                      Hình ảnh
                     </div>
                   )}
                 </div>
@@ -340,7 +340,7 @@ function NewsList({ articles = [] }: { articles: ArticleItem[] }) {
             href="/tin-tuc/su-kien"
             className="inline-flex items-center px-6 py-3 bg-[var(--hp-primary,#2E7D32)] text-white rounded-lg text-sm font-bold hover:opacity-90 transition-colors"
           >
-            Xem them bai viet
+            Xem thêm bài viết
           </Link>
         </div>
       )}

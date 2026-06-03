@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import Breadcrumb from '@/components/public/Breadcrumb';
+import PageBanner from '@/components/public/PageBanner';
 import AccordionFAQ from './AccordionFAQ';
 import { buildPageMetadata } from '@/lib/seo-helpers';
 import { getInternalApiBase } from '@/lib/ssr-api';
@@ -82,30 +82,16 @@ export default async function CauHoiThuongGapPage() {
 
   return (
     <div>
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4">
-          <Breadcrumb items={[{ label: 'Q&A' }]} />
-        </div>
-      </div>
+      <PageBanner
+        title="Câu hỏi thường gặp"
+        description="Q&A - Giải đáp các câu hỏi về tuyển sinh"
+        breadcrumbItems={[
+          { label: 'Tuyển sinh', href: '/tuyen-sinh/thong-tin' },
+          { label: 'Câu hỏi thường gặp' },
+        ]}
+      />
 
-      {/* Section title voi flag bars */}
       <section className="max-w-7xl mx-auto px-4 pt-8 lg:pt-12">
-        <div className="mb-8">
-          {/* Flag bars — xanh/do/xanh */}
-          <div className="flex items-center gap-1 mb-3">
-            <span className="w-8 h-1 bg-green-700 rounded-full" />
-            <span className="w-4 h-1 bg-red-600 rounded-full" />
-            <span className="w-8 h-1 bg-green-700 rounded-full" />
-          </div>
-          <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-2">
-            TUYỂN SINH
-          </h1>
-          <p className="text-base text-slate-600">
-            Q&A - Câu hỏi thường gặp về Tuyển sinh
-          </p>
-        </div>
-
         {/* Accordion FAQ */}
         <AccordionFAQ faqs={faqs} />
       </section>

@@ -1,6 +1,6 @@
-import Breadcrumb from '@/components/public/Breadcrumb';
 import { MapPin, Phone, Mail, Globe } from 'lucide-react';
 import ContactForm from './ContactForm';
+import PageBanner from '@/components/public/PageBanner';
 import { BRAND } from '@/config/brand';
 
 /* Metadata da duoc export tu layout.tsx — khong can export lai o page */
@@ -8,31 +8,12 @@ import { BRAND } from '@/config/brand';
 export default function LienHePage() {
   return (
     <div>
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4">
-          <Breadcrumb items={[{ label: 'Liên hệ' }]} />
-        </div>
-      </div>
+      <PageBanner
+        title="Liên hệ"
+        description="Thông tin liên lạc và liên hệ với nhà trường"
+        breadcrumbItems={[{ label: 'Liên hệ' }]}
+      />
 
-      {/* Section title voi flag bars */}
-      <section className="max-w-7xl mx-auto px-4 pt-8 lg:pt-12">
-        <div className="mb-2">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="flex gap-0.5">
-              <span className="w-1.5 h-7 bg-green-600 rounded-sm" />
-              <span className="w-1.5 h-7 bg-red-600 rounded-sm" />
-              <span className="w-1.5 h-7 bg-green-600 rounded-sm" />
-            </div>
-            <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 tracking-tight">
-              LIÊN HỆ
-            </h1>
-          </div>
-          <p className="text-base text-green-700 font-medium">Thông tin liên hệ</p>
-        </div>
-      </section>
-
-      {/* Thong tin lien he */}
       <section className="max-w-7xl mx-auto px-4 py-6 lg:py-8">
         <p className="text-base text-slate-800 font-medium mb-2">
           Cảm ơn Quý vị đã quan tâm đến Trường Tiểu học Vân Cốc.
