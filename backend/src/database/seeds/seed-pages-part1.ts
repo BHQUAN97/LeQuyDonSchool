@@ -322,11 +322,21 @@ async function seed() {
 
   const repo = AppDataSource.getRepository(Page);
   let created = 0;
+  let updated = 0;
 
   for (const p of pagesData) {
     const exists = await repo.findOne({ where: { slug: p.slug } });
     if (exists) {
-      console.log(`[SEED] Skip (da ton tai): ${p.slug}`);
+      await repo.update(exists.id, {
+        title: p.title,
+        content: p.content,
+        status: p.status,
+        seo_title: p.seo_title,
+        seo_description: p.seo_description,
+        updated_by: admin.id,
+      });
+      console.log(`[SEED] Cap nhat trang: ${p.slug}`);
+      updated++;
       continue;
     }
 
@@ -343,7 +353,7 @@ async function seed() {
   }
 
   console.log(
-    `[SEED] Pages part1: ${created} created, ${pagesData.length - created} skipped`,
+    `[SEED] Pages part1: ${created} created, ${updated} updated`,
   );
   await AppDataSource.destroy();
 }

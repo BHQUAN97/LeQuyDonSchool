@@ -936,10 +936,22 @@ export async function seedPages() {
 
   const repo = AppDataSource.getRepository(Page);
   let created = 0;
+  let updated = 0;
 
   for (const p of pagesData) {
     const existing = await repo.findOne({ where: { slug: p.slug } });
-    if (existing) continue;
+    if (existing) {
+      await repo.update(existing.id, {
+        title: p.title,
+        content: p.content,
+        status: PageStatus.PUBLISHED,
+        seo_title: p.seo_title,
+        seo_description: p.seo_description,
+        updated_by: adminId,
+      });
+      updated++;
+      continue;
+    }
 
     await repo.save(
       repo.create({
@@ -957,7 +969,7 @@ export async function seedPages() {
     created++;
   }
 
-  console.log(`[SEED] Pages: ${created} moi tao, ${pagesData.length - created} da ton tai.`);
+  console.log(`[SEED] Pages: ${created} moi tao, ${updated} cap nhat.`);
   console.log('[SEED] Hoan tat seed pages!');
   await AppDataSource.destroy();
 }

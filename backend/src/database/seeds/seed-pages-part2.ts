@@ -372,9 +372,20 @@ async function seed() {
   ];
 
   let created = 0;
+  let updated = 0;
   for (const p of pages) {
-    if (await repo.findOne({ where: { slug: p.slug } })) {
-      console.log(`[SKIP] Slug da ton tai: ${p.slug}`);
+    const exists = await repo.findOne({ where: { slug: p.slug } });
+    if (exists) {
+      await repo.update(exists.id, {
+        title: p.title,
+        content: p.content,
+        status: p.status,
+        seo_title: p.seo_title,
+        seo_description: p.seo_description,
+        updated_by: admin.id,
+      });
+      console.log(`[OK] Cap nhat trang: ${p.slug}`);
+      updated++;
       continue;
     }
     await repo.save(
@@ -390,7 +401,7 @@ async function seed() {
   }
 
   console.log(
-    `[SEED] Pages part2: ${created} created, ${pages.length - created} skipped`,
+    `[SEED] Pages part2: ${created} created, ${updated} updated`,
   );
   await AppDataSource.destroy();
 }

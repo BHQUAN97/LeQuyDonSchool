@@ -41,16 +41,16 @@ const articles: Article[] = [
 <li><strong>20/05 - 30/05/2026:</strong> Xác nhận nhập học và đóng phí giữ chỗ</li>
 </ul>
 
-<h3>Quy trÃ¬nh tuyá»ƒn sinh</h3>
-<p>Phá»¥ huynh theo dÃµi cÃ¡c má»‘c quan trá»ng tá»« Ä‘Äƒng kÃ½, nháº­n thÃ´ng bÃ¡o, giao lÆ°u Ä‘Ã¡nh giÃ¡ Ä‘áº¿n hoÃ n táº¥t há»“ sÆ¡ nháº­p há»c.</p>
-<img class="lqd-admission-process" src="/images/design/admission-process.png" alt="Quy trÃ¬nh tuyá»ƒn sinh vÃ  nháº­p há»c" />
+<h3>Quy trình tuyển sinh</h3>
+<p>Phụ huynh theo dõi các mốc quan trọng từ đăng ký, nhận thông báo, giao lưu đánh giá đến hoàn tất hồ sơ nhập học.</p>
+<img class="lqd-admission-process" src="/images/design/admission-process.png" alt="Quy trình tuyển sinh và nhập học" />
 
 <h3>Hồ sơ cần thiết</h3>
 <p>Phụ huynh chuẩn bị: Đơn đăng ký (mẫu trên website), bản sao giấy khai sinh, sổ hộ khẩu hoặc giấy xác nhận cư trú, giấy xác nhận hoàn thành chương trình mẫu giáo, 4 ảnh 3x4cm. Hồ sơ nộp trực tiếp tại trường hoặc gửi qua bưu điện.</p>
 
 <p>Mọi thắc mắc xin liên hệ <strong>Phòng Tuyển sinh:</strong> 024.3756.xxxx (ext. 102) hoặc email tuyensinh@vancoc.edu.vn. Nhà trường mở cửa tham quan vào các ngày thứ Bảy hàng tuần từ 8h30 đến 11h30.</p>
-<h3>ÄÄƒng kÃ½ ghi danh trá»±c tuyáº¿n</h3>
-<p>Phá»¥ huynh cÃ³ thá»ƒ Ä‘Äƒng kÃ½ thÃ´ng tin ban Ä‘áº§u qua biá»ƒu máº«u Google Form dÆ°á»›i Ä‘Ã¢y. PhÃ²ng Tuyá»ƒn sinh sáº½ liÃªn há»‡ xÃ¡c nháº­n vÃ  hÆ°á»›ng dáº«n bá»• sung há»“ sÆ¡.</p>
+<h3>Đăng ký ghi danh trực tuyến</h3>
+<p>Phụ huynh có thể đăng ký thông tin ban đầu qua biểu mẫu Google Form dưới đây. Phòng Tuyển sinh sẽ liên hệ xác nhận và hướng dẫn bổ sung hồ sơ.</p>
 <div class="lqd-form-frame">
   <iframe src="https://docs.google.com/forms/d/e/FORM_ID/viewform?embedded=true" width="640" height="1200" frameborder="0" marginheight="0" marginwidth="0" loading="lazy" title="Ghi danh tuyển sinh năm học 2026-2027">Đang tải biểu mẫu...</iframe>
 </div>
