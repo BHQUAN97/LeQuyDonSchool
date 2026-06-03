@@ -1,6 +1,6 @@
 #!/bin/bash
 # ──────────────────────────────────────────
-# LeQuyDon — Manual Deployment Script
+# VanCoc — Manual Deployment Script
 # Domain: demo.remoteterminal.online
 # ──────────────────────────────────────────
 

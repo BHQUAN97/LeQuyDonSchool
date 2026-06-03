@@ -2,6 +2,7 @@
 
 import TestimonialCarousel from '../TestimonialCarousel';
 import Carousel from '../Carousel';
+import Image from 'next/image';
 
 interface Props {
   variant: string;
@@ -14,28 +15,28 @@ const testimonials = [
     title:
       'Chu tich HDQT Intech Group | Pho Chu tich CLB Dau tu & Khoi nghiep Viet Nam | PHHS khoa 2021 - 2026',
     content:
-      'Toi thay vui va hanh phuc moi khi con noi chuyen the hien su dam me, yeu thich ngoi truong. Moi lan den Truong Tieu hoc Le Quy Don de don con, toi lai thay su vui tuoi, hon nhien cua cac con. Toi tin tuong vao su phat trien toan dien ma nha truong mang lai cho con trai minh.',
+      'Toi thay vui va hanh phuc moi khi con noi chuyen the hien su dam me, yeu thich ngoi truong. Moi lan den Truong Tieu hoc Van Coc de don con, toi lai thay su vui tuoi, hon nhien cua cac con. Toi tin tuong vao su phat trien toan dien ma nha truong mang lai cho con trai minh.',
   },
   {
     name: 'Anh Nguyen Thanh Binh',
     title:
       'Giam doc Nha may Cong ty TNHH Che bien thuc pham va banh keo Pham Nguyen | PHHS nien khoa 2011 - 2016, 2020 - 2025 va 2024 - 2029',
     content:
-      'La mot nguoi bo, toi luon cam thay vo cung biet on khi nhin thay nhung buoc di vung chac cua cac con minh tren con duong hoc van. Ba dua con toi deu hoc tai truong Tieu hoc Le Quy Don va noi day thuc su la mot ngoi nha thu hai cua cac con.',
+      'La mot nguoi bo, toi luon cam thay vo cung biet on khi nhin thay nhung buoc di vung chac cua cac con minh tren con duong hoc van. Ba dua con toi deu hoc tai truong Tieu hoc Van Coc va noi day thuc su la mot ngoi nha thu hai cua cac con.',
   },
   {
     name: 'Chi Tran Thi Minh Ha',
     title:
       'Pho Giam doc Ngan hang TMCP Ngoai thuong Viet Nam | PHHS nien khoa 2022 - 2027',
     content:
-      'Con gai toi tu mot be nhut nhat, it noi da tro nen tu tin, manh dan sau 2 nam hoc tai Le Quy Don. Chau rat thich cac hoat dong ngoai khoa, dac biet la CLB Tieng Anh va Robotics.',
+      'Con gai toi tu mot be nhut nhat, it noi da tro nen tu tin, manh dan sau 2 nam hoc tai Van Coc. Chau rat thich cac hoat dong ngoai khoa, dac biet la CLB Tieng Anh va Robotics.',
   },
   {
     name: 'Anh Le Van Duc',
     title:
       'CEO Cong ty CP Cong nghe DTS | PHHS nien khoa 2023 - 2028',
     content:
-      'Dieu toi an tuong nhat o Le Quy Don la su minh bach trong giao tiep giua nha truong va phu huynh. Moi thong tin ve hoc tap, suc khoe, bua an cua con deu duoc cap nhat kip thoi qua ung dung.',
+      'Dieu toi an tuong nhat o Van Coc la su minh bach trong giao tiep giua nha truong va phu huynh. Moi thong tin ve hoc tap, suc khoe, bua an cua con deu duoc cap nhat kip thoi qua ung dung.',
   },
 ];
 
@@ -53,18 +54,20 @@ function TestimonialYearBanner() {
           <p className="text-6xl lg:text-8xl xl:text-9xl font-black text-white/25 tracking-tighter leading-none">
             2025-2026
           </p>
-          {/* Anh gia dinh */}
-          <div className="mt-6 w-72 h-56 mx-auto bg-white/15 rounded-2xl flex items-center justify-center text-white/40 text-sm overflow-hidden relative">
-            <div className="text-center">
-              <p className="text-3xl mb-2">&#128106;</p>
-              <p className="text-sm">Anh gia dinh hoc sinh</p>
-            </div>
+          <div className="mt-6 w-80 h-64 mx-auto rounded-2xl overflow-hidden relative shadow-2xl">
+            <Image
+              src="/images/design/testimonial-family.png"
+              alt="Phụ huynh và học sinh Vân Cốc"
+              fill
+              className="object-cover"
+              sizes="320px"
+            />
           </div>
         </div>
         {/* Emblem goc trai tren */}
         <div className="absolute top-4 left-4 flex items-center gap-2">
           <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'color-mix(in srgb, var(--hp-primary, #15803d) 80%, transparent)' }}>
-            <span className="text-white font-bold text-sm">LQD</span>
+            <span className="text-white font-bold text-sm">VC</span>
           </div>
         </div>
       </div>
@@ -94,7 +97,7 @@ function TestimonialSimpleCarousel() {
               <span className="w-5 h-1 bg-red-500 rounded-full" />
             </div>
           </div>
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Le Quy Don</h2>
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Van Coc</h2>
         </div>
 
         {/* Carousel */}
@@ -156,7 +159,7 @@ function TestimonialCards() {
               <span className="w-5 h-1 bg-red-500 rounded-full" />
             </div>
           </div>
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Le Quy Don</h2>
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Van Coc</h2>
         </div>
 
         {/* Grid cards */}

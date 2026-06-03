@@ -1,6 +1,6 @@
 #!/bin/bash
 # ──────────────────────────────────────────
-# Pre-Launch Verification Checklist — LeQuyDon
+# Pre-Launch Verification Checklist — VanCoc
 # Run: bash scripts/pre-launch-checklist.sh [url]
 # ──────────────────────────────────────────
 
@@ -24,7 +24,7 @@ check() {
 }
 
 echo "============================================"
-echo "  LeQuyDon Pre-Launch Checklist"
+echo "  VanCoc Pre-Launch Checklist"
 echo "  Target: ${SITE_URL}"
 echo "============================================"
 echo ""

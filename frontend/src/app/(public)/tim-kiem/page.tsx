@@ -249,6 +249,7 @@ function TimKiemContent() {
                     category={r.category}
                     date={r.date}
                     slug={r.slug}
+                    thumbnailUrl={r.thumbnail_url}
                     href={getResultHref(r)}
                   />
                 ))}

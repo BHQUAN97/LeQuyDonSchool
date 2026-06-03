@@ -70,7 +70,7 @@ async function bootstrap() {
 
   const port = config.get<number>('app.port', 4000);
   await app.listen(port);
-  console.log(`[LeQuyDon API] Running on http://localhost:${port}`);
+  console.log(`[VanCoc API] Running on http://localhost:${port}`);
 }
 
 bootstrap();

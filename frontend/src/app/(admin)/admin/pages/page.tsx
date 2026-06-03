@@ -32,6 +32,58 @@ const STATUS_LABEL: Record<string, { text: string; class: string }> = {
   hidden: { text: 'Ẩn', class: 'bg-slate-100 text-slate-600' },
 };
 
+const PAGE_TEMPLATES = {
+  program: {
+    title: 'Chương trình giáo dục',
+    slug: 'chuong-trinh/chuong-trinh-moi',
+    seoTitle: 'Chương trình giáo dục - Trường Tiểu học Vân Cốc',
+    seoDescription: 'Thông tin chương trình giáo dục, phương pháp học tập và hoạt động trải nghiệm.',
+    content: `
+<div class="lqd-split">
+  <div>
+    <h2>Tổng quan chương trình</h2>
+    <p>Giới thiệu định hướng giáo dục, mục tiêu phát triển học sinh và các điểm nổi bật của chương trình.</p>
+  </div>
+  <img src="/images/design/intro-classroom.png" alt="Chương trình giáo dục" />
+</div>
+<div class="lqd-split lqd-reverse">
+  <img src="/images/design/intro-safety-training.png" alt="Hoạt động trải nghiệm" />
+  <div>
+    <h2>Hoạt động trải nghiệm</h2>
+    <p>Mô tả cách học sinh được tham gia thực hành, dự án và hoạt động phát triển kỹ năng.</p>
+  </div>
+</div>
+`,
+  },
+  service: {
+    title: 'Y tế học đường',
+    slug: 'dich-vu-hoc-duong/y-te-hoc-duong',
+    seoTitle: 'Y tế học đường - Trường Tiểu học Vân Cốc',
+    seoDescription: 'Thông tin về y tế học đường, vệ sinh trường học và môi trường học tập an toàn.',
+    content: `
+<div class="lqd-split">
+  <div>
+    <h2>Tầm quan trọng của y tế học đường</h2>
+    <p>Nhà trường luôn đặt công tác chăm sóc và bảo vệ sức khỏe học sinh lên hàng đầu.</p>
+  </div>
+  <img src="/images/design/intro-healthcare.png" alt="Y tế học đường" />
+</div>
+<div class="lqd-split lqd-reverse">
+  <img src="/images/design/intro-campus-sanitizing.png" alt="Vệ sinh trường học" />
+  <div>
+    <h2>Vệ sinh trường học</h2>
+    <p>Môi trường học tập được duy trì sạch sẽ, an toàn và thân thiện.</p>
+  </div>
+</div>
+<div class="lqd-gallery">
+  <figure><img src="/images/design/intro-medical-check.png" alt="Khám sức khỏe" /><figcaption>Khám sức khỏe định kỳ cho học sinh.</figcaption></figure>
+  <figure><img src="/images/design/intro-safety-training.png" alt="An toàn học đường" /><figcaption>Chương trình giáo dục an toàn học đường.</figcaption></figure>
+  <figure><img src="/images/design/intro-lunch.png" alt="Bán trú" /><figcaption>Kiểm soát vệ sinh và dinh dưỡng bán trú.</figcaption></figure>
+</div>
+`,
+  },
+};
+
 export default function PagesAdminPage() {
   const [pages, setPages] = useState<Page[]>([]);
   const [loading, setLoading] = useState(true);
@@ -88,6 +140,20 @@ export default function PagesAdminPage() {
   const handleCreate = () => {
     setEditingId(null);
     setFormData({ title: '', slug: '', content: '', status: 'draft', seoTitle: '', seoDescription: '' });
+    setShowForm(true);
+  };
+
+  const handleCreateFromTemplate = (type: keyof typeof PAGE_TEMPLATES) => {
+    const template = PAGE_TEMPLATES[type];
+    setEditingId(null);
+    setFormData({
+      title: template.title,
+      slug: template.slug,
+      content: template.content,
+      status: 'draft',
+      seoTitle: template.seoTitle,
+      seoDescription: template.seoDescription,
+    });
     setShowForm(true);
   };
 
@@ -166,7 +232,11 @@ export default function PagesAdminPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-slate-900">Quản lý trang</h1>
-        <Button onClick={handleCreate}>Tạo trang mới</Button>
+        <div className="flex flex-wrap justify-end gap-2">
+          <Button variant="outline" onClick={() => handleCreateFromTemplate('program')}>Mẫu chương trình</Button>
+          <Button variant="outline" onClick={() => handleCreateFromTemplate('service')}>Mẫu dịch vụ</Button>
+          <Button onClick={handleCreate}>Tạo trang mới</Button>
+        </div>
       </div>
 
       {/* Thanh search */}

@@ -7,7 +7,7 @@ import { Page, PageStatus } from '../../modules/pages/entities/page.entity';
 import { generateUlid } from '../../common/utils/ulid';
 
 /**
- * Seed 8 trang noi dung bo sung cho website truong tieu hoc Le Quy Don.
+ * Seed 8 trang noi dung bo sung cho website truong tieu hoc Van Coc.
  * Pages 10-17: The chat, Y te, Ban tru, Xe dua don, CSVC, Doi ngu GV, Thanh tich, Tuyen sinh.
  * Idempotent — kiem tra slug truoc khi insert.
  */
@@ -32,14 +32,14 @@ async function seed() {
     {
       title: 'Thể chất & Nghệ thuật',
       slug: 'chuong-trinh/the-chat-nghe-thuat',
-      seo_title: 'Thể chất & Nghệ thuật — Trường Tiểu học Lê Quý Đôn',
+      seo_title: 'Thể chất & Nghệ thuật — Trường Tiểu học Vân Cốc',
       seo_description:
-        'Chương trình thể chất và nghệ thuật toàn diện tại trường Tiểu học Lê Quý Đôn: bơi lội, võ thuật, bóng đá, âm nhạc, mỹ thuật và múa đương đại.',
+        'Chương trình thể chất và nghệ thuật toàn diện tại trường Tiểu học Vân Cốc: bơi lội, võ thuật, bóng đá, âm nhạc, mỹ thuật và múa đương đại.',
       status: PageStatus.PUBLISHED,
       content: `<section class="page-content">
-<h2>Chương trình Thể chất &amp; Nghệ thuật — Trường Tiểu học Lê Quý Đôn</h2>
-<p>Trường Tiểu học Lê Quý Đôn đặc biệt chú trọng phát triển thể chất và năng khiếu nghệ thuật cho học sinh bên cạnh chương trình học văn hóa. Với triết lý giáo dục "phát triển toàn diện", nhà trường đầu tư bài bản vào cơ sở vật chất, đội ngũ huấn luyện viên chuyên nghiệp và chương trình học phong phú, mang đến cho các em cơ hội khám phá và nuôi dưỡng niềm đam mê từ sớm. Mỗi học sinh được tham gia ít nhất 2 tiết thể chất và 2 tiết nghệ thuật mỗi tuần theo lịch học chính khóa, ngoài các câu lạc bộ ngoại khóa tự chọn.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Học sinh tham gia hoạt động thể chất và nghệ thuật" class="rounded-xl shadow" />
+<h2>Chương trình Thể chất &amp; Nghệ thuật — Trường Tiểu học Vân Cốc</h2>
+<p>Trường Tiểu học Vân Cốc đặc biệt chú trọng phát triển thể chất và năng khiếu nghệ thuật cho học sinh bên cạnh chương trình học văn hóa. Với triết lý giáo dục "phát triển toàn diện", nhà trường đầu tư bài bản vào cơ sở vật chất, đội ngũ huấn luyện viên chuyên nghiệp và chương trình học phong phú, mang đến cho các em cơ hội khám phá và nuôi dưỡng niềm đam mê từ sớm. Mỗi học sinh được tham gia ít nhất 2 tiết thể chất và 2 tiết nghệ thuật mỗi tuần theo lịch học chính khóa, ngoài các câu lạc bộ ngoại khóa tự chọn.</p>
+<img src="/images/design/intro-classroom.png" alt="Học sinh tham gia hoạt động thể chất và nghệ thuật" />
 
 <h3>Chương trình Thể chất</h3>
 <p>Nhà trường tổ chức các môn thể thao đa dạng nhằm rèn luyện sức khỏe, tính kỷ luật và tinh thần đồng đội cho học sinh. Các môn thể chất chính thức trong chương trình bao gồm:</p>
@@ -51,7 +51,7 @@ async function seed() {
 </ul>
 
 <h3>Chương trình Nghệ thuật</h3>
-<p>Song song với thể chất, chương trình nghệ thuật tại trường Tiểu học Lê Quý Đôn được xây dựng toàn diện, bao gồm ba lĩnh vực chính: Âm nhạc, Mỹ thuật và Múa đương đại. Mỗi môn được giảng dạy 2 tiết/tuần trong chương trình chính khóa, và học sinh có thể đăng ký học nâng cao tại các câu lạc bộ sau giờ học:</p>
+<p>Song song với thể chất, chương trình nghệ thuật tại trường Tiểu học Vân Cốc được xây dựng toàn diện, bao gồm ba lĩnh vực chính: Âm nhạc, Mỹ thuật và Múa đương đại. Mỗi môn được giảng dạy 2 tiết/tuần trong chương trình chính khóa, và học sinh có thể đăng ký học nâng cao tại các câu lạc bộ sau giờ học:</p>
 <ul>
   <li><strong>Âm nhạc — Piano, Guitar &amp; Trống:</strong> Phòng âm nhạc được trang bị 10 đàn piano điện, bộ guitar acoustic và điện, bộ trống acoustic và bộ gõ Orff. Học sinh được tiếp xúc với nhiều thể loại nhạc cụ, từ đó phát hiện sở trường và đăng ký học chuyên sâu. Câu lạc bộ âm nhạc tổ chức biểu diễn định kỳ tại các sự kiện của trường, tạo cơ hội trình diễn thực tế cho các em.</li>
   <li><strong>Mỹ thuật — Vẽ, Nặn &amp; Cắt dán:</strong> Lớp học mỹ thuật là không gian sáng tạo tự do, nơi học sinh được khám phá nhiều kỹ thuật tạo hình đa dạng. Vẽ màu nước, màu acrylic, bút chì — nặn đất sét, đất nặn polymer — cắt dán giấy nghệ thuật, kỹ thuật collage. Các tác phẩm xuất sắc được trưng bày tại gallery nghệ thuật của trường và tham dự các cuộc thi mỹ thuật thiếu nhi thành phố.</li>
@@ -72,14 +72,14 @@ async function seed() {
     {
       title: 'Y tế học đường',
       slug: 'dich-vu-hoc-duong/y-te-hoc-duong',
-      seo_title: 'Y tế học đường — Trường Tiểu học Lê Quý Đôn',
+      seo_title: 'Y tế học đường — Trường Tiểu học Vân Cốc',
       seo_description:
-        'Phòng y tế học đường chuyên nghiệp tại trường Tiểu học Lê Quý Đôn: y sĩ trực 7h-17h, khám định kỳ 2 lần/năm, liên kết bệnh viện Nhi TW.',
+        'Phòng y tế học đường chuyên nghiệp tại trường Tiểu học Vân Cốc: y sĩ trực 7h-17h, khám định kỳ 2 lần/năm, liên kết bệnh viện Nhi TW.',
       status: PageStatus.PUBLISHED,
       content: `<section class="page-content">
-<h2>Y tế học đường — Trường Tiểu học Lê Quý Đôn</h2>
-<p>Sức khỏe học sinh là nền tảng không thể thiếu của quá trình học tập và phát triển. Trường Tiểu học Lê Quý Đôn đầu tư xây dựng hệ thống y tế học đường chuyên nghiệp, đảm bảo mỗi học sinh được chăm sóc sức khỏe toàn diện trong suốt thời gian ở trường. Phụ huynh có thể hoàn toàn yên tâm khi gửi con em đến nhà trường — sức khỏe của các em luôn được theo dõi và xử lý kịp thời bởi đội ngũ y tế có chuyên môn.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Phòng y tế học đường trường Lê Quý Đôn" class="rounded-xl shadow" />
+<h2>Y tế học đường — Trường Tiểu học Vân Cốc</h2>
+<p>Sức khỏe học sinh là nền tảng không thể thiếu của quá trình học tập và phát triển. Trường Tiểu học Vân Cốc đầu tư xây dựng hệ thống y tế học đường chuyên nghiệp, đảm bảo mỗi học sinh được chăm sóc sức khỏe toàn diện trong suốt thời gian ở trường. Phụ huynh có thể hoàn toàn yên tâm khi gửi con em đến nhà trường — sức khỏe của các em luôn được theo dõi và xử lý kịp thời bởi đội ngũ y tế có chuyên môn.</p>
+<img src="/images/design/intro-healthcare.png" alt="Phòng y tế học đường trường Vân Cốc" />
 
 <h3>Cơ sở vật chất phòng y tế</h3>
 <p>Phòng y tế nhà trường được trang bị đầy đủ thiết bị y tế thiết yếu để xử lý các trường hợp sức khỏe thông thường và cấp cứu ban đầu. Tủ thuốc được cập nhật và kiểm tra định kỳ hàng tháng, đảm bảo không có thuốc hết hạn và đầy đủ các loại thuốc cần thiết: thuốc hạ sốt, thuốc chống dị ứng, băng gạc vô trùng, dung dịch sát khuẩn, thuốc nhỏ mắt, thuốc đau bụng và các vật tư y tế cơ bản. Phòng y tế có giường nghỉ, thiết bị đo thân nhiệt, huyết áp, độ bão hòa oxy trong máu (SpO2) và máy sốc điện AED (Automated External Defibrillator) dự phòng khẩn cấp.</p>
@@ -94,7 +94,7 @@ async function seed() {
 <p>Ngoài các đợt khám định kỳ, nhà trường thực hiện theo dõi cân nặng và chiều cao học sinh mỗi học kỳ, kết hợp với chương trình giáo dục dinh dưỡng cho học sinh và phụ huynh. Thị lực được kiểm tra mỗi học kỳ; những học sinh có dấu hiệu giảm thị lực được thông báo cho gia đình để có biện pháp can thiệp sớm. Nhà trường cũng phối hợp với Trung tâm Y tế Dự phòng quận để theo dõi dịch bệnh học đường theo mùa và triển khai các biện pháp phòng ngừa kịp thời.</p>
 
 <h3>Liên kết bệnh viện Nhi Trung ương và chương trình nha học đường</h3>
-<p>Trường Tiểu học Lê Quý Đôn ký kết hợp tác chính thức với <strong>Bệnh viện Nhi Trung ương</strong> — đơn vị y tế nhi khoa hàng đầu Việt Nam. Trong các trường hợp khẩn cấp vượt ngoài phạm vi xử lý tại trường, học sinh được chuyển viện nhanh chóng với quy trình ưu tiên đã được thiết lập sẵn. Đội ngũ bác sĩ của bệnh viện cũng định kỳ đến trường để tập huấn cho giáo viên và nhân viên về kỹ năng sơ cấp cứu, nhận biết các dấu hiệu bệnh nguy hiểm ở trẻ em. Bên cạnh đó, chương trình nha học đường được triển khai mỗi năm một lần: các nha sĩ từ bệnh viện đến khám răng miệng cho toàn bộ học sinh, phát hiện sâu răng, viêm nướu sớm và hướng dẫn kỹ năng vệ sinh răng miệng đúng cách theo tiêu chuẩn quốc tế.</p>
+<p>Trường Tiểu học Vân Cốc ký kết hợp tác chính thức với <strong>Bệnh viện Nhi Trung ương</strong> — đơn vị y tế nhi khoa hàng đầu Việt Nam. Trong các trường hợp khẩn cấp vượt ngoài phạm vi xử lý tại trường, học sinh được chuyển viện nhanh chóng với quy trình ưu tiên đã được thiết lập sẵn. Đội ngũ bác sĩ của bệnh viện cũng định kỳ đến trường để tập huấn cho giáo viên và nhân viên về kỹ năng sơ cấp cứu, nhận biết các dấu hiệu bệnh nguy hiểm ở trẻ em. Bên cạnh đó, chương trình nha học đường được triển khai mỗi năm một lần: các nha sĩ từ bệnh viện đến khám răng miệng cho toàn bộ học sinh, phát hiện sâu răng, viêm nướu sớm và hướng dẫn kỹ năng vệ sinh răng miệng đúng cách theo tiêu chuẩn quốc tế.</p>
 </section>`,
     },
 
@@ -104,14 +104,14 @@ async function seed() {
     {
       title: 'Dịch vụ bán trú',
       slug: 'dich-vu-hoc-duong/ban-tru',
-      seo_title: 'Dịch vụ bán trú — Trường Tiểu học Lê Quý Đôn',
+      seo_title: 'Dịch vụ bán trú — Trường Tiểu học Vân Cốc',
       seo_description:
-        'Bếp ăn bán trú đạt chuẩn VSATTP, thực đơn dinh dưỡng do chuyên gia xây dựng, 500 chỗ ăn, giá 60.000đ/ngày tại trường Tiểu học Lê Quý Đôn.',
+        'Bếp ăn bán trú đạt chuẩn VSATTP, thực đơn dinh dưỡng do chuyên gia xây dựng, 500 chỗ ăn, giá 60.000đ/ngày tại trường Tiểu học Vân Cốc.',
       status: PageStatus.PUBLISHED,
       content: `<section class="page-content">
-<h2>Dịch vụ bán trú — Trường Tiểu học Lê Quý Đôn</h2>
-<p>Dịch vụ bán trú của trường Tiểu học Lê Quý Đôn là giải pháp toàn diện giúp các gia đình yên tâm về bữa ăn trưa và giờ nghỉ ngơi của con em trong ngày học. Với bếp ăn đạt chuẩn Vệ sinh An toàn Thực phẩm (VSATTP), thực đơn được thiết kế bởi chuyên gia dinh dưỡng và không gian ăn uống thoải mái 500 chỗ, nhà trường cam kết mang đến bữa ăn ngon, đủ chất và an toàn cho mỗi học sinh mỗi ngày.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Nhà ăn bán trú trường Lê Quý Đôn" class="rounded-xl shadow" />
+<h2>Dịch vụ bán trú — Trường Tiểu học Vân Cốc</h2>
+<p>Dịch vụ bán trú của trường Tiểu học Vân Cốc là giải pháp toàn diện giúp các gia đình yên tâm về bữa ăn trưa và giờ nghỉ ngơi của con em trong ngày học. Với bếp ăn đạt chuẩn Vệ sinh An toàn Thực phẩm (VSATTP), thực đơn được thiết kế bởi chuyên gia dinh dưỡng và không gian ăn uống thoải mái 500 chỗ, nhà trường cam kết mang đến bữa ăn ngon, đủ chất và an toàn cho mỗi học sinh mỗi ngày.</p>
+<img src="/images/design/intro-lunch.png" alt="Nhà ăn bán trú trường Vân Cốc" />
 
 <h3>Bếp ăn đạt chuẩn VSATTP</h3>
 <p>Bếp ăn nhà trường được xây dựng và vận hành theo đúng quy chuẩn Vệ sinh An toàn Thực phẩm của Bộ Y tế, được cấp giấy chứng nhận VSATTP và kiểm tra định kỳ bởi cơ quan y tế quận. Toàn bộ khu bếp được thiết kế theo nguyên tắc "một chiều" — thực phẩm di chuyển từ khu tiếp nhận → sơ chế → chế biến → phân phối → thu dọn mà không có điểm giao chéo, tránh nguy cơ nhiễm khuẩn chéo. Nhà bếp trang bị tủ đông lạnh công nghiệp, bếp công nghiệp bằng điện (không dùng than/gas trực tiếp), hệ thống khử trùng dụng cụ ăn uống và hệ thống thông gió đảm bảo không khí sạch trong khu chế biến. Nhân viên bếp được kiểm tra sức khỏe và tập huấn VSATTP định kỳ 6 tháng/lần.</p>
@@ -141,14 +141,14 @@ async function seed() {
     {
       title: 'Xe đưa đón học sinh',
       slug: 'dich-vu-hoc-duong/xe-dua-don',
-      seo_title: 'Xe đưa đón học sinh — Trường Tiểu học Lê Quý Đôn',
+      seo_title: 'Xe đưa đón học sinh — Trường Tiểu học Vân Cốc',
       seo_description:
         '8 tuyến xe đưa đón học sinh khắp nội thành Hà Nội, xe 16 chỗ điều hòa + GPS + camera, đưa đón tận nhà, phí 1.500.000đ/tháng.',
       status: PageStatus.PUBLISHED,
       content: `<section class="page-content">
-<h2>Dịch vụ Xe đưa đón học sinh — Trường Tiểu học Lê Quý Đôn</h2>
-<p>Hiểu rằng việc đưa đón con đi học mỗi ngày là nỗi trăn trở lớn của nhiều gia đình tại Hà Nội — đặc biệt trong bối cảnh giao thông đô thị ngày càng phức tạp — trường Tiểu học Lê Quý Đôn cung cấp dịch vụ xe đưa đón học sinh chuyên nghiệp, an toàn và tiện lợi. Với 8 tuyến xe phủ rộng các quận nội thành, gia đình hoàn toàn có thể tin tưởng giao phó việc đưa đón cho nhà trường để tập trung cho công việc của mình.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Xe đưa đón học sinh trường Lê Quý Đôn" class="rounded-xl shadow" />
+<h2>Dịch vụ Xe đưa đón học sinh — Trường Tiểu học Vân Cốc</h2>
+<p>Hiểu rằng việc đưa đón con đi học mỗi ngày là nỗi trăn trở lớn của nhiều gia đình tại Hà Nội — đặc biệt trong bối cảnh giao thông đô thị ngày càng phức tạp — trường Tiểu học Vân Cốc cung cấp dịch vụ xe đưa đón học sinh chuyên nghiệp, an toàn và tiện lợi. Với 8 tuyến xe phủ rộng các quận nội thành, gia đình hoàn toàn có thể tin tưởng giao phó việc đưa đón cho nhà trường để tập trung cho công việc của mình.</p>
+<img src="/images/design/hero-admission-2026.png" alt="Xe đưa đón học sinh trường Vân Cốc" />
 
 <h3>Mạng lưới 8 tuyến nội thành</h3>
 <p>Dịch vụ xe đưa đón hiện phủ <strong>8 tuyến</strong> bao gồm các quận nội thành Hà Nội: Đống Đa, Hoàn Kiếm, Hai Bà Trưng, Ba Đình, Cầu Giấy, Thanh Xuân, Tây Hồ và Long Biên. Mỗi tuyến được thiết kế tối ưu để đảm bảo thời gian di chuyển không quá 45 phút, tránh các điểm ùn tắc thường xuyên. Tuyến đường được cập nhật định kỳ mỗi học kỳ dựa trên địa chỉ thực tế của học sinh đăng ký, đảm bảo lộ trình hợp lý và hiệu quả nhất cho tất cả các gia đình.</p>
@@ -185,14 +185,14 @@ async function seed() {
     {
       title: 'Cơ sở vật chất',
       slug: 'co-so-vat-chat',
-      seo_title: 'Cơ sở vật chất — Trường Tiểu học Lê Quý Đôn',
+      seo_title: 'Cơ sở vật chất — Trường Tiểu học Vân Cốc',
       seo_description:
-        'Khuôn viên 8000m², 30 phòng học hiện đại, bể bơi 25m, sân cỏ nhân tạo, thư viện 10.000 sách, nhà ăn 500 chỗ tại trường Tiểu học Lê Quý Đôn.',
+        'Khuôn viên 8000m², 30 phòng học hiện đại, bể bơi 25m, sân cỏ nhân tạo, thư viện 10.000 sách, nhà ăn 500 chỗ tại trường Tiểu học Vân Cốc.',
       status: PageStatus.PUBLISHED,
       content: `<section class="page-content">
-<h2>Cơ sở vật chất — Trường Tiểu học Lê Quý Đôn</h2>
-<p>Trường Tiểu học Lê Quý Đôn tọa lạc trên khuôn viên rộng <strong>8.000 m²</strong> tại quận Đống Đa, Hà Nội. Toàn bộ cơ sở vật chất được đầu tư đồng bộ, hiện đại và duy trì trong tình trạng tốt nhất để phục vụ học tập, sinh hoạt và phát triển toàn diện của học sinh. Nhà trường kiên định với quan điểm rằng môi trường học tập chất lượng cao là điều kiện tiên quyết để thực hiện sứ mệnh giáo dục xuất sắc.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Toàn cảnh cơ sở vật chất trường Lê Quý Đôn" class="rounded-xl shadow" />
+<h2>Cơ sở vật chất — Trường Tiểu học Vân Cốc</h2>
+<p>Trường Tiểu học Vân Cốc tọa lạc trên khuôn viên rộng <strong>8.000 m²</strong> tại quận Đống Đa, Hà Nội. Toàn bộ cơ sở vật chất được đầu tư đồng bộ, hiện đại và duy trì trong tình trạng tốt nhất để phục vụ học tập, sinh hoạt và phát triển toàn diện của học sinh. Nhà trường kiên định với quan điểm rằng môi trường học tập chất lượng cao là điều kiện tiên quyết để thực hiện sứ mệnh giáo dục xuất sắc.</p>
+<img src="/images/design/intro-campus-sanitizing.png" alt="Toàn cảnh cơ sở vật chất trường Vân Cốc" />
 
 <h3>Hệ thống phòng học</h3>
 <p>Nhà trường có <strong>30 phòng học</strong> chuẩn, mỗi phòng đáp ứng tối đa 35 học sinh với không gian thoáng mát, ánh sáng tự nhiên tốt và hệ thống điều hòa hai chiều. Tất cả phòng học được trang bị:</p>
@@ -215,7 +215,7 @@ async function seed() {
 </ul>
 
 <h3>Thư viện và không gian đọc sách</h3>
-<p>Thư viện trường Tiểu học Lê Quý Đôn sở hữu bộ sưu tập hơn <strong>10.000 đầu sách</strong> bao gồm sách giáo khoa, sách tham khảo, truyện thiếu nhi, bách khoa toàn thư và sách ngoại ngữ. Thư viện được tổ chức theo phân loại Dewey, dễ tìm kiếm, với hệ thống quản lý mượn/trả điện tử. Không gian đọc sách thoáng đãng với ghế sofa nhỏ và bàn đọc cá nhân; thư viện mở cửa mỗi ngày học, bao gồm cả giờ nghỉ trưa. Chương trình "Mỗi tuần một cuốn sách" khuyến khích học sinh đọc sách thường xuyên, tích điểm và nhận phần thưởng mỗi tháng.</p>
+<p>Thư viện trường Tiểu học Vân Cốc sở hữu bộ sưu tập hơn <strong>10.000 đầu sách</strong> bao gồm sách giáo khoa, sách tham khảo, truyện thiếu nhi, bách khoa toàn thư và sách ngoại ngữ. Thư viện được tổ chức theo phân loại Dewey, dễ tìm kiếm, với hệ thống quản lý mượn/trả điện tử. Không gian đọc sách thoáng đãng với ghế sofa nhỏ và bàn đọc cá nhân; thư viện mở cửa mỗi ngày học, bao gồm cả giờ nghỉ trưa. Chương trình "Mỗi tuần một cuốn sách" khuyến khích học sinh đọc sách thường xuyên, tích điểm và nhận phần thưởng mỗi tháng.</p>
 
 <h3>Cơ sở thể dục thể thao</h3>
 <p>Hạ tầng thể thao của nhà trường đáp ứng đầy đủ cho các hoạt động thể chất đa dạng:</p>
@@ -237,14 +237,14 @@ async function seed() {
     {
       title: 'Đội ngũ giáo viên',
       slug: 'doi-ngu-giao-vien',
-      seo_title: 'Đội ngũ giáo viên — Trường Tiểu học Lê Quý Đôn',
+      seo_title: 'Đội ngũ giáo viên — Trường Tiểu học Vân Cốc',
       seo_description:
-        '65 giáo viên, 28% thạc sĩ, 4 giáo viên bản ngữ, tỷ lệ GV/HS 1/18, bồi dưỡng chuyên môn hàng tháng tại trường Tiểu học Lê Quý Đôn.',
+        '65 giáo viên, 28% thạc sĩ, 4 giáo viên bản ngữ, tỷ lệ GV/HS 1/18, bồi dưỡng chuyên môn hàng tháng tại trường Tiểu học Vân Cốc.',
       status: PageStatus.PUBLISHED,
       content: `<section class="page-content">
-<h2>Đội ngũ giáo viên — Trường Tiểu học Lê Quý Đôn</h2>
-<p>Con người là yếu tố cốt lõi tạo nên chất lượng giáo dục. Trường Tiểu học Lê Quý Đôn tự hào sở hữu đội ngũ <strong>65 giáo viên</strong> được tuyển chọn kỹ lưỡng, tận tâm với nghề và không ngừng cập nhật phương pháp giảng dạy hiện đại. Mỗi giáo viên không chỉ là người truyền đạt kiến thức mà còn là người bạn đồng hành, người truyền cảm hứng và là hình mẫu đạo đức cho học sinh trong những năm tháng hình thành nhân cách quan trọng nhất của cuộc đời.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Đội ngũ giáo viên trường Lê Quý Đôn" class="rounded-xl shadow" />
+<h2>Đội ngũ giáo viên — Trường Tiểu học Vân Cốc</h2>
+<p>Con người là yếu tố cốt lõi tạo nên chất lượng giáo dục. Trường Tiểu học Vân Cốc tự hào sở hữu đội ngũ <strong>65 giáo viên</strong> được tuyển chọn kỹ lưỡng, tận tâm với nghề và không ngừng cập nhật phương pháp giảng dạy hiện đại. Mỗi giáo viên không chỉ là người truyền đạt kiến thức mà còn là người bạn đồng hành, người truyền cảm hứng và là hình mẫu đạo đức cho học sinh trong những năm tháng hình thành nhân cách quan trọng nhất của cuộc đời.</p>
+<img src="/images/design/testimonial-family.png" alt="Đội ngũ giáo viên trường Vân Cốc" />
 
 <h3>Trình độ chuyên môn</h3>
 <p>100% giáo viên của nhà trường đạt chuẩn trình độ đào tạo theo quy định của Bộ Giáo dục và Đào tạo. Trong đó, <strong>28% giáo viên có trình độ thạc sĩ</strong> — tỷ lệ cao hơn đáng kể so với mặt bằng chung các trường tiểu học trong quận. Nhà trường đang triển khai lộ trình hỗ trợ và khuyến khích thêm giáo viên theo học cao học để nâng tỷ lệ thạc sĩ lên 40% vào năm 2028.</p>
@@ -256,7 +256,7 @@ async function seed() {
 <p>Chương trình tiếng Anh tăng cường của nhà trường được hỗ trợ bởi <strong>4 giáo viên bản ngữ</strong> đến từ Anh, Mỹ và Úc — những người mang đến môi trường giao tiếp tiếng Anh chân thực, chuẩn phát âm và phong phú về văn hóa. Giáo viên bản ngữ dạy trực tiếp tại lớp và phối hợp với giáo viên người Việt để thiết kế chương trình học phù hợp với trình độ và tâm lý học sinh tiểu học Việt Nam. Học sinh được tiếp xúc với giáo viên nước ngoài từ lớp 1, giúp xây dựng sự tự tin khi nói tiếng Anh ngay từ đầu.</p>
 
 <h3>Tỷ lệ giáo viên trên học sinh</h3>
-<p>Tỷ lệ <strong>1 giáo viên / 18 học sinh</strong> tại trường Tiểu học Lê Quý Đôn đảm bảo mỗi em nhận được sự quan tâm cá nhân hóa đầy đủ. Sĩ số lớp không vượt quá 35 học sinh, và mỗi lớp có thêm giáo viên hỗ trợ trong các giờ học năng khiếu đặc biệt. Giáo viên chủ nhiệm theo dõi sát sao sự tiến bộ học tập và phát triển cá nhân của từng học sinh, thường xuyên trao đổi với phụ huynh qua ứng dụng kết nối gia đình-nhà trường.</p>
+<p>Tỷ lệ <strong>1 giáo viên / 18 học sinh</strong> tại trường Tiểu học Vân Cốc đảm bảo mỗi em nhận được sự quan tâm cá nhân hóa đầy đủ. Sĩ số lớp không vượt quá 35 học sinh, và mỗi lớp có thêm giáo viên hỗ trợ trong các giờ học năng khiếu đặc biệt. Giáo viên chủ nhiệm theo dõi sát sao sự tiến bộ học tập và phát triển cá nhân của từng học sinh, thường xuyên trao đổi với phụ huynh qua ứng dụng kết nối gia đình-nhà trường.</p>
 
 <h3>Đội ngũ hỗ trợ chuyên biệt</h3>
 <p>Bên cạnh giáo viên, nhà trường còn có đội ngũ chuyên gia hỗ trợ toàn diện cho học sinh:</p>
@@ -277,17 +277,17 @@ async function seed() {
     {
       title: 'Thành tích nổi bật',
       slug: 'thanh-tich',
-      seo_title: 'Thành tích nổi bật — Trường Tiểu học Lê Quý Đôn',
+      seo_title: 'Thành tích nổi bật — Trường Tiểu học Vân Cốc',
       seo_description:
-        'Các thành tích nổi bật của trường Tiểu học Lê Quý Đôn: Olympic Toán, tiếng Anh Cambridge, Robotics, bơi lội, thể thao và văn nghệ cấp quận và thành phố.',
+        'Các thành tích nổi bật của trường Tiểu học Vân Cốc: Olympic Toán, tiếng Anh Cambridge, Robotics, bơi lội, thể thao và văn nghệ cấp quận và thành phố.',
       status: PageStatus.PUBLISHED,
       content: `<section class="page-content">
-<h2>Thành tích nổi bật — Trường Tiểu học Lê Quý Đôn</h2>
-<p>Trong nhiều năm qua, trường Tiểu học Lê Quý Đôn đã ghi dấu ấn trên nhiều lĩnh vực học thuật, thể thao và nghệ thuật với những thành tích đáng tự hào ở cấp quận và thành phố. Mỗi giải thưởng không chỉ là vinh dự cho cá nhân học sinh mà còn là minh chứng cho chất lượng đào tạo toàn diện và sự tâm huyết của toàn thể thầy cô giáo nhà trường.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Học sinh trường Lê Quý Đôn nhận giải thưởng" class="rounded-xl shadow" />
+<h2>Thành tích nổi bật — Trường Tiểu học Vân Cốc</h2>
+<p>Trong nhiều năm qua, trường Tiểu học Vân Cốc đã ghi dấu ấn trên nhiều lĩnh vực học thuật, thể thao và nghệ thuật với những thành tích đáng tự hào ở cấp quận và thành phố. Mỗi giải thưởng không chỉ là vinh dự cho cá nhân học sinh mà còn là minh chứng cho chất lượng đào tạo toàn diện và sự tâm huyết của toàn thể thầy cô giáo nhà trường.</p>
+<img src="/images/design/news-award.png" alt="Học sinh trường Vân Cốc nhận giải thưởng" />
 
 <h3>Olympic Toán cấp quận</h3>
-<p>Đội tuyển Olympic Toán của trường Tiểu học Lê Quý Đôn luôn là lực lượng mạnh trong các kỳ thi cấp quận Đống Đa. Kết quả 3 năm học gần nhất ghi nhận tổng cộng <strong>15 giải</strong> bao gồm:</p>
+<p>Đội tuyển Olympic Toán của trường Tiểu học Vân Cốc luôn là lực lượng mạnh trong các kỳ thi cấp quận Đống Đa. Kết quả 3 năm học gần nhất ghi nhận tổng cộng <strong>15 giải</strong> bao gồm:</p>
 <ul>
   <li><strong>3 Giải Nhất</strong> — khẳng định vị thế top đầu của đội tuyển Toán nhà trường</li>
   <li><strong>5 Giải Nhì</strong> — thể hiện chiều sâu lực lượng với nhiều học sinh xuất sắc</li>
@@ -310,10 +310,10 @@ async function seed() {
 <p>Với bể bơi 25m ngay trong khuôn viên và chương trình bơi lội đưa vào chính khóa, đội tuyển bơi lội nhà trường ghi dấu ấn mạnh mẽ tại Hội thao Học sinh quận Đống Đa 2024 với <strong>8 Huy chương Vàng</strong> ở các nội dung: bơi ếch 25m, bơi tự do 25m và 50m, tiếp sức 4×25m. Đây là thành tích tốt nhất trong lịch sử tham dự hội thao của nhà trường, và là minh chứng rõ nhất cho hiệu quả của chương trình bơi lội chính khóa.</p>
 
 <h3>Hội khỏe Phù Đổng — Thể thao toàn diện</h3>
-<p>Tại Hội khỏe Phù Đổng cấp quận, trường Tiểu học Lê Quý Đôn liên tục duy trì thứ hạng <strong>Top 3 toàn quận</strong> trong 3 năm liên tiếp gần đây. Học sinh tham gia thi đấu tổng hợp nhiều môn thể thao bao gồm chạy, nhảy, ném bóng và bơi lội. Thành tích này khẳng định chương trình thể dục thể thao của nhà trường không chỉ mạnh ở một môn mà toàn diện, phát triển đồng đều thể chất cho toàn bộ học sinh.</p>
+<p>Tại Hội khỏe Phù Đổng cấp quận, trường Tiểu học Vân Cốc liên tục duy trì thứ hạng <strong>Top 3 toàn quận</strong> trong 3 năm liên tiếp gần đây. Học sinh tham gia thi đấu tổng hợp nhiều môn thể thao bao gồm chạy, nhảy, ném bóng và bơi lội. Thành tích này khẳng định chương trình thể dục thể thao của nhà trường không chỉ mạnh ở một môn mà toàn diện, phát triển đồng đều thể chất cho toàn bộ học sinh.</p>
 
 <h3>Nghệ thuật — Liên hoan Văn nghệ Thiếu nhi</h3>
-<p>Đội múa và đội văn nghệ của trường Tiểu học Lê Quý Đôn là những gương mặt quen thuộc tại các liên hoan văn nghệ thiếu nhi Hà Nội. Nổi bật nhất là <strong>Giải Đặc biệt</strong> tại Liên hoan Văn nghệ Thiếu nhi Thành phố Hà Nội 2025 dành cho tiết mục múa đương đại "Mùa xuân của em" — kết quả của hàng tháng tập luyện nghiêm túc và tài năng thực sự của các em học sinh. Ngoài ra, nhiều học sinh đã đạt giải cá nhân tại các cuộc thi vẽ tranh thiếu nhi, cuộc thi tiếng hát học sinh thành phố và cuộc thi viết thư UPU quốc tế.</p>
+<p>Đội múa và đội văn nghệ của trường Tiểu học Vân Cốc là những gương mặt quen thuộc tại các liên hoan văn nghệ thiếu nhi Hà Nội. Nổi bật nhất là <strong>Giải Đặc biệt</strong> tại Liên hoan Văn nghệ Thiếu nhi Thành phố Hà Nội 2025 dành cho tiết mục múa đương đại "Mùa xuân của em" — kết quả của hàng tháng tập luyện nghiêm túc và tài năng thực sự của các em học sinh. Ngoài ra, nhiều học sinh đã đạt giải cá nhân tại các cuộc thi vẽ tranh thiếu nhi, cuộc thi tiếng hát học sinh thành phố và cuộc thi viết thư UPU quốc tế.</p>
 </section>`,
     },
 
@@ -323,14 +323,14 @@ async function seed() {
     {
       title: 'Tuyển sinh năm học 2026-2027',
       slug: 'tuyen-sinh-2026',
-      seo_title: 'Tuyển sinh 2026-2027 — Trường Tiểu học Lê Quý Đôn',
+      seo_title: 'Tuyển sinh 2026-2027 — Trường Tiểu học Vân Cốc',
       seo_description:
-        'Thông tin tuyển sinh năm học 2026-2027 trường Tiểu học Lê Quý Đôn: 180 chỉ tiêu lớp 1, hồ sơ, lịch nộp, học phí 3.500.000đ/tháng.',
+        'Thông tin tuyển sinh năm học 2026-2027 trường Tiểu học Vân Cốc: 180 chỉ tiêu lớp 1, hồ sơ, lịch nộp, học phí 3.500.000đ/tháng.',
       status: PageStatus.PUBLISHED,
       content: `<section class="page-content">
-<h2>Tuyển sinh năm học 2026-2027 — Trường Tiểu học Lê Quý Đôn</h2>
-<p>Trường Tiểu học Lê Quý Đôn trân trọng thông báo kế hoạch tuyển sinh vào lớp 1 năm học 2026-2027. Đây là cơ hội để các gia đình tại Hà Nội gửi gắm con em vào một môi trường giáo dục toàn diện, hiện đại và tận tâm — nơi mỗi đứa trẻ được phát triển theo tiềm năng riêng của mình. Nhà trường khuyến khích phụ huynh tìm hiểu kỹ thông tin tuyển sinh và liên hệ sớm để được tư vấn trực tiếp.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Tuyển sinh lớp 1 trường Lê Quý Đôn 2026" class="rounded-xl shadow" />
+<h2>Tuyển sinh năm học 2026-2027 — Trường Tiểu học Vân Cốc</h2>
+<p>Trường Tiểu học Vân Cốc trân trọng thông báo kế hoạch tuyển sinh vào lớp 1 năm học 2026-2027. Đây là cơ hội để các gia đình tại Hà Nội gửi gắm con em vào một môi trường giáo dục toàn diện, hiện đại và tận tâm — nơi mỗi đứa trẻ được phát triển theo tiềm năng riêng của mình. Nhà trường khuyến khích phụ huynh tìm hiểu kỹ thông tin tuyển sinh và liên hệ sớm để được tư vấn trực tiếp.</p>
+<img src="/images/design/hero-admission-2026.png" alt="Tuyển sinh lớp 1 trường Vân Cốc 2026" />
 
 <h3>Chỉ tiêu tuyển sinh</h3>
 <p>Năm học 2026-2027, nhà trường tuyển sinh <strong>180 học sinh lớp 1</strong>, chia thành <strong>6 lớp</strong>, mỗi lớp không quá 30 học sinh. Sĩ số nhỏ đảm bảo mỗi học sinh nhận được sự quan tâm cá nhân hóa đầy đủ từ giáo viên chủ nhiệm ngay từ những ngày đầu tiên đến trường. Do nhu cầu đăng ký thường vượt chỉ tiêu, nhà trường khuyến khích phụ huynh nộp hồ sơ sớm để đảm bảo suất học cho con.</p>

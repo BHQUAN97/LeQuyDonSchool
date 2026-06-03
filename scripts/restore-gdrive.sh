@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ──────────────────────────────────────────
-# Google Drive Restore wrapper — LeQuyDon
+# Google Drive Restore wrapper — VanCoc
 #
 # Usage:
 #   ./restore-gdrive.sh list                  # list DB backups tren Drive

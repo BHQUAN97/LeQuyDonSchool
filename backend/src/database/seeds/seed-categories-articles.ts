@@ -5,7 +5,7 @@ import { Article, ArticleStatus } from '../../modules/articles/entities/article.
 import { generateUlid } from '../../common/utils/ulid';
 
 /**
- * Seed danh muc va bai viet cho Truong Tieu hoc Le Quy Don Ha Noi.
+ * Seed danh muc va bai viet cho Truong Tieu hoc Van Coc.
  * 25 danh muc (8 cha + 17 con) + 25 bai viet phan bo across categories.
  * Idempotent: kiem tra slug truoc khi insert.
  * Chay: npx ts-node -r tsconfig-paths/register src/database/seeds/seed-categories-articles.ts
@@ -169,7 +169,7 @@ async function seedArticles(adminId: string): Promise<void> {
       title: 'Lễ khai giảng năm học 2025-2026: Ngày hội tựu trường rực rỡ',
       slug: 'le-khai-giang-nam-hoc-2025-2026',
       content: `<h2>Không khí náo nức trong ngày khai trường</h2>
-<p>Sáng ngày 5 tháng 9 năm 2025, toàn thể giáo viên, học sinh và phụ huynh Trường Tiểu học Lê Quý Đôn – Hà Nội đã cùng tề tựu trong không khí trang trọng và ấm áp của Lễ khai giảng năm học 2025-2026. Sân trường rực rỡ sắc màu với cờ hoa, băng rôn chào mừng năm học mới.</p>
+<p>Sáng ngày 5 tháng 9 năm 2025, toàn thể giáo viên, học sinh và phụ huynh Trường Tiểu học Vân Cốc – Hà Nội đã cùng tề tựu trong không khí trang trọng và ấm áp của Lễ khai giảng năm học 2025-2026. Sân trường rực rỡ sắc màu với cờ hoa, băng rôn chào mừng năm học mới.</p>
 <p>Hơn 800 học sinh từ khối lớp 1 đến khối lớp 5 diện trang phục đồng phục chỉnh tề, xếp hàng ngay ngắn dưới bóng cây xanh mát. Các em học sinh lớp 1 được các anh chị lớp 5 dẫn dắt vào vị trí, tạo nên hình ảnh đẹp về tinh thần đoàn kết.</p>
 <h3>Điểm nhấn của buổi lễ</h3>
 <p>Năm học 2025-2026, nhà trường đón nhận <strong>160 học sinh lớp 1</strong> vào 4 lớp học. Hiệu trưởng Nguyễn Văn Hùng công bố các mục tiêu trọng tâm của năm học mới:</p>
@@ -180,24 +180,24 @@ async function seedArticles(adminId: string): Promise<void> {
   <li>Tăng cường kỹ năng sống và giáo dục văn hóa ứng xử cho học sinh</li>
 </ul>
 <p>Trong bài phát biểu xúc động, thầy Hiệu trưởng nhắn nhủ: <em>"Mỗi ngày đến trường là một ngày hạnh phúc. Thầy cô và nhà trường luôn đồng hành cùng các em trên con đường chinh phục tri thức."</em> Buổi lễ kết thúc bằng màn múa hát chào mừng sôi động của học sinh toàn trường.</p>`,
-      excerpt: 'Sáng 5/9/2025, Trường Tiểu học Lê Quý Đôn tổ chức Lễ khai giảng năm học 2025-2026 với sự tham dự của hơn 800 học sinh và đông đảo phụ huynh trong không khí trang trọng và vui tươi.',
+      excerpt: 'Sáng 5/9/2025, Trường Tiểu học Vân Cốc tổ chức Lễ khai giảng năm học 2025-2026 với sự tham dự của hơn 800 học sinh và đông đảo phụ huynh trong không khí trang trọng và vui tươi.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-1/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'tin-tuc',
       view_count: 742,
       published_at: daysAgo(218),
-      seo_title: 'Lễ khai giảng năm học 2025-2026 - Trường TH Lê Quý Đôn',
-      seo_description: 'Lễ khai giảng năm học 2025-2026 tại Trường Tiểu học Lê Quý Đôn Hà Nội với hơn 800 học sinh trong không khí trang trọng và ấm áp.',
+      seo_title: 'Lễ khai giảng năm học 2025-2026 - Trường TH Vân Cốc',
+      seo_description: 'Lễ khai giảng năm học 2025-2026 tại Trường Tiểu học Vân Cốc với hơn 800 học sinh trong không khí trang trọng và ấm áp.',
     },
 
     // -------------------------------------------------------
     // 2. tin-tuc — Bằng khen UBND TP
     // -------------------------------------------------------
     {
-      title: 'Trường Tiểu học Lê Quý Đôn đón nhận Bằng khen UBND Thành phố Hà Nội',
+      title: 'Trường Tiểu học Vân Cốc đón nhận Bằng khen UBND Thành phố Hà Nội',
       slug: 'truong-don-bang-khen-ubnd-thanh-pho',
       content: `<h2>Vinh dự và tự hào</h2>
-<p>Trong buổi lễ tổng kết năm học 2024-2025 của Sở Giáo dục và Đào tạo Hà Nội, Trường Tiểu học Lê Quý Đôn vinh dự được UBND Thành phố Hà Nội trao tặng <strong>Bằng khen về thành tích xuất sắc trong công tác giáo dục và đào tạo</strong> năm học 2024-2025.</p>
+<p>Trong buổi lễ tổng kết năm học 2024-2025 của Sở Giáo dục và Đào tạo Hà Nội, Trường Tiểu học Vân Cốc vinh dự được UBND Thành phố Hà Nội trao tặng <strong>Bằng khen về thành tích xuất sắc trong công tác giáo dục và đào tạo</strong> năm học 2024-2025.</p>
 <p>Đây là kết quả của sự nỗ lực không ngừng của toàn thể cán bộ, giáo viên, nhân viên và học sinh. Với tỷ lệ học sinh hoàn thành chương trình tiểu học đạt <strong>100%</strong>, và 98,5% học sinh được đánh giá xuất sắc, nhà trường khẳng định vị thế là một trong những trường tiểu học chất lượng cao hàng đầu quận Ba Đình.</p>
 <h3>Những thành tích nổi bật</h3>
 <ul>
@@ -207,14 +207,14 @@ async function seedArticles(adminId: string): Promise<void> {
   <li>100% giáo viên đạt chuẩn nghề nghiệp; 35% đạt chuẩn trên mức chuẩn</li>
 </ul>
 <p>Thầy Hiệu trưởng Nguyễn Văn Hùng bày tỏ lòng biết ơn sâu sắc đến Ban Phụ huynh học sinh và các mạnh thường quân đã đồng hành cùng nhà trường. Tập thể nhà trường hứa sẽ tiếp tục phấn đấu, không ngừng đổi mới sáng tạo để xứng đáng với sự tin tưởng của phụ huynh và học sinh.</p>`,
-      excerpt: 'Trường Tiểu học Lê Quý Đôn Hà Nội vinh dự được UBND Thành phố trao Bằng khen về thành tích xuất sắc trong công tác giáo dục và đào tạo năm học 2024-2025.',
+      excerpt: 'Trường Tiểu học Vân Cốc vinh dự được UBND Thành phố trao Bằng khen về thành tích xuất sắc trong công tác giáo dục và đào tạo năm học 2024-2025.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-2/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'tin-tuc',
       view_count: 589,
       published_at: daysAgo(234),
-      seo_title: 'Trường TH Lê Quý Đôn nhận Bằng khen UBND TP Hà Nội 2025',
-      seo_description: 'Trường Tiểu học Lê Quý Đôn Hà Nội nhận Bằng khen UBND TP Hà Nội nhờ thành tích xuất sắc năm học 2024-2025 với 100% học sinh hoàn thành chương trình.',
+      seo_title: 'Trường TH Vân Cốc nhận Bằng khen UBND TP Hà Nội 2025',
+      seo_description: 'Trường Tiểu học Vân Cốc nhận Bằng khen UBND TP Hà Nội nhờ thành tích xuất sắc năm học 2024-2025 với 100% học sinh hoàn thành chương trình.',
     },
 
     // -------------------------------------------------------
@@ -224,7 +224,7 @@ async function seedArticles(adminId: string): Promise<void> {
       title: 'Thông báo lịch tựu trường và các hoạt động đầu năm học 2025-2026',
       slug: 'thong-bao-lich-tuu-truong-2025-2026',
       content: `<h2>Lịch tựu trường năm học 2025-2026</h2>
-<p>Căn cứ Kế hoạch thời gian năm học 2025-2026 của Bộ Giáo dục và Đào tạo và hướng dẫn của Sở GD&ĐT Hà Nội, Trường Tiểu học Lê Quý Đôn thông báo lịch tựu trường và các hoạt động đầu năm như sau:</p>
+<p>Căn cứ Kế hoạch thời gian năm học 2025-2026 của Bộ Giáo dục và Đào tạo và hướng dẫn của Sở GD&ĐT Hà Nội, Trường Tiểu học Vân Cốc thông báo lịch tựu trường và các hoạt động đầu năm như sau:</p>
 <h3>Học sinh các khối lớp 2, 3, 4, 5</h3>
 <ul>
   <li><strong>Ngày 1/9/2025:</strong> Học sinh tựu trường, ổn định lớp, nhận sách giáo khoa</li>
@@ -240,14 +240,14 @@ async function seedArticles(adminId: string): Promise<void> {
 </ul>
 <h3>Lưu ý quan trọng</h3>
 <p>Phụ huynh cần chuẩn bị đầy đủ đồ dùng học tập theo danh sách nhà trường đã gửi. Học sinh mặc đồng phục theo quy định (áo trắng, quần/váy xanh navy). Mọi thắc mắc xin liên hệ văn phòng nhà trường qua số điện thoại <strong>024-3835-xxxx</strong> trong giờ hành chính từ 7h30 đến 17h00, thứ Hai đến thứ Sáu.</p>`,
-      excerpt: 'Thông báo lịch tựu trường và các hoạt động đầu năm học 2025-2026 dành cho học sinh các khối lớp 1 đến 5 tại Trường Tiểu học Lê Quý Đôn Hà Nội.',
+      excerpt: 'Thông báo lịch tựu trường và các hoạt động đầu năm học 2025-2026 dành cho học sinh các khối lớp 1 đến 5 tại Trường Tiểu học Vân Cốc.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-3/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'tin-tuc',
       view_count: 412,
       published_at: daysAgo(239),
-      seo_title: 'Lịch tựu trường 2025-2026 - Trường TH Lê Quý Đôn Hà Nội',
-      seo_description: 'Thông báo chính thức lịch tựu trường năm học 2025-2026 cho học sinh lớp 1-5 tại Trường Tiểu học Lê Quý Đôn Hà Nội.',
+      seo_title: 'Lịch tựu trường 2025-2026 - Trường TH Vân Cốc Hà Nội',
+      seo_description: 'Thông báo chính thức lịch tựu trường năm học 2025-2026 cho học sinh lớp 1-5 tại Trường Tiểu học Vân Cốc.',
     },
 
     // -------------------------------------------------------
@@ -269,14 +269,14 @@ async function seedArticles(adminId: string): Promise<void> {
 <h3>Kết quả thi học sinh giỏi</h3>
 <p>Trong năm học 2024-2025, học sinh của trường đã tham gia và đạt nhiều thành tích xuất sắc tại các cuộc thi cấp quận, thành phố và quốc gia. Đặc biệt, <strong>em Nguyễn Minh Khôi</strong> (lớp 5A) đoạt Giải Nhất cuộc thi Toán Kangaroo cấp Quốc gia, đem lại niềm tự hào lớn cho nhà trường.</p>
 <p>Ban Giám hiệu trân trọng cảm ơn sự đồng hành của quý phụ huynh trong suốt năm học qua. Những kết quả này là minh chứng cho sự đổi mới không ngừng trong phương pháp giảng dạy của đội ngũ giáo viên và tinh thần học tập nghiêm túc, sáng tạo của học sinh toàn trường.</p>`,
-      excerpt: 'Năm học 2024-2025, 98,5% học sinh Trường Tiểu học Lê Quý Đôn đạt xếp loại Hoàn thành xuất sắc, tăng 2,3% so với năm học trước.',
+      excerpt: 'Năm học 2024-2025, 98,5% học sinh Trường Tiểu học Vân Cốc đạt xếp loại Hoàn thành xuất sắc, tăng 2,3% so với năm học trước.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-4/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'hoc-tap',
       view_count: 634,
       published_at: daysAgo(285),
-      seo_title: 'Kết quả học tập 2024-2025 - Trường TH Lê Quý Đôn',
-      seo_description: '98,5% học sinh Trường TH Lê Quý Đôn hoàn thành xuất sắc năm học 2024-2025 với nhiều giải thưởng cấp quận, thành phố và quốc gia.',
+      seo_title: 'Kết quả học tập 2024-2025 - Trường TH Vân Cốc',
+      seo_description: '98,5% học sinh Trường TH Vân Cốc hoàn thành xuất sắc năm học 2024-2025 với nhiều giải thưởng cấp quận, thành phố và quốc gia.',
     },
 
     // -------------------------------------------------------
@@ -286,7 +286,7 @@ async function seedArticles(adminId: string): Promise<void> {
       title: 'Đổi mới phương pháp giảng dạy: Tích hợp STEM vào các môn học cơ bản',
       slug: 'doi-moi-phuong-phap-giang-day-stem-tich-hop',
       content: `<h2>STEM không chỉ là môn học riêng lẻ</h2>
-<p>Từ năm học 2024-2025, Trường Tiểu học Lê Quý Đôn tiên phong áp dụng mô hình giảng dạy tích hợp STEM vào các môn học truyền thống như Toán, Khoa học, Tiếng Việt và Mỹ thuật. Thay vì học lý thuyết thuần túy, học sinh được tham gia các dự án thực hành gắn kết với đời thực.</p>
+<p>Từ năm học 2024-2025, Trường Tiểu học Vân Cốc tiên phong áp dụng mô hình giảng dạy tích hợp STEM vào các môn học truyền thống như Toán, Khoa học, Tiếng Việt và Mỹ thuật. Thay vì học lý thuyết thuần túy, học sinh được tham gia các dự án thực hành gắn kết với đời thực.</p>
 <h3>Ví dụ minh họa: Bài học về Diện tích (Toán lớp 4)</h3>
 <p>Thay vì làm bài tập tính diện tích trong sách giáo khoa, học sinh lớp 4 được yêu cầu <em>thiết kế một khu vườn rau cho gia đình</em> với diện tích không quá 20m². Các em phải đo đạc thực tế, tính toán, vẽ bản đồ và trình bày kế hoạch trước lớp. Kết quả: 95% học sinh nắm vững khái niệm diện tích sau bài học này.</p>
 <h3>Phản hồi từ giáo viên và phụ huynh</h3>
@@ -296,24 +296,24 @@ async function seedArticles(adminId: string): Promise<void> {
 </ul>
 <h3>Kế hoạch phát triển</h3>
 <p>Nhà trường dự kiến mở rộng mô hình này ra toàn bộ các khối lớp trong năm học 2025-2026, đồng thời tổ chức tập huấn chuyên sâu cho 100% giáo viên về phương pháp dạy học tích hợp STEM. Ban Giám hiệu đã ký kết hợp tác với Trường Đại học Bách Khoa Hà Nội để được hỗ trợ về tài liệu giảng dạy và tập huấn giáo viên — bước đi chiến lược nhằm nâng cao chất lượng giáo dục toàn diện, chuẩn bị cho học sinh bước vào kỷ nguyên công nghệ số.</p>`,
-      excerpt: 'Trường Tiểu học Lê Quý Đôn tiên phong tích hợp STEM vào các môn học cơ bản, giúp học sinh học qua trải nghiệm thực tế thay vì lý thuyết thuần túy.',
+      excerpt: 'Trường Tiểu học Vân Cốc tiên phong tích hợp STEM vào các môn học cơ bản, giúp học sinh học qua trải nghiệm thực tế thay vì lý thuyết thuần túy.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-5/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'hoc-tap',
       view_count: 387,
       published_at: daysAgo(178),
-      seo_title: 'Tích hợp STEM vào giảng dạy - Trường TH Lê Quý Đôn Hà Nội',
-      seo_description: 'Trường TH Lê Quý Đôn áp dụng mô hình giảng dạy tích hợp STEM, giúp học sinh học Toán, Khoa học qua dự án thực tế.',
+      seo_title: 'Tích hợp STEM vào giảng dạy - Trường TH Vân Cốc Hà Nội',
+      seo_description: 'Trường TH Vân Cốc áp dụng mô hình giảng dạy tích hợp STEM, giúp học sinh học Toán, Khoa học qua dự án thực tế.',
     },
 
     // -------------------------------------------------------
     // 6. hoat-dong — Ngày hội câu lạc bộ
     // -------------------------------------------------------
     {
-      title: 'Ngày hội Câu lạc bộ 2025: Sân chơi sáng tạo cho học sinh Lê Quý Đôn',
+      title: 'Ngày hội Câu lạc bộ 2025: Sân chơi sáng tạo cho học sinh Vân Cốc',
       slug: 'ngay-hoi-cau-lac-bo-2025',
       content: `<h2>Một ngày đặc biệt của các câu lạc bộ</h2>
-<p>Ngày 15 tháng 10 năm 2025, Trường Tiểu học Lê Quý Đôn tổ chức <strong>Ngày hội Câu lạc bộ 2025</strong> — sự kiện thường niên được học sinh và phụ huynh mong chờ nhất trong học kỳ I. Với chủ đề <em>"Tài năng nhỏ, Ước mơ lớn"</em>, hơn 300 học sinh từ 12 câu lạc bộ của trường đã có cơ hội trình diễn và giao lưu.</p>
+<p>Ngày 15 tháng 10 năm 2025, Trường Tiểu học Vân Cốc tổ chức <strong>Ngày hội Câu lạc bộ 2025</strong> — sự kiện thường niên được học sinh và phụ huynh mong chờ nhất trong học kỳ I. Với chủ đề <em>"Tài năng nhỏ, Ước mơ lớn"</em>, hơn 300 học sinh từ 12 câu lạc bộ của trường đã có cơ hội trình diễn và giao lưu.</p>
 <h3>Các câu lạc bộ tham gia</h3>
 <ul>
   <li><strong>CLB Robotics & Lập trình:</strong> Trình diễn robot tự hành giải mê cung</li>
@@ -331,8 +331,8 @@ async function seedArticles(adminId: string): Promise<void> {
       category_slug: 'hoat-dong',
       view_count: 521,
       published_at: daysAgo(177),
-      seo_title: 'Ngày hội Câu lạc bộ 2025 - Trường TH Lê Quý Đôn',
-      seo_description: 'Ngày hội CLB 2025 tại Trường TH Lê Quý Đôn: 12 câu lạc bộ trình diễn tài năng với chủ đề Tài năng nhỏ, Ước mơ lớn.',
+      seo_title: 'Ngày hội Câu lạc bộ 2025 - Trường TH Vân Cốc',
+      seo_description: 'Ngày hội CLB 2025 tại Trường TH Vân Cốc: 12 câu lạc bộ trình diễn tài năng với chủ đề Tài năng nhỏ, Ước mơ lớn.',
     },
 
     // -------------------------------------------------------
@@ -342,7 +342,7 @@ async function seedArticles(adminId: string): Promise<void> {
       title: 'Chuyến tham quan "Hà Nội Xanh": Học sinh khối 3 khám phá thiên nhiên',
       slug: 'tham-quan-ha-noi-xanh-khoi-3',
       content: `<h2>Học từ thiên nhiên, học từ cuộc sống</h2>
-<p>Trong hai ngày 18-19 tháng 10 năm 2025, toàn bộ học sinh khối lớp 3 (160 em) của Trường Tiểu học Lê Quý Đôn đã có chuyến tham quan dã ngoại đến <strong>Vườn Quốc gia Cúc Phương</strong> và <strong>Khu sinh thái Tràng An</strong> — hai điểm đến thiên nhiên nổi tiếng cách Hà Nội khoảng 100km.</p>
+<p>Trong hai ngày 18-19 tháng 10 năm 2025, toàn bộ học sinh khối lớp 3 (160 em) của Trường Tiểu học Vân Cốc đã có chuyến tham quan dã ngoại đến <strong>Vườn Quốc gia Cúc Phương</strong> và <strong>Khu sinh thái Tràng An</strong> — hai điểm đến thiên nhiên nổi tiếng cách Hà Nội khoảng 100km.</p>
 <h3>Hành trình hai ngày</h3>
 <p><strong>Ngày 1 — Vườn Quốc gia Cúc Phương:</strong> Học sinh được các kiểm lâm hướng dẫn tìm hiểu về các loài thực vật, động vật quý hiếm. Các em tham gia hoạt động trồng cây gây rừng — mỗi em trồng một cây xanh nhỏ mang tên mình.</p>
 <p><strong>Ngày 2 — Khu sinh thái Tràng An:</strong> Học sinh ngồi thuyền khám phá hệ thống hang động kỳ vĩ, nghe kể về lịch sử địa chất và văn hóa Ninh Bình. Buổi chiều, các em tham gia chương trình làm thủ công từ nguyên liệu tái chế.</p>
@@ -354,24 +354,24 @@ async function seedArticles(adminId: string): Promise<void> {
   <li>Hiểu biết về di sản thiên nhiên thế giới UNESCO</li>
 </ul>
 <p>Chuyến đi kết thúc thành công tốt đẹp. Mỗi em mang về một cuốn nhật ký tham quan đầy ắp hình ảnh và kỷ niệm đẹp về thiên nhiên đất nước Việt Nam.</p>`,
-      excerpt: 'Học sinh khối 3 Trường Tiểu học Lê Quý Đôn có chuyến tham quan hai ngày đến Vườn Quốc gia Cúc Phương và Tràng An, khám phá thiên nhiên và học về bảo vệ môi trường.',
+      excerpt: 'Học sinh khối 3 Trường Tiểu học Vân Cốc có chuyến tham quan hai ngày đến Vườn Quốc gia Cúc Phương và Tràng An, khám phá thiên nhiên và học về bảo vệ môi trường.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-7/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'hoat-dong',
       view_count: 298,
       published_at: daysAgo(173),
-      seo_title: 'Tham quan Cúc Phương - Tràng An: Học sinh khối 3 Lê Quý Đôn',
-      seo_description: 'Học sinh khối 3 Trường TH Lê Quý Đôn tham quan Vườn Quốc gia Cúc Phương và Tràng An, học về thiên nhiên và bảo vệ môi trường.',
+      seo_title: 'Tham quan Cúc Phương - Tràng An: Học sinh khối 3 Vân Cốc',
+      seo_description: 'Học sinh khối 3 Trường TH Vân Cốc tham quan Vườn Quốc gia Cúc Phương và Tràng An, học về thiên nhiên và bảo vệ môi trường.',
     },
 
     // -------------------------------------------------------
     // 8. hoat-dong — Tết Trung Thu
     // -------------------------------------------------------
     {
-      title: 'Tết Trung Thu 2025: Đêm hội đèn lồng rực rỡ tại Lê Quý Đôn',
+      title: 'Tết Trung Thu 2025: Đêm hội đèn lồng rực rỡ tại Vân Cốc',
       slug: 'tet-trung-thu-2025-dem-hoi-den-long',
       content: `<h2>Giữ gìn truyền thống, vun đắp tình thân</h2>
-<p>Tối ngày 6 tháng 9 năm 2025 (14 tháng 8 Âm lịch), sân trường Tiểu học Lê Quý Đôn lung linh ánh đèn lồng và tiếng trống múa lân rộn rã, đánh dấu <strong>Đêm hội Trung Thu 2025</strong> — sự kiện văn hóa truyền thống được toàn thể học sinh, giáo viên và phụ huynh yêu thích.</p>
+<p>Tối ngày 6 tháng 9 năm 2025 (14 tháng 8 Âm lịch), sân trường Tiểu học Vân Cốc lung linh ánh đèn lồng và tiếng trống múa lân rộn rã, đánh dấu <strong>Đêm hội Trung Thu 2025</strong> — sự kiện văn hóa truyền thống được toàn thể học sinh, giáo viên và phụ huynh yêu thích.</p>
 <h3>Những hoạt động đặc sắc</h3>
 <ul>
   <li><strong>Rước đèn lồng:</strong> Hơn 400 học sinh tự tay làm đèn lồng từ giấy bồi và tre, mang đi diễu hành quanh sân trường</li>
@@ -381,14 +381,14 @@ async function seedArticles(adminId: string): Promise<void> {
 </ul>
 <p>Đặc biệt năm nay, nhà trường phối hợp với Hội Phụ nữ phường để tặng 50 phần quà Trung Thu cho trẻ em có hoàn cảnh khó khăn trong khu vực — một hành động ý nghĩa giáo dục lòng nhân ái từ sớm cho các em học sinh.</p>
 <p>Sự kiện kết thúc lúc 21 giờ trong tiếng vỗ tay và nụ cười của mọi người. Đây thực sự là một đêm hội đáng nhớ, góp phần bồi đắp tình yêu văn hóa dân tộc trong trái tim những học trò nhỏ.</p>`,
-      excerpt: 'Đêm hội Trung Thu 2025 tại Trường Tiểu học Lê Quý Đôn lung linh với màn rước đèn của 400 học sinh, múa lân và phá cỗ truyền thống.',
+      excerpt: 'Đêm hội Trung Thu 2025 tại Trường Tiểu học Vân Cốc lung linh với màn rước đèn của 400 học sinh, múa lân và phá cỗ truyền thống.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-8/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'hoat-dong',
       view_count: 463,
       published_at: daysAgo(216),
-      seo_title: 'Đêm hội Trung Thu 2025 - Trường TH Lê Quý Đôn Hà Nội',
-      seo_description: 'Đêm hội Trung Thu 2025 rực rỡ tại Trường TH Lê Quý Đôn: rước đèn lồng, múa lân và phá cỗ truyền thống cùng hơn 400 học sinh.',
+      seo_title: 'Đêm hội Trung Thu 2025 - Trường TH Vân Cốc Hà Nội',
+      seo_description: 'Đêm hội Trung Thu 2025 rực rỡ tại Trường TH Vân Cốc: rước đèn lồng, múa lân và phá cỗ truyền thống cùng hơn 400 học sinh.',
     },
 
     // -------------------------------------------------------
@@ -398,7 +398,7 @@ async function seedArticles(adminId: string): Promise<void> {
       title: 'Thông báo tuyển sinh lớp 1 năm học 2026-2027: Chỉ tiêu và điều kiện đăng ký',
       slug: 'tuyen-sinh-lop-1-nam-hoc-2026-2027',
       content: `<h2>Thông báo tuyển sinh chính thức</h2>
-<p>Trường Tiểu học Lê Quý Đôn – Hà Nội thông báo kế hoạch tuyển sinh vào lớp 1 năm học 2026-2027. Nhà trường trân trọng thông báo đến các bậc phụ huynh có con đủ điều kiện những thông tin quan trọng dưới đây.</p>
+<p>Trường Tiểu học Vân Cốc – Hà Nội thông báo kế hoạch tuyển sinh vào lớp 1 năm học 2026-2027. Nhà trường trân trọng thông báo đến các bậc phụ huynh có con đủ điều kiện những thông tin quan trọng dưới đây.</p>
 <h3>Điều kiện tuyển sinh</h3>
 <ul>
   <li><strong>Độ tuổi:</strong> Trẻ em sinh từ ngày 1/1/2020 đến 31/12/2020 (đủ 6 tuổi tính đến ngày 31/8/2026)</li>
@@ -409,14 +409,14 @@ async function seedArticles(adminId: string): Promise<void> {
 <p>Năm học 2026-2027, nhà trường dự kiến tuyển sinh <strong>160 học sinh</strong> vào 4 lớp. Hồ sơ gồm: đơn đăng ký theo mẫu, bản sao giấy khai sinh có công chứng, bản sao sổ hộ khẩu/KT3 có công chứng, giấy xác nhận sức khỏe từ cơ sở y tế, 2 ảnh 3x4 chụp trong vòng 6 tháng.</p>
 <h3>Thời gian nộp hồ sơ</h3>
 <p>Từ <strong>1/4/2026 đến 30/4/2026</strong>, trong giờ hành chính tại Văn phòng nhà trường (thứ 2 đến thứ 6, 7h30-11h30 và 13h30-17h00). Phụ huynh có thể đặt lịch hẹn qua website nhà trường để tránh xếp hàng chờ đợi. Mọi thắc mắc xin liên hệ Văn phòng nhà trường qua số điện thoại <strong>024-3835-xxxx</strong>.</p>`,
-      excerpt: 'Trường TH Lê Quý Đôn thông báo tuyển sinh lớp 1 năm học 2026-2027 với 160 chỉ tiêu, ưu tiên trẻ có hộ khẩu địa bàn phường Điện Biên, Ba Đình.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-9/800/400',
+      excerpt: 'Trường TH Vân Cốc thông báo tuyển sinh lớp 1 năm học 2026-2027 với 160 chỉ tiêu, ưu tiên trẻ có hộ khẩu địa bàn phường Điện Biên, Ba Đình.',
+      thumbnail_url: '/images/design/admission-2026-list.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'tuyen-sinh',
       view_count: 698,
       published_at: daysAgo(69),
-      seo_title: 'Tuyển sinh lớp 1 năm 2026-2027 - Trường TH Lê Quý Đôn Hà Nội',
-      seo_description: 'Thông báo tuyển sinh lớp 1 năm học 2026-2027: 160 chỉ tiêu, điều kiện, hồ sơ và thời gian đăng ký vào Trường Tiểu học Lê Quý Đôn Hà Nội.',
+      seo_title: 'Tuyển sinh lớp 1 năm 2026-2027 - Trường TH Vân Cốc Hà Nội',
+      seo_description: 'Thông báo tuyển sinh lớp 1 năm học 2026-2027: 160 chỉ tiêu, điều kiện, hồ sơ và thời gian đăng ký vào Trường Tiểu học Vân Cốc.',
     },
 
     // -------------------------------------------------------
@@ -426,26 +426,26 @@ async function seedArticles(adminId: string): Promise<void> {
       title: 'Hội thảo định hướng chuyển cấp: Hành trang vào lớp 6 cho học sinh khối 5',
       slug: 'hoi-thao-dinh-huong-chuyen-cap-lop-6',
       content: `<h2>Chuẩn bị hành trang cho bước chuyển quan trọng</h2>
-<p>Ngày 15 tháng 11 năm 2025, Trường Tiểu học Lê Quý Đôn tổ chức <strong>Hội thảo định hướng chuyển cấp</strong> dành cho học sinh khối 5 và phụ huynh. Với sự tham dự của hơn 200 phụ huynh và đại diện từ 5 trường THCS nổi tiếng, hội thảo đã cung cấp nhiều thông tin hữu ích.</p>
+<p>Ngày 15 tháng 11 năm 2025, Trường Tiểu học Vân Cốc tổ chức <strong>Hội thảo định hướng chuyển cấp</strong> dành cho học sinh khối 5 và phụ huynh. Với sự tham dự của hơn 200 phụ huynh và đại diện từ 5 trường THCS nổi tiếng, hội thảo đã cung cấp nhiều thông tin hữu ích.</p>
 <h3>Các trường THCS tham gia hội thảo</h3>
 <ul>
   <li>THCS Trưng Vương – Hà Nội</li>
   <li>THCS Giảng Võ – Ba Đình</li>
   <li>THCS Chu Văn An – Hà Nội</li>
   <li>THCS Đống Đa – Hà Nội</li>
-  <li>Trường Liên cấp Lê Quý Đôn (cơ sở 2)</li>
+  <li>Trường Liên cấp Vân Cốc (cơ sở 2)</li>
 </ul>
 <h3>Nội dung hội thảo</h3>
 <p>Đại diện các trường THCS trình bày về chương trình học, hoạt động ngoại khóa, cơ sở vật chất và quy trình tuyển sinh vào lớp 6. Nhà tâm lý học giáo dục TS. Nguyễn Thị Lan chia sẻ về <em>cách giúp trẻ thích nghi với môi trường học tập mới</em>, nhấn mạnh cha mẹ cần tạo tâm lý tự tin thay vì áp lực điểm số.</p>
 <p>Phụ huynh nên cho con tham gia các câu lạc bộ, hoạt động ngoại khóa để phát triển kỹ năng mềm — yếu tố các trường THCS chất lượng cao ngày càng coi trọng bên cạnh học lực. Tài liệu hội thảo được đăng tải trên website nhà trường để phụ huynh tiện tham khảo.</p>`,
       excerpt: 'Hội thảo định hướng chuyển cấp lên lớp 6 dành cho học sinh khối 5 với sự tham dự của 5 trường THCS uy tín và hơn 200 phụ huynh.',
-      thumbnail_url: 'https://picsum.photos/seed/lqd-art-10/800/400',
+      thumbnail_url: '/images/design/admission-process.png',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'tuyen-sinh',
       view_count: 445,
       published_at: daysAgo(147),
-      seo_title: 'Hội thảo chuyển cấp lớp 6 - Trường TH Lê Quý Đôn',
-      seo_description: 'Hội thảo định hướng chuyển cấp vào lớp 6 cho học sinh khối 5 và phụ huynh Trường TH Lê Quý Đôn, với đại diện 5 trường THCS tham dự.',
+      seo_title: 'Hội thảo chuyển cấp lớp 6 - Trường TH Vân Cốc',
+      seo_description: 'Hội thảo định hướng chuyển cấp vào lớp 6 cho học sinh khối 5 và phụ huynh Trường TH Vân Cốc, với đại diện 5 trường THCS tham dự.',
     },
 
     // -------------------------------------------------------
@@ -476,8 +476,8 @@ async function seedArticles(adminId: string): Promise<void> {
       category_slug: 'doi-song',
       view_count: 321,
       published_at: daysAgo(165),
-      seo_title: 'Thực đơn bán trú tháng 11/2025 - Trường TH Lê Quý Đôn',
-      seo_description: 'Thực đơn bán trú tháng 11/2025 của Trường TH Lê Quý Đôn Hà Nội đảm bảo dinh dưỡng 600-700 kcal/bữa trưa theo tiêu chuẩn BV Nhi TW.',
+      seo_title: 'Thực đơn bán trú tháng 11/2025 - Trường TH Vân Cốc',
+      seo_description: 'Thực đơn bán trú tháng 11/2025 của Trường TH Vân Cốc Hà Nội đảm bảo dinh dưỡng 600-700 kcal/bữa trưa theo tiêu chuẩn BV Nhi TW.',
     },
 
     // -------------------------------------------------------
@@ -487,7 +487,7 @@ async function seedArticles(adminId: string): Promise<void> {
       title: 'Khám sức khỏe định kỳ đầu năm học: 100% học sinh được kiểm tra toàn diện',
       slug: 'kham-suc-khoe-dinh-ky-dau-nam-2025',
       content: `<h2>Sức khỏe là nền tảng của học tập</h2>
-<p>Từ ngày 15 đến 30 tháng 9 năm 2025, Trường Tiểu học Lê Quý Đôn phối hợp với Bệnh viện Đa khoa Hà Nội tổ chức chương trình <strong>Khám sức khỏe định kỳ đầu năm học</strong> cho toàn bộ học sinh. Đây là hoạt động thường niên được nhà trường duy trì từ năm 2015 nhằm phát hiện sớm các vấn đề sức khỏe ảnh hưởng đến học tập.</p>
+<p>Từ ngày 15 đến 30 tháng 9 năm 2025, Trường Tiểu học Vân Cốc phối hợp với Bệnh viện Đa khoa Hà Nội tổ chức chương trình <strong>Khám sức khỏe định kỳ đầu năm học</strong> cho toàn bộ học sinh. Đây là hoạt động thường niên được nhà trường duy trì từ năm 2015 nhằm phát hiện sớm các vấn đề sức khỏe ảnh hưởng đến học tập.</p>
 <h3>Nội dung khám</h3>
 <ul>
   <li><strong>Đo chiều cao, cân nặng</strong> — đánh giá chỉ số BMI và tình trạng dinh dưỡng</li>
@@ -499,25 +499,25 @@ async function seedArticles(adminId: string): Promise<void> {
 <h3>Kết quả sơ bộ</h3>
 <p>Kết quả cho thấy <strong>85% học sinh có sức khỏe tốt</strong>. Một số lưu ý đáng chú ý: 12% học sinh có biểu hiện cận thị nhẹ đến trung bình (cần đeo kính), 8% học sinh thừa cân cần điều chỉnh chế độ ăn và tăng cường vận động.</p>
 <p>Phiếu kết quả khám sức khỏe của từng học sinh được gửi về cho phụ huynh. Những học sinh cần theo dõi thêm sẽ được nhà trường thông báo trực tiếp và hỗ trợ chuyển giới thiệu đến các cơ sở y tế phù hợp.</p>`,
-      excerpt: 'Toàn bộ học sinh Trường TH Lê Quý Đôn được khám sức khỏe định kỳ từ ngày 15-30/9/2025, bao gồm thị lực, răng miệng, thính lực và đánh giá dinh dưỡng.',
+      excerpt: 'Toàn bộ học sinh Trường TH Vân Cốc được khám sức khỏe định kỳ từ ngày 15-30/9/2025, bao gồm thị lực, răng miệng, thính lực và đánh giá dinh dưỡng.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-12/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'doi-song',
       view_count: 287,
       published_at: daysAgo(192),
-      seo_title: 'Khám sức khỏe định kỳ đầu năm học 2025 - Trường TH Lê Quý Đôn',
-      seo_description: '100% học sinh Trường TH Lê Quý Đôn được khám sức khỏe toàn diện đầu năm: thị lực, răng miệng, thính lực, BMI và tình trạng dinh dưỡng.',
+      seo_title: 'Khám sức khỏe định kỳ đầu năm học 2025 - Trường TH Vân Cốc',
+      seo_description: '100% học sinh Trường TH Vân Cốc được khám sức khỏe toàn diện đầu năm: thị lực, răng miệng, thính lực, BMI và tình trạng dinh dưỡng.',
     },
 
     // -------------------------------------------------------
     // 13. the-thao — Giải bơi lội
     // -------------------------------------------------------
     {
-      title: 'Giải Bơi lội liên trường tiểu học quận Ba Đình 2025: Lê Quý Đôn giành 3 Huy chương Vàng',
+      title: 'Giải Bơi lội liên trường tiểu học quận Ba Đình 2025: Vân Cốc giành 3 Huy chương Vàng',
       slug: 'giai-boi-loi-lien-truong-quan-ba-dinh-2025',
       content: `<h2>Thành tích xuất sắc tại đường đua xanh</h2>
-<p>Ngày 25 tháng 10 năm 2025, tại Bể bơi Thủ Đô (số 8 Trần Phú, Ba Đình), <strong>Giải Bơi lội liên trường tiểu học quận Ba Đình năm 2025</strong> đã diễn ra sôi nổi với sự tham dự của 12 trường tiểu học. Đội bơi Trường Tiểu học Lê Quý Đôn ghi dấu ấn đặc biệt với bảng thành tích ấn tượng.</p>
-<h3>Thành tích của đội bơi Lê Quý Đôn</h3>
+<p>Ngày 25 tháng 10 năm 2025, tại Bể bơi Thủ Đô (số 8 Trần Phú, Ba Đình), <strong>Giải Bơi lội liên trường tiểu học quận Ba Đình năm 2025</strong> đã diễn ra sôi nổi với sự tham dự của 12 trường tiểu học. Đội bơi Trường Tiểu học Vân Cốc ghi dấu ấn đặc biệt với bảng thành tích ấn tượng.</p>
+<h3>Thành tích của đội bơi Vân Cốc</h3>
 <ul>
   <li><strong>Huy chương Vàng</strong> — 50m ếch nam (em Phạm Đức Anh, lớp 5B) — thời gian: 42.3 giây</li>
   <li><strong>Huy chương Vàng</strong> — 50m tự do nữ (em Nguyễn Thu Hà, lớp 4A) — thời gian: 38.7 giây</li>
@@ -526,25 +526,25 @@ async function seedArticles(adminId: string): Promise<void> {
   <li><strong>Huy chương Đồng</strong> — 100m tự do nữ (em Trần Bảo Châu, lớp 5C)</li>
 </ul>
 <h3>Chặng đường luyện tập</h3>
-<p>Để đạt được những kết quả này, các em đã luyện tập kiên trì từ 5h30 sáng mỗi ngày tại Bể bơi Thủ Đô, dưới sự huấn luyện tận tâm của HLV Trần Văn Minh — cựu tuyển thủ bơi lội quốc gia. Đây là năm thứ 3 liên tiếp Lê Quý Đôn dẫn đầu bảng tổng sắc giải bơi liên trường quận, khẳng định thế mạnh thể thao của nhà trường.</p>`,
-      excerpt: 'Đội bơi Trường TH Lê Quý Đôn giành 3 Huy chương Vàng, 1 Bạc, 1 Đồng tại Giải Bơi lội liên trường quận Ba Đình 2025, lần thứ 3 liên tiếp dẫn đầu bảng tổng sắc.',
+<p>Để đạt được những kết quả này, các em đã luyện tập kiên trì từ 5h30 sáng mỗi ngày tại Bể bơi Thủ Đô, dưới sự huấn luyện tận tâm của HLV Trần Văn Minh — cựu tuyển thủ bơi lội quốc gia. Đây là năm thứ 3 liên tiếp Vân Cốc dẫn đầu bảng tổng sắc giải bơi liên trường quận, khẳng định thế mạnh thể thao của nhà trường.</p>`,
+      excerpt: 'Đội bơi Trường TH Vân Cốc giành 3 Huy chương Vàng, 1 Bạc, 1 Đồng tại Giải Bơi lội liên trường quận Ba Đình 2025, lần thứ 3 liên tiếp dẫn đầu bảng tổng sắc.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-13/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'the-thao',
       view_count: 576,
       published_at: daysAgo(168),
-      seo_title: 'Lê Quý Đôn giành 3 HCV tại Giải Bơi lội liên trường Ba Đình 2025',
-      seo_description: 'Đội bơi Trường TH Lê Quý Đôn đoạt 3 Huy chương Vàng tại Giải Bơi lội liên trường tiểu học quận Ba Đình 2025.',
+      seo_title: 'Vân Cốc giành 3 HCV tại Giải Bơi lội liên trường Ba Đình 2025',
+      seo_description: 'Đội bơi Trường TH Vân Cốc đoạt 3 Huy chương Vàng tại Giải Bơi lội liên trường tiểu học quận Ba Đình 2025.',
     },
 
     // -------------------------------------------------------
     // 14. the-thao — Bóng đá mini
     // -------------------------------------------------------
     {
-      title: 'Giải Bóng đá mini liên trường tiểu học quận Ba Đình: Đội Lê Quý Đôn vào bán kết',
+      title: 'Giải Bóng đá mini liên trường tiểu học quận Ba Đình: Đội Vân Cốc vào bán kết',
       slug: 'giai-bong-da-mini-lien-truong-2025',
       content: `<h2>Cuộc hành trình trên sân cỏ</h2>
-<p>Tháng 10 năm 2025, <strong>Giải Bóng đá mini dành cho học sinh tiểu học quận Ba Đình</strong> diễn ra sôi nổi với sự tham gia của 16 đội từ 16 trường tiểu học. Đội bóng Trường Tiểu học Lê Quý Đôn — gồm 10 tuyển thủ từ các khối lớp 4 và 5 — đã có hành trình ấn tượng tại giải đấu năm nay.</p>
+<p>Tháng 10 năm 2025, <strong>Giải Bóng đá mini dành cho học sinh tiểu học quận Ba Đình</strong> diễn ra sôi nổi với sự tham gia của 16 đội từ 16 trường tiểu học. Đội bóng Trường Tiểu học Vân Cốc — gồm 10 tuyển thủ từ các khối lớp 4 và 5 — đã có hành trình ấn tượng tại giải đấu năm nay.</p>
 <h3>Hành trình tại giải</h3>
 <ul>
   <li><strong>Vòng bảng:</strong> Thắng cả 3 trận, ghi 8 bàn, thủng lưới 2 lần — đứng nhất bảng B</li>
@@ -554,14 +554,14 @@ async function seedArticles(adminId: string): Promise<void> {
 <p>Dù chưa vào chung kết, các em đã chơi với tinh thần fair-play và bản lĩnh đáng ngưỡng mộ. Em Hoàng Minh Quân (lớp 5B) được bầu chọn là <strong>Cầu thủ xuất sắc nhất vòng tứ kết</strong> với 2 bàn thắng và 3 đường kiến tạo.</p>
 <h3>Kế hoạch phát triển</h3>
 <p>HLV bóng đá trường — thầy Lê Hải Nam — cho biết sẽ mở rộng CLB bóng đá từ 20 lên 35 thành viên trong năm học tới, tăng cường luyện tập kỹ thuật cá nhân và chiến thuật đội hình. Nhà trường đang xin phép nâng cấp sân bóng mini để các em có điều kiện tập luyện tốt hơn.</p>`,
-      excerpt: 'Đội bóng đá mini Trường TH Lê Quý Đôn vào đến bán kết Giải liên trường quận Ba Đình 2025 sau khi thắng cả 3 trận vòng bảng và vượt qua tứ kết.',
+      excerpt: 'Đội bóng đá mini Trường TH Vân Cốc vào đến bán kết Giải liên trường quận Ba Đình 2025 sau khi thắng cả 3 trận vòng bảng và vượt qua tứ kết.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-14/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'the-thao',
       view_count: 354,
       published_at: daysAgo(163),
-      seo_title: 'Đội bóng đá TH Lê Quý Đôn vào bán kết liên trường Ba Đình 2025',
-      seo_description: 'Đội bóng đá mini Trường TH Lê Quý Đôn vào bán kết giải liên trường quận Ba Đình 2025 sau hành trình ấn tượng.',
+      seo_title: 'Đội bóng đá TH Vân Cốc vào bán kết liên trường Ba Đình 2025',
+      seo_description: 'Đội bóng đá mini Trường TH Vân Cốc vào bán kết giải liên trường quận Ba Đình 2025 sau hành trình ấn tượng.',
     },
 
     // -------------------------------------------------------
@@ -571,7 +571,7 @@ async function seedArticles(adminId: string): Promise<void> {
       title: 'Khai giảng CLB Vovinam: Học võ để rèn thân, luyện tâm',
       slug: 'khai-giang-clb-vovinam-2025',
       content: `<h2>Võ cổ truyền Việt Nam đến với học sinh tiểu học</h2>
-<p>Ngày 1 tháng 10 năm 2025, Trường Tiểu học Lê Quý Đôn chính thức khai giảng <strong>Câu lạc bộ Vovinam</strong> trong khuôn khổ chương trình giáo dục thể chất mở rộng. Đây là kết quả của sự phối hợp giữa nhà trường và Liên đoàn Vovinam Hà Nội, với mong muốn mang bộ môn võ thuật dân tộc đến gần hơn với thế hệ trẻ.</p>
+<p>Ngày 1 tháng 10 năm 2025, Trường Tiểu học Vân Cốc chính thức khai giảng <strong>Câu lạc bộ Vovinam</strong> trong khuôn khổ chương trình giáo dục thể chất mở rộng. Đây là kết quả của sự phối hợp giữa nhà trường và Liên đoàn Vovinam Hà Nội, với mong muốn mang bộ môn võ thuật dân tộc đến gần hơn với thế hệ trẻ.</p>
 <h3>Tại sao chọn Vovinam?</h3>
 <p>Vovinam — Việt Võ Đạo — là môn võ cổ truyền Việt Nam kết hợp kỹ thuật chiến đấu với triết lý đạo đức và nhân cách. Tập Vovinam giúp học sinh:</p>
 <ul>
@@ -582,24 +582,24 @@ async function seedArticles(adminId: string): Promise<void> {
 </ul>
 <h3>Thông tin CLB</h3>
 <p>CLB hoạt động <strong>2 buổi/tuần</strong> (thứ Ba và thứ Năm, 16h00-17h30), dưới sự hướng dẫn của HLV Nguyễn Thanh Bình — Đai Đen đẳng 5 Vovinam, từng đại diện Việt Nam thi đấu quốc tế. Khóa khai giảng đầu tiên có <strong>45 học sinh</strong> từ khối lớp 3 đến 5 tham gia. Phụ huynh có thể đăng ký tại văn phòng nhà trường từ nay đến hết tháng 10.</p>`,
-      excerpt: 'Trường TH Lê Quý Đôn khai giảng CLB Vovinam dưới sự hướng dẫn của HLV Đai Đen đẳng 5, với 45 học sinh khối 3-5 tham gia khóa đầu tiên.',
+      excerpt: 'Trường TH Vân Cốc khai giảng CLB Vovinam dưới sự hướng dẫn của HLV Đai Đen đẳng 5, với 45 học sinh khối 3-5 tham gia khóa đầu tiên.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-15/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'the-thao',
       view_count: 267,
       published_at: daysAgo(193),
-      seo_title: 'Khai giảng CLB Vovinam - Trường TH Lê Quý Đôn Hà Nội',
-      seo_description: 'Trường TH Lê Quý Đôn khai giảng CLB Vovinam 2025, 45 học sinh khối 3-5 tham gia tập luyện cùng HLV Đai Đen đẳng 5.',
+      seo_title: 'Khai giảng CLB Vovinam - Trường TH Vân Cốc Hà Nội',
+      seo_description: 'Trường TH Vân Cốc khai giảng CLB Vovinam 2025, 45 học sinh khối 3-5 tham gia tập luyện cùng HLV Đai Đen đẳng 5.',
     },
 
     // -------------------------------------------------------
     // 16. nghe-thuat — Triển lãm mỹ thuật
     // -------------------------------------------------------
     {
-      title: 'Triển lãm Mỹ thuật "Màu sắc Lê Quý Đôn": Hơn 200 tác phẩm của học sinh',
-      slug: 'trien-lam-my-thuat-mau-sac-le-quy-don',
+      title: 'Triển lãm Mỹ thuật "Màu sắc Vân Cốc": Hơn 200 tác phẩm của học sinh',
+      slug: 'trien-lam-my-thuat-mau-sac-van-coc',
       content: `<h2>Khi trẻ nhỏ nói lên bằng màu sắc</h2>
-<p>Từ ngày 20 đến 25 tháng 11 năm 2025, hành lang và sảnh chính Trường Tiểu học Lê Quý Đôn trở thành một phòng trưng bày nghệ thuật thu nhỏ với hơn <strong>200 tác phẩm hội họa và thủ công</strong> của học sinh từ lớp 1 đến lớp 5. Triển lãm mang chủ đề <em>"Màu sắc Lê Quý Đôn"</em> — nơi mỗi bức tranh là một câu chuyện nhỏ về cuộc sống học đường.</p>
+<p>Từ ngày 20 đến 25 tháng 11 năm 2025, hành lang và sảnh chính Trường Tiểu học Vân Cốc trở thành một phòng trưng bày nghệ thuật thu nhỏ với hơn <strong>200 tác phẩm hội họa và thủ công</strong> của học sinh từ lớp 1 đến lớp 5. Triển lãm mang chủ đề <em>"Màu sắc Vân Cốc"</em> — nơi mỗi bức tranh là một câu chuyện nhỏ về cuộc sống học đường.</p>
 <h3>Các hạng mục trưng bày</h3>
 <ul>
   <li><strong>Tranh màu nước:</strong> 80 tác phẩm phong cảnh, chân dung và tĩnh vật</li>
@@ -610,24 +610,24 @@ async function seedArticles(adminId: string): Promise<void> {
 <h3>Tiếng nói từ các nghệ sĩ nhỏ</h3>
 <p>Em Bùi Ngọc Anh (lớp 3C), tác giả bức tranh "Mẹ và con" được nhiều người yêu thích nhất, chia sẻ: <em>"Con vẽ mẹ con đang đọc sách dưới cây táo trong sân nhà. Con muốn mọi người biết con yêu mẹ nhiều lắm."</em></p>
 <p>Giáo viên Mỹ thuật — cô Lê Phương Thảo — cho biết triển lãm là cơ hội để các em được nhìn nhận và trân trọng, đồng thời khơi dậy niềm đam mê nghệ thuật từ sớm. Dự kiến triển lãm sẽ được tổ chức thường niên vào cuối mỗi học kỳ I.</p>`,
-      excerpt: 'Triển lãm "Màu sắc Lê Quý Đôn" trưng bày hơn 200 tác phẩm hội họa và thủ công của học sinh từ lớp 1-5, là sân chơi nghệ thuật thường niên đầy ý nghĩa.',
+      excerpt: 'Triển lãm "Màu sắc Vân Cốc" trưng bày hơn 200 tác phẩm hội họa và thủ công của học sinh từ lớp 1-5, là sân chơi nghệ thuật thường niên đầy ý nghĩa.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-16/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'nghe-thuat',
       view_count: 341,
       published_at: daysAgo(143),
-      seo_title: 'Triển lãm Mỹ thuật "Màu sắc Lê Quý Đôn" 2025',
-      seo_description: 'Hơn 200 tác phẩm hội họa và thủ công của học sinh Trường TH Lê Quý Đôn trong triển lãm "Màu sắc Lê Quý Đôn" tháng 11/2025.',
+      seo_title: 'Triển lãm Mỹ thuật "Màu sắc Vân Cốc" 2025',
+      seo_description: 'Hơn 200 tác phẩm hội họa và thủ công của học sinh Trường TH Vân Cốc trong triển lãm "Màu sắc Vân Cốc" tháng 11/2025.',
     },
 
     // -------------------------------------------------------
     // 17. nghe-thuat — Biểu diễn âm nhạc
     // -------------------------------------------------------
     {
-      title: 'Đêm nhạc "Giai điệu tuổi thơ": CLB Âm nhạc Lê Quý Đôn chào năm mới 2026',
+      title: 'Đêm nhạc "Giai điệu tuổi thơ": CLB Âm nhạc Vân Cốc chào năm mới 2026',
       slug: 'dem-nhac-giai-dieu-tuoi-tho-2026',
       content: `<h2>Âm nhạc kết nối trái tim</h2>
-<p>Tối ngày 20 tháng 12 năm 2025, Nhà Văn hóa Lao động quận Ba Đình rộn rã tiếng nhạc khi <strong>CLB Âm nhạc Trường Tiểu học Lê Quý Đôn</strong> biểu diễn chương trình <em>"Giai điệu tuổi thơ — Chào năm mới 2026"</em>. Đây là chương trình biểu diễn thường niên kết thúc học kỳ I, được tổ chức lần thứ 7 liên tiếp.</p>
+<p>Tối ngày 20 tháng 12 năm 2025, Nhà Văn hóa Lao động quận Ba Đình rộn rã tiếng nhạc khi <strong>CLB Âm nhạc Trường Tiểu học Vân Cốc</strong> biểu diễn chương trình <em>"Giai điệu tuổi thơ — Chào năm mới 2026"</em>. Đây là chương trình biểu diễn thường niên kết thúc học kỳ I, được tổ chức lần thứ 7 liên tiếp.</p>
 <h3>Chương trình biểu diễn</h3>
 <ul>
   <li><strong>Hợp xướng:</strong> Tốp ca 30 học sinh biểu diễn bài "Mùa xuân ơi" và "Trời xanh của tôi"</li>
@@ -638,24 +638,24 @@ async function seedArticles(adminId: string): Promise<void> {
 </ul>
 <p>Chương trình kéo dài gần 2 tiếng đồng hồ với sự tham dự của hơn 300 khán giả — chủ yếu là phụ huynh và học sinh. Nhiều phụ huynh xúc động, không ít người đã rơi lệ trước những giọng ca trong sáng, hồn nhiên của con em mình.</p>
 <p>Toàn bộ số tiền bán vé (20.000đ/vé) được dùng để mua nhạc cụ cho CLB, đảm bảo không thu thêm bất kỳ khoản đóng góp nào từ phụ huynh.</p>`,
-      excerpt: 'Đêm nhạc "Giai điệu tuổi thơ" của CLB Âm nhạc Lê Quý Đôn thu hút hơn 300 khán giả với hợp xướng, độc tấu piano, nhạc cụ dân tộc và nhạc kịch thiếu nhi.',
+      excerpt: 'Đêm nhạc "Giai điệu tuổi thơ" của CLB Âm nhạc Vân Cốc thu hút hơn 300 khán giả với hợp xướng, độc tấu piano, nhạc cụ dân tộc và nhạc kịch thiếu nhi.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-17/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'nghe-thuat',
       view_count: 412,
       published_at: daysAgo(113),
-      seo_title: 'Đêm nhạc "Giai điệu tuổi thơ 2026" - CLB Âm nhạc Lê Quý Đôn',
-      seo_description: 'CLB Âm nhạc Trường TH Lê Quý Đôn biểu diễn "Giai điệu tuổi thơ — Chào năm mới 2026" với hơn 300 khán giả tại Nhà Văn hóa Ba Đình.',
+      seo_title: 'Đêm nhạc "Giai điệu tuổi thơ 2026" - CLB Âm nhạc Vân Cốc',
+      seo_description: 'CLB Âm nhạc Trường TH Vân Cốc biểu diễn "Giai điệu tuổi thơ — Chào năm mới 2026" với hơn 300 khán giả tại Nhà Văn hóa Ba Đình.',
     },
 
     // -------------------------------------------------------
     // 18. stem — Đội Robotics WRO
     // -------------------------------------------------------
     {
-      title: 'Đội Robotics Lê Quý Đôn giành Huy chương Vàng WRO Vietnam 2025',
-      slug: 'doi-robotics-le-quy-don-hcv-wro-vietnam-2025',
+      title: 'Đội Robotics Vân Cốc giành Huy chương Vàng WRO Vietnam 2025',
+      slug: 'doi-robotics-van-coc-hcv-wro-vietnam-2025',
       content: `<h2>Chiến thắng lịch sử của đội Robotics nhỏ tuổi</h2>
-<p>Tháng 8 năm 2025, tại <strong>Cuộc thi Robotics Quốc tế WRO Vietnam 2025</strong> (World Robot Olympiad) tổ chức tại Hà Nội, đội Robotics của Trường Tiểu học Lê Quý Đôn đã làm nên kỳ tích khi giành <strong>Huy chương Vàng</strong> hạng mục Regular Category — đội trẻ nhất trong lịch sử giải đạt thành tích này.</p>
+<p>Tháng 8 năm 2025, tại <strong>Cuộc thi Robotics Quốc tế WRO Vietnam 2025</strong> (World Robot Olympiad) tổ chức tại Hà Nội, đội Robotics của Trường Tiểu học Vân Cốc đã làm nên kỳ tích khi giành <strong>Huy chương Vàng</strong> hạng mục Regular Category — đội trẻ nhất trong lịch sử giải đạt thành tích này.</p>
 <h3>Đội thi gồm có</h3>
 <ul>
   <li>Em Trần Anh Khoa (lớp 5A) — trưởng nhóm, phụ trách lập trình</li>
@@ -664,15 +664,15 @@ async function seedArticles(adminId: string): Promise<void> {
 </ul>
 <h3>Hành trình đến chức vô địch</h3>
 <p>Robot mang tên <em>"Vạn Lý"</em> được thiết kế để thực hiện nhiệm vụ phân loại rác thải tự động — chủ đề phù hợp với tinh thần bảo vệ môi trường. Đội đã dành hơn <strong>300 giờ</strong> nghiên cứu, thiết kế, lập trình và thử nghiệm trong vòng 6 tháng, trải qua không biết bao nhiêu lần thất bại và điều chỉnh.</p>
-<p>Với kết quả xuất sắc tại WRO Vietnam 2025, đội Robotics Lê Quý Đôn được tuyển chọn vào đội tuyển quốc gia để tham dự <strong>WRO International Final 2025</strong> tại Panama. Đây là cột mốc lịch sử, lần đầu tiên một trường tiểu học Việt Nam được đại diện quốc gia tại đấu trường robotics quốc tế.</p>`,
-      excerpt: 'Đội Robotics 3 thành viên của Trường TH Lê Quý Đôn giành Huy chương Vàng WRO Vietnam 2025 và được tuyển chọn đại diện Việt Nam tại WRO International Final.',
+<p>Với kết quả xuất sắc tại WRO Vietnam 2025, đội Robotics Vân Cốc được tuyển chọn vào đội tuyển quốc gia để tham dự <strong>WRO International Final 2025</strong> tại Panama. Đây là cột mốc lịch sử, lần đầu tiên một trường tiểu học Việt Nam được đại diện quốc gia tại đấu trường robotics quốc tế.</p>`,
+      excerpt: 'Đội Robotics 3 thành viên của Trường TH Vân Cốc giành Huy chương Vàng WRO Vietnam 2025 và được tuyển chọn đại diện Việt Nam tại WRO International Final.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-18/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'stem',
       view_count: 783,
       published_at: daysAgo(230),
-      seo_title: 'Đội Robotics Lê Quý Đôn giành HCV WRO Vietnam 2025',
-      seo_description: 'Đội Robotics Trường TH Lê Quý Đôn giành Huy chương Vàng WRO Vietnam 2025, đội trẻ nhất lịch sử đạt thành tích này.',
+      seo_title: 'Đội Robotics Vân Cốc giành HCV WRO Vietnam 2025',
+      seo_description: 'Đội Robotics Trường TH Vân Cốc giành Huy chương Vàng WRO Vietnam 2025, đội trẻ nhất lịch sử đạt thành tích này.',
     },
 
     // -------------------------------------------------------
@@ -680,9 +680,9 @@ async function seedArticles(adminId: string): Promise<void> {
     // -------------------------------------------------------
     {
       title: 'Hội chợ Khoa học 2025: Nơi ươm mầm các nhà khoa học tương lai',
-      slug: 'hoi-cho-khoa-hoc-2025-le-quy-don',
+      slug: 'hoi-cho-khoa-hoc-2025-van-coc',
       content: `<h2>Khoa học trở nên thú vị và gần gũi</h2>
-<p>Ngày 5 tháng 12 năm 2025, <strong>Hội chợ Khoa học thường niên lần thứ 4</strong> của Trường Tiểu học Lê Quý Đôn diễn ra với không khí sôi nổi và đầy háo hức. Hơn 60 dự án khoa học được trưng bày, do chính các em học sinh từ lớp 3 đến lớp 5 nghiên cứu và thực hiện trong suốt học kỳ I.</p>
+<p>Ngày 5 tháng 12 năm 2025, <strong>Hội chợ Khoa học thường niên lần thứ 4</strong> của Trường Tiểu học Vân Cốc diễn ra với không khí sôi nổi và đầy háo hức. Hơn 60 dự án khoa học được trưng bày, do chính các em học sinh từ lớp 3 đến lớp 5 nghiên cứu và thực hiện trong suốt học kỳ I.</p>
 <h3>Một số dự án nổi bật</h3>
 <ul>
   <li><strong>"Cây trồng trong bóng tối"</strong> (lớp 3A) — nghiên cứu ảnh hưởng của ánh sáng đến sự sinh trưởng của cây, kết quả sau 3 tuần thí nghiệm</li>
@@ -692,14 +692,14 @@ async function seedArticles(adminId: string): Promise<void> {
 </ul>
 <h3>Ban giám khảo và giải thưởng</h3>
 <p>Ban giám khảo gồm các giảng viên Đại học Khoa học Tự nhiên Hà Nội đã đánh giá cao chất lượng của các dự án. Dự án "Nước sạch từ chai nhựa tái chế" đoạt <strong>Giải Nhất</strong>, được đề cử tham gia Hội thi Khoa học Kỹ thuật cấp quận. Sự kiện thu hút hơn 600 khán giả tham dự trong ngày, trong đó có nhiều phụ huynh và học sinh các trường bạn.</p>`,
-      excerpt: 'Hội chợ Khoa học 2025 của Trường TH Lê Quý Đôn trưng bày hơn 60 dự án nghiên cứu do học sinh lớp 3-5 thực hiện, thu hút hơn 600 khán giả.',
+      excerpt: 'Hội chợ Khoa học 2025 của Trường TH Vân Cốc trưng bày hơn 60 dự án nghiên cứu do học sinh lớp 3-5 thực hiện, thu hút hơn 600 khán giả.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-19/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'stem',
       view_count: 456,
       published_at: daysAgo(128),
-      seo_title: 'Hội chợ Khoa học 2025 - Trường TH Lê Quý Đôn Hà Nội',
-      seo_description: 'Hội chợ Khoa học lần 4 của Trường TH Lê Quý Đôn với hơn 60 dự án nghiên cứu của học sinh, được giảng viên ĐH Khoa học Tự nhiên đánh giá.',
+      seo_title: 'Hội chợ Khoa học 2025 - Trường TH Vân Cốc Hà Nội',
+      seo_description: 'Hội chợ Khoa học lần 4 của Trường TH Vân Cốc với hơn 60 dự án nghiên cứu của học sinh, được giảng viên ĐH Khoa học Tự nhiên đánh giá.',
     },
 
     // -------------------------------------------------------
@@ -709,7 +709,7 @@ async function seedArticles(adminId: string): Promise<void> {
       title: 'Thông báo lịch nghỉ Tết Nguyên Đán 2026 và kế hoạch học bù',
       slug: 'thong-bao-lich-nghi-tet-nguyen-dan-2026',
       content: `<h2>Thông báo nghỉ Tết Nguyên Đán Bính Ngọ 2026</h2>
-<p>Căn cứ Quyết định của Thủ tướng Chính phủ về lịch nghỉ Tết Nguyên Đán năm 2026 và hướng dẫn của Sở Giáo dục và Đào tạo Hà Nội, Trường Tiểu học Lê Quý Đôn thông báo lịch nghỉ Tết và kế hoạch học bù như sau:</p>
+<p>Căn cứ Quyết định của Thủ tướng Chính phủ về lịch nghỉ Tết Nguyên Đán năm 2026 và hướng dẫn của Sở Giáo dục và Đào tạo Hà Nội, Trường Tiểu học Vân Cốc thông báo lịch nghỉ Tết và kế hoạch học bù như sau:</p>
 <h3>Lịch nghỉ Tết</h3>
 <ul>
   <li><strong>Bắt đầu nghỉ:</strong> Thứ Sáu, ngày 23 tháng 1 năm 2026 (25 tháng 12 Âm lịch)</li>
@@ -721,14 +721,14 @@ async function seedArticles(adminId: string): Promise<void> {
 <p>Do kỳ nghỉ Tết dài hơn thường lệ 2 ngày, nhà trường sẽ tổ chức học bù vào <strong>hai buổi sáng Thứ Bảy</strong> (ngày 21/2 và 28/2/2026). Lịch học cụ thể sẽ được thông báo sau khi tham khảo ý kiến Ban Phụ huynh học sinh.</p>
 <h3>Lưu ý về an toàn dịp Tết</h3>
 <p>Nhà trường khuyến cáo phụ huynh chú ý an toàn giao thông, an toàn thực phẩm và phòng tránh đuối nước cho trẻ trong dịp nghỉ Tết. Nếu có sự cố khẩn cấp, phụ huynh có thể liên hệ Ban Giám hiệu qua số hotline trực ban. Chúc toàn thể gia đình học sinh một năm mới Bính Ngọ 2026 bình an, hạnh phúc và thịnh vượng!</p>`,
-      excerpt: 'Trường TH Lê Quý Đôn thông báo học sinh nghỉ Tết Nguyên Đán 2026 từ 23/1 đến 5/2/2026, học lại từ 6/2/2026 với kế hoạch học bù hai buổi sáng Thứ Bảy.',
+      excerpt: 'Trường TH Vân Cốc thông báo học sinh nghỉ Tết Nguyên Đán 2026 từ 23/1 đến 5/2/2026, học lại từ 6/2/2026 với kế hoạch học bù hai buổi sáng Thứ Bảy.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-20/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'thong-bao',
       view_count: 534,
       published_at: daysAgo(98),
-      seo_title: 'Lịch nghỉ Tết 2026 - Trường TH Lê Quý Đôn Hà Nội',
-      seo_description: 'Thông báo lịch nghỉ Tết Nguyên Đán 2026 và kế hoạch học bù của Trường TH Lê Quý Đôn Hà Nội.',
+      seo_title: 'Lịch nghỉ Tết 2026 - Trường TH Vân Cốc Hà Nội',
+      seo_description: 'Thông báo lịch nghỉ Tết Nguyên Đán 2026 và kế hoạch học bù của Trường TH Vân Cốc Hà Nội.',
     },
 
     // -------------------------------------------------------
@@ -738,7 +738,7 @@ async function seedArticles(adminId: string): Promise<void> {
       title: 'Học sinh giỏi cấp quận học kỳ I 2025-2026: 42 em đoạt giải',
       slug: 'hoc-sinh-gioi-cap-quan-hoc-ky-1-2025-2026',
       content: `<h2>Thành tích học sinh giỏi học kỳ I</h2>
-<p>Trong kỳ thi học sinh giỏi cấp quận Ba Đình học kỳ I năm học 2025-2026 diễn ra vào tháng 12/2025, Trường Tiểu học Lê Quý Đôn đã đạt thành tích xuất sắc khi có tổng cộng <strong>42 học sinh đoạt giải</strong> ở các môn thi, đứng thứ 2 toàn quận về số lượng giải.</p>
+<p>Trong kỳ thi học sinh giỏi cấp quận Ba Đình học kỳ I năm học 2025-2026 diễn ra vào tháng 12/2025, Trường Tiểu học Vân Cốc đã đạt thành tích xuất sắc khi có tổng cộng <strong>42 học sinh đoạt giải</strong> ở các môn thi, đứng thứ 2 toàn quận về số lượng giải.</p>
 <h3>Phân bổ giải theo môn</h3>
 <ul>
   <li><strong>Toán:</strong> 3 Giải Nhất, 5 Giải Nhì, 7 Giải Ba, 4 Khuyến khích</li>
@@ -749,14 +749,14 @@ async function seedArticles(adminId: string): Promise<void> {
 <p>Em <strong>Phạm Thanh Hà</strong> (lớp 5B) đoạt <strong>Giải Nhất môn Toán</strong> với số điểm tuyệt đối, đồng thời đoạt Giải Nhì môn Tiếng Anh — trở thành học sinh duy nhất đoạt 2 giải Nhất-Nhì trong cùng kỳ thi cấp quận.</p>
 <p>Em <strong>Nguyễn Minh Châu</strong> (lớp 4A) đoạt Giải Nhất môn Tiếng Việt với bài văn miêu tả được ban giám khảo đánh giá cao về xúc cảm và sự sáng tạo ngôn ngữ.</p>
 <p>Ban Giám hiệu trao thưởng và biểu dương toàn bộ 42 học sinh đoạt giải trong buổi chào cờ đầu tuần. Nhà trường đặt mục tiêu phấn đấu dẫn đầu toàn quận tại kỳ thi học sinh giỏi học kỳ II sắp tới.</p>`,
-      excerpt: '42 học sinh Trường TH Lê Quý Đôn đoạt giải tại kỳ thi học sinh giỏi cấp quận Ba Đình học kỳ I 2025-2026, xếp thứ 2 toàn quận về số lượng giải.',
+      excerpt: '42 học sinh Trường TH Vân Cốc đoạt giải tại kỳ thi học sinh giỏi cấp quận Ba Đình học kỳ I 2025-2026, xếp thứ 2 toàn quận về số lượng giải.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-21/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'ket-qua-hoc-tap',
       view_count: 489,
       published_at: daysAgo(120),
-      seo_title: '42 học sinh TH Lê Quý Đôn đoạt giải học sinh giỏi quận Ba Đình HK1',
-      seo_description: '42 học sinh Trường TH Lê Quý Đôn đoạt giải học sinh giỏi cấp quận Ba Đình học kỳ I 2025-2026 ở các môn Toán, Tiếng Việt và Tiếng Anh.',
+      seo_title: '42 học sinh TH Vân Cốc đoạt giải học sinh giỏi quận Ba Đình HK1',
+      seo_description: '42 học sinh Trường TH Vân Cốc đoạt giải học sinh giỏi cấp quận Ba Đình học kỳ I 2025-2026 ở các môn Toán, Tiếng Việt và Tiếng Anh.',
     },
 
     // -------------------------------------------------------
@@ -764,9 +764,9 @@ async function seedArticles(adminId: string): Promise<void> {
     // -------------------------------------------------------
     {
       title: 'Ngày hội Đọc sách 2025: Khơi dậy tình yêu văn học từ những trang sách đầu tiên',
-      slug: 'ngay-hoi-doc-sach-2025-le-quy-don',
+      slug: 'ngay-hoi-doc-sach-2025-van-coc',
       content: `<h2>Đọc sách — thói quen nền tảng của mọi thành công</h2>
-<p>Nhân Ngày Sách Việt Nam (21/4) năm 2025, Trường Tiểu học Lê Quý Đôn tổ chức <strong>Ngày hội Đọc sách 2025</strong> với chuỗi hoạt động phong phú kéo dài suốt một tuần (15-21/4/2025), nhằm xây dựng văn hóa đọc sách từ sớm cho học sinh tiểu học.</p>
+<p>Nhân Ngày Sách Việt Nam (21/4) năm 2025, Trường Tiểu học Vân Cốc tổ chức <strong>Ngày hội Đọc sách 2025</strong> với chuỗi hoạt động phong phú kéo dài suốt một tuần (15-21/4/2025), nhằm xây dựng văn hóa đọc sách từ sớm cho học sinh tiểu học.</p>
 <h3>Các hoạt động trong tuần</h3>
 <ul>
   <li><strong>Triển lãm sách:</strong> Trưng bày hơn 500 đầu sách thiếu nhi trong thư viện mở rộng ra sân trường</li>
@@ -776,16 +776,16 @@ async function seedArticles(adminId: string): Promise<void> {
   <li><strong>Gặp gỡ tác giả:</strong> Nhà văn thiếu nhi Nguyễn Nhật Ánh (qua video call) giao lưu với học sinh</li>
 </ul>
 <h3>Thông điệp từ sự kiện</h3>
-<p>Thầy Hiệu trưởng phát biểu: <em>"Mỗi cuốn sách là một cuộc phiêu lưu. Chúng tôi muốn học sinh Lê Quý Đôn trở thành những người bạn thân thiết của sách ngay từ những năm đầu đời — bởi thói quen đọc sách sẽ theo các em đến suốt cuộc đời."</em></p>
+<p>Thầy Hiệu trưởng phát biểu: <em>"Mỗi cuốn sách là một cuộc phiêu lưu. Chúng tôi muốn học sinh Vân Cốc trở thành những người bạn thân thiết của sách ngay từ những năm đầu đời — bởi thói quen đọc sách sẽ theo các em đến suốt cuộc đời."</em></p>
 <p>Sau sự kiện, thư viện nhà trường ghi nhận lượt mượn sách tăng <strong>240%</strong> so với tháng trước — minh chứng rõ nét cho hiệu quả của hoạt động.</p>`,
-      excerpt: 'Ngày hội Đọc sách 2025 của Trường TH Lê Quý Đôn kéo dài cả tuần với triển lãm sách, trao đổi sách và giao lưu tác giả, giúp lượt mượn sách thư viện tăng 240%.',
+      excerpt: 'Ngày hội Đọc sách 2025 của Trường TH Vân Cốc kéo dài cả tuần với triển lãm sách, trao đổi sách và giao lưu tác giả, giúp lượt mượn sách thư viện tăng 240%.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-22/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'ngoai-khoa',
       view_count: 312,
       published_at: daysAgo(355),
-      seo_title: 'Ngày hội Đọc sách 2025 - Trường TH Lê Quý Đôn Hà Nội',
-      seo_description: 'Ngày hội Đọc sách 2025 tại Trường TH Lê Quý Đôn: triển lãm sách, đổi sách, kể chuyện và giao lưu tác giả trong cả tuần.',
+      seo_title: 'Ngày hội Đọc sách 2025 - Trường TH Vân Cốc Hà Nội',
+      seo_description: 'Ngày hội Đọc sách 2025 tại Trường TH Vân Cốc: triển lãm sách, đổi sách, kể chuyện và giao lưu tác giả trong cả tuần.',
     },
 
     // -------------------------------------------------------
@@ -795,7 +795,7 @@ async function seedArticles(adminId: string): Promise<void> {
       title: 'Kế hoạch cải tạo và nâng cấp sân trường năm 2026 (dự thảo)',
       slug: 'ke-hoach-cai-tao-san-truong-2026',
       content: `<h2>Tầm nhìn về môi trường học tập lý tưởng</h2>
-<p>Nhằm nâng cao chất lượng môi trường học tập và vui chơi cho học sinh, Ban Giám hiệu Trường Tiểu học Lê Quý Đôn đang xây dựng kế hoạch cải tạo toàn diện sân trường trong năm 2026. Dự án sẽ được thực hiện vào kỳ nghỉ hè, đảm bảo không ảnh hưởng đến hoạt động giảng dạy.</p>
+<p>Nhằm nâng cao chất lượng môi trường học tập và vui chơi cho học sinh, Ban Giám hiệu Trường Tiểu học Vân Cốc đang xây dựng kế hoạch cải tạo toàn diện sân trường trong năm 2026. Dự án sẽ được thực hiện vào kỳ nghỉ hè, đảm bảo không ảnh hưởng đến hoạt động giảng dạy.</p>
 <h3>Hạng mục cải tạo dự kiến</h3>
 <ul>
   <li><strong>Khu vui chơi STEAM:</strong> Lắp đặt các thiết bị vui chơi giáo dục kết hợp yếu tố STEM</li>
@@ -813,8 +813,8 @@ async function seedArticles(adminId: string): Promise<void> {
       category_slug: 'tin-tuc',
       view_count: 0,
       published_at: null,
-      seo_title: 'Kế hoạch cải tạo sân trường 2026 - Trường TH Lê Quý Đôn',
-      seo_description: 'Dự thảo kế hoạch cải tạo sân trường 2026 của Trường TH Lê Quý Đôn với khu STEAM, vườn sinh thái và sân đa năng.',
+      seo_title: 'Kế hoạch cải tạo sân trường 2026 - Trường TH Vân Cốc',
+      seo_description: 'Dự thảo kế hoạch cải tạo sân trường 2026 của Trường TH Vân Cốc với khu STEAM, vườn sinh thái và sân đa năng.',
     },
 
     // -------------------------------------------------------
@@ -848,8 +848,8 @@ async function seedArticles(adminId: string): Promise<void> {
       category_slug: 'noi-bo',
       view_count: 45,
       published_at: daysAgo(110),
-      seo_title: 'Báo cáo tài chính nội bộ HK1 2025-2026 - Trường TH Lê Quý Đôn',
-      seo_description: 'Báo cáo thu chi nội bộ Quỹ Phụ huynh học kỳ I 2025-2026 của Trường TH Lê Quý Đôn Hà Nội.',
+      seo_title: 'Báo cáo tài chính nội bộ HK1 2025-2026 - Trường TH Vân Cốc',
+      seo_description: 'Báo cáo thu chi nội bộ Quỹ Phụ huynh học kỳ I 2025-2026 của Trường TH Vân Cốc Hà Nội.',
     },
 
     // -------------------------------------------------------
@@ -859,7 +859,7 @@ async function seedArticles(adminId: string): Promise<void> {
       title: 'Tuần lễ Sức khỏe Học đường 2026: Nâng cao ý thức chăm sóc sức khỏe cho học sinh',
       slug: 'tuan-le-suc-khoe-hoc-duong-2026',
       content: `<h2>Sức khỏe là tài sản quý giá nhất</h2>
-<p>Từ ngày 7 đến 11 tháng 4 năm 2026, Trường Tiểu học Lê Quý Đôn tổ chức <strong>Tuần lễ Sức khỏe Học đường 2026</strong> — chuỗi hoạt động giáo dục sức khỏe toàn diện dành cho học sinh các khối lớp, phối hợp với Trung tâm Y tế dự phòng quận Ba Đình và Bệnh viện Nhi Trung Ương.</p>
+<p>Từ ngày 7 đến 11 tháng 4 năm 2026, Trường Tiểu học Vân Cốc tổ chức <strong>Tuần lễ Sức khỏe Học đường 2026</strong> — chuỗi hoạt động giáo dục sức khỏe toàn diện dành cho học sinh các khối lớp, phối hợp với Trung tâm Y tế dự phòng quận Ba Đình và Bệnh viện Nhi Trung Ương.</p>
 <h3>Các hoạt động trong tuần</h3>
 <ul>
   <li><strong>Thứ Hai 7/4:</strong> Buổi nói chuyện về dinh dưỡng cân bằng và thói quen ăn uống lành mạnh dành cho khối 1-2</li>
@@ -870,14 +870,14 @@ async function seedArticles(adminId: string): Promise<void> {
 </ul>
 <h3>Thông điệp của Tuần lễ</h3>
 <p>Với khẩu hiệu <em>"Khỏe mạnh để học tốt — Học tốt để tương lai sáng"</em>, Tuần lễ Sức khỏe Học đường 2026 nhằm trang bị cho học sinh kiến thức và kỹ năng tự chăm sóc sức khỏe bản thân, đồng thời xây dựng thói quen vận động và dinh dưỡng lành mạnh ngay từ khi còn nhỏ. Phụ huynh được mời tham dự các buổi tọa đàm buổi chiều từ 16h00-17h30.</p>`,
-      excerpt: 'Tuần lễ Sức khỏe Học đường 2026 (7-11/4) tại Trường TH Lê Quý Đôn với các hoạt động giáo dục dinh dưỡng, sơ cứu, sức khỏe tâm thần và thể dục thể thao.',
+      excerpt: 'Tuần lễ Sức khỏe Học đường 2026 (7-11/4) tại Trường TH Vân Cốc với các hoạt động giáo dục dinh dưỡng, sơ cứu, sức khỏe tâm thần và thể dục thể thao.',
       thumbnail_url: 'https://picsum.photos/seed/lqd-art-25/800/400',
       status: ArticleStatus.PUBLISHED,
       category_slug: 'doi-song',
       view_count: 87,
       published_at: daysAgo(4),
-      seo_title: 'Tuần lễ Sức khỏe Học đường 2026 - Trường TH Lê Quý Đôn',
-      seo_description: 'Tuần lễ Sức khỏe Học đường 2026 tại Trường TH Lê Quý Đôn: dinh dưỡng, sơ cứu, sức khỏe tâm thần và ngày thể dục toàn trường.',
+      seo_title: 'Tuần lễ Sức khỏe Học đường 2026 - Trường TH Vân Cốc',
+      seo_description: 'Tuần lễ Sức khỏe Học đường 2026 tại Trường TH Vân Cốc: dinh dưỡng, sơ cứu, sức khỏe tâm thần và ngày thể dục toàn trường.',
     },
   ];
 

@@ -7,6 +7,7 @@ import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import TextAlign from '@tiptap/extension-text-align';
+import { Node, mergeAttributes } from '@tiptap/core';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import MediaPickerModal from './MediaPickerModal';
@@ -29,13 +30,158 @@ import {
   AlignRight,
   Undo2,
   Redo2,
+  FileInput,
+  FileText,
 } from 'lucide-react';
+import type { Media } from '@/types';
 
 interface RichTextEditorProps {
   content: string;
   onChange: (html: string) => void;
   placeholder?: string;
 }
+
+declare module '@tiptap/core' {
+  interface Commands<ReturnType> {
+    iframe: {
+      setIframe: (options: { src: string; title?: string; height?: string }) => ReturnType;
+    };
+    documentEmbed: {
+      setDocumentEmbed: (options: { src: string; title?: string; mimeType?: string }) => ReturnType;
+    };
+  }
+}
+
+const Iframe = Node.create({
+  name: 'iframe',
+  group: 'block',
+  atom: true,
+
+  addAttributes() {
+    return {
+      src: { default: null },
+      title: { default: 'Nhúng biểu mẫu' },
+      width: { default: '100%' },
+      height: { default: '1000' },
+      frameborder: { default: '0' },
+      marginheight: { default: '0' },
+      marginwidth: { default: '0' },
+      loading: { default: 'lazy' },
+    };
+  },
+
+  parseHTML() {
+    return [{ tag: 'iframe[src]' }];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['iframe', mergeAttributes({ class: 'lqd-embed-frame' }, HTMLAttributes)];
+  },
+
+  addCommands() {
+    return {
+      setIframe:
+        (options) =>
+        ({ commands }) =>
+          commands.insertContent({
+            type: this.name,
+            attrs: options,
+          }),
+    };
+  },
+});
+
+const DocumentEmbed = Node.create({
+  name: 'documentEmbed',
+  group: 'block',
+  atom: true,
+
+  addAttributes() {
+    return {
+      src: {
+        default: null,
+        parseHTML: (element) => element.getAttribute('src'),
+        renderHTML: (attributes) => ({ src: attributes.src }),
+      },
+      title: {
+        default: 'Tài liệu đính kèm',
+        parseHTML: (element) => element.getAttribute('title') || 'Tài liệu đính kèm',
+        renderHTML: (attributes) => ({ title: attributes.title }),
+      },
+      mimeType: {
+        default: '',
+        parseHTML: (element) => element.getAttribute('data-mime-type') || '',
+        renderHTML: (attributes) => ({ 'data-mime-type': attributes.mimeType }),
+      },
+    };
+  },
+
+  parseHTML() {
+    return [{ tag: 'div[data-lqd-document]' }];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    const src = String(HTMLAttributes.src || '');
+    const title = HTMLAttributes.title || 'Tài liệu đính kèm';
+    const mimeType = HTMLAttributes.mimeType || '';
+    const isPdf = typeof mimeType === 'string' && mimeType.includes('pdf');
+    const fileType = mimeType.includes('pdf')
+      ? 'PDF'
+      : mimeType.includes('word')
+        ? 'DOC'
+        : mimeType.includes('sheet') || mimeType.includes('excel')
+          ? 'XLS'
+          : 'FILE';
+
+    return [
+      'div',
+      mergeAttributes(
+        {
+          class: 'lqd-document-embed',
+          'data-lqd-document': '',
+          'data-mime-type': mimeType,
+        },
+        HTMLAttributes
+      ),
+      [
+        'div',
+        { class: 'lqd-document-toolbar' },
+        ['span', { class: 'lqd-document-title' }, title],
+        [
+          'a',
+          { class: 'lqd-document-action', href: src, target: '_blank', rel: 'noopener noreferrer' },
+          'Mở file',
+        ],
+      ],
+      isPdf
+        ? ['iframe', { src, title, loading: 'lazy', class: 'lqd-document-frame' }]
+        : [
+            'a',
+            {
+              class: 'lqd-document-card',
+              href: src,
+              target: '_blank',
+              rel: 'noopener noreferrer',
+            },
+            ['span', { class: 'lqd-document-badge' }, fileType],
+            ['span', { class: 'lqd-document-name' }, title],
+            ['span', { class: 'lqd-document-hint' }, 'Bấm để mở hoặc tải xuống tài liệu'],
+          ],
+    ];
+  },
+
+  addCommands() {
+    return {
+      setDocumentEmbed:
+        (options) =>
+        ({ commands }) =>
+          commands.insertContent({
+            type: this.name,
+            attrs: options,
+          }),
+    };
+  },
+});
 
 /** Nut toolbar don le */
 function ToolbarButton({
@@ -95,6 +241,8 @@ export default function RichTextEditor({
       Image.configure({
         HTMLAttributes: { class: 'rounded-lg max-w-full h-auto' },
       }),
+      Iframe,
+      DocumentEmbed,
       Placeholder.configure({ placeholder }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
@@ -120,6 +268,7 @@ export default function RichTextEditor({
   }, [content]);
 
   const [showMediaPicker, setShowMediaPicker] = useState(false);
+  const [showDocumentPicker, setShowDocumentPicker] = useState(false);
 
   if (!editor) return null;
 
@@ -145,6 +294,31 @@ export default function RichTextEditor({
     editor.chain().focus().setImage({ src: url }).run();
   };
 
+  const handleDocumentSelected = (url: string, media?: Media) => {
+    editor.chain().focus().setDocumentEmbed({
+      src: url,
+      title: media?.original_name || 'Tài liệu đính kèm',
+      mimeType: media?.mime_type || '',
+    }).run();
+  };
+
+  const handleGoogleForm = () => {
+    const url = prompt('Dán link nhúng Google Form:');
+    if (!url) return;
+
+    const src = url.trim();
+    if (!/^https:\/\/docs\.google\.com\/forms\//i.test(src)) {
+      alert('Chỉ hỗ trợ link Google Forms dạng https://docs.google.com/forms/...');
+      return;
+    }
+
+    editor.chain().focus().setIframe({
+      src,
+      title: 'Biểu mẫu Google Form',
+      height: '1200',
+    }).run();
+  };
+
   const iconSize = 18;
 
   return (
@@ -154,6 +328,12 @@ export default function RichTextEditor({
       onClose={() => setShowMediaPicker(false)}
       onSelect={handleImageSelected}
       filterImages
+    />
+    <MediaPickerModal
+      open={showDocumentPicker}
+      onClose={() => setShowDocumentPicker(false)}
+      onSelect={handleDocumentSelected}
+      filterImages={false}
     />
     <div className="rounded-lg border border-slate-300 overflow-hidden focus-within:ring-2 focus-within:ring-green-600 focus-within:border-transparent">
       {/* Toolbar — sticky */}
@@ -261,6 +441,12 @@ export default function RichTextEditor({
         </ToolbarButton>
         <ToolbarButton onClick={handleImage} title="Chèn hình ảnh">
           <ImageIcon size={iconSize} />
+        </ToolbarButton>
+        <ToolbarButton onClick={handleGoogleForm} title="Nhúng Google Form">
+          <FileInput size={iconSize} />
+        </ToolbarButton>
+        <ToolbarButton onClick={() => setShowDocumentPicker(true)} title="Chèn tài liệu PDF/Word/Excel">
+          <FileText size={iconSize} />
         </ToolbarButton>
 
         <ToolbarDivider />

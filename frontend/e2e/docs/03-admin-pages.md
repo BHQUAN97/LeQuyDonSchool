@@ -11,7 +11,7 @@ Kiem tra cac trang quan tri sau khi login: Dashboard (stat cards, thong ke bai v
 ## Workflow
 
 ```
-Login thanh cong (admin@lequydon.edu.vn)
+Login thanh cong (admin@vancoc.edu.vn)
   → Redirect ve /admin (dashboard)
     → Stat cards (tong quan)
     → Thong ke bai viet
@@ -85,7 +85,7 @@ Login thanh cong (admin@lequydon.edu.vn)
 ## Ky thuat
 
 - **Login helper:** `loginAsAdmin(page)` — fill email/password → click submit → wait redirect
-- **Seed account:** `admin@lequydon.edu.vn` / `admin123`
+- **Seed account:** `admin@vancoc.edu.vn` / `admin123`
 - **Backend required:** Tat ca tests skip neu backend down
 - **Wait timeout:** 10s cho stat cards, 3s cho page load + filter render
 

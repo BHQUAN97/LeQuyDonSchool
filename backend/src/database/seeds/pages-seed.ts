@@ -7,7 +7,7 @@ import { Page, PageStatus } from '../../modules/pages/entities/page.entity';
 import { generateUlid } from '../../common/utils/ulid';
 
 /**
- * Seed trang noi dung (Pages) cho website truong tieu hoc Le Quy Don.
+ * Seed trang noi dung (Pages) cho website truong tieu hoc Van Coc.
  * Idempotent — kiem tra slug truoc khi insert.
  */
 
@@ -18,15 +18,15 @@ const pagesData = [
   {
     title: 'Tầm nhìn & Sứ mệnh',
     slug: 'tong-quan/tam-nhin-su-menh',
-    seo_title: 'Tầm nhìn & Sứ mệnh — Trường Tiểu học Lê Quý Đôn',
-    seo_description: 'Tầm nhìn, sứ mệnh và giá trị cốt lõi của trường Tiểu học Lê Quý Đôn Hà Nội — nơi ươm mầm tương lai.',
+    seo_title: 'Tầm nhìn & Sứ mệnh — Trường Tiểu học Vân Cốc',
+    seo_description: 'Tầm nhìn, sứ mệnh và giá trị cốt lõi của trường Tiểu học Vân Cốc Hà Nội — nơi ươm mầm tương lai.',
     content: `<section class="page-content">
-<h2>Tầm nhìn của trường Tiểu học Lê Quý Đôn</h2>
-<p>Trường Tiểu học Lê Quý Đôn được thành lập với khát vọng trở thành <strong>ngôi trường tiểu học hàng đầu tại Hà Nội</strong>, nơi mỗi học sinh được khơi dậy tiềm năng, phát triển toàn diện và tự tin bước vào tương lai. Mang tên nhà bác học lỗi lạc Lê Quý Đôn (1726–1784) — biểu tượng cho tinh thần hiếu học và trí tuệ Việt Nam, nhà trường luôn lấy tri thức và nhân cách làm nền tảng cho mọi hoạt động giáo dục.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Toàn cảnh trường Tiểu học Lê Quý Đôn" class="rounded-xl shadow" />
+<h2>Tầm nhìn của trường Tiểu học Vân Cốc</h2>
+<p>Trường Tiểu học Vân Cốc được thành lập với khát vọng trở thành <strong>ngôi trường tiểu học hàng đầu tại Hà Nội</strong>, nơi mỗi học sinh được khơi dậy tiềm năng, phát triển toàn diện và tự tin bước vào tương lai. Mang tên nhà bác học lỗi lạc Vân Cốc (1726–1784) — biểu tượng cho tinh thần hiếu học và trí tuệ Việt Nam, nhà trường luôn lấy tri thức và nhân cách làm nền tảng cho mọi hoạt động giáo dục.</p>
+<img src="/images/design/intro-classroom.png" alt="Toàn cảnh trường Tiểu học Vân Cốc" />
 
 <h3>Tầm nhìn đến năm 2030</h3>
-<p>Đến năm 2030, trường Tiểu học Lê Quý Đôn phấn đấu trở thành trường tiểu học đạt chuẩn quốc gia mức độ 2, được công nhận là mô hình giáo dục tiên tiến với các đặc trưng:</p>
+<p>Đến năm 2030, trường Tiểu học Vân Cốc phấn đấu trở thành trường tiểu học đạt chuẩn quốc gia mức độ 2, được công nhận là mô hình giáo dục tiên tiến với các đặc trưng:</p>
 <ul>
   <li><strong>Chất lượng giáo dục vượt trội:</strong> 100% học sinh hoàn thành chương trình tiểu học, trên 85% đạt mức hoàn thành tốt các môn học.</li>
   <li><strong>Năng lực hội nhập quốc tế:</strong> Học sinh tốt nghiệp đạt trình độ tiếng Anh tương đương Cambridge Movers, tự tin giao tiếp với bạn bè quốc tế.</li>
@@ -35,10 +35,10 @@ const pagesData = [
 </ul>
 
 <h3>Sứ mệnh</h3>
-<p>Sứ mệnh của trường Tiểu học Lê Quý Đôn là <strong>xây dựng môi trường giáo dục an toàn, thân thiện và sáng tạo</strong>, giúp mỗi học sinh phát triển toàn diện về trí tuệ, thể chất, đạo đức và kỹ năng sống. Nhà trường cam kết đồng hành cùng gia đình trong hành trình nuôi dưỡng và giáo dục thế hệ trẻ, trang bị cho các em nền tảng vững chắc để trở thành công dân có trách nhiệm, sáng tạo và nhân ái.</p>
+<p>Sứ mệnh của trường Tiểu học Vân Cốc là <strong>xây dựng môi trường giáo dục an toàn, thân thiện và sáng tạo</strong>, giúp mỗi học sinh phát triển toàn diện về trí tuệ, thể chất, đạo đức và kỹ năng sống. Nhà trường cam kết đồng hành cùng gia đình trong hành trình nuôi dưỡng và giáo dục thế hệ trẻ, trang bị cho các em nền tảng vững chắc để trở thành công dân có trách nhiệm, sáng tạo và nhân ái.</p>
 
 <h3>Giá trị cốt lõi</h3>
-<p>Bốn giá trị cốt lõi tạo nên bản sắc riêng của trường Tiểu học Lê Quý Đôn:</p>
+<p>Bốn giá trị cốt lõi tạo nên bản sắc riêng của trường Tiểu học Vân Cốc:</p>
 <ol>
   <li><strong>Yêu thương (Love):</strong> Tạo môi trường học tập ấm áp, gắn kết, nơi mỗi học sinh cảm thấy được yêu thương và tôn trọng. Thầy cô không chỉ là người dạy kiến thức mà còn là người đồng hành, chia sẻ và thấu hiểu từng học trò.</li>
   <li><strong>Sáng tạo (Creativity):</strong> Khuyến khích tư duy phản biện và năng lực sáng tạo thông qua phương pháp dạy học tích cực. Học sinh được tự do khám phá, thử nghiệm và phát triển ý tưởng của riêng mình.</li>
@@ -48,18 +48,18 @@ const pagesData = [
 
 <h3>Triết lý giáo dục</h3>
 <p>Nhà trường theo đuổi triết lý <em>"Mỗi em học sinh là một ngôi sao sáng"</em> — mỗi trẻ em đều có những tài năng và phẩm chất riêng biệt. Nhiệm vụ của giáo dục không phải là tạo ra những khuôn mẫu giống nhau, mà là giúp mỗi em tỏa sáng theo cách riêng của mình.</p>
-<p>Với đội ngũ giáo viên tận tâm, cơ sở vật chất hiện đại và chương trình giáo dục toàn diện, trường Tiểu học Lê Quý Đôn tự tin là nơi ươm mầm những thế hệ công dân Việt Nam xuất sắc, sẵn sàng đóng góp cho sự phát triển của đất nước và hội nhập quốc tế.</p>
+<p>Với đội ngũ giáo viên tận tâm, cơ sở vật chất hiện đại và chương trình giáo dục toàn diện, trường Tiểu học Vân Cốc tự tin là nơi ươm mầm những thế hệ công dân Việt Nam xuất sắc, sẵn sàng đóng góp cho sự phát triển của đất nước và hội nhập quốc tế.</p>
 </section>`,
   },
   {
     title: 'Cột mốc phát triển',
     slug: 'tong-quan/cot-moc-phat-trien',
-    seo_title: 'Cột mốc phát triển — Trường Tiểu học Lê Quý Đôn',
-    seo_description: 'Lịch sử hình thành và các cột mốc phát triển quan trọng của trường Tiểu học Lê Quý Đôn từ năm 1998 đến nay.',
+    seo_title: 'Cột mốc phát triển — Trường Tiểu học Vân Cốc',
+    seo_description: 'Lịch sử hình thành và các cột mốc phát triển quan trọng của trường Tiểu học Vân Cốc từ năm 1998 đến nay.',
     content: `<section class="page-content">
-<h2>Hành trình phát triển của trường Tiểu học Lê Quý Đôn</h2>
-<p>Trải qua hơn 25 năm xây dựng và phát triển, trường Tiểu học Lê Quý Đôn đã không ngừng lớn mạnh, từ một ngôi trường nhỏ trở thành một trong những trường tiểu học uy tín hàng đầu tại Hà Nội. Mỗi cột mốc đều ghi dấu sự nỗ lực không ngừng của các thế hệ thầy cô giáo, học sinh và phụ huynh.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Lịch sử trường Tiểu học Lê Quý Đôn" class="rounded-xl shadow" />
+<h2>Hành trình phát triển của trường Tiểu học Vân Cốc</h2>
+<p>Trải qua hơn 25 năm xây dựng và phát triển, trường Tiểu học Vân Cốc đã không ngừng lớn mạnh, từ một ngôi trường nhỏ trở thành một trong những trường tiểu học uy tín hàng đầu tại Hà Nội. Mỗi cột mốc đều ghi dấu sự nỗ lực không ngừng của các thế hệ thầy cô giáo, học sinh và phụ huynh.</p>
+<img src="/images/design/hero-admission-2026.png" alt="Lịch sử trường Tiểu học Vân Cốc" />
 
 <h3>Các cột mốc quan trọng</h3>
 <table>
@@ -72,7 +72,7 @@ const pagesData = [
   <tbody>
     <tr>
       <td><strong>1998</strong></td>
-      <td>Thành lập trường Tiểu học Lê Quý Đôn theo Quyết định của UBND Quận, khóa đầu tiên gồm 6 lớp với 210 học sinh.</td>
+      <td>Thành lập trường Tiểu học Vân Cốc theo Quyết định của UBND Quận, khóa đầu tiên gồm 6 lớp với 210 học sinh.</td>
     </tr>
     <tr>
       <td><strong>2002</strong></td>
@@ -122,7 +122,7 @@ const pagesData = [
 </table>
 
 <h3>Thành tích nổi bật</h3>
-<p>Trong suốt quá trình phát triển, trường Tiểu học Lê Quý Đôn đã đạt được nhiều thành tích đáng tự hào:</p>
+<p>Trong suốt quá trình phát triển, trường Tiểu học Vân Cốc đã đạt được nhiều thành tích đáng tự hào:</p>
 <ul>
   <li><strong>Giải thưởng cấp quốc gia:</strong> 2 lần nhận Bằng khen của Bộ Giáo dục và Đào tạo vì thành tích xuất sắc trong công tác giáo dục.</li>
   <li><strong>Giải thưởng cấp thành phố:</strong> 5 lần nhận Cờ thi đua xuất sắc, 8 lần nhận Bằng khen của UBND TP Hà Nội.</li>
@@ -131,18 +131,18 @@ const pagesData = [
 </ul>
 
 <h3>Hướng tới tương lai</h3>
-<p>Với nền tảng vững chắc được xây dựng qua hơn 25 năm, trường Tiểu học Lê Quý Đôn tiếp tục hướng tới mục tiêu trở thành trường tiểu học kiểu mẫu, ứng dụng công nghệ giáo dục tiên tiến, mở rộng hợp tác quốc tế và nâng cao chất lượng giáo dục toàn diện cho mỗi học sinh.</p>
+<p>Với nền tảng vững chắc được xây dựng qua hơn 25 năm, trường Tiểu học Vân Cốc tiếp tục hướng tới mục tiêu trở thành trường tiểu học kiểu mẫu, ứng dụng công nghệ giáo dục tiên tiến, mở rộng hợp tác quốc tế và nâng cao chất lượng giáo dục toàn diện cho mỗi học sinh.</p>
 </section>`,
   },
   {
-    title: 'Gia đình Doners',
+    title: 'Gia đình học sinh Vân Cốc',
     slug: 'tong-quan/gia-dinh-doners',
-    seo_title: 'Gia đình Doners — Trường Tiểu học Lê Quý Đôn',
-    seo_description: 'Gia đình Doners — cộng đồng giáo viên, nhân viên và phụ huynh trường Tiểu học Lê Quý Đôn gắn kết và yêu thương.',
+    seo_title: 'Gia đình học sinh Vân Cốc — Trường Tiểu học Vân Cốc',
+    seo_description: 'Gia đình học sinh Vân Cốc — cộng đồng giáo viên, nhân viên và phụ huynh trường Tiểu học Vân Cốc gắn kết và yêu thương.',
     content: `<section class="page-content">
-<h2>Gia đình Doners — Cộng đồng Lê Quý Đôn</h2>
-<p>"Doners" là tên gọi thân thương mà các thành viên trong đại gia đình trường Tiểu học Lê Quý Đôn dành cho nhau. Từ các em học sinh nhỏ tuổi nhất đến các thầy cô giáo kỳ cựu, từ phụ huynh đến cựu học sinh — tất cả đều tự hào là một phần của <strong>gia đình Doners</strong>.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Gia đình Doners trường Tiểu học Lê Quý Đôn" class="rounded-xl shadow" />
+<h2>Gia đình học sinh Vân Cốc — Cộng đồng Vân Cốc</h2>
+<p>"học sinh Vân Cốc" là tên gọi thân thương mà các thành viên trong đại gia đình trường Tiểu học Vân Cốc dành cho nhau. Từ các em học sinh nhỏ tuổi nhất đến các thầy cô giáo kỳ cựu, từ phụ huynh đến cựu học sinh — tất cả đều tự hào là một phần của <strong>gia đình học sinh Vân Cốc</strong>.</p>
+<img src="/images/design/testimonial-family.png" alt="Gia đình học sinh Vân Cốc trường Tiểu học Vân Cốc" />
 
 <h3>Đội ngũ lãnh đạo</h3>
 <p>Ban Giám hiệu nhà trường gồm những nhà giáo dục giàu kinh nghiệm và tâm huyết:</p>
@@ -153,7 +153,7 @@ const pagesData = [
 </ul>
 
 <h3>Đội ngũ giáo viên</h3>
-<p>Trường Tiểu học Lê Quý Đôn tự hào có đội ngũ <strong>85 giáo viên và nhân viên</strong>, trong đó:</p>
+<p>Trường Tiểu học Vân Cốc tự hào có đội ngũ <strong>85 giáo viên và nhân viên</strong>, trong đó:</p>
 <ul>
   <li>65 giáo viên trực tiếp giảng dạy (100% đạt chuẩn, 70% trên chuẩn)</li>
   <li>8 giáo viên tiếng Anh (gồm 3 giáo viên bản ngữ đến từ Anh, Mỹ và Úc)</li>
@@ -162,35 +162,35 @@ const pagesData = [
 </ul>
 
 <h3>Phụ huynh — Đối tác đồng hành</h3>
-<p>Hội Phụ huynh học sinh trường Tiểu học Lê Quý Đôn là cầu nối quan trọng giữa gia đình và nhà trường. Hội hoạt động tích cực với nhiều chương trình hỗ trợ:</p>
+<p>Hội Phụ huynh học sinh trường Tiểu học Vân Cốc là cầu nối quan trọng giữa gia đình và nhà trường. Hội hoạt động tích cực với nhiều chương trình hỗ trợ:</p>
 <ul>
   <li>Tổ chức các buổi tọa đàm về phương pháp giáo dục con cái hàng tháng.</li>
   <li>Hỗ trợ tổ chức các sự kiện: Ngày hội Gia đình, Tết Trung thu, Lễ hội Xuân.</li>
-  <li>Quỹ học bổng "Doners tương lai" dành cho học sinh có hoàn cảnh khó khăn nhưng học giỏi.</li>
+  <li>Quỹ học bổng "học sinh Vân Cốc tương lai" dành cho học sinh có hoàn cảnh khó khăn nhưng học giỏi.</li>
   <li>Chương trình "Phụ huynh đồng giảng" — mời phụ huynh chia sẻ về nghề nghiệp và kinh nghiệm sống.</li>
 </ul>
 
-<h3>Cựu học sinh — Niềm tự hào Doners</h3>
-<p>Qua hơn 25 năm, hàng nghìn học sinh đã trưởng thành từ mái trường Lê Quý Đôn. Nhiều em đã đạt thành tích xuất sắc trong học tập và sự nghiệp:</p>
+<h3>Cựu học sinh — Niềm tự hào học sinh Vân Cốc</h3>
+<p>Qua hơn 25 năm, hàng nghìn học sinh đã trưởng thành từ mái trường Vân Cốc. Nhiều em đã đạt thành tích xuất sắc trong học tập và sự nghiệp:</p>
 <ul>
   <li>Hơn 200 cựu học sinh đỗ vào các trường chuyên, trường điểm cấp thành phố.</li>
   <li>Nhiều em giành học bổng du học tại Mỹ, Anh, Úc, Singapore.</li>
-  <li>Câu lạc bộ Cựu học sinh "Doners Alumni" hoạt động từ năm 2015, tổ chức giao lưu và chia sẻ kinh nghiệm thường niên.</li>
+  <li>Câu lạc bộ Cựu học sinh "học sinh Vân Cốc Alumni" hoạt động từ năm 2015, tổ chức giao lưu và chia sẻ kinh nghiệm thường niên.</li>
 </ul>
 
-<h3>Văn hóa Doners</h3>
-<p>Điều làm nên bản sắc riêng của gia đình Doners chính là tinh thần <em>"Yêu thương — Chia sẻ — Cùng phát triển"</em>. Mỗi thành viên đều được đón nhận, lắng nghe và tôn trọng. Đó là lý do tại sao nhiều phụ huynh đã gắn bó với trường suốt nhiều năm, từ con lớn đến con nhỏ, và luôn tin tưởng gửi gắm con em cho đại gia đình Doners.</p>
+<h3>Văn hóa học sinh Vân Cốc</h3>
+<p>Điều làm nên bản sắc riêng của gia đình học sinh Vân Cốc chính là tinh thần <em>"Yêu thương — Chia sẻ — Cùng phát triển"</em>. Mỗi thành viên đều được đón nhận, lắng nghe và tôn trọng. Đó là lý do tại sao nhiều phụ huynh đã gắn bó với trường suốt nhiều năm, từ con lớn đến con nhỏ, và luôn tin tưởng gửi gắm con em cho đại gia đình học sinh Vân Cốc.</p>
 </section>`,
   },
   {
-    title: 'Ngôi nhà Lê Quý Đôn',
-    slug: 'tong-quan/ngoi-nha-le-quy-don',
-    seo_title: 'Ngôi nhà Lê Quý Đôn — Khuôn viên & Cơ sở vật chất',
-    seo_description: 'Khám phá khuôn viên, cơ sở vật chất và không gian học tập hiện đại tại trường Tiểu học Lê Quý Đôn Hà Nội.',
+    title: 'Ngôi nhà Vân Cốc',
+    slug: 'tong-quan/ngoi-nha-van-coc',
+    seo_title: 'Ngôi nhà Vân Cốc — Khuôn viên & Cơ sở vật chất',
+    seo_description: 'Khám phá khuôn viên, cơ sở vật chất và không gian học tập hiện đại tại trường Tiểu học Vân Cốc Hà Nội.',
     content: `<section class="page-content">
-<h2>Ngôi nhà Lê Quý Đôn — Không gian học tập lý tưởng</h2>
-<p>Trường Tiểu học Lê Quý Đôn tọa lạc trên khuôn viên rộng <strong>8.500 m²</strong> tại vị trí thuận lợi trong nội thành Hà Nội. Ngôi trường được thiết kế theo phong cách hiện đại, thân thiện với trẻ em, tạo không gian học tập an toàn và đầy cảm hứng.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Khuôn viên trường Tiểu học Lê Quý Đôn" class="rounded-xl shadow" />
+<h2>Ngôi nhà Vân Cốc — Không gian học tập lý tưởng</h2>
+<p>Trường Tiểu học Vân Cốc tọa lạc trên khuôn viên rộng <strong>8.500 m²</strong> tại vị trí thuận lợi trong nội thành Hà Nội. Ngôi trường được thiết kế theo phong cách hiện đại, thân thiện với trẻ em, tạo không gian học tập an toàn và đầy cảm hứng.</p>
+<img src="/images/design/intro-campus-sanitizing.png" alt="Khuôn viên trường Tiểu học Vân Cốc" />
 
 <h3>Tổng thể khuôn viên</h3>
 <p>Khuôn viên trường bao gồm 3 khu chính:</p>
@@ -227,18 +227,18 @@ const pagesData = [
   <li>Hệ thống phòng cháy chữa cháy đạt chuẩn, diễn tập PCCC định kỳ</li>
   <li>Phần mềm quản lý đưa đón học sinh, thông báo tự động cho phụ huynh</li>
 </ul>
-<p>Với cơ sở vật chất hiện đại và không gian xanh — sạch — đẹp, ngôi nhà Lê Quý Đôn thực sự là nơi mỗi học sinh cảm thấy hạnh phúc và yêu thích đến trường mỗi ngày.</p>
+<p>Với cơ sở vật chất hiện đại và không gian xanh — sạch — đẹp, ngôi nhà Vân Cốc thực sự là nơi mỗi học sinh cảm thấy hạnh phúc và yêu thích đến trường mỗi ngày.</p>
 </section>`,
   },
   {
-    title: 'Sắc màu Lê Quý Đôn',
-    slug: 'tong-quan/sac-mau-le-quy-don',
-    seo_title: 'Sắc màu Lê Quý Đôn — Đời sống học đường sôi động',
-    seo_description: 'Khám phá đời sống học đường đầy sắc màu tại trường Tiểu học Lê Quý Đôn — văn hóa, lễ hội, câu lạc bộ và hoạt động ngoại khóa.',
+    title: 'Sắc màu Vân Cốc',
+    slug: 'tong-quan/sac-mau-van-coc',
+    seo_title: 'Sắc màu Vân Cốc — Đời sống học đường sôi động',
+    seo_description: 'Khám phá đời sống học đường đầy sắc màu tại trường Tiểu học Vân Cốc — văn hóa, lễ hội, câu lạc bộ và hoạt động ngoại khóa.',
     content: `<section class="page-content">
-<h2>Sắc màu Lê Quý Đôn — Đời sống học đường sôi động</h2>
-<p>Tại trường Tiểu học Lê Quý Đôn, mỗi ngày đến trường đều là một ngày đặc biệt. Bên cạnh việc học tập, các em học sinh được tham gia vào vô số hoạt động phong phú, tạo nên bức tranh đời sống học đường đầy <strong>sắc màu và niềm vui</strong>.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Hoạt động sắc màu tại trường Lê Quý Đôn" class="rounded-xl shadow" />
+<h2>Sắc màu Vân Cốc — Đời sống học đường sôi động</h2>
+<p>Tại trường Tiểu học Vân Cốc, mỗi ngày đến trường đều là một ngày đặc biệt. Bên cạnh việc học tập, các em học sinh được tham gia vào vô số hoạt động phong phú, tạo nên bức tranh đời sống học đường đầy <strong>sắc màu và niềm vui</strong>.</p>
+<img src="/images/design/news-doi-khoi.png" alt="Hoạt động sắc màu tại trường Vân Cốc" />
 
 <h3>Lễ hội truyền thống</h3>
 <p>Hàng năm, nhà trường tổ chức nhiều lễ hội truyền thống, tạo không gian để các em trải nghiệm văn hóa Việt Nam:</p>
@@ -287,14 +287,14 @@ const pagesData = [
 <p>Ngoài các hoạt động thường niên, nhà trường còn tổ chức nhiều chương trình đặc biệt:</p>
 <ul>
   <li><strong>Tuần lễ Khoa học:</strong> Các em được tham gia thí nghiệm, triển lãm sáng tạo và cuộc thi STEM cấp trường.</li>
-  <li><strong>Dự án "Nhà sử học nhí":</strong> Tham quan bảo tàng, di tích lịch sử Hà Nội, tìm hiểu về danh nhân Lê Quý Đôn.</li>
+  <li><strong>Dự án "Nhà sử học nhí":</strong> Tham quan bảo tàng, di tích lịch sử Hà Nội, tìm hiểu về danh nhân Vân Cốc.</li>
   <li><strong>Chương trình "Xanh — Sạch — Đẹp":</strong> Các em tham gia trồng cây, dọn vệ sinh và tái chế rác thải, nâng cao ý thức bảo vệ môi trường.</li>
   <li><strong>Giao lưu quốc tế:</strong> Kết nối với trường tiểu học tại Singapore, Nhật Bản qua video call, trao đổi văn hóa và dự án học tập chung.</li>
 </ul>
 
 <h3>Bản tin học đường</h3>
-<p>Bản tin "Sắc màu Doners" được phát hành hàng tháng, do chính các em học sinh lớp 4–5 biên tập dưới sự hướng dẫn của thầy cô. Bản tin gồm các chuyên mục: Tin tức trường, Góc sáng tạo, Nhân vật của tháng, Câu đố vui và Thư viện ảnh. Đây là sân chơi tuyệt vời để các em rèn luyện kỹ năng viết, chụp ảnh và làm việc nhóm.</p>
-<p>Với hàng trăm hoạt động phong phú mỗi năm, đời sống học đường tại Lê Quý Đôn luôn tràn đầy niềm vui, tiếng cười và những kỷ niệm đáng nhớ cho mỗi em học sinh.</p>
+<p>Bản tin "Sắc màu học sinh Vân Cốc" được phát hành hàng tháng, do chính các em học sinh lớp 4–5 biên tập dưới sự hướng dẫn của thầy cô. Bản tin gồm các chuyên mục: Tin tức trường, Góc sáng tạo, Nhân vật của tháng, Câu đố vui và Thư viện ảnh. Đây là sân chơi tuyệt vời để các em rèn luyện kỹ năng viết, chụp ảnh và làm việc nhóm.</p>
+<p>Với hàng trăm hoạt động phong phú mỗi năm, đời sống học đường tại Vân Cốc luôn tràn đầy niềm vui, tiếng cười và những kỷ niệm đáng nhớ cho mỗi em học sinh.</p>
 </section>`,
   },
 
@@ -304,12 +304,12 @@ const pagesData = [
   {
     title: 'Chương trình Quốc gia nâng cao',
     slug: 'chuong-trinh/quoc-gia-nang-cao',
-    seo_title: 'Chương trình Quốc gia nâng cao — Trường Tiểu học Lê Quý Đôn',
-    seo_description: 'Chương trình giáo dục quốc gia nâng cao tại trường Tiểu học Lê Quý Đôn — Toán, Tiếng Việt, Khoa học và các môn bổ trợ.',
+    seo_title: 'Chương trình Quốc gia nâng cao — Trường Tiểu học Vân Cốc',
+    seo_description: 'Chương trình giáo dục quốc gia nâng cao tại trường Tiểu học Vân Cốc — Toán, Tiếng Việt, Khoa học và các môn bổ trợ.',
     content: `<section class="page-content">
 <h2>Chương trình Quốc gia nâng cao</h2>
-<p>Trường Tiểu học Lê Quý Đôn triển khai <strong>Chương trình Giáo dục Phổ thông 2018</strong> của Bộ Giáo dục và Đào tạo, đồng thời bổ sung các nội dung nâng cao nhằm phát huy tối đa năng lực và phẩm chất của học sinh. Chương trình được thiết kế để đảm bảo chuẩn kiến thức quốc gia, đồng thời tạo điều kiện để các em phát triển toàn diện.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Giờ học tại trường Tiểu học Lê Quý Đôn" class="rounded-xl shadow" />
+<p>Trường Tiểu học Vân Cốc triển khai <strong>Chương trình Giáo dục Phổ thông 2018</strong> của Bộ Giáo dục và Đào tạo, đồng thời bổ sung các nội dung nâng cao nhằm phát huy tối đa năng lực và phẩm chất của học sinh. Chương trình được thiết kế để đảm bảo chuẩn kiến thức quốc gia, đồng thời tạo điều kiện để các em phát triển toàn diện.</p>
+<img src="/images/design/intro-classroom.png" alt="Giờ học tại trường Tiểu học Vân Cốc" />
 
 <h3>Khung chương trình</h3>
 <table>
@@ -385,7 +385,7 @@ const pagesData = [
 </table>
 
 <h3>Điểm khác biệt — Chương trình nâng cao</h3>
-<p>So với chương trình chuẩn quốc gia, trường Tiểu học Lê Quý Đôn bổ sung các nội dung nâng cao:</p>
+<p>So với chương trình chuẩn quốc gia, trường Tiểu học Vân Cốc bổ sung các nội dung nâng cao:</p>
 <ol>
   <li><strong>Toán tư duy (Lớp 3–5):</strong> Bên cạnh chương trình Toán chuẩn, nhà trường triển khai thêm 2 tiết Toán tư duy mỗi tuần, sử dụng phương pháp giải toán Singapore — giúp các em phát triển tư duy logic, khả năng phân tích và giải quyết vấn đề.</li>
   <li><strong>Tiếng Việt sáng tạo:</strong> Bổ sung hoạt động đọc sách hàng ngày (15 phút/ngày), viết nhật ký sáng tạo hàng tuần và các dự án đọc — viết theo chủ đề.</li>
@@ -401,18 +401,18 @@ const pagesData = [
   <li><strong>Ứng dụng công nghệ:</strong> Sử dụng bảng tương tác, phần mềm học tập và các ứng dụng giáo dục trong mọi tiết học.</li>
   <li><strong>Đánh giá năng lực:</strong> Đánh giá thường xuyên bằng nhiều hình thức (quan sát, vấn đáp, sản phẩm, bài kiểm tra), không chỉ dựa vào điểm số.</li>
 </ul>
-<p>Với chương trình quốc gia nâng cao, trường Tiểu học Lê Quý Đôn đảm bảo mỗi học sinh không chỉ đạt chuẩn kiến thức mà còn phát triển tối đa tiềm năng cá nhân.</p>
+<p>Với chương trình quốc gia nâng cao, trường Tiểu học Vân Cốc đảm bảo mỗi học sinh không chỉ đạt chuẩn kiến thức mà còn phát triển tối đa tiềm năng cá nhân.</p>
 </section>`,
   },
   {
     title: 'Tiếng Anh tăng cường',
     slug: 'chuong-trinh/tieng-anh-tang-cuong',
-    seo_title: 'Tiếng Anh tăng cường — Trường Tiểu học Lê Quý Đôn',
-    seo_description: 'Chương trình tiếng Anh tăng cường tại trường Tiểu học Lê Quý Đôn — 8 tiết/tuần, giáo viên bản ngữ, chuẩn Cambridge.',
+    seo_title: 'Tiếng Anh tăng cường — Trường Tiểu học Vân Cốc',
+    seo_description: 'Chương trình tiếng Anh tăng cường tại trường Tiểu học Vân Cốc — 8 tiết/tuần, giáo viên bản ngữ, chuẩn Cambridge.',
     content: `<section class="page-content">
 <h2>Chương trình Tiếng Anh tăng cường</h2>
-<p>Tiếng Anh là một trong những môn học được trường Tiểu học Lê Quý Đôn đầu tư mạnh mẽ nhất. Với mục tiêu giúp học sinh <strong>tự tin giao tiếp tiếng Anh</strong> và đạt chuẩn quốc tế từ cấp tiểu học, nhà trường triển khai chương trình tiếng Anh tăng cường với nhiều điểm vượt trội.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Giờ học tiếng Anh với giáo viên bản ngữ" class="rounded-xl shadow" />
+<p>Tiếng Anh là một trong những môn học được trường Tiểu học Vân Cốc đầu tư mạnh mẽ nhất. Với mục tiêu giúp học sinh <strong>tự tin giao tiếp tiếng Anh</strong> và đạt chuẩn quốc tế từ cấp tiểu học, nhà trường triển khai chương trình tiếng Anh tăng cường với nhiều điểm vượt trội.</p>
+<img src="/images/design/intro-classroom.png" alt="Giờ học tiếng Anh với giáo viên bản ngữ" />
 
 <h3>Đặc điểm chương trình</h3>
 <ul>
@@ -457,7 +457,7 @@ const pagesData = [
 </table>
 
 <h3>Phương pháp giảng dạy</h3>
-<p>Chương trình tiếng Anh tại Lê Quý Đôn áp dụng phương pháp <strong>Communicative Language Teaching (CLT)</strong>, tập trung vào giao tiếp thực tế:</p>
+<p>Chương trình tiếng Anh tại Vân Cốc áp dụng phương pháp <strong>Communicative Language Teaching (CLT)</strong>, tập trung vào giao tiếp thực tế:</p>
 <ol>
   <li><strong>Nghe — Nói (50% thời lượng):</strong> Các em được nghe và nói tiếng Anh mỗi ngày thông qua hội thoại, trò chơi ngôn ngữ, đóng vai và thuyết trình.</li>
   <li><strong>Đọc — Viết (30% thời lượng):</strong> Đọc truyện bằng tiếng Anh (Graded Readers), viết nhật ký, thư và bài luận ngắn.</li>
@@ -484,12 +484,12 @@ const pagesData = [
   {
     title: 'Kỹ năng sống',
     slug: 'chuong-trinh/ky-nang-song',
-    seo_title: 'Kỹ năng sống — Trường Tiểu học Lê Quý Đôn',
-    seo_description: 'Chương trình giáo dục kỹ năng sống tại trường Tiểu học Lê Quý Đôn — teamwork, leadership, an toàn, trí tuệ cảm xúc.',
+    seo_title: 'Kỹ năng sống — Trường Tiểu học Vân Cốc',
+    seo_description: 'Chương trình giáo dục kỹ năng sống tại trường Tiểu học Vân Cốc — teamwork, leadership, an toàn, trí tuệ cảm xúc.',
     content: `<section class="page-content">
 <h2>Chương trình Kỹ năng sống</h2>
-<p>Giáo dục kỹ năng sống là một trong những trụ cột quan trọng trong chiến lược giáo dục toàn diện của trường Tiểu học Lê Quý Đôn. Nhà trường tin rằng bên cạnh kiến thức học thuật, <strong>kỹ năng sống chính là hành trang không thể thiếu</strong> để các em tự tin bước vào cuộc sống.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Hoạt động kỹ năng sống tại trường Lê Quý Đôn" class="rounded-xl shadow" />
+<p>Giáo dục kỹ năng sống là một trong những trụ cột quan trọng trong chiến lược giáo dục toàn diện của trường Tiểu học Vân Cốc. Nhà trường tin rằng bên cạnh kiến thức học thuật, <strong>kỹ năng sống chính là hành trang không thể thiếu</strong> để các em tự tin bước vào cuộc sống.</p>
+<img src="/images/design/intro-safety-training.png" alt="Hoạt động kỹ năng sống tại trường Vân Cốc" />
 
 <h3>Khung chương trình kỹ năng sống</h3>
 <p>Chương trình kỹ năng sống được thiết kế theo 5 nhóm năng lực, phù hợp với từng lứa tuổi:</p>
@@ -541,18 +541,18 @@ const pagesData = [
   {
     title: 'Thể chất & Nghệ thuật',
     slug: 'chuong-trinh/the-chat-nghe-thuat',
-    seo_title: 'Thể chất & Nghệ thuật — Trường Tiểu học Lê Quý Đôn',
-    seo_description: 'Chương trình giáo dục thể chất và nghệ thuật tại trường Tiểu học Lê Quý Đôn — võ thuật, bơi lội, âm nhạc, mỹ thuật, nhảy.',
+    seo_title: 'Thể chất & Nghệ thuật — Trường Tiểu học Vân Cốc',
+    seo_description: 'Chương trình giáo dục thể chất và nghệ thuật tại trường Tiểu học Vân Cốc — võ thuật, bơi lội, âm nhạc, mỹ thuật, nhảy.',
     content: `<section class="page-content">
 <h2>Chương trình Thể chất & Nghệ thuật</h2>
-<p>Tại trường Tiểu học Lê Quý Đôn, giáo dục thể chất và nghệ thuật được coi là <strong>nền tảng quan trọng cho sự phát triển toàn diện</strong> của trẻ. Nhà trường đầu tư mạnh mẽ vào cơ sở vật chất và đội ngũ giáo viên chuyên biệt để mang đến cho các em những trải nghiệm phong phú nhất.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Hoạt động thể chất nghệ thuật tại trường Lê Quý Đôn" class="rounded-xl shadow" />
+<p>Tại trường Tiểu học Vân Cốc, giáo dục thể chất và nghệ thuật được coi là <strong>nền tảng quan trọng cho sự phát triển toàn diện</strong> của trẻ. Nhà trường đầu tư mạnh mẽ vào cơ sở vật chất và đội ngũ giáo viên chuyên biệt để mang đến cho các em những trải nghiệm phong phú nhất.</p>
+<img src="/images/design/intro-classroom.png" alt="Hoạt động thể chất nghệ thuật tại trường Vân Cốc" />
 
 <h3>Giáo dục Thể chất</h3>
-<p>Chương trình thể dục tại Lê Quý Đôn vượt xa khuôn khổ 2 tiết/tuần thông thường, với nhiều hoạt động bổ trợ:</p>
+<p>Chương trình thể dục tại Vân Cốc vượt xa khuôn khổ 2 tiết/tuần thông thường, với nhiều hoạt động bổ trợ:</p>
 
 <h3>Bơi lội</h3>
-<p>Bơi lội là môn bắt buộc tại trường Lê Quý Đôn, được giảng dạy tại bể bơi bốn mùa trong khuôn viên trường:</p>
+<p>Bơi lội là môn bắt buộc tại trường Vân Cốc, được giảng dạy tại bể bơi bốn mùa trong khuôn viên trường:</p>
 <ul>
   <li><strong>Lớp 1–2:</strong> Làm quen với nước, học kỹ thuật nổi và thở nước, bơi ếch cơ bản.</li>
   <li><strong>Lớp 3–4:</strong> Hoàn thiện bơi ếch, học bơi sải, kỹ năng tự cứu đuối nước.</li>
@@ -615,11 +615,11 @@ const pagesData = [
   <li><strong>Hát:</strong> Hát đồng ca, hợp xướng, hát dân ca Việt Nam và bài hát quốc tế.</li>
   <li><strong>Nhạc cụ:</strong> Học đàn organ cơ bản (lớp 3–5), đàn ukulele, sáo recorder và bộ gõ Orff.</li>
   <li><strong>Lý thuyết âm nhạc:</strong> Nhận biết nốt nhạc, nhịp điệu, ký hiệu âm nhạc phù hợp với lứa tuổi.</li>
-  <li><strong>Dàn hợp xướng:</strong> Dàn hợp xướng "Doners Choir" gồm 40 học sinh, biểu diễn tại các sự kiện của trường và đại diện thi cấp quận.</li>
+  <li><strong>Dàn hợp xướng:</strong> Dàn hợp xướng "học sinh Vân Cốc Choir" gồm 40 học sinh, biểu diễn tại các sự kiện của trường và đại diện thi cấp quận.</li>
 </ul>
 
 <h3>Mỹ thuật</h3>
-<p>Giờ Mỹ thuật tại Lê Quý Đôn không chỉ là vẽ tranh, mà là hành trình sáng tạo đa dạng:</p>
+<p>Giờ Mỹ thuật tại Vân Cốc không chỉ là vẽ tranh, mà là hành trình sáng tạo đa dạng:</p>
 <ul>
   <li>Vẽ tranh: màu sáp, màu nước, acrylic trên nhiều chất liệu.</li>
   <li>Thủ công sáng tạo: xé dán, gấp giấy origami, làm mô hình từ vật liệu tái chế.</li>
@@ -628,7 +628,7 @@ const pagesData = [
 </ul>
 
 <h3>Múa và Nhảy hiện đại</h3>
-<p>CLB Múa và Nhảy hiện đại "Doners Dance" hoạt động vào thứ 2, 4, 6 với hơn 50 thành viên. Các em được học múa dân gian Việt Nam, nhảy K-pop, nhảy jazz cơ bản và biên đạo theo nhóm. Đội múa của trường thường xuyên biểu diễn tại các sự kiện và đạt giải cao tại hội thi văn nghệ cấp quận.</p>
+<p>CLB Múa và Nhảy hiện đại "học sinh Vân Cốc Dance" hoạt động vào thứ 2, 4, 6 với hơn 50 thành viên. Các em được học múa dân gian Việt Nam, nhảy K-pop, nhảy jazz cơ bản và biên đạo theo nhóm. Đội múa của trường thường xuyên biểu diễn tại các sự kiện và đạt giải cao tại hội thi văn nghệ cấp quận.</p>
 </section>`,
   },
 
@@ -638,12 +638,12 @@ const pagesData = [
   {
     title: 'Y tế học đường',
     slug: 'dich-vu-hoc-duong/y-te-hoc-duong',
-    seo_title: 'Y tế học đường — Trường Tiểu học Lê Quý Đôn',
-    seo_description: 'Dịch vụ y tế học đường tại trường Tiểu học Lê Quý Đôn — phòng y tế, vệ sinh, dinh dưỡng và chăm sóc sức khỏe học sinh.',
+    seo_title: 'Y tế học đường — Trường Tiểu học Vân Cốc',
+    seo_description: 'Dịch vụ y tế học đường tại trường Tiểu học Vân Cốc — phòng y tế, vệ sinh, dinh dưỡng và chăm sóc sức khỏe học sinh.',
     content: `<section class="page-content">
 <h2>Y tế học đường — Chăm sóc sức khỏe toàn diện</h2>
-<p>Sức khỏe của học sinh là ưu tiên hàng đầu tại trường Tiểu học Lê Quý Đôn. Nhà trường vận hành <strong>hệ thống y tế học đường toàn diện</strong>, đảm bảo mỗi em được chăm sóc sức khỏe tốt nhất trong suốt thời gian ở trường.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Phòng y tế trường Tiểu học Lê Quý Đôn" class="rounded-xl shadow" />
+<p>Sức khỏe của học sinh là ưu tiên hàng đầu tại trường Tiểu học Vân Cốc. Nhà trường vận hành <strong>hệ thống y tế học đường toàn diện</strong>, đảm bảo mỗi em được chăm sóc sức khỏe tốt nhất trong suốt thời gian ở trường.</p>
+<img src="/images/design/intro-healthcare.png" alt="Phòng y tế trường Tiểu học Vân Cốc" />
 
 <h3>Phòng Y tế trường học</h3>
 <p>Phòng Y tế của trường được trang bị đầy đủ theo chuẩn của Bộ Y tế:</p>
@@ -721,12 +721,12 @@ const pagesData = [
   {
     title: 'Cơ sở vật chất',
     slug: 'co-so-vat-chat',
-    seo_title: 'Cơ sở vật chất — Trường Tiểu học Lê Quý Đôn',
-    seo_description: 'Cơ sở vật chất hiện đại tại trường Tiểu học Lê Quý Đôn — phòng học, phòng thí nghiệm, thư viện, nhà thể chất, bể bơi, nhà ăn.',
+    seo_title: 'Cơ sở vật chất — Trường Tiểu học Vân Cốc',
+    seo_description: 'Cơ sở vật chất hiện đại tại trường Tiểu học Vân Cốc — phòng học, phòng thí nghiệm, thư viện, nhà thể chất, bể bơi, nhà ăn.',
     content: `<section class="page-content">
 <h2>Cơ sở vật chất hiện đại</h2>
-<p>Trường Tiểu học Lê Quý Đôn được đầu tư xây dựng cơ sở vật chất <strong>đạt chuẩn quốc gia mức độ 2</strong>, đáp ứng mọi nhu cầu học tập, vui chơi và phát triển toàn diện của học sinh. Dưới đây là tổng quan về các khu vực và trang thiết bị chính.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Cơ sở vật chất trường Tiểu học Lê Quý Đôn" class="rounded-xl shadow" />
+<p>Trường Tiểu học Vân Cốc được đầu tư xây dựng cơ sở vật chất <strong>đạt chuẩn quốc gia mức độ 2</strong>, đáp ứng mọi nhu cầu học tập, vui chơi và phát triển toàn diện của học sinh. Dưới đây là tổng quan về các khu vực và trang thiết bị chính.</p>
+<img src="/images/design/intro-campus-sanitizing.png" alt="Cơ sở vật chất trường Tiểu học Vân Cốc" />
 
 <h3>Phòng học tiêu chuẩn</h3>
 <p>Trường có <strong>30 phòng học</strong>, mỗi phòng diện tích 54 m², đáp ứng tiêu chuẩn quy định cho lớp học tối đa 35 học sinh:</p>
@@ -820,12 +820,12 @@ const pagesData = [
   {
     title: 'Đội ngũ giáo viên',
     slug: 'doi-ngu-giao-vien',
-    seo_title: 'Đội ngũ giáo viên — Trường Tiểu học Lê Quý Đôn',
-    seo_description: 'Đội ngũ giáo viên trường Tiểu học Lê Quý Đôn — trình độ chuyên môn, thành tích và phương pháp giảng dạy hiện đại.',
+    seo_title: 'Đội ngũ giáo viên — Trường Tiểu học Vân Cốc',
+    seo_description: 'Đội ngũ giáo viên trường Tiểu học Vân Cốc — trình độ chuyên môn, thành tích và phương pháp giảng dạy hiện đại.',
     content: `<section class="page-content">
 <h2>Đội ngũ giáo viên — Tâm huyết và Chuyên nghiệp</h2>
-<p>Đội ngũ giáo viên là <strong>tài sản quý giá nhất</strong> của trường Tiểu học Lê Quý Đôn. Với gần 70 giáo viên trực tiếp giảng dạy, nhà trường tự hào có đội ngũ vừa giỏi chuyên môn, vừa tận tâm với nghề, luôn đặt lợi ích của học sinh lên hàng đầu.</p>
-<img src="/uploads/placeholder-school.jpg" alt="Đội ngũ giáo viên trường Tiểu học Lê Quý Đôn" class="rounded-xl shadow" />
+<p>Đội ngũ giáo viên là <strong>tài sản quý giá nhất</strong> của trường Tiểu học Vân Cốc. Với gần 70 giáo viên trực tiếp giảng dạy, nhà trường tự hào có đội ngũ vừa giỏi chuyên môn, vừa tận tâm với nghề, luôn đặt lợi ích của học sinh lên hàng đầu.</p>
+<img src="/images/design/testimonial-family.png" alt="Đội ngũ giáo viên trường Tiểu học Vân Cốc" />
 
 <h3>Thống kê đội ngũ</h3>
 <table>
@@ -876,7 +876,7 @@ const pagesData = [
 </table>
 
 <h3>Tiêu chuẩn tuyển dụng</h3>
-<p>Để trở thành giáo viên tại Lê Quý Đôn, ứng viên phải đáp ứng các tiêu chuẩn nghiêm ngặt:</p>
+<p>Để trở thành giáo viên tại Vân Cốc, ứng viên phải đáp ứng các tiêu chuẩn nghiêm ngặt:</p>
 <ol>
   <li><strong>Trình độ chuyên môn:</strong> Tốt nghiệp Đại học Sư phạm hoặc tương đương, ưu tiên Thạc sĩ. Giáo viên tiếng Anh yêu cầu IELTS 7.0 hoặc tương đương.</li>
   <li><strong>Kinh nghiệm:</strong> Tối thiểu 3 năm giảng dạy tại trường tiểu học, có hồ sơ thành tích rõ ràng.</li>
@@ -913,7 +913,7 @@ const pagesData = [
 </ul>
 
 <h3>Văn hóa giáo viên</h3>
-<p>Tại Lê Quý Đôn, giáo viên không chỉ là người truyền đạt kiến thức mà còn là <em>người bạn đồng hành</em> với mỗi học sinh. Các thầy cô luôn lắng nghe, thấu hiểu và tôn trọng sự khác biệt của từng em. Phương châm của đội ngũ giáo viên: <strong>"Mỗi ngày đến trường là một ngày vui — cho cả thầy và trò"</strong>.</p>
+<p>Tại Vân Cốc, giáo viên không chỉ là người truyền đạt kiến thức mà còn là <em>người bạn đồng hành</em> với mỗi học sinh. Các thầy cô luôn lắng nghe, thấu hiểu và tôn trọng sự khác biệt của từng em. Phương châm của đội ngũ giáo viên: <strong>"Mỗi ngày đến trường là một ngày vui — cho cả thầy và trò"</strong>.</p>
 </section>`,
   },
 ];

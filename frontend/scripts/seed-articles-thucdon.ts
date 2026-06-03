@@ -30,7 +30,7 @@ const ARTICLES = [
     title: 'Thực đơn CLB Ngôi nhà mơ ước 11/4/2026',
     slug: 'thuc-don-clb-nnmu-11-4-2026',
     publishedAt: '2026-04-11T07:00:00',
-    image: 'https://picsum.photos/seed/lqd-thucdon-1/800/500',
+    image: '/images/design/menu-clb-11-04.png',
     content: `<p>Thực đơn bữa ăn CLB Ngôi nhà mơ ước ngày <strong>11/4/2026</strong> (Thứ Sáu):</p>
 ${menuTable([
   { label: 'Bữa sáng', content: 'Phở bò, sữa tươi' },
@@ -46,7 +46,7 @@ ${menuTable([
     title: 'Thực đơn tuần 06/4 — 10/4/2026',
     slug: 'thuc-don-tuan-06-10-4-2026',
     publishedAt: '2026-04-06T07:00:00',
-    image: 'https://picsum.photos/seed/lqd-thucdon-2/800/500',
+    image: '/images/design/menu-week-06-10.png',
     content: `<p>Thực đơn tuần từ <strong>06/4 — 10/4/2026</strong>:</p>
 ${weeklyMenuHtml([
   {
@@ -115,7 +115,7 @@ ${weeklyMenuHtml([
     title: 'Thực đơn CLB NNMU 04/4/2026',
     slug: 'thuc-don-clb-nnmu-04-4-2026',
     publishedAt: '2026-04-04T07:00:00',
-    image: 'https://picsum.photos/seed/lqd-thucdon-3/800/500',
+    image: '/images/design/menu-clb-04-04.png',
     content: `<p>Thực đơn bữa ăn CLB Ngôi nhà mơ ước ngày <strong>04/4/2026</strong> (Thứ Sáu):</p>
 ${menuTable([
   { label: 'Bữa sáng', content: 'Bún riêu cua, sữa tươi' },
@@ -131,7 +131,7 @@ ${menuTable([
     title: 'Thực đơn tuần 30/3 — 03/4/2026',
     slug: 'thuc-don-tuan-30-3-03-4-2026',
     publishedAt: '2026-03-30T07:00:00',
-    image: 'https://picsum.photos/seed/lqd-thucdon-4/800/500',
+    image: '/images/design/menu-week-30-03.png',
     content: `<p>Thực đơn tuần từ <strong>30/3 — 03/4/2026</strong>:</p>
 ${weeklyMenuHtml([
   {
@@ -200,7 +200,7 @@ ${weeklyMenuHtml([
     title: 'Thực đơn CLB NNMU 28/3/2026',
     slug: 'thuc-don-clb-nnmu-28-3-2026',
     publishedAt: '2026-03-28T07:00:00',
-    image: 'https://picsum.photos/seed/lqd-thucdon-5/800/500',
+    image: '/images/design/menu-clb-04-04.png',
     content: `<p>Thực đơn bữa ăn CLB Ngôi nhà mơ ước ngày <strong>28/3/2026</strong> (Thứ Bảy):</p>
 ${menuTable([
   { label: 'Bữa sáng', content: 'Bánh cuốn nhân thịt, sữa tươi' },
@@ -216,7 +216,7 @@ ${menuTable([
     title: 'Thực đơn tuần 23/3 — 27/3/2026',
     slug: 'thuc-don-tuan-23-27-3-2026',
     publishedAt: '2026-03-23T07:00:00',
-    image: 'https://picsum.photos/seed/lqd-thucdon-6/800/500',
+    image: '/images/design/menu-week-06-10.png',
     content: `<p>Thực đơn tuần từ <strong>23/3 — 27/3/2026</strong>:</p>
 ${weeklyMenuHtml([
   {
@@ -285,7 +285,7 @@ ${weeklyMenuHtml([
     title: 'Thực đơn CLB NNMU 21/3/2026',
     slug: 'thuc-don-clb-nnmu-21-3-2026',
     publishedAt: '2026-03-21T07:00:00',
-    image: 'https://picsum.photos/seed/lqd-thucdon-7/800/500',
+    image: '/images/design/menu-clb-11-04.png',
     content: `<p>Thực đơn bữa ăn CLB Ngôi nhà mơ ước ngày <strong>21/3/2026</strong> (Thứ Bảy):</p>
 ${menuTable([
   { label: 'Bữa sáng', content: 'Xôi xéo, sữa chua' },
@@ -301,7 +301,7 @@ ${menuTable([
     title: 'Thực đơn tuần 16/3 — 20/3/2026',
     slug: 'thuc-don-tuan-16-20-3-2026',
     publishedAt: '2026-03-16T07:00:00',
-    image: 'https://picsum.photos/seed/lqd-thucdon-8/800/500',
+    image: '/images/design/menu-week-30-03.png',
     content: `<p>Thực đơn tuần từ <strong>16/3 — 20/3/2026</strong>:</p>
 ${weeklyMenuHtml([
   {

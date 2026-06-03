@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# LeQuyDon — QUICK DEPLOY TO VPS
+# VanCoc — QUICK DEPLOY TO VPS
 # ============================================================
 # Chay TU MAY LOCAL — deploy len VPS da co WebPhoto/VietNet
 # Dung chung MySQL (shared-mysql), Redis (shared-redis), Nginx (shared-nginx)
@@ -40,7 +40,7 @@ cd "$ROOT_DIR"
 
 echo ""
 echo "============================================================"
-echo "  LeQuyDon — Quick Deploy"
+echo "  VanCoc — Quick Deploy"
 echo "  VPS:    ${VPS_HOST}"
 echo "  Domain: ${DOMAIN}"
 echo "  Mode:   Shared infra with WebPhoto/VietNet"
@@ -170,7 +170,7 @@ ssh "${VPS_HOST}" "
   echo '  Building Docker images...'
   docker compose build 2>&1 | tail -5
 
-  echo '  Starting LeQuyDon containers...'
+  echo '  Starting VanCoc containers...'
   docker compose up -d
 
   # Ket noi shared-nginx vao lqd_frontend network
@@ -266,7 +266,7 @@ echo "============================================================"
 echo -e "  ${GREEN}DEPLOY HOAN TAT!${NC}"
 echo "============================================================"
 echo ""
-echo "  https://${DOMAIN}        (LeQuyDon)"
+echo "  https://${DOMAIN}        (VanCoc)"
 echo "  https://${DOMAIN}/admin  (Admin)"
 echo ""
 echo "  Update:  bash scripts/update-deploy.sh ${VPS_IP}"

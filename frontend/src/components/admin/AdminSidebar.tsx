@@ -62,7 +62,7 @@ export default function AdminSidebar({ collapsed, onToggle }: Props) {
           <div className="w-8 h-8 rounded-lg bg-green-700 flex items-center justify-center text-white font-bold text-sm shrink-0">
             LQ
           </div>
-          {!collapsed && <span className="font-semibold text-sm text-slate-800 truncate">Lê Quý Đôn</span>}
+          {!collapsed && <span className="font-semibold text-sm text-slate-800 truncate">Vân Cốc</span>}
         </div>
 
         {/* Menu items */}

@@ -12,7 +12,7 @@ Smoke test cho tat ca trang public chinh: trang chu, tin tuc (hoc tap, su kien, 
 
 ```
 Smoke Tests:
-  / → title match "Le Quy Don", header + footer visible
+  / → title match "Van Coc", header + footer visible
   / → hero/banner hoac main content visible
   /tin-tuc/hoc-tap → h1/h2 visible + breadcrumb
   /tin-tuc/su-kien → h1/h2 visible + category tabs
@@ -34,7 +34,7 @@ Navigation:
 ### Smoke Tests (11 tests)
 
 **TC-01: trang chu load thanh cong**
-- Title match `/Le Quy Don/i`, header + footer visible
+- Title match `/Van Coc/i`, header + footer visible
 
 **TC-02: trang chu co banner hoac hero section**
 - Tim: `[class*="banner"], [class*="hero"], [class*="slider"], [class*="carousel"], section >> img`

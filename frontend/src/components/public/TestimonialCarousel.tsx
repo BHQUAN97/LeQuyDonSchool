@@ -14,28 +14,28 @@ const testimonials: Testimonial[] = [
     title:
       'Chủ tịch HĐQT Intech Group | Phó Chủ tịch CLB Đầu tư & Khởi nghiệp Việt Nam | PHHS khóa 2021 - 2026',
     content:
-      'Tôi thấy vui và hạnh phúc mỗi khi con nói chuyện thể hiện sự đam mê, yêu thích ngôi trường. Mỗi lần đến Trường Tiểu học Lê Quý Đôn để đón con, tôi lại thấy sự vui tươi, hồn nhiên của các con. Tôi tin tưởng vào sự phát triển toàn diện mà nhà trường mang lại cho con trai mình. Điều quý giá nhất là con không chỉ giỏi kiến thức mà còn phát triển cả về kỹ năng sống và nhân cách. Trường thực sự là tổ ấm thứ hai cho các em, để mỗi sáng mẹ không phải mệt công tìm kiếm lý do để con yêu trường, đến trường.',
+      'Tôi thấy vui và hạnh phúc mỗi khi con nói chuyện thể hiện sự đam mê, yêu thích ngôi trường. Mỗi lần đến Trường Tiểu học Vân Cốc để đón con, tôi lại thấy sự vui tươi, hồn nhiên của các con. Tôi tin tưởng vào sự phát triển toàn diện mà nhà trường mang lại cho con trai mình. Điều quý giá nhất là con không chỉ giỏi kiến thức mà còn phát triển cả về kỹ năng sống và nhân cách. Trường thực sự là tổ ấm thứ hai cho các em, để mỗi sáng mẹ không phải mệt công tìm kiếm lý do để con yêu trường, đến trường.',
   },
   {
     name: 'Anh Nguyễn Thanh Bình',
     title:
       'Giám đốc Nhà máy Công ty TNHH Chế biến thực phẩm và bánh kẹo Phạm Nguyên | PHHS niên khoá 2011 - 2016, 2020 - 2025 và 2024 - 2029',
     content:
-      'Là một người bố, tôi luôn cảm thấy vô cùng biết ơn khi nhìn thấy những bước đi vững chắc của các con mình trên con đường học vấn. Ba đứa con tôi đều học tại trường Tiểu học Lê Quý Đôn và nơi đây thực sự là một ngôi nhà thứ hai của các con. Tôi thực sự cảm nhận được sự trưởng thành của các con qua từng ngày và đó là điều khiến tôi tự hào nhất.',
+      'Là một người bố, tôi luôn cảm thấy vô cùng biết ơn khi nhìn thấy những bước đi vững chắc của các con mình trên con đường học vấn. Ba đứa con tôi đều học tại trường Tiểu học Vân Cốc và nơi đây thực sự là một ngôi nhà thứ hai của các con. Tôi thực sự cảm nhận được sự trưởng thành của các con qua từng ngày và đó là điều khiến tôi tự hào nhất.',
   },
   {
     name: 'Chị Trần Thị Minh Hà',
     title:
       'Phó Giám đốc Ngân hàng TMCP Ngoại thương Việt Nam | PHHS niên khoá 2022 - 2027',
     content:
-      'Con gái tôi từ một bé nhút nhát, ít nói đã trở nên tự tin, mạnh dạn sau 2 năm học tại Lê Quý Đôn. Cháu rất thích các hoạt động ngoại khóa, đặc biệt là CLB Tiếng Anh và Robotics. Tôi đánh giá cao phương pháp giáo dục lấy học sinh làm trung tâm của nhà trường — các thầy cô luôn lắng nghe và tôn trọng cá tính riêng của từng em.',
+      'Con gái tôi từ một bé nhút nhát, ít nói đã trở nên tự tin, mạnh dạn sau 2 năm học tại Vân Cốc. Cháu rất thích các hoạt động ngoại khóa, đặc biệt là CLB Tiếng Anh và Robotics. Tôi đánh giá cao phương pháp giáo dục lấy học sinh làm trung tâm của nhà trường — các thầy cô luôn lắng nghe và tôn trọng cá tính riêng của từng em.',
   },
   {
     name: 'Anh Lê Văn Đức',
     title:
       'CEO Công ty CP Công nghệ DTS | PHHS niên khoá 2023 - 2028',
     content:
-      'Điều tôi ấn tượng nhất ở Lê Quý Đôn là sự minh bạch trong giao tiếp giữa nhà trường và phụ huynh. Mọi thông tin về học tập, sức khỏe, bữa ăn của con đều được cập nhật kịp thời qua ứng dụng. Con trai tôi rất yêu trường và luôn háo hức mỗi sáng thức dậy đi học. Đó là thước đo chính xác nhất cho chất lượng giáo dục.',
+      'Điều tôi ấn tượng nhất ở Vân Cốc là sự minh bạch trong giao tiếp giữa nhà trường và phụ huynh. Mọi thông tin về học tập, sức khỏe, bữa ăn của con đều được cập nhật kịp thời qua ứng dụng. Con trai tôi rất yêu trường và luôn háo hức mỗi sáng thức dậy đi học. Đó là thước đo chính xác nhất cho chất lượng giáo dục.',
   },
 ];
 
@@ -79,7 +79,7 @@ export default function TestimonialCarousel() {
               <span className="w-4 h-1 bg-green-400 rounded-full" />
             </div>
           </div>
-          <h2 className="text-2xl font-bold">Lê Quý Đôn</h2>
+          <h2 className="text-2xl font-bold">Vân Cốc</h2>
         </div>
 
         {/* Carousel cho testimonials */}

@@ -9,7 +9,7 @@ import { MenuItem, MenuTarget } from '../../modules/navigation/entities/menu-ite
 import { generateUlid } from '../../common/utils/ulid';
 
 /**
- * Seed du lieu mau cho website truong tieu hoc Le Quy Don.
+ * Seed du lieu mau cho website truong tieu hoc Van Coc.
  * Idempotent — kiem tra ton tai truoc khi insert.
  * Chay: npm run seed:content
  */
@@ -107,13 +107,13 @@ async function seedArticles(adminId: string) {
 
   const articlesData = [
     {
-      title: 'Lễ khai giảng năm học 2025-2026 tại trường Tiểu học Lê Quý Đôn',
+      title: 'Lễ khai giảng năm học 2025-2026 tại trường Tiểu học Vân Cốc',
       slug: 'le-khai-giang-nam-hoc-2025-2026',
       categorySlug: 'su-kien',
       status: ArticleStatus.PUBLISHED,
-      excerpt: 'Sáng ngày 5/9/2025, trường Tiểu học Lê Quý Đôn long trọng tổ chức Lễ khai giảng năm học mới 2025-2026.',
+      excerpt: 'Sáng ngày 5/9/2025, trường Tiểu học Vân Cốc long trọng tổ chức Lễ khai giảng năm học mới 2025-2026.',
       content: `<h2>Lễ khai giảng năm học 2025-2026</h2>
-<p>Sáng ngày 5 tháng 9 năm 2025, trong không khí trang nghiêm và phấn khởi, trường Tiểu học Lê Quý Đôn đã long trọng tổ chức Lễ khai giảng năm học mới 2025-2026.</p>
+<p>Sáng ngày 5 tháng 9 năm 2025, trong không khí trang nghiêm và phấn khởi, trường Tiểu học Vân Cốc đã long trọng tổ chức Lễ khai giảng năm học mới 2025-2026.</p>
 <p>Buổi lễ có sự tham dự của đông đảo các thầy cô giáo, phụ huynh và hơn 1.200 học sinh từ lớp 1 đến lớp 5. Đặc biệt, các em học sinh lớp 1 lần đầu tiên bước vào ngôi trường mới với niềm vui và sự háo hức.</p>
 <h3>Phát biểu khai giảng</h3>
 <p>Trong bài phát biểu khai giảng, cô Hiệu trưởng Nguyễn Thị Minh Hằng đã gửi lời chúc mừng năm học mới tới toàn thể thầy cô và các em học sinh, đồng thời nhấn mạnh mục tiêu nâng cao chất lượng giáo dục toàn diện trong năm học mới.</p>
@@ -124,9 +124,9 @@ async function seedArticles(adminId: string) {
       slug: 'ket-qua-olympic-toan-cap-quan-2025',
       categorySlug: 'hoc-tap',
       status: ArticleStatus.PUBLISHED,
-      excerpt: 'Trường Tiểu học Lê Quý Đôn tự hào thông báo 15 học sinh đạt giải trong kỳ thi Olympic Toán cấp quận năm 2025.',
+      excerpt: 'Trường Tiểu học Vân Cốc tự hào thông báo 15 học sinh đạt giải trong kỳ thi Olympic Toán cấp quận năm 2025.',
       content: `<h2>15 học sinh đạt giải Olympic Toán cấp quận</h2>
-<p>Trong kỳ thi Olympic Toán học cấp quận năm học 2024-2025, trường Tiểu học Lê Quý Đôn đã đạt thành tích xuất sắc với 15 học sinh đoạt giải, trong đó có 3 giải Nhất, 5 giải Nhì và 7 giải Ba.</p>
+<p>Trong kỳ thi Olympic Toán học cấp quận năm học 2024-2025, trường Tiểu học Vân Cốc đã đạt thành tích xuất sắc với 15 học sinh đoạt giải, trong đó có 3 giải Nhất, 5 giải Nhì và 7 giải Ba.</p>
 <h3>Danh sách học sinh đạt giải Nhất</h3>
 <ul>
 <li>Em Nguyễn Minh Anh — Lớp 5A1</li>
@@ -140,9 +140,9 @@ async function seedArticles(adminId: string) {
       slug: 'clb-robotics-chieu-sinh-thang-10-2025',
       categorySlug: 'hoat-dong-ngoai-khoa',
       status: ArticleStatus.PUBLISHED,
-      excerpt: 'CLB Robotics trường Tiểu học Lê Quý Đôn mở đăng ký khóa học mới dành cho học sinh lớp 3-5.',
+      excerpt: 'CLB Robotics trường Tiểu học Vân Cốc mở đăng ký khóa học mới dành cho học sinh lớp 3-5.',
       content: `<h2>CLB Robotics mở đăng ký khóa mới</h2>
-<p>Câu lạc bộ Robotics của trường Tiểu học Lê Quý Đôn thông báo chiêu sinh khóa học mới bắt đầu từ tháng 10/2025.</p>
+<p>Câu lạc bộ Robotics của trường Tiểu học Vân Cốc thông báo chiêu sinh khóa học mới bắt đầu từ tháng 10/2025.</p>
 <h3>Thông tin khóa học</h3>
 <ul>
 <li><strong>Đối tượng:</strong> Học sinh lớp 3, 4, 5</li>
@@ -158,9 +158,9 @@ async function seedArticles(adminId: string) {
       slug: 'thong-bao-tuyen-sinh-lop-1-2026-2027',
       categorySlug: 'tuyen-sinh',
       status: ArticleStatus.PUBLISHED,
-      excerpt: 'Trường Tiểu học Lê Quý Đôn thông báo kế hoạch tuyển sinh lớp 1 năm học 2026-2027 với chỉ tiêu 180 học sinh.',
+      excerpt: 'Trường Tiểu học Vân Cốc thông báo kế hoạch tuyển sinh lớp 1 năm học 2026-2027 với chỉ tiêu 180 học sinh.',
       content: `<h2>Tuyển sinh lớp 1 năm học 2026-2027</h2>
-<p>Trường Tiểu học Lê Quý Đôn trân trọng thông báo kế hoạch tuyển sinh lớp 1 cho năm học 2026-2027.</p>
+<p>Trường Tiểu học Vân Cốc trân trọng thông báo kế hoạch tuyển sinh lớp 1 cho năm học 2026-2027.</p>
 <h3>Chỉ tiêu tuyển sinh</h3>
 <p>Nhà trường dự kiến tuyển sinh <strong>180 học sinh</strong>, chia thành 6 lớp.</p>
 <h3>Đối tượng tuyển sinh</h3>
@@ -216,7 +216,7 @@ async function seedArticles(adminId: string) {
       status: ArticleStatus.PUBLISHED,
       excerpt: 'Nhà trường tổ chức hội thảo chuyên đề về phương pháp giáo dục STEM dành cho toàn thể giáo viên.',
       content: `<h2>Hội thảo phương pháp giáo dục STEM</h2>
-<p>Ngày 08/10/2025, trường Tiểu học Lê Quý Đôn đã tổ chức hội thảo chuyên đề "Ứng dụng phương pháp giáo dục STEM trong giảng dạy bậc tiểu học" với sự tham gia của toàn thể giáo viên nhà trường.</p>
+<p>Ngày 08/10/2025, trường Tiểu học Vân Cốc đã tổ chức hội thảo chuyên đề "Ứng dụng phương pháp giáo dục STEM trong giảng dạy bậc tiểu học" với sự tham gia của toàn thể giáo viên nhà trường.</p>
 <p>Hội thảo được chủ trì bởi TS. Lê Văn Thành, chuyên gia giáo dục STEM từ Đại học Sư phạm Hà Nội. Các nội dung chính bao gồm:</p>
 <ul>
 <li>Tổng quan về giáo dục STEM và xu hướng thế giới</li>
@@ -233,7 +233,7 @@ async function seedArticles(adminId: string) {
       status: ArticleStatus.DRAFT,
       excerpt: 'Nhà trường dự kiến tổ chức Ngày hội Gia đình vào cuối tháng 11/2025 với nhiều hoạt động hấp dẫn.',
       content: `<h2>Kế hoạch Ngày hội Gia đình 2025</h2>
-<p>Trường Tiểu học Lê Quý Đôn dự kiến tổ chức Ngày hội Gia đình năm 2025 vào ngày 30/11/2025 (Chủ nhật) tại sân trường.</p>
+<p>Trường Tiểu học Vân Cốc dự kiến tổ chức Ngày hội Gia đình năm 2025 vào ngày 30/11/2025 (Chủ nhật) tại sân trường.</p>
 <h3>Chương trình dự kiến</h3>
 <ul>
 <li>8h00: Khai mạc, văn nghệ chào mừng</li>
@@ -250,7 +250,7 @@ async function seedArticles(adminId: string) {
       status: ArticleStatus.DRAFT,
       excerpt: 'Thông báo lịch nghỉ Tết Nguyên đán 2026 và kế hoạch ôn tập cuối học kỳ I.',
       content: `<h2>Lịch nghỉ Tết Nguyên đán 2026</h2>
-<p>Căn cứ theo lịch nghỉ Tết của Chính phủ, trường Tiểu học Lê Quý Đôn thông báo lịch nghỉ Tết Nguyên đán Bính Ngọ 2026 như sau:</p>
+<p>Căn cứ theo lịch nghỉ Tết của Chính phủ, trường Tiểu học Vân Cốc thông báo lịch nghỉ Tết Nguyên đán Bính Ngọ 2026 như sau:</p>
 <h3>Thời gian nghỉ</h3>
 <p>Từ ngày <strong>16/02/2026</strong> (Thứ Hai, 28 tháng Chạp) đến hết ngày <strong>22/02/2026</strong> (Chủ nhật, mùng 6 Tết).</p>
 <p>Học sinh đi học lại vào ngày <strong>23/02/2026</strong> (Thứ Hai, mùng 7 Tết).</p>
@@ -265,7 +265,7 @@ async function seedArticles(adminId: string) {
       status: ArticleStatus.PUBLISHED,
       excerpt: 'Học sinh khối lớp 5 có chuyến tham quan học tập tại Bảo tàng Lịch sử Quốc gia.',
       content: `<h2>Tham quan Bảo tàng Lịch sử Quốc gia</h2>
-<p>Ngày 20/10/2025, toàn bộ học sinh khối lớp 5 trường Tiểu học Lê Quý Đôn đã có chuyến tham quan học tập tại Bảo tàng Lịch sử Quốc gia, số 1 Tràng Tiền, Hoàn Kiếm, Hà Nội.</p>
+<p>Ngày 20/10/2025, toàn bộ học sinh khối lớp 5 trường Tiểu học Vân Cốc đã có chuyến tham quan học tập tại Bảo tàng Lịch sử Quốc gia, số 1 Tràng Tiền, Hoàn Kiếm, Hà Nội.</p>
 <p>Tại đây, các em được nghe thuyết minh về các giai đoạn lịch sử của dân tộc Việt Nam, từ thời kỳ đồ đá đến thời đại Hồ Chí Minh. Các em đặc biệt thích thú khi được xem các hiện vật từ thời Văn Lang — Âu Lạc và trống đồng Đông Sơn.</p>
 <p>"Chuyến đi rất bổ ích, giúp con hiểu thêm về lịch sử nước mình. Con muốn đi thêm nhiều bảo tàng nữa!" — em Hoàng Thị Mai, lớp 5A3.</p>`,
     },
@@ -313,10 +313,10 @@ const pagesData = [
   {
     title: 'Tổng quan về trường',
     slug: 'tong-quan',
-    seo_title: 'Tổng quan — Trường Tiểu học Lê Quý Đôn',
-    seo_description: 'Giới thiệu tổng quan về trường Tiểu học Lê Quý Đôn — lịch sử hình thành, sứ mệnh và tầm nhìn.',
-    content: `<h2>Giới thiệu trường Tiểu học Lê Quý Đôn</h2>
-<p>Trường Tiểu học Lê Quý Đôn là một trong những ngôi trường có bề dày truyền thống tại Hà Nội, mang tên nhà bác học lỗi lạc Lê Quý Đôn (1726-1784) — biểu tượng cho tinh thần hiếu học của dân tộc Việt Nam.</p>
+    seo_title: 'Tổng quan — Trường Tiểu học Vân Cốc',
+    seo_description: 'Giới thiệu tổng quan về trường Tiểu học Vân Cốc — lịch sử hình thành, sứ mệnh và tầm nhìn.',
+    content: `<h2>Giới thiệu trường Tiểu học Vân Cốc</h2>
+<p>Trường Tiểu học Vân Cốc là một trong những ngôi trường có bề dày truyền thống tại Hà Nội, mang tên nhà bác học lỗi lạc Vân Cốc (1726-1784) — biểu tượng cho tinh thần hiếu học của dân tộc Việt Nam.</p>
 <h3>Sứ mệnh</h3>
 <p>Xây dựng môi trường giáo dục an toàn, thân thiện, sáng tạo, giúp mỗi học sinh phát triển toàn diện về trí tuệ, thể chất và nhân cách.</p>
 <h3>Tầm nhìn</h3>
@@ -332,10 +332,10 @@ const pagesData = [
   {
     title: 'Chương trình học',
     slug: 'chuong-trinh-hoc',
-    seo_title: 'Chương trình học — Trường Tiểu học Lê Quý Đôn',
-    seo_description: 'Chương trình giảng dạy tại trường Tiểu học Lê Quý Đôn: chương trình chính khóa, ngoại ngữ, và các hoạt động bổ trợ.',
+    seo_title: 'Chương trình học — Trường Tiểu học Vân Cốc',
+    seo_description: 'Chương trình giảng dạy tại trường Tiểu học Vân Cốc: chương trình chính khóa, ngoại ngữ, và các hoạt động bổ trợ.',
     content: `<h2>Chương trình giảng dạy</h2>
-<p>Trường Tiểu học Lê Quý Đôn triển khai chương trình giáo dục phổ thông 2018 của Bộ Giáo dục và Đào tạo, kết hợp với các chương trình bổ trợ nhằm phát triển toàn diện năng lực học sinh.</p>
+<p>Trường Tiểu học Vân Cốc triển khai chương trình giáo dục phổ thông 2018 của Bộ Giáo dục và Đào tạo, kết hợp với các chương trình bổ trợ nhằm phát triển toàn diện năng lực học sinh.</p>
 <h3>Chương trình chính khóa</h3>
 <ul>
 <li>Toán học</li>
@@ -359,10 +359,10 @@ const pagesData = [
   {
     title: 'Cơ sở vật chất',
     slug: 'co-so-vat-chat',
-    seo_title: 'Cơ sở vật chất — Trường Tiểu học Lê Quý Đôn',
-    seo_description: 'Hệ thống cơ sở vật chất hiện đại tại trường Tiểu học Lê Quý Đôn: phòng học, phòng chức năng, sân thể thao.',
+    seo_title: 'Cơ sở vật chất — Trường Tiểu học Vân Cốc',
+    seo_description: 'Hệ thống cơ sở vật chất hiện đại tại trường Tiểu học Vân Cốc: phòng học, phòng chức năng, sân thể thao.',
     content: `<h2>Cơ sở vật chất</h2>
-<p>Trường Tiểu học Lê Quý Đôn được đầu tư xây dựng trên diện tích hơn 8.000 m² với hệ thống cơ sở vật chất hiện đại, đáp ứng tiêu chuẩn trường chuẩn quốc gia.</p>
+<p>Trường Tiểu học Vân Cốc được đầu tư xây dựng trên diện tích hơn 8.000 m² với hệ thống cơ sở vật chất hiện đại, đáp ứng tiêu chuẩn trường chuẩn quốc gia.</p>
 <h3>Hệ thống phòng học</h3>
 <ul>
 <li>30 phòng học tiêu chuẩn, trang bị máy chiếu và bảng tương tác</li>
@@ -389,10 +389,10 @@ const pagesData = [
   {
     title: 'Đội ngũ giáo viên',
     slug: 'doi-ngu-giao-vien',
-    seo_title: 'Đội ngũ giáo viên — Trường Tiểu học Lê Quý Đôn',
-    seo_description: 'Đội ngũ giáo viên trường Tiểu học Lê Quý Đôn — giàu kinh nghiệm, tận tâm và chuyên nghiệp.',
+    seo_title: 'Đội ngũ giáo viên — Trường Tiểu học Vân Cốc',
+    seo_description: 'Đội ngũ giáo viên trường Tiểu học Vân Cốc — giàu kinh nghiệm, tận tâm và chuyên nghiệp.',
     content: `<h2>Đội ngũ giáo viên</h2>
-<p>Trường Tiểu học Lê Quý Đôn tự hào sở hữu đội ngũ giáo viên giàu kinh nghiệm, tận tâm với nghề và luôn không ngừng học hỏi, đổi mới.</p>
+<p>Trường Tiểu học Vân Cốc tự hào sở hữu đội ngũ giáo viên giàu kinh nghiệm, tận tâm với nghề và luôn không ngừng học hỏi, đổi mới.</p>
 <h3>Thống kê đội ngũ</h3>
 <ul>
 <li><strong>Tổng số giáo viên:</strong> 65 người</li>
@@ -413,15 +413,15 @@ const pagesData = [
   {
     title: 'Liên hệ',
     slug: 'lien-he',
-    seo_title: 'Liên hệ — Trường Tiểu học Lê Quý Đôn',
-    seo_description: 'Thông tin liên hệ trường Tiểu học Lê Quý Đôn Hà Nội.',
+    seo_title: 'Liên hệ — Trường Tiểu học Vân Cốc',
+    seo_description: 'Thông tin liên hệ trường Tiểu học Vân Cốc Hà Nội.',
     content: `<h2>Thông tin liên hệ</h2>
-<p><strong>Trường Tiểu học Lê Quý Đôn</strong></p>
+<p><strong>Trường Tiểu học Vân Cốc</strong></p>
 <ul>
-<li><strong>Địa chỉ:</strong> Phố Lê Quý Đôn, Phường Trung Phụng, Quận Đống Đa, Hà Nội</li>
+<li><strong>Địa chỉ:</strong> Phố Vân Cốc, Phường Trung Phụng, Quận Đống Đa, Hà Nội</li>
 <li><strong>Điện thoại:</strong> 024-3456-7890</li>
-<li><strong>Email:</strong> info@lequydonhanoi.edu.vn</li>
-<li><strong>Website:</strong> https://lequydonhanoi.edu.vn</li>
+<li><strong>Email:</strong> info@vancoc.edu.vn</li>
+<li><strong>Website:</strong> https://vancoc.edu.vn</li>
 </ul>
 <h3>Giờ làm việc</h3>
 <p>Thứ Hai đến Thứ Sáu: 7h00 — 17h00</p>
@@ -474,7 +474,7 @@ async function seedEvents(adminId: string) {
       description: 'Ngày hội Gia đình thường niên với các trò chơi vận động, hội chợ ẩm thực và biểu diễn văn nghệ. Dành cho toàn thể học sinh và phụ huynh.',
       start_date: new Date('2025-11-30T08:00:00'),
       end_date: new Date('2025-11-30T12:00:00'),
-      location: 'Sân trường Tiểu học Lê Quý Đôn',
+      location: 'Sân trường Tiểu học Vân Cốc',
       status: EventStatus.UPCOMING,
     },
     {
@@ -513,7 +513,7 @@ async function seedEvents(adminId: string) {
         id: generateUlid(),
         title: ev.title,
         description: ev.description,
-        image_url: null,
+        image_url: '/images/design/event-3-san-sang.png',
         start_date: ev.start_date,
         end_date: ev.end_date,
         location: ev.location,
@@ -534,18 +534,18 @@ async function seedEvents(adminId: string) {
 // ═══════════════════════════════════════════════════
 
 const settingsData = [
-  { key: 'site_name', value: 'Trường Tiểu học Lê Quý Đôn', group: 'general' },
-  { key: 'site_description', value: 'Website chính thức của Trường Tiểu học Lê Quý Đôn — Đống Đa, Hà Nội', group: 'general' },
+  { key: 'site_name', value: 'Trường Tiểu học Vân Cốc', group: 'general' },
+  { key: 'site_description', value: 'Website chính thức của Trường Tiểu học Vân Cốc — Đống Đa, Hà Nội', group: 'general' },
   { key: 'site_logo', value: '/images/logo.png', group: 'general' },
-  { key: 'contact_email', value: 'info@lequydonhanoi.edu.vn', group: 'contact' },
+  { key: 'contact_email', value: 'info@vancoc.edu.vn', group: 'contact' },
   { key: 'contact_phone', value: '024-3456-7890', group: 'contact' },
-  { key: 'contact_address', value: 'Phố Lê Quý Đôn, Phường Trung Phụng, Quận Đống Đa, Hà Nội', group: 'contact' },
+  { key: 'contact_address', value: 'Phố Vân Cốc, Phường Trung Phụng, Quận Đống Đa, Hà Nội', group: 'contact' },
   { key: 'contact_hotline', value: '0912-345-678', group: 'contact' },
   { key: 'facebook_url', value: 'https://facebook.com/tieuhocdequydon', group: 'social' },
   { key: 'youtube_url', value: 'https://youtube.com/@tieuhocdequydon', group: 'social' },
   { key: 'zalo_phone', value: '0912345678', group: 'social' },
-  { key: 'seo_default_title', value: 'Trường Tiểu học Lê Quý Đôn — Hà Nội', group: 'seo' },
-  { key: 'seo_default_description', value: 'Trường Tiểu học Lê Quý Đôn — Nơi ươm mầm tương lai, phát triển toàn diện cho học sinh tiểu học tại Hà Nội.', group: 'seo' },
+  { key: 'seo_default_title', value: 'Trường Tiểu học Vân Cốc — Hà Nội', group: 'seo' },
+  { key: 'seo_default_description', value: 'Trường Tiểu học Vân Cốc — Nơi ươm mầm tương lai, phát triển toàn diện cho học sinh tiểu học tại Hà Nội.', group: 'seo' },
 ];
 
 async function seedSettings() {

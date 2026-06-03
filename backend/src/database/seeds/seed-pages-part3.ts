@@ -7,7 +7,7 @@ import { Page, PageStatus } from '../../modules/pages/entities/page.entity';
 import { generateUlid } from '../../common/utils/ulid';
 
 /**
- * Seed part 3 — 8 trang noi dung (pages 18–25) cho website truong tieu hoc Le Quy Don.
+ * Seed part 3 — 8 trang noi dung (pages 18–25) cho website truong tieu hoc Van Coc.
  * Idempotent — kiem tra slug truoc khi insert.
  */
 
@@ -39,27 +39,27 @@ async function seed() {
       title: 'Liên hệ',
       slug: 'lien-he',
       status: PageStatus.PUBLISHED,
-      seo_title: 'Liên hệ — Trường Tiểu học Lê Quý Đôn Hà Nội',
+      seo_title: 'Liên hệ — Trường Tiểu học Vân Cốc',
       seo_description:
-        'Thông tin liên hệ trường Tiểu học Lê Quý Đôn: địa chỉ, điện thoại, email, ban giám hiệu và giờ làm việc.',
+        'Thông tin liên hệ trường Tiểu học Vân Cốc: địa chỉ, điện thoại, email, ban giám hiệu và giờ làm việc.',
       content: `<section class="page-content">
-<h2>Thông tin liên hệ trường Tiểu học Lê Quý Đôn</h2>
-<p>Trường Tiểu học Lê Quý Đôn tọa lạc tại trung tâm quận Đống Đa, Hà Nội — khu vực thuận tiện giao thông, dễ dàng tiếp cận từ nhiều hướng của thành phố. Nhà trường luôn sẵn sàng đón tiếp phụ huynh, học sinh và mọi cá nhân, tổ chức có nhu cầu trao đổi, hợp tác. Chúng tôi cam kết phản hồi mọi yêu cầu trong vòng 24 giờ làm việc.</p>
+<h2>Thông tin liên hệ trường Tiểu học Vân Cốc</h2>
+<p>Trường Tiểu học Vân Cốc tọa lạc tại trung tâm quận Đống Đa, Hà Nội — khu vực thuận tiện giao thông, dễ dàng tiếp cận từ nhiều hướng của thành phố. Nhà trường luôn sẵn sàng đón tiếp phụ huynh, học sinh và mọi cá nhân, tổ chức có nhu cầu trao đổi, hợp tác. Chúng tôi cam kết phản hồi mọi yêu cầu trong vòng 24 giờ làm việc.</p>
 
 <h3>Địa chỉ và liên lạc</h3>
-<p>Địa chỉ: <strong>Phố Lê Quý Đôn, phường Trung Phụng, quận Đống Đa, Hà Nội</strong>. Trường nằm cách Hồ Gươm khoảng 3 km về phía Tây Nam, gần ngã tư Xã Đàn — một vị trí trung tâm, thuận lợi cho học sinh từ các phường Trung Phụng, Trung Tự, Phương Liên, Kim Liên và các khu vực lân cận.</p>
+<p>Địa chỉ: <strong>Phố Vân Cốc, phường Trung Phụng, quận Đống Đa, Hà Nội</strong>. Trường nằm cách Hồ Gươm khoảng 3 km về phía Tây Nam, gần ngã tư Xã Đàn — một vị trí trung tâm, thuận lợi cho học sinh từ các phường Trung Phụng, Trung Tự, Phương Liên, Kim Liên và các khu vực lân cận.</p>
 <ul>
   <li><strong>Điện thoại:</strong> 024-3456-7890</li>
   <li><strong>Fax:</strong> 024-3456-7891</li>
-  <li><strong>Email chung:</strong> info@lequydonhanoi.edu.vn</li>
-  <li><strong>Email tuyển sinh:</strong> tuyensinh@lequydonhanoi.edu.vn</li>
-  <li><strong>Email nhân sự:</strong> hr@lequydonhanoi.edu.vn</li>
+  <li><strong>Email chung:</strong> info@vancoc.edu.vn</li>
+  <li><strong>Email tuyển sinh:</strong> tuyensinh@vancoc.edu.vn</li>
+  <li><strong>Email nhân sự:</strong> hr@vancoc.edu.vn</li>
 </ul>
 
 <h3>Ban giám hiệu</h3>
 <p>Ban giám hiệu nhà trường là những nhà quản lý giáo dục giàu kinh nghiệm, tận tâm với sự nghiệp giáo dục và phát triển toàn diện cho học sinh.</p>
 <ul>
-  <li><strong>Hiệu trưởng:</strong> Cô Nguyễn Thị Minh Hằng — Thạc sĩ Quản lý giáo dục, hơn 20 năm kinh nghiệm trong ngành. Điện thoại: 024-3456-7892. Email: hieutruong@lequydonhanoi.edu.vn</li>
+  <li><strong>Hiệu trưởng:</strong> Cô Nguyễn Thị Minh Hằng — Thạc sĩ Quản lý giáo dục, hơn 20 năm kinh nghiệm trong ngành. Điện thoại: 024-3456-7892. Email: hieutruong@vancoc.edu.vn</li>
   <li><strong>Phó Hiệu trưởng (Chuyên môn):</strong> Thầy Trần Văn Đức — Thạc sĩ Giáo dục Tiểu học, phụ trách chương trình học và đội ngũ giáo viên. Điện thoại: 024-3456-7893</li>
   <li><strong>Phó Hiệu trưởng (Cơ sở vật chất):</strong> Cô Lê Thị Thu Hương — phụ trách cơ sở hạ tầng, thiết bị và hoạt động hành chính. Điện thoại: 024-3456-7894</li>
 </ul>
@@ -73,13 +73,13 @@ async function seed() {
 </ul>
 
 <h3>Hướng dẫn đến trường</h3>
-<p>Có nhiều cách để đến trường Tiểu học Lê Quý Đôn. Phụ huynh và học sinh có thể lựa chọn phương tiện phù hợp nhất:</p>
+<p>Có nhiều cách để đến trường Tiểu học Vân Cốc. Phụ huynh và học sinh có thể lựa chọn phương tiện phù hợp nhất:</p>
 <ul>
   <li><strong>Xe buýt:</strong> Tuyến 32 (Kim Mã — Giáp Bát), dừng tại Xã Đàn; Tuyến 38 (Giáp Bát — Nhổn), dừng tại Lê Duẩn — đi bộ 5 phút; Tuyến 48 (Trần Khánh Dư — Hà Đông), dừng tại Khâm Thiên.</li>
-  <li><strong>Xe cá nhân:</strong> Từ trung tâm (Hồ Gươm), đi theo đường Đinh Tiên Hoàng — Trần Nhân Tông — Xã Đàn — rẽ vào phố Lê Quý Đôn. Có bãi đỗ xe ngay trước cổng trường.</li>
-  <li><strong>Xe đưa đón của trường:</strong> Nhà trường tổ chức tuyến xe đưa đón theo các tuyến đường chính. Phụ huynh đăng ký tại phòng hành chính hoặc qua email tuyensinh@lequydonhanoi.edu.vn.</li>
+  <li><strong>Xe cá nhân:</strong> Từ trung tâm (Hồ Gươm), đi theo đường Đinh Tiên Hoàng — Trần Nhân Tông — Xã Đàn — rẽ vào phố Vân Cốc. Có bãi đỗ xe ngay trước cổng trường.</li>
+  <li><strong>Xe đưa đón của trường:</strong> Nhà trường tổ chức tuyến xe đưa đón theo các tuyến đường chính. Phụ huynh đăng ký tại phòng hành chính hoặc qua email tuyensinh@vancoc.edu.vn.</li>
 </ul>
-<p>Trường hiện chưa có bản đồ nhúng trực tiếp trên trang này. Phụ huynh có thể tìm kiếm <em>"Trường Tiểu học Lê Quý Đôn Đống Đa"</em> trên Google Maps hoặc liên hệ trường để được hỗ trợ thêm.</p>
+<p>Trường hiện chưa có bản đồ nhúng trực tiếp trên trang này. Phụ huynh có thể tìm kiếm <em>"Trường Tiểu học Vân Cốc Đống Đa"</em> trên Google Maps hoặc liên hệ trường để được hỗ trợ thêm.</p>
 </section>`,
     },
 
@@ -90,12 +90,12 @@ async function seed() {
       title: 'Chính sách bảo mật',
       slug: 'chinh-sach-bao-mat',
       status: PageStatus.HIDDEN,
-      seo_title: 'Chính sách bảo mật — Trường Tiểu học Lê Quý Đôn',
+      seo_title: 'Chính sách bảo mật — Trường Tiểu học Vân Cốc',
       seo_description:
-        'Chính sách bảo mật thông tin cá nhân của trường Tiểu học Lê Quý Đôn — cam kết bảo vệ dữ liệu phụ huynh và học sinh.',
+        'Chính sách bảo mật thông tin cá nhân của trường Tiểu học Vân Cốc — cam kết bảo vệ dữ liệu phụ huynh và học sinh.',
       content: `<section class="page-content">
 <h2>Chính sách bảo mật thông tin cá nhân</h2>
-<p>Trường Tiểu học Lê Quý Đôn (sau đây gọi là "Nhà trường") tôn trọng và cam kết bảo vệ quyền riêng tư của phụ huynh, học sinh và các cá nhân có giao dịch với nhà trường. Chính sách bảo mật này mô tả cách chúng tôi thu thập, sử dụng, lưu trữ và bảo vệ thông tin cá nhân của bạn khi sử dụng website <strong>lequydonhanoi.edu.vn</strong> và các dịch vụ liên quan. Bằng việc sử dụng website, bạn đồng ý với các điều khoản được nêu trong chính sách này.</p>
+<p>Trường Tiểu học Vân Cốc (sau đây gọi là "Nhà trường") tôn trọng và cam kết bảo vệ quyền riêng tư của phụ huynh, học sinh và các cá nhân có giao dịch với nhà trường. Chính sách bảo mật này mô tả cách chúng tôi thu thập, sử dụng, lưu trữ và bảo vệ thông tin cá nhân của bạn khi sử dụng website <strong>vancoc.edu.vn</strong> và các dịch vụ liên quan. Bằng việc sử dụng website, bạn đồng ý với các điều khoản được nêu trong chính sách này.</p>
 
 <h3>Thu thập thông tin cá nhân</h3>
 <p>Nhà trường chỉ thu thập những thông tin cá nhân thực sự cần thiết cho mục đích giáo dục và quản lý. Các loại thông tin chúng tôi có thể thu thập bao gồm: <strong>họ và tên</strong> (phụ huynh và học sinh), <strong>địa chỉ email</strong>, <strong>số điện thoại liên hệ</strong>, thông tin về học sinh (ngày sinh, lớp học, kết quả học tập), địa chỉ cư trú và các thông tin cần thiết cho thủ tục tuyển sinh. Thông tin được thu thập khi phụ huynh điền vào biểu mẫu đăng ký, gửi email liên hệ, hoặc đăng ký tài khoản trên hệ thống quản lý học tập của trường.</p>
@@ -107,10 +107,10 @@ async function seed() {
 <p>Nhà trường cam kết <strong>không bán, không cho thuê, không chia sẻ thông tin cá nhân</strong> của phụ huynh và học sinh với bất kỳ bên thứ ba nào vì mục đích thương mại. Thông tin chỉ được chia sẻ trong các trường hợp: (a) có sự đồng ý rõ ràng của phụ huynh/người giám hộ; (b) theo yêu cầu của cơ quan nhà nước có thẩm quyền theo quy định pháp luật; (c) với các đối tác giáo dục được ủy quyền (như tổ chức thi cử Cambridge, Bộ Giáo dục) trong phạm vi cần thiết cho các chương trình học tập; (d) với đội ngũ cán bộ, giáo viên nhà trường theo phân quyền chặt chẽ, chỉ truy cập thông tin liên quan đến nhiệm vụ của họ.</p>
 
 <h3>Bảo mật thông tin</h3>
-<p>Nhà trường áp dụng các biện pháp kỹ thuật và tổ chức phù hợp để bảo vệ thông tin cá nhân. Website sử dụng giao thức <strong>HTTPS/SSL</strong> (mã hóa 256-bit) để mã hóa toàn bộ dữ liệu truyền tải. Hệ thống máy chủ được đặt tại trung tâm dữ liệu đạt chuẩn ISO 27001, được sao lưu định kỳ và bảo vệ bởi tường lửa nhiều lớp. Quyền truy cập vào dữ liệu cá nhân được kiểm soát nghiêm ngặt theo nguyên tắc tối thiểu cần thiết (least privilege). Tuy nhiên, không có hệ thống bảo mật nào hoàn toàn tuyệt đối — nếu phát hiện bất kỳ dấu hiệu vi phạm bảo mật nào, phụ huynh vui lòng thông báo ngay cho nhà trường qua email: <strong>info@lequydonhanoi.edu.vn</strong>.</p>
+<p>Nhà trường áp dụng các biện pháp kỹ thuật và tổ chức phù hợp để bảo vệ thông tin cá nhân. Website sử dụng giao thức <strong>HTTPS/SSL</strong> (mã hóa 256-bit) để mã hóa toàn bộ dữ liệu truyền tải. Hệ thống máy chủ được đặt tại trung tâm dữ liệu đạt chuẩn ISO 27001, được sao lưu định kỳ và bảo vệ bởi tường lửa nhiều lớp. Quyền truy cập vào dữ liệu cá nhân được kiểm soát nghiêm ngặt theo nguyên tắc tối thiểu cần thiết (least privilege). Tuy nhiên, không có hệ thống bảo mật nào hoàn toàn tuyệt đối — nếu phát hiện bất kỳ dấu hiệu vi phạm bảo mật nào, phụ huynh vui lòng thông báo ngay cho nhà trường qua email: <strong>info@vancoc.edu.vn</strong>.</p>
 
 <h3>Quyền của chủ thể dữ liệu và chính sách Cookie</h3>
-<p>Phụ huynh và học sinh (từ 15 tuổi trở lên) có các quyền sau đối với dữ liệu cá nhân của mình theo Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân: <strong>quyền truy cập</strong> để xem toàn bộ thông tin đang được lưu trữ; <strong>quyền chỉnh sửa</strong> thông tin không chính xác; <strong>quyền xóa</strong> dữ liệu (trong phạm vi không ảnh hưởng đến nghĩa vụ pháp lý); <strong>quyền phản đối</strong> việc xử lý dữ liệu cho một số mục đích nhất định. Để thực hiện các quyền này, vui lòng liên hệ Người phụ trách bảo vệ dữ liệu (DPO) qua email: <strong>info@lequydonhanoi.edu.vn</strong> hoặc gọi 024-3456-7890. Về chính sách Cookie: website sử dụng cookie kỹ thuật (bắt buộc để website hoạt động) và cookie phân tích (Google Analytics — ẩn danh hóa IP). Phụ huynh có thể tắt cookie phân tích trong phần cài đặt trình duyệt mà không ảnh hưởng đến trải nghiệm sử dụng cơ bản. Chính sách bảo mật này có thể được cập nhật định kỳ — mọi thay đổi quan trọng sẽ được thông báo qua email hoặc đăng trên website ít nhất 30 ngày trước khi có hiệu lực.</p>
+<p>Phụ huynh và học sinh (từ 15 tuổi trở lên) có các quyền sau đối với dữ liệu cá nhân của mình theo Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân: <strong>quyền truy cập</strong> để xem toàn bộ thông tin đang được lưu trữ; <strong>quyền chỉnh sửa</strong> thông tin không chính xác; <strong>quyền xóa</strong> dữ liệu (trong phạm vi không ảnh hưởng đến nghĩa vụ pháp lý); <strong>quyền phản đối</strong> việc xử lý dữ liệu cho một số mục đích nhất định. Để thực hiện các quyền này, vui lòng liên hệ Người phụ trách bảo vệ dữ liệu (DPO) qua email: <strong>info@vancoc.edu.vn</strong> hoặc gọi 024-3456-7890. Về chính sách Cookie: website sử dụng cookie kỹ thuật (bắt buộc để website hoạt động) và cookie phân tích (Google Analytics — ẩn danh hóa IP). Phụ huynh có thể tắt cookie phân tích trong phần cài đặt trình duyệt mà không ảnh hưởng đến trải nghiệm sử dụng cơ bản. Chính sách bảo mật này có thể được cập nhật định kỳ — mọi thay đổi quan trọng sẽ được thông báo qua email hoặc đăng trên website ít nhất 30 ngày trước khi có hiệu lực.</p>
 </section>`,
     },
 
@@ -121,15 +121,15 @@ async function seed() {
       title: 'Điều khoản sử dụng',
       slug: 'dieu-khoan-su-dung',
       status: PageStatus.PUBLISHED,
-      seo_title: 'Điều khoản sử dụng — Trường Tiểu học Lê Quý Đôn',
+      seo_title: 'Điều khoản sử dụng — Trường Tiểu học Vân Cốc',
       seo_description:
-        'Điều khoản và điều kiện sử dụng website trường Tiểu học Lê Quý Đôn Hà Nội.',
+        'Điều khoản và điều kiện sử dụng website trường Tiểu học Vân Cốc Hà Nội.',
       content: `<section class="page-content">
 <h2>Điều khoản sử dụng website</h2>
-<p>Chào mừng bạn đến với website chính thức của trường Tiểu học Lê Quý Đôn (<strong>lequydonhanoi.edu.vn</strong>). Bằng việc truy cập và sử dụng website này, bạn đồng ý tuân thủ các điều khoản và điều kiện được quy định dưới đây. Nếu bạn không đồng ý với bất kỳ điều khoản nào, vui lòng ngừng sử dụng website. Nhà trường có quyền cập nhật, sửa đổi các điều khoản này tại bất kỳ thời điểm nào mà không cần thông báo trước, trừ những thay đổi có ảnh hưởng quan trọng đến quyền lợi người dùng.</p>
+<p>Chào mừng bạn đến với website chính thức của trường Tiểu học Vân Cốc (<strong>vancoc.edu.vn</strong>). Bằng việc truy cập và sử dụng website này, bạn đồng ý tuân thủ các điều khoản và điều kiện được quy định dưới đây. Nếu bạn không đồng ý với bất kỳ điều khoản nào, vui lòng ngừng sử dụng website. Nhà trường có quyền cập nhật, sửa đổi các điều khoản này tại bất kỳ thời điểm nào mà không cần thông báo trước, trừ những thay đổi có ảnh hưởng quan trọng đến quyền lợi người dùng.</p>
 
 <h3>Quyền sở hữu nội dung</h3>
-<p>Toàn bộ nội dung trên website — bao gồm nhưng không giới hạn ở văn bản, hình ảnh, logo, biểu tượng, đồ họa, video, âm thanh, tài liệu tải xuống và thiết kế giao diện — là <strong>tài sản thuộc quyền sở hữu của trường Tiểu học Lê Quý Đôn</strong> hoặc đã được cấp phép sử dụng hợp lệ. Các nội dung này được bảo hộ bởi Luật Sở hữu trí tuệ Việt Nam và các quy định pháp luật liên quan. Nghiêm cấm sao chép, phân phối, chỉnh sửa, tái xuất bản, truyền tải hoặc sử dụng bất kỳ phần nào của website cho mục đích thương mại mà không có sự cho phép bằng văn bản từ nhà trường. Việc sử dụng hợp lệ cho mục đích cá nhân, phi thương mại và học thuật được khuyến khích, với điều kiện ghi rõ nguồn và không làm thay đổi ý nghĩa nội dung gốc.</p>
+<p>Toàn bộ nội dung trên website — bao gồm nhưng không giới hạn ở văn bản, hình ảnh, logo, biểu tượng, đồ họa, video, âm thanh, tài liệu tải xuống và thiết kế giao diện — là <strong>tài sản thuộc quyền sở hữu của trường Tiểu học Vân Cốc</strong> hoặc đã được cấp phép sử dụng hợp lệ. Các nội dung này được bảo hộ bởi Luật Sở hữu trí tuệ Việt Nam và các quy định pháp luật liên quan. Nghiêm cấm sao chép, phân phối, chỉnh sửa, tái xuất bản, truyền tải hoặc sử dụng bất kỳ phần nào của website cho mục đích thương mại mà không có sự cho phép bằng văn bản từ nhà trường. Việc sử dụng hợp lệ cho mục đích cá nhân, phi thương mại và học thuật được khuyến khích, với điều kiện ghi rõ nguồn và không làm thay đổi ý nghĩa nội dung gốc.</p>
 
 <h3>Quy định sử dụng website</h3>
 <p>Người dùng có nghĩa vụ sử dụng website một cách hợp pháp, trung thực và không gây hại cho nhà trường, cộng đồng người dùng khác hoặc bất kỳ bên thứ ba nào. Nghiêm cấm các hành vi sau: đăng tải nội dung vi phạm pháp luật, thuần phong mỹ tục hoặc gây xúc phạm danh dự nhà trường và đội ngũ giáo viên; cố tình tấn công, làm gián đoạn hoặc truy cập trái phép vào hệ thống máy chủ; thu thập thông tin cá nhân của người dùng khác mà không có sự đồng ý; phát tán phần mềm độc hại, virus hoặc bất kỳ mã độc hại nào; sử dụng website để spam hoặc gửi nội dung thương mại không được yêu cầu; mạo danh cán bộ, giáo viên, nhân viên nhà trường.</p>
@@ -138,10 +138,10 @@ async function seed() {
 <p>Website được cung cấp trên cơ sở <em>"nguyên trạng"</em> (as-is) và <em>"theo khả năng có thể"</em> (as-available). Nhà trường nỗ lực duy trì website hoạt động ổn định và nội dung chính xác, nhưng không đảm bảo website hoạt động liên tục, không có lỗi kỹ thuật. Nhà trường <strong>không chịu trách nhiệm</strong> về các thiệt hại trực tiếp hoặc gián tiếp phát sinh từ: việc không thể truy cập website do sự cố kỹ thuật; quyết định của người dùng dựa trên thông tin từ website; các liên kết đến website bên ngoài; mất mát dữ liệu do yếu tố bất khả kháng. Trong mọi trường hợp, trách nhiệm tối đa của nhà trường không vượt quá giá trị dịch vụ trực tiếp liên quan.</p>
 
 <h3>Liên kết đến website bên ngoài</h3>
-<p>Website có thể chứa các liên kết đến website của bên thứ ba — bao gồm cơ quan quản lý giáo dục, đối tác học thuật, tổ chức thi cử quốc tế và các nguồn tài liệu học tập. Những liên kết này được cung cấp chỉ nhằm mục đích tham khảo và thuận tiện cho người dùng. Nhà trường <strong>không kiểm soát, không chứng thực và không chịu trách nhiệm</strong> về nội dung, chính sách bảo mật hay hoạt động của bất kỳ website bên ngoài nào. Người dùng chịu hoàn toàn trách nhiệm khi truy cập và sử dụng các website đó. Nếu phát hiện liên kết dẫn đến nội dung không phù hợp, vui lòng thông báo cho nhà trường qua email: <strong>info@lequydonhanoi.edu.vn</strong>.</p>
+<p>Website có thể chứa các liên kết đến website của bên thứ ba — bao gồm cơ quan quản lý giáo dục, đối tác học thuật, tổ chức thi cử quốc tế và các nguồn tài liệu học tập. Những liên kết này được cung cấp chỉ nhằm mục đích tham khảo và thuận tiện cho người dùng. Nhà trường <strong>không kiểm soát, không chứng thực và không chịu trách nhiệm</strong> về nội dung, chính sách bảo mật hay hoạt động của bất kỳ website bên ngoài nào. Người dùng chịu hoàn toàn trách nhiệm khi truy cập và sử dụng các website đó. Nếu phát hiện liên kết dẫn đến nội dung không phù hợp, vui lòng thông báo cho nhà trường qua email: <strong>info@vancoc.edu.vn</strong>.</p>
 
 <h3>Thay đổi điều khoản và luật áp dụng</h3>
-<p>Nhà trường có quyền sửa đổi các điều khoản sử dụng này tại bất kỳ thời điểm nào. Đối với những thay đổi có ảnh hưởng quan trọng, nhà trường sẽ thông báo trên trang chủ hoặc qua email ít nhất 15 ngày trước khi có hiệu lực. Việc tiếp tục sử dụng website sau khi thay đổi có hiệu lực đồng nghĩa với việc bạn chấp nhận các điều khoản mới. Mọi tranh chấp phát sinh từ hoặc liên quan đến việc sử dụng website này sẽ được giải quyết theo <strong>pháp luật nước Cộng hòa xã hội chủ nghĩa Việt Nam</strong>, cụ thể là Luật Công nghệ thông tin 2006, Luật An ninh mạng 2018 và các quy định liên quan. Tòa án có thẩm quyền giải quyết tranh chấp là Tòa án nhân dân có thẩm quyền tại Hà Nội. Nếu có câu hỏi về điều khoản sử dụng, vui lòng liên hệ: <strong>info@lequydonhanoi.edu.vn</strong>.</p>
+<p>Nhà trường có quyền sửa đổi các điều khoản sử dụng này tại bất kỳ thời điểm nào. Đối với những thay đổi có ảnh hưởng quan trọng, nhà trường sẽ thông báo trên trang chủ hoặc qua email ít nhất 15 ngày trước khi có hiệu lực. Việc tiếp tục sử dụng website sau khi thay đổi có hiệu lực đồng nghĩa với việc bạn chấp nhận các điều khoản mới. Mọi tranh chấp phát sinh từ hoặc liên quan đến việc sử dụng website này sẽ được giải quyết theo <strong>pháp luật nước Cộng hòa xã hội chủ nghĩa Việt Nam</strong>, cụ thể là Luật Công nghệ thông tin 2006, Luật An ninh mạng 2018 và các quy định liên quan. Tòa án có thẩm quyền giải quyết tranh chấp là Tòa án nhân dân có thẩm quyền tại Hà Nội. Nếu có câu hỏi về điều khoản sử dụng, vui lòng liên hệ: <strong>info@vancoc.edu.vn</strong>.</p>
 </section>`,
     },
 
@@ -152,13 +152,13 @@ async function seed() {
       title: 'STEM & Robotics',
       slug: 'chuong-trinh/stem-va-robotics',
       status: PageStatus.PUBLISHED,
-      seo_title: 'Chương trình STEM & Robotics — Trường Tiểu học Lê Quý Đôn',
+      seo_title: 'Chương trình STEM & Robotics — Trường Tiểu học Vân Cốc',
       seo_description:
-        'Chương trình STEM và Robotics tại trường Tiểu học Lê Quý Đôn — trang bị tư duy công nghệ từ sớm cho học sinh tiểu học.',
+        'Chương trình STEM và Robotics tại trường Tiểu học Vân Cốc — trang bị tư duy công nghệ từ sớm cho học sinh tiểu học.',
       content: `<section class="page-content">
 <h2>Chương trình STEM &amp; Robotics</h2>
-<p>Trường Tiểu học Lê Quý Đôn tự hào là một trong những trường tiểu học tiên phong tại Hà Nội triển khai <strong>chương trình STEM &amp; Robotics</strong> toàn diện ngay từ bậc tiểu học. Với quan điểm rằng tư duy khoa học và kỹ năng công nghệ phải được nuôi dưỡng từ sớm, nhà trường đã đầu tư bài bản từ cơ sở vật chất đến chương trình giảng dạy, giúp học sinh tiếp cận với thế giới công nghệ một cách tự nhiên, thú vị và sáng tạo. STEM không chỉ là môn học — đó là cách tư duy giải quyết vấn đề mà chúng tôi muốn trang bị cho mọi học sinh.</p>
-<img src="/uploads/placeholder-stem.jpg" alt="Phòng STEM &amp; Robotics trường Lê Quý Đôn" class="rounded-xl shadow" />
+<p>Trường Tiểu học Vân Cốc tự hào là một trong những trường tiểu học tiên phong tại Hà Nội triển khai <strong>chương trình STEM &amp; Robotics</strong> toàn diện ngay từ bậc tiểu học. Với quan điểm rằng tư duy khoa học và kỹ năng công nghệ phải được nuôi dưỡng từ sớm, nhà trường đã đầu tư bài bản từ cơ sở vật chất đến chương trình giảng dạy, giúp học sinh tiếp cận với thế giới công nghệ một cách tự nhiên, thú vị và sáng tạo. STEM không chỉ là môn học — đó là cách tư duy giải quyết vấn đề mà chúng tôi muốn trang bị cho mọi học sinh.</p>
+<img src="/images/design/intro-classroom.png" alt="Phòng STEM &amp; Robotics trường Vân Cốc" />
 
 <h3>Cơ sở vật chất phòng STEM</h3>
 <p>Phòng STEM của trường được trang bị hiện đại với tổng diện tích 120 m², thiết kế theo tiêu chuẩn phòng học STEM quốc tế. Thiết bị bao gồm: <strong>Bộ Lego Education SPIKE Prime và WeDo 2.0</strong> (30 bộ) cho lập trình kéo thả và lắp ráp cơ bản; <strong>Bộ Arduino Uno và Mega</strong> (20 bộ) cho lập trình nhúng; <strong>Micro:bit BBC</strong> (30 chiếc) cho lập trình IoT và dự án thực tế; <strong>Máy in 3D Creality Ender</strong> (2 máy) cho thiết kế và in mô hình; <strong>Màn hình chiếu tương tác 85 inch</strong> phục vụ giảng dạy trực quan; bộ linh kiện điện tử cơ bản, công cụ lắp ráp và vật liệu tái chế cho các dự án sáng tạo. Phòng được kết nối WiFi tốc độ cao và có khu trưng bày sản phẩm của học sinh.</p>
@@ -174,7 +174,7 @@ async function seed() {
 
 <h3>Hợp tác học thuật và kết quả nổi bật</h3>
 <p>Nhà trường đã ký kết hợp tác với <strong>Đại học Bách khoa Hà Nội</strong> (Khoa Điện tử Viễn thông) trong việc thiết kế chương trình, đào tạo giáo viên STEM và tổ chức các buổi tham quan, trải nghiệm thực tế tại phòng lab của trường đại học. Sinh viên Bách khoa cũng định kỳ đến hỗ trợ dạy học và cố vấn cho các dự án STEM của học sinh tiểu học, tạo nên mô hình mentorship thế hệ ý nghĩa.</p>
-<p>Những kết quả nổi bật của chương trình STEM &amp; Robotics: <strong>Giải Nhất cuộc thi Robotics cấp Thành phố Hà Nội năm 2025</strong> (nội dung xe tự hành vượt chướng ngại vật); Giải Nhì cuộc thi Sáng tạo Khoa học Kỹ thuật cấp Quận Đống Đa năm 2024; 3 dự án học sinh được lựa chọn trình bày tại Ngày hội STEM Hà Nội 2024; 100% học sinh lớp 5 hoàn thành ít nhất một dự án robot hoàn chỉnh mỗi năm học. Phụ huynh quan tâm đến CLB Robotics ngoại khóa vui lòng liên hệ phòng hành chính hoặc gửi email: <strong>info@lequydonhanoi.edu.vn</strong>.</p>
+<p>Những kết quả nổi bật của chương trình STEM &amp; Robotics: <strong>Giải Nhất cuộc thi Robotics cấp Thành phố Hà Nội năm 2025</strong> (nội dung xe tự hành vượt chướng ngại vật); Giải Nhì cuộc thi Sáng tạo Khoa học Kỹ thuật cấp Quận Đống Đa năm 2024; 3 dự án học sinh được lựa chọn trình bày tại Ngày hội STEM Hà Nội 2024; 100% học sinh lớp 5 hoàn thành ít nhất một dự án robot hoàn chỉnh mỗi năm học. Phụ huynh quan tâm đến CLB Robotics ngoại khóa vui lòng liên hệ phòng hành chính hoặc gửi email: <strong>info@vancoc.edu.vn</strong>.</p>
 </section>`,
     },
 
@@ -185,12 +185,12 @@ async function seed() {
       title: 'Hoạt động ngoại khóa',
       slug: 'hoat-dong-ngoai-khoa',
       status: PageStatus.PUBLISHED,
-      seo_title: 'Hoạt động ngoại khóa — Trường Tiểu học Lê Quý Đôn',
+      seo_title: 'Hoạt động ngoại khóa — Trường Tiểu học Vân Cốc',
       seo_description:
-        'Hơn 15 câu lạc bộ ngoại khóa tại trường Tiểu học Lê Quý Đôn — thể thao, âm nhạc, nghệ thuật, khoa học và nhiều hơn nữa.',
+        'Hơn 15 câu lạc bộ ngoại khóa tại trường Tiểu học Vân Cốc — thể thao, âm nhạc, nghệ thuật, khoa học và nhiều hơn nữa.',
       content: `<section class="page-content">
-<h2>Hoạt động ngoại khóa phong phú tại Lê Quý Đôn</h2>
-<p>Trường Tiểu học Lê Quý Đôn tin rằng giáo dục toàn diện không thể chỉ dừng lại ở trong lớp học. Hệ thống <strong>hơn 15 câu lạc bộ ngoại khóa</strong> đa dạng được tổ chức bài bản, giúp học sinh khám phá đam mê, phát triển kỹ năng và xây dựng những tình bạn gắn bó. Mỗi câu lạc bộ đều có giáo viên phụ trách chuyên môn, lịch học cố định và chương trình học học kỳ rõ ràng. Nhà trường khuyến khích mỗi học sinh tham gia ít nhất một câu lạc bộ để phát triển toàn diện cả về thể chất lẫn tinh thần.</p>
+<h2>Hoạt động ngoại khóa phong phú tại Vân Cốc</h2>
+<p>Trường Tiểu học Vân Cốc tin rằng giáo dục toàn diện không thể chỉ dừng lại ở trong lớp học. Hệ thống <strong>hơn 15 câu lạc bộ ngoại khóa</strong> đa dạng được tổ chức bài bản, giúp học sinh khám phá đam mê, phát triển kỹ năng và xây dựng những tình bạn gắn bó. Mỗi câu lạc bộ đều có giáo viên phụ trách chuyên môn, lịch học cố định và chương trình học học kỳ rõ ràng. Nhà trường khuyến khích mỗi học sinh tham gia ít nhất một câu lạc bộ để phát triển toàn diện cả về thể chất lẫn tinh thần.</p>
 
 <h3>Câu lạc bộ Thể thao</h3>
 <p>Thể thao không chỉ rèn luyện sức khỏe mà còn dạy tinh thần đồng đội, ý chí vươn lên và sự bền bỉ — những phẩm chất quan trọng cho cả cuộc đời. Các CLB thể thao của trường bao gồm:</p>
@@ -223,7 +223,7 @@ async function seed() {
 </ul>
 
 <h3>Lịch học và học phí</h3>
-<p>Tất cả các câu lạc bộ ngoại khóa tổ chức từ <strong>Thứ Hai đến Thứ Sáu, từ 15h30 đến 17h00</strong>, ngay sau giờ học chính khóa. Học sinh bán trú sẽ được hỗ trợ chuyển tiếp giữa bữa ăn và giờ CLB. Học phí tham gia CLB dao động từ <strong>500.000 VNĐ đến 1.000.000 VNĐ/tháng</strong> tùy theo câu lạc bộ, bao gồm chi phí giáo viên, dụng cụ học tập và tài liệu cơ bản. Riêng CLB Bơi lội chưa bao gồm phí vào bể. Phụ huynh đăng ký cho con tham gia CLB tại phòng hành chính hoặc gửi email: <strong>info@lequydonhanoi.edu.vn</strong>. Hạn đăng ký mỗi học kỳ: trước ngày 20 tháng đầu học kỳ.</p>
+<p>Tất cả các câu lạc bộ ngoại khóa tổ chức từ <strong>Thứ Hai đến Thứ Sáu, từ 15h30 đến 17h00</strong>, ngay sau giờ học chính khóa. Học sinh bán trú sẽ được hỗ trợ chuyển tiếp giữa bữa ăn và giờ CLB. Học phí tham gia CLB dao động từ <strong>500.000 VNĐ đến 1.000.000 VNĐ/tháng</strong> tùy theo câu lạc bộ, bao gồm chi phí giáo viên, dụng cụ học tập và tài liệu cơ bản. Riêng CLB Bơi lội chưa bao gồm phí vào bể. Phụ huynh đăng ký cho con tham gia CLB tại phòng hành chính hoặc gửi email: <strong>info@vancoc.edu.vn</strong>. Hạn đăng ký mỗi học kỳ: trước ngày 20 tháng đầu học kỳ.</p>
 </section>`,
     },
 
@@ -234,12 +234,12 @@ async function seed() {
       title: 'Thư viện ảnh',
       slug: 'thu-vien-anh',
       status: PageStatus.DRAFT,
-      seo_title: 'Thư viện ảnh — Trường Tiểu học Lê Quý Đôn',
+      seo_title: 'Thư viện ảnh — Trường Tiểu học Vân Cốc',
       seo_description:
-        'Thư viện ảnh hoạt động trường Tiểu học Lê Quý Đôn — khai giảng, ngày nhà giáo, Trung thu, hội thể thao, dã ngoại và văn nghệ.',
+        'Thư viện ảnh hoạt động trường Tiểu học Vân Cốc — khai giảng, ngày nhà giáo, Trung thu, hội thể thao, dã ngoại và văn nghệ.',
       content: `<section class="page-content">
 <h2>Thư viện ảnh hoạt động trường</h2>
-<p>Thư viện ảnh là nơi lưu giữ những khoảnh khắc đáng nhớ trong hành trình học tập và trưởng thành của các thế hệ học sinh trường Tiểu học Lê Quý Đôn. Mỗi bức ảnh là một mảnh ghép của ký ức đẹp — nụ cười của trẻ em trong ngày khai giảng, những tia mắt háo hức khi được thực hành thí nghiệm, hay những giọt mồ hôi trên sân bóng trong Hội khỏe Phù Đổng. Phụ huynh và học sinh có thể tìm lại những hình ảnh thân thương qua các album được sắp xếp theo chủ đề và thời gian.</p>
+<p>Thư viện ảnh là nơi lưu giữ những khoảnh khắc đáng nhớ trong hành trình học tập và trưởng thành của các thế hệ học sinh trường Tiểu học Vân Cốc. Mỗi bức ảnh là một mảnh ghép của ký ức đẹp — nụ cười của trẻ em trong ngày khai giảng, những tia mắt háo hức khi được thực hành thí nghiệm, hay những giọt mồ hôi trên sân bóng trong Hội khỏe Phù Đổng. Phụ huynh và học sinh có thể tìm lại những hình ảnh thân thương qua các album được sắp xếp theo chủ đề và thời gian.</p>
 
 <h3>Các album ảnh chính</h3>
 <p>Thư viện được tổ chức thành nhiều album theo các sự kiện và hoạt động tiêu biểu của trường trong suốt năm học:</p>
@@ -251,7 +251,7 @@ async function seed() {
   <li><strong>Album Dã ngoại:</strong> Các chuyến tham quan học tập tại Văn Miếu, Bảo tàng Lịch sử, Vườn thú Hà Nội, Làng gốm Bát Tràng và các điểm đến giáo dục khác trong và ngoài thành phố.</li>
   <li><strong>Album Văn nghệ và Lễ hội:</strong> Các buổi biểu diễn văn nghệ chào mừng, hội diễn cuối năm, các tiết mục múa, hát và kịch của học sinh toàn trường.</li>
 </ul>
-<p>Thư viện ảnh hiện đang trong quá trình cập nhật và bổ sung thêm nội dung. Các album ảnh mới từ năm học 2024–2025 sẽ được đăng tải trong thời gian sớm nhất. Phụ huynh có ảnh đẹp muốn chia sẻ với cộng đồng trường, vui lòng gửi về địa chỉ: <strong>info@lequydonhanoi.edu.vn</strong> với tiêu đề <em>"Ảnh đóng góp — [Tên sự kiện]"</em>. Nhà trường sẽ xem xét và đăng tải sau khi được kiểm duyệt.</p>
+<p>Thư viện ảnh hiện đang trong quá trình cập nhật và bổ sung thêm nội dung. Các album ảnh mới từ năm học 2024–2025 sẽ được đăng tải trong thời gian sớm nhất. Phụ huynh có ảnh đẹp muốn chia sẻ với cộng đồng trường, vui lòng gửi về địa chỉ: <strong>info@vancoc.edu.vn</strong> với tiêu đề <em>"Ảnh đóng góp — [Tên sự kiện]"</em>. Nhà trường sẽ xem xét và đăng tải sau khi được kiểm duyệt.</p>
 </section>`,
     },
 
@@ -262,12 +262,12 @@ async function seed() {
       title: 'Tuyển dụng giáo viên',
       slug: 'tuyen-dung',
       status: PageStatus.PUBLISHED,
-      seo_title: 'Tuyển dụng giáo viên — Trường Tiểu học Lê Quý Đôn Hà Nội',
+      seo_title: 'Tuyển dụng giáo viên — Trường Tiểu học Vân Cốc',
       seo_description:
-        'Trường Tiểu học Lê Quý Đôn tuyển dụng giáo viên Toán, Tiếng Anh, Thể dục, Mỹ thuật — môi trường làm việc chuyên nghiệp, lương cạnh tranh.',
+        'Trường Tiểu học Vân Cốc tuyển dụng giáo viên Toán, Tiếng Anh, Thể dục, Mỹ thuật — môi trường làm việc chuyên nghiệp, lương cạnh tranh.',
       content: `<section class="page-content">
 <h2>Tuyển dụng giáo viên năm học 2025–2026</h2>
-<p>Trường Tiểu học Lê Quý Đôn đang tìm kiếm những giáo viên tài năng, tâm huyết và yêu nghề để bổ sung vào đội ngũ nhà giáo của trường. Chúng tôi tin rằng <strong>giáo viên tốt là nền tảng của giáo dục tốt</strong>. Vì vậy, nhà trường không chỉ coi trọng trình độ chuyên môn mà còn đặc biệt đánh giá cao tình yêu trẻ em, tinh thần cầu thị và khả năng sáng tạo trong giảng dạy. Hãy cùng chúng tôi xây dựng môi trường giáo dục xuất sắc cho thế hệ tương lai của Hà Nội.</p>
+<p>Trường Tiểu học Vân Cốc đang tìm kiếm những giáo viên tài năng, tâm huyết và yêu nghề để bổ sung vào đội ngũ nhà giáo của trường. Chúng tôi tin rằng <strong>giáo viên tốt là nền tảng của giáo dục tốt</strong>. Vì vậy, nhà trường không chỉ coi trọng trình độ chuyên môn mà còn đặc biệt đánh giá cao tình yêu trẻ em, tinh thần cầu thị và khả năng sáng tạo trong giảng dạy. Hãy cùng chúng tôi xây dựng môi trường giáo dục xuất sắc cho thế hệ tương lai của Hà Nội.</p>
 
 <h3>Vị trí đang tuyển dụng</h3>
 <p>Nhà trường hiện có nhu cầu tuyển dụng các vị trí sau trong năm học 2025–2026:</p>
@@ -297,7 +297,7 @@ async function seed() {
 <p>Nhà trường cam kết tạo môi trường làm việc chuyên nghiệp, nhân văn và có cơ hội phát triển nghề nghiệp rõ ràng. Quyền lợi bao gồm: <strong>mức lương cạnh tranh</strong> (thỏa thuận theo kinh nghiệm và năng lực, tham chiếu thang lương nhà nước); đóng đầy đủ <strong>BHXH, BHYT, BHTN</strong> theo quy định; thưởng lễ Tết, thưởng tháng 13 theo năng lực; <strong>hỗ trợ đào tạo nâng cao</strong> — trường chi trả 100% học phí các khóa bồi dưỡng chuyên môn, hội thảo giáo dục trong nước; ưu tiên giảm học phí 30-50% cho con em giáo viên theo học tại trường; <strong>môi trường làm việc thân thiện</strong>, được trang bị đầy đủ thiết bị dạy học hiện đại; nghỉ hè và nghỉ lễ theo lịch nhà nước; hoạt động teambuilding, du lịch nội bộ hàng năm.</p>
 
 <h3>Cách nộp hồ sơ</h3>
-<p>Ứng viên quan tâm vui lòng gửi hồ sơ (CV kèm ảnh 3x4, bằng cấp chứng chỉ scan) về địa chỉ email: <strong>hr@lequydonhanoi.edu.vn</strong> với tiêu đề email: <em>"[Vị trí ứng tuyển] — Họ và tên"</em>. Hồ sơ nhận đến hết ngày <strong>31/05/2025</strong>. Ứng viên phù hợp sẽ được liên hệ để phỏng vấn trong vòng 7 ngày làm việc sau khi nộp hồ sơ. Vui lòng không gửi hồ sơ qua bưu điện — nhà trường chỉ nhận hồ sơ qua email. Mọi thắc mắc, liên hệ phòng nhân sự: 024-3456-7890 (trong giờ hành chính).</p>
+<p>Ứng viên quan tâm vui lòng gửi hồ sơ (CV kèm ảnh 3x4, bằng cấp chứng chỉ scan) về địa chỉ email: <strong>hr@vancoc.edu.vn</strong> với tiêu đề email: <em>"[Vị trí ứng tuyển] — Họ và tên"</em>. Hồ sơ nhận đến hết ngày <strong>31/05/2025</strong>. Ứng viên phù hợp sẽ được liên hệ để phỏng vấn trong vòng 7 ngày làm việc sau khi nộp hồ sơ. Vui lòng không gửi hồ sơ qua bưu điện — nhà trường chỉ nhận hồ sơ qua email. Mọi thắc mắc, liên hệ phòng nhân sự: 024-3456-7890 (trong giờ hành chính).</p>
 </section>`,
     },
 
@@ -308,14 +308,14 @@ async function seed() {
       title: 'Câu hỏi thường gặp',
       slug: 'cau-hoi-thuong-gap',
       status: PageStatus.PUBLISHED,
-      seo_title: 'Câu hỏi thường gặp (FAQ) — Trường Tiểu học Lê Quý Đôn',
+      seo_title: 'Câu hỏi thường gặp (FAQ) — Trường Tiểu học Vân Cốc',
       seo_description:
-        'Giải đáp các câu hỏi thường gặp về tuyển sinh, học phí, tiếng Anh, bán trú, đồng phục và hoạt động ngoại khóa tại trường Tiểu học Lê Quý Đôn.',
+        'Giải đáp các câu hỏi thường gặp về tuyển sinh, học phí, tiếng Anh, bán trú, đồng phục và hoạt động ngoại khóa tại trường Tiểu học Vân Cốc.',
       content: `<section class="page-content">
 <h2>Câu hỏi thường gặp</h2>
-<p>Dưới đây là danh sách những câu hỏi phụ huynh hỏi nhiều nhất về trường Tiểu học Lê Quý Đôn. Chúng tôi cập nhật thường xuyên để cung cấp thông tin chính xác và mới nhất. Nếu câu hỏi của bạn chưa được giải đáp ở đây, vui lòng liên hệ trực tiếp qua hotline <strong>024-3456-7890</strong> hoặc email <strong>info@lequydonhanoi.edu.vn</strong>.</p>
+<p>Dưới đây là danh sách những câu hỏi phụ huynh hỏi nhiều nhất về trường Tiểu học Vân Cốc. Chúng tôi cập nhật thường xuyên để cung cấp thông tin chính xác và mới nhất. Nếu câu hỏi của bạn chưa được giải đáp ở đây, vui lòng liên hệ trực tiếp qua hotline <strong>024-3456-7890</strong> hoặc email <strong>info@vancoc.edu.vn</strong>.</p>
 
-<h3>1. Trường Tiểu học Lê Quý Đôn tuyển sinh cho những khối lớp nào?</h3>
+<h3>1. Trường Tiểu học Vân Cốc tuyển sinh cho những khối lớp nào?</h3>
 <p>Nhà trường tuyển sinh từ <strong>lớp 1 đến lớp 5</strong> — toàn bộ cấp tiểu học. Hàng năm, trường tuyển sinh đầu vào chính thức cho <strong>lớp 1</strong> (dành cho trẻ em sinh năm 2019 vào năm học 2025–2026, đủ 6 tuổi trước ngày 01/09). Các khối lớp 2–5 nhận học sinh chuyển trường tùy theo chỉ tiêu còn trống. Phụ huynh quan tâm đến chuyển trường vui lòng liên hệ phòng tuyển sinh để biết số lượng chỉ tiêu còn lại từng lớp.</p>
 
 <h3>2. Học phí năm học 2025–2026 là bao nhiêu?</h3>

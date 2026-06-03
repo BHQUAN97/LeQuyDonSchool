@@ -27,7 +27,7 @@ export async function generateMetadata({
       const item = json.data || json;
       return buildPageMetadata({
         title: item.title || 'Bài viết',
-        description: item.description || item.excerpt || `Đọc bài viết ${item.title} tại Trường Tiểu học Lê Quý Đôn.`,
+        description: item.description || item.excerpt || `Đọc bài viết ${item.title} tại Trường Tiểu học Vân Cốc.`,
         path: `/tin-tuc/${slug}`,
         ogImage: item.thumbnail_url || undefined,
         type: 'article',
@@ -39,7 +39,7 @@ export async function generateMetadata({
   }
   return buildPageMetadata({
     title: 'Bài viết',
-    description: 'Đọc tin tức và bài viết mới nhất tại Trường Tiểu học Lê Quý Đôn.',
+    description: 'Đọc tin tức và bài viết mới nhất tại Trường Tiểu học Vân Cốc.',
     path: `/tin-tuc/${slug}`,
     type: 'article',
   });
@@ -95,6 +95,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
   };
 
   const relatedArticles = await getRelatedArticles();
+  const isMenuArticle = article.categorySlug === 'thuc-don';
 
   return (
     <div>
@@ -134,12 +135,18 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
 
             {/* Featured image */}
             {article.thumbnail_url && (
-              <div className="h-56 lg:h-80 bg-gray-100 rounded-xl mb-8 overflow-hidden relative">
+              <div
+                className={
+                  isMenuArticle
+                    ? 'min-h-[520px] lg:min-h-[780px] bg-[#eef8fb] rounded-xl mb-8 overflow-hidden relative'
+                    : 'h-56 lg:h-80 bg-gray-100 rounded-xl mb-8 overflow-hidden relative'
+                }
+              >
                 <Image
                   src={imgUrl(article.thumbnail_url)!}
                   alt={article.title}
                   fill
-                  className="object-cover"
+                  className={isMenuArticle ? 'object-contain' : 'object-cover'}
                   sizes="(max-width: 1024px) 100vw, 66vw"
                   priority
                 />
@@ -149,7 +156,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
             {/* Content — V2 style */}
             <SafeHtml
               html={article.content}
-              className="prose prose-gray prose-sm lg:prose-base max-w-none
+              className="lqd-rich prose prose-gray prose-sm lg:prose-base max-w-none
                 prose-headings:text-gray-900 prose-headings:font-bold
                 prose-h2:text-lg prose-h2:mt-8 prose-h2:mb-3 prose-h2:text-red-700
                 prose-h3:text-base prose-h3:text-green-800
@@ -193,6 +200,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
               {relatedArticles.map((a: any) => {
                 const cover = imgUrl(a.thumbnail_url);
                 const date = new Date(a.published_at || a.created_at).toLocaleDateString('vi-VN');
+                const relatedIsMenu = a.category?.slug === 'thuc-don';
                 return (
                   <Link
                     key={a.slug}
@@ -201,7 +209,13 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                   >
                     <div className="h-44 bg-gray-100 relative overflow-hidden">
                       {cover ? (
-                        <Image src={cover} alt={a.title} fill className="object-cover group-hover:scale-105 transition-transform" sizes="33vw" />
+                        <Image
+                          src={cover}
+                          alt={a.title}
+                          fill
+                          className={relatedIsMenu ? 'object-contain p-1' : 'object-cover group-hover:scale-105 transition-transform'}
+                          sizes="33vw"
+                        />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-green-50 to-red-50 flex items-center justify-center text-gray-400 text-sm">
                           Hình ảnh

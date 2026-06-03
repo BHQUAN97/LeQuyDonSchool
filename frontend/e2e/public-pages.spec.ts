@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Public Pages — Smoke Tests', () => {
   test('trang chu load thanh cong', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Lê Quý Đôn|Le Quy Don/i);
+    await expect(page).toHaveTitle(/V?n C?c|Van Coc/i);
     await expect(page.locator('header')).toBeVisible();
     await expect(page.locator('footer')).toBeVisible();
   });

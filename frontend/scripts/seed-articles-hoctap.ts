@@ -18,15 +18,15 @@ const CATEGORY_SLUG = 'hoc-tap';
 
 const articles: Article[] = [
   {
-    title: 'Thành Tích Tháng 3 — Doners Xuất Sắc Giành 1.536 Giải',
+    title: 'Thành Tích Tháng 3 — học sinh Vân Cốc Xuất Sắc Giành 1.536 Giải',
     slug: 'thanh-tich-thang-3-doners-xuat-sac-gianh-1536-giai',
     excerpt:
-      'Tổng kết thành tích nổi bật của học sinh Lê Quý Đôn trong tháng 3 với 1.536 giải thưởng các cấp.',
+      'Tổng kết thành tích nổi bật của học sinh Vân Cốc trong tháng 3 với 1.536 giải thưởng các cấp.',
     thumbnailUrl: 'https://picsum.photos/seed/hoctap01/800/450',
     publishedAt: '2026-03-31T08:00:00Z',
     content: `
 <h2>Tổng kết Thành tích Tháng 3 năm 2026</h2>
-<p>Trường Tiểu học Lê Quý Đôn tự hào thông báo kết quả học tập và thi đua xuất sắc của các em học sinh trong tháng 3 vừa qua. Với tổng cộng <strong>1.536 giải thưởng</strong> ở nhiều cấp độ từ trường đến thành phố, các Doners đã chứng minh năng lực vượt trội trong mọi lĩnh vực.</p>
+<p>Trường Tiểu học Vân Cốc tự hào thông báo kết quả học tập và thi đua xuất sắc của các em học sinh trong tháng 3 vừa qua. Với tổng cộng <strong>1.536 giải thưởng</strong> ở nhiều cấp độ từ trường đến thành phố, các học sinh Vân Cốc đã chứng minh năng lực vượt trội trong mọi lĩnh vực.</p>
 
 <h3>Phân bố giải thưởng theo cấp</h3>
 <p>Trong số 1.536 giải, có <strong>124 giải cấp Thành phố</strong>, 387 giải cấp Quận và 1.025 giải cấp Trường. Đặc biệt, khối lớp 5 đóng góp nhiều nhất với 412 giải, tiếp theo là khối lớp 4 với 356 giải. Khối lớp 1 cũng ghi nhận con số ấn tượng 198 giải thưởng, cho thấy nền tảng vững chắc ngay từ những năm đầu tiên.</p>
@@ -48,7 +48,7 @@ const articles: Article[] = [
     publishedAt: '2026-03-25T09:00:00Z',
     content: `
 <h2>Giải Nhất Olympic Toán cấp Quận 2026</h2>
-<p>Ngày 22 tháng 3 năm 2026, Phòng Giáo dục và Đào tạo quận Cầu Giấy đã tổ chức kỳ thi Olympic Toán cấp Quận dành cho học sinh tiểu học. Em <strong>Nguyễn Minh Anh</strong>, học sinh lớp 5A trường Tiểu học Lê Quý Đôn, đã xuất sắc giành giải Nhất với số điểm cao nhất toàn quận.</p>
+<p>Ngày 22 tháng 3 năm 2026, Phòng Giáo dục và Đào tạo quận Cầu Giấy đã tổ chức kỳ thi Olympic Toán cấp Quận dành cho học sinh tiểu học. Em <strong>Nguyễn Minh Anh</strong>, học sinh lớp 5A trường Tiểu học Vân Cốc, đã xuất sắc giành giải Nhất với số điểm cao nhất toàn quận.</p>
 
 <h3>Hành trình đến giải Nhất</h3>
 <p>Kỳ thi năm nay thu hút hơn 500 thí sinh đến từ 28 trường tiểu học trong quận. Đề thi gồm 30 câu trắc nghiệm và 5 bài tự luận, bao gồm các chủ đề: số học nâng cao, hình học phẳng, tổ hợp và logic. Em Minh Anh hoàn thành bài thi với 98/100 điểm, bỏ xa người xếp thứ hai tới 7 điểm.</p>
@@ -70,13 +70,13 @@ const articles: Article[] = [
     publishedAt: '2026-03-18T10:00:00Z',
     content: `
 <h2>Kết quả kỳ thi Cambridge Flyers 2026</h2>
-<p>Trường Tiểu học Lê Quý Đôn vui mừng thông báo kết quả kỳ thi Cambridge English: Flyers (YLE) dành cho học sinh khối 5. Với <strong>tỷ lệ đạt 95%</strong>, đây là năm thứ ba liên tiếp nhà trường duy trì tỷ lệ đạt trên 90%.</p>
+<p>Trường Tiểu học Vân Cốc vui mừng thông báo kết quả kỳ thi Cambridge English: Flyers (YLE) dành cho học sinh khối 5. Với <strong>tỷ lệ đạt 95%</strong>, đây là năm thứ ba liên tiếp nhà trường duy trì tỷ lệ đạt trên 90%.</p>
 
 <h3>Thống kê chi tiết</h3>
 <p>Tổng số 186 học sinh tham gia kỳ thi, trong đó 177 em đạt chứng chỉ. Đặc biệt, <strong>60 em (32%) đạt 15 khiên</strong> — mức điểm tối đa, tương đương trình độ A2 theo khung tham chiếu châu Âu CEFR. 78 em đạt từ 12 đến 14 khiên, và 39 em đạt từ 10 đến 11 khiên.</p>
 
 <h3>Chương trình đào tạo Tiếng Anh</h3>
-<p>Chương trình Tiếng Anh tại Lê Quý Đôn được thiết kế theo lộ trình Cambridge rõ ràng: Starters (lớp 1-2), Movers (lớp 3-4) và Flyers (lớp 5). Học sinh được học 8 tiết Tiếng Anh mỗi tuần, trong đó 4 tiết với giáo viên bản ngữ, tập trung vào kỹ năng nghe nói và phát âm chuẩn.</p>
+<p>Chương trình Tiếng Anh tại Vân Cốc được thiết kế theo lộ trình Cambridge rõ ràng: Starters (lớp 1-2), Movers (lớp 3-4) và Flyers (lớp 5). Học sinh được học 8 tiết Tiếng Anh mỗi tuần, trong đó 4 tiết với giáo viên bản ngữ, tập trung vào kỹ năng nghe nói và phát âm chuẩn.</p>
 
 <p>Cô Nguyễn Thanh Vân, Tổ trưởng bộ môn Tiếng Anh, cho biết: "Bí quyết thành công nằm ở phương pháp học qua trải nghiệm. Các em được tham gia English Club, Drama Class và Debate hàng tuần, giúp sử dụng tiếng Anh trong ngữ cảnh thực tế thay vì chỉ học ngữ pháp trên sách vở."</p>
 
@@ -114,7 +114,7 @@ const articles: Article[] = [
     publishedAt: '2026-03-05T09:00:00Z',
     content: `
 <h2>Cuộc thi Viết chữ đẹp cấp trường năm 2026</h2>
-<p>Sáng ngày 4 tháng 3, trường Tiểu học Lê Quý Đôn đã tổ chức cuộc thi <strong>Viết chữ đẹp</strong> cấp trường năm học 2025-2026. Với chủ đề "Nét chữ — Nết người", cuộc thi thu hút sự tham gia của hơn 200 học sinh được tuyển chọn từ các lớp, đại diện cho 5 khối từ lớp 1 đến lớp 5.</p>
+<p>Sáng ngày 4 tháng 3, trường Tiểu học Vân Cốc đã tổ chức cuộc thi <strong>Viết chữ đẹp</strong> cấp trường năm học 2025-2026. Với chủ đề "Nét chữ — Nết người", cuộc thi thu hút sự tham gia của hơn 200 học sinh được tuyển chọn từ các lớp, đại diện cho 5 khối từ lớp 1 đến lớp 5.</p>
 
 <h3>Nội dung thi</h3>
 <p>Mỗi khối có bài thi phù hợp với trình độ: khối 1 viết chữ cái và từ đơn, khối 2-3 viết đoạn văn ngắn, khối 4-5 viết bài thơ và đoạn văn nghị luận. Thời gian thi 45 phút, học sinh sử dụng bút mực theo quy định. Bài thi được chấm theo tiêu chí: đúng mẫu chữ, đều nét, đẹp tổng thể, và tốc độ viết phù hợp.</p>
@@ -136,7 +136,7 @@ const articles: Article[] = [
     publishedAt: '2026-02-28T14:00:00Z',
     content: `
 <h2>Chung kết Hùng biện Tiếng Anh lần thứ 3</h2>
-<p>Chiều ngày 27 tháng 2, trường Tiểu học Lê Quý Đôn tổ chức vòng Chung kết cuộc thi <strong>Hùng biện Tiếng Anh</strong> lần thứ 3 dành cho học sinh khối 4-5. Chủ đề năm nay là <em>"My Green Future — Tương lai xanh của em"</em>, khuyến khích các em thể hiện suy nghĩ về bảo vệ môi trường bằng tiếng Anh.</p>
+<p>Chiều ngày 27 tháng 2, trường Tiểu học Vân Cốc tổ chức vòng Chung kết cuộc thi <strong>Hùng biện Tiếng Anh</strong> lần thứ 3 dành cho học sinh khối 4-5. Chủ đề năm nay là <em>"My Green Future — Tương lai xanh của em"</em>, khuyến khích các em thể hiện suy nghĩ về bảo vệ môi trường bằng tiếng Anh.</p>
 
 <h3>Vòng chung kết</h3>
 <p>12 thí sinh xuất sắc nhất được chọn từ vòng sơ khảo (với hơn 80 thí sinh đăng ký) đã trình bày bài hùng biện trước ban giám khảo gồm 3 giáo viên bản ngữ và 2 giáo viên Tiếng Anh của trường. Mỗi thí sinh có 3 phút trình bày và 2 phút trả lời câu hỏi từ ban giám khảo.</p>
@@ -158,7 +158,7 @@ const articles: Article[] = [
     publishedAt: '2026-02-20T08:00:00Z',
     content: `
 <h2>Giờ học trải nghiệm STEM — Khối 2</h2>
-<p>Trong tuần thứ hai của tháng 2, toàn bộ học sinh khối 2 trường Tiểu học Lê Quý Đôn đã tham gia giờ học trải nghiệm STEM với hai thí nghiệm thú vị: <strong>"Ô tô chạy bằng bóng bay"</strong> và <strong>"Cầu giấy chịu lực"</strong>. Đây là hoạt động nằm trong chương trình STEM xuyên suốt năm học dành cho khối 1-2.</p>
+<p>Trong tuần thứ hai của tháng 2, toàn bộ học sinh khối 2 trường Tiểu học Vân Cốc đã tham gia giờ học trải nghiệm STEM với hai thí nghiệm thú vị: <strong>"Ô tô chạy bằng bóng bay"</strong> và <strong>"Cầu giấy chịu lực"</strong>. Đây là hoạt động nằm trong chương trình STEM xuyên suốt năm học dành cho khối 1-2.</p>
 
 <h3>Thí nghiệm 1: Ô tô bóng bay</h3>
 <p>Sử dụng vật liệu đơn giản gồm ống hút, nắp chai, băng dính và bóng bay, các nhóm học sinh thiết kế và chế tạo ô tô chạy bằng lực đẩy không khí. Qua hoạt động này, các em hiểu được nguyên lý phản lực — không khí thoát ra phía sau đẩy xe về phía trước — ứng dụng của Định luật III Newton ở dạng đơn giản nhất.</p>
@@ -180,7 +180,7 @@ const articles: Article[] = [
     publishedAt: '2026-02-14T08:00:00Z',
     content: `
 <h2>Tuần lễ đọc sách "Books for Fun"</h2>
-<p>Từ ngày 10 đến 14 tháng 2, trường Tiểu học Lê Quý Đôn tổ chức <strong>Tuần lễ đọc sách "Books for Fun"</strong> — sự kiện thường niên nhằm khuyến khích văn hóa đọc và tình yêu sách trong toàn thể học sinh. Năm nay, chương trình được mở rộng với nhiều hoạt động mới, thu hút sự tham gia của 100% học sinh toàn trường.</p>
+<p>Từ ngày 10 đến 14 tháng 2, trường Tiểu học Vân Cốc tổ chức <strong>Tuần lễ đọc sách "Books for Fun"</strong> — sự kiện thường niên nhằm khuyến khích văn hóa đọc và tình yêu sách trong toàn thể học sinh. Năm nay, chương trình được mở rộng với nhiều hoạt động mới, thu hút sự tham gia của 100% học sinh toàn trường.</p>
 
 <h3>Các hoạt động nổi bật</h3>
 <p><strong>Hội chợ sách:</strong> Hơn 2.000 đầu sách từ 5 nhà xuất bản được trưng bày tại sảnh chính, với mức giảm giá 20-30% dành cho học sinh. Phụ huynh cũng quyên góp hơn 500 cuốn sách cũ cho tủ sách lớp học.</p>

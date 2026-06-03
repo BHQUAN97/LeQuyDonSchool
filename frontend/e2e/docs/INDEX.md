@@ -1,6 +1,6 @@
-# E2E Test Documentation — LeQuyDon School CMS
+# E2E Test Documentation — VanCoc School CMS
 
-> Tai lieu nghiep vu E2E Playwright cho website Truong Tieu hoc Le Quy Don
+> Tai lieu nghiep vu E2E Playwright cho website Truong Tieu hoc Van Coc
 > Cap nhat: 2026-04-16 | Tong: 14 test suites | 116 tests (desktop + mobile)
 
 ## Tong quan

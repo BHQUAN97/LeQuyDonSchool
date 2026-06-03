@@ -2,23 +2,22 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { BRAND } from "@/config/brand";
 
 const inter = Inter({ subsets: ["latin", "vietnamese"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: {
-    default: 'Trường Tiểu học Lê Quý Đôn - Hà Nội',
-    template: '%s | Trường Tiểu học Lê Quý Đôn',
+    default: `${BRAND.schoolName} - Ha Noi`,
+    template: `%s | ${BRAND.schoolName}`,
   },
   description:
-    'Trường Tiểu học Lê Quý Đôn - Hệ thống giáo dục liên cấp hàng đầu tại Hà Nội. Chương trình Quốc gia nâng cao, Tiếng Anh tăng cường, phát triển toàn diện cho học sinh.',
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || 'https://demo.remoteterminal.online',
-  ),
+    `${BRAND.schoolName} - he thong giao duc lien cap tai Ha Noi. Chuong trinh Quoc gia nang cao, tieng Anh tang cuong, phat trien toan dien cho hoc sinh.`,
+  metadataBase: new URL(BRAND.siteUrl),
   openGraph: {
     type: 'website',
     locale: 'vi_VN',
-    siteName: 'Trường Tiểu học Lê Quý Đôn',
+    siteName: BRAND.schoolName,
     images: [{ url: '/og-image.jpg', width: 1200, height: 630 }],
   },
   twitter: {

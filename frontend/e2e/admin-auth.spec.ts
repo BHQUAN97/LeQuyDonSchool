@@ -21,7 +21,7 @@ test.describe('Admin Authentication', () => {
     // Co logo LQ
     await expect(page.locator('text=LQ')).toBeVisible();
     // Co ten truong
-    await expect(page.locator('text=/Lê Quý Đôn/i')).toBeVisible();
+    await expect(page.locator('text=/V?n C?c/i')).toBeVisible();
     // Co text dang nhap quan tri
     await expect(page.locator('text=/Đăng nhập quản trị/i')).toBeVisible();
     // Co input fields

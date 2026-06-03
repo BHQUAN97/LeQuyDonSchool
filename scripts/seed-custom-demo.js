@@ -8,13 +8,15 @@
  */
 
 const BASE_URL = process.argv[2] || 'http://localhost:4200/api';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@lequydon.edu.vn';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Admin@123456';
 let TOKEN = '';
 
 async function login() {
   const res = await fetch(`${BASE_URL}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: 'admin@lequydon.edu.vn', password: 'Admin@123456' }),
+    body: JSON.stringify({ email: ADMIN_EMAIL, password: ADMIN_PASSWORD }),
   });
   const json = await res.json();
   if (!json.success) throw new Error('Login failed: ' + json.message);
@@ -80,7 +82,7 @@ const pages = [
               <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400" alt="Tin 1" class="w-full h-40 object-cover m-0" />
               <div class="p-4">
                 <p class="text-xs text-slate-400 mb-2 m-0">15/03/2026</p>
-                <h3 class="text-base font-bold text-slate-800 m-0 leading-snug">Trường Tiểu học Lê Quý Đôn khai giảng đợt tuyển sinh</h3>
+                <h3 class="text-base font-bold text-slate-800 m-0 leading-snug">Trường Tiểu học Vân Cốc khai giảng đợt tuyển sinh</h3>
               </div>
             </div>
             <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition">
@@ -103,7 +105,7 @@ const pages = [
               <p class="text-sm text-red-500 mt-1 m-0">cùng con yêu</p>
               <div class="mt-4 text-left w-full">
                 <p class="text-xs text-slate-500 m-0">Hội nhập 3 SẴN SÀNG cùng 1 năm đầu tiên</p>
-                <p class="text-xs text-slate-500 m-0">tại Lê Quý Đôn</p>
+                <p class="text-xs text-slate-500 m-0">tại Vân Cốc</p>
               </div>
             </div>
           </div>
@@ -116,7 +118,7 @@ const pages = [
               <!-- Ben trai: feature cards -->
               <div>
                 <p class="text-sm font-bold uppercase tracking-wide text-green-200 mb-1 m-0">Chỉ có tại 🇻🇳</p>
-                <h2 class="text-2xl lg:text-3xl font-bold text-white mb-8 m-0">Trường Tiểu học Lê Quý Đôn</h2>
+                <h2 class="text-2xl lg:text-3xl font-bold text-white mb-8 m-0">Trường Tiểu học Vân Cốc</h2>
                 <div class="grid grid-cols-2 gap-4">
                   <div class="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/20 hover:bg-white/20 transition">
                     <div class="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center mb-3 text-xl">🎓</div>
@@ -146,7 +148,7 @@ const pages = [
                 <div class="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mb-6 text-3xl">🎓</div>
                 <h3 class="text-xl lg:text-2xl font-bold mb-4 m-0">Hệ thống giáo dục từ Mầm non đến THPT</h3>
                 <p class="text-green-100 leading-relaxed mb-6 m-0">
-                  Hệ thống Giáo dục Lê Quý Đôn cung cấp lộ trình học liên thông từ Mầm non, Tiểu học đến THCS và THPT với ba cơ sở riêng biệt tại quận Nam Từ Liêm, Hà Nội. Các trường trong hệ thống đều được đầu tư bài bản về cơ sở vật chất, chương trình đào tạo hiện đại và đội ngũ giáo viên chất lượng cao.
+                  Hệ thống Giáo dục Vân Cốc cung cấp lộ trình học liên thông từ Mầm non, Tiểu học đến THCS và THPT với ba cơ sở riêng biệt tại quận Nam Từ Liêm, Hà Nội. Các trường trong hệ thống đều được đầu tư bài bản về cơ sở vật chất, chương trình đào tạo hiện đại và đội ngũ giáo viên chất lượng cao.
                 </p>
                 <a href="/tong-quan" class="inline-block border-2 border-white text-white font-bold px-6 py-3 rounded-lg hover:bg-white hover:text-green-800 transition w-fit">Xem chi tiết</a>
               </div>
@@ -176,12 +178,12 @@ const pages = [
               <div class="flex flex-col justify-center">
                 <p class="text-6xl font-serif text-red-300 mb-4 m-0">"</p>
                 <p class="text-sm font-bold uppercase tracking-wide text-red-200 mb-1 m-0">Từ cộng đồng 🇻🇳</p>
-                <h2 class="text-2xl lg:text-3xl font-bold text-white mb-6 m-0">Lê Quý Đôn</h2>
+                <h2 class="text-2xl lg:text-3xl font-bold text-white mb-6 m-0">Vân Cốc</h2>
                 <div class="bg-white/10 rounded-xl p-6 border border-white/20 mb-6">
                   <p class="font-bold text-lg mb-1 m-0">Anh Hoàng Hữu Thắng</p>
                   <p class="text-xs text-red-200 mb-4 m-0">Chủ tịch HĐQT Intech Group | Phó Chủ tịch CLB Doanh nhân Việt Nam</p>
                   <p class="text-red-100 leading-relaxed m-0">
-                    "Tôi nhận thấy con mình sau khi vào trường đã thay đổi rõ rệt. Không chỉ về kiến thức mà còn là kỹ năng sống, tính tự lập và đặc biệt là tình yêu thương. Trường Tiểu học Lê Quý Đôn thực sự là ngôi nhà thứ hai ấm áp và đáng tin cậy."
+                    "Tôi nhận thấy con mình sau khi vào trường đã thay đổi rõ rệt. Không chỉ về kiến thức mà còn là kỹ năng sống, tính tự lập và đặc biệt là tình yêu thương. Trường Tiểu học Vân Cốc thực sự là ngôi nhà thứ hai ấm áp và đáng tin cậy."
                   </p>
                 </div>
               </div>
@@ -190,8 +192,8 @@ const pages = [
         </div>
       </div>
     `,
-    seoTitle: 'Trang chủ | Hệ Thống Giáo Dục Lê Quý Đôn',
-    seoDescription: 'Hệ thống Trường liên cấp Lê Quý Đôn — Nơi ươm mầm tài năng công dân toàn cầu thế kỷ 21.',
+    seoTitle: 'Trang chủ | Hệ Thống Giáo Dục Vân Cốc',
+    seoDescription: 'Hệ thống Trường liên cấp Vân Cốc — Nơi ươm mầm tài năng công dân toàn cầu thế kỷ 21.',
   },
   {
     title: 'Tầm nhìn và Sứ mệnh',
@@ -202,13 +204,13 @@ const pages = [
         <div class="text-center mb-12">
           <h1 class="text-4xl font-extrabold text-blue-900 mb-4 mt-0">Tổng quan, Tầm nhìn & Sứ mệnh</h1>
           <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-            Hệ thống giáo dục Lê Quý Đôn luôn nỗ lực không ngừng nghỉ để xây dựng và phát triển một môi trường học tập lý tưởng, hướng tới các giá trị bền vững và triết lý giáo dục mang đậm tính nhân văn.
+            Hệ thống giáo dục Vân Cốc luôn nỗ lực không ngừng nghỉ để xây dựng và phát triển một môi trường học tập lý tưởng, hướng tới các giá trị bền vững và triết lý giáo dục mang đậm tính nhân văn.
           </p>
         </div>
 
         <h2 class="text-3xl font-bold text-blue-800 mb-6 pb-2 border-b-2 border-slate-200 mt-10">Tổng quan (Overview)</h2>
         <div class="bg-indigo-50 border-l-4 border-indigo-400 p-6 rounded-r-lg mb-10 text-lg text-slate-700 leading-relaxed">
-          Được thành lập với tâm huyết của những nhà giáo dục uy tín, Hệ thống Giáo dục Lê Quý Đôn tự hào là đơn vị đi tiên phong trong việc đổi mới phương pháp giảng dạy. Chúng tôi luôn chú trọng kết hợp hài hòa giữa tri thức chuẩn mực quốc gia và tư duy hội nhập toàn cầu, chuẩn bị hành trang vững chắc cho mọi thế hệ học sinh trên chặng đường bước vào kỷ nguyên số.
+          Được thành lập với tâm huyết của những nhà giáo dục uy tín, Hệ thống Giáo dục Vân Cốc tự hào là đơn vị đi tiên phong trong việc đổi mới phương pháp giảng dạy. Chúng tôi luôn chú trọng kết hợp hài hòa giữa tri thức chuẩn mực quốc gia và tư duy hội nhập toàn cầu, chuẩn bị hành trang vững chắc cho mọi thế hệ học sinh trên chặng đường bước vào kỷ nguyên số.
         </div>
 
         <h2 class="text-3xl font-bold text-blue-800 mb-6 pb-2 border-b-2 border-slate-200 mt-10">Tầm Nhìn (Vision)</h2>
@@ -236,7 +238,7 @@ const pages = [
         </ul>
       </div>
     `,
-    seoTitle: 'Tầm nhìn và Sứ mệnh | Lê Quý Đôn',
+    seoTitle: 'Tầm nhìn và Sứ mệnh | Vân Cốc',
   },
   {
     title: 'Thực đơn tiêu chuẩn',
@@ -247,7 +249,7 @@ const pages = [
         <div class="text-center mb-10">
           <h2 class="text-3xl lg:text-4xl font-bold text-green-700 mb-4 m-0">Thực Đơn Học Đường Đạt Chuẩn Dinh Dưỡng</h2>
           <p class="text-lg text-slate-600">
-            Tại Lê Quý Đôn, mỗi bữa ăn không chỉ ngon miệng mà còn là một bài học về văn hóa ẩm thực và chế độ dinh dưỡng cân bằng.
+            Tại Vân Cốc, mỗi bữa ăn không chỉ ngon miệng mà còn là một bài học về văn hóa ẩm thực và chế độ dinh dưỡng cân bằng.
           </p>
         </div>
         
@@ -307,7 +309,7 @@ const pages = [
         </div>
       </div>
     `,
-    seoTitle: 'Thực Đơn Học Đường | Lê Quý Đôn',
+    seoTitle: 'Thực Đơn Học Đường | Vân Cốc',
   },
   {
     title: 'Tuyển sinh năm học 2026 - 2027',
@@ -317,7 +319,7 @@ const pages = [
       <div class="max-w-4xl mx-auto">
         <div class="text-center mb-10">
           <h1 class="text-3xl lg:text-4xl font-bold text-blue-900 mb-3 m-0">Tuyển Sinh Năm Học 2026 - 2027</h1>
-          <p class="text-lg text-slate-500">Mở ra cánh cửa tương lai cho con em bạn tại Trường Tiểu Học Lê Quý Đôn</p>
+          <p class="text-lg text-slate-500">Mở ra cánh cửa tương lai cho con em bạn tại Trường Tiểu Học Vân Cốc</p>
         </div>
         
         <div class="rounded-xl overflow-hidden shadow-lg mb-10">
@@ -347,7 +349,7 @@ const pages = [
         <ol class="space-y-4 text-lg text-slate-700 pl-6 marker:text-blue-500 marker:font-bold">
           <li><strong>Đăng ký trực tuyến:</strong> Điền form quan tâm trên website dự kiến từ ngày 01/03/2026.</li>
           <li><strong>Nộp hồ sơ:</strong> Khai báo thông tin vào hệ thống Tuyển sinh điện tử.</li>
-          <li><strong>Trải nghiệm & Đánh giá:</strong> Học sinh tham gia "1 Ngày Làm Học Sinh Lê Quý Đôn" để thầy cô đánh giá khả năng tự lập và tương tác.</li>
+          <li><strong>Trải nghiệm & Đánh giá:</strong> Học sinh tham gia "1 Ngày Làm Học Sinh Vân Cốc" để thầy cô đánh giá khả năng tự lập và tương tác.</li>
           <li><strong>Phỏng vấn phụ huynh:</strong> Gặp gỡ Ban Giám Hiệu nhằm hiểu rõ định hướng giáo dục giữa hai bên.</li>
           <li><strong>Nhận kết quả và Hoàn tất thủ tục:</strong> Nhận giấy báo trúng tuyển trong vòng 03 ngày làm việc sau khi đánh giá.</li>
         </ol>
@@ -375,7 +377,7 @@ const pages = [
         </div>
       </div>
     `,
-    seoTitle: 'Thông tin tuyển sinh 2026 | Lê Quý Đôn',
+    seoTitle: 'Thông tin tuyển sinh 2026 | Vân Cốc',
   }
 ];
 

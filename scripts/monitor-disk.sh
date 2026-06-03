@@ -1,6 +1,6 @@
 #!/bin/bash
 # ──────────────────────────────────────────
-# Disk Usage Monitoring Script — LeQuyDon
+# Disk Usage Monitoring Script — VanCoc
 # Run via cron: */30 * * * * /opt/lqd/scripts/monitor-disk.sh
 # ──────────────────────────────────────────
 
@@ -32,7 +32,7 @@ if [ "${USAGE}" -ge "${THRESHOLD}" ]; then
         touch "${ALERT_FILE}"
         if command -v mail &> /dev/null; then
             echo "Disk usage on $(hostname) is at ${USAGE}%. Threshold: ${THRESHOLD}%." | \
-                mail -s "[LeQuyDon] Disk Alert: ${USAGE}% used" admin@bhquan.site 2>/dev/null || true
+                mail -s "[VanCoc] Disk Alert: ${USAGE}% used" admin@bhquan.site 2>/dev/null || true
         fi
         log "Alert sent"
     fi

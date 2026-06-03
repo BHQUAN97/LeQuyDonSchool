@@ -4,6 +4,8 @@
  */
 
 const API = process.env.API_URL || 'http://localhost:4200/api';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@lequydon.edu.vn';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Admin@123456';
 let token = '';
 
 export function setToken(t: string) {
@@ -43,8 +45,8 @@ export async function login() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      email: 'admin@lequydon.edu.vn',
-      password: 'Admin@123456',
+      email: ADMIN_EMAIL,
+      password: ADMIN_PASSWORD,
     }),
   });
   const json = await res.json();

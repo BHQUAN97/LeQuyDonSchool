@@ -40,10 +40,11 @@ export default function Carousel({
 }: CarouselProps) {
   const [current, setCurrent] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Khong can carousel neu chi co 1 slide
-  const shouldAutoPlay = total > 1 && autoInterval > 0;
+  const shouldAutoPlay = total > 1 && autoInterval > 0 && !isHovered && !isFocused;
 
   const goNext = useCallback(() => {
     setCurrent((prev) => (prev + 1) % total);
@@ -98,6 +99,8 @@ export default function Carousel({
       className={`relative ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onFocusCapture={() => setIsFocused(true)}
+      onBlurCapture={() => setIsFocused(false)}
     >
       {/* Slide content */}
       {renderSlide(current)}
@@ -106,7 +109,7 @@ export default function Carousel({
       {showArrows && total > 1 && (
         <div
           className={`absolute inset-0 flex items-center justify-between px-3 z-30 pointer-events-none transition-opacity duration-300 ${
-            isHovered ? 'opacity-100' : 'opacity-0'
+            isHovered || isFocused ? 'opacity-100' : 'opacity-100 md:opacity-0'
           }`}
         >
           <button

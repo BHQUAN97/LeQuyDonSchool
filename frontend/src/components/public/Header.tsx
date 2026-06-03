@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { Menu, X, Search, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -24,9 +25,9 @@ const navigation: NavItem[] = [
     children: [
       { label: 'Tầm nhìn & Sứ mệnh', href: '/tong-quan/tam-nhin-su-menh' },
       { label: 'Cột mốc phát triển', href: '/tong-quan/cot-moc-phat-trien' },
-      { label: 'Gia đình Doners', href: '/tong-quan/gia-dinh-doners' },
-      { label: 'Ngôi nhà Lê Quý Đôn', href: '/tong-quan/ngoi-nha-le-quy-don' },
-      { label: 'Sắc màu Lê Quý Đôn', href: '/tong-quan/sac-mau-le-quy-don' },
+      { label: 'Gia đình học sinh Vân Cốc', href: '/tong-quan/gia-dinh-doners' },
+      { label: 'Ngôi nhà Vân Cốc', href: '/tong-quan/ngoi-nha-van-coc' },
+      { label: 'Sắc màu Vân Cốc', href: '/tong-quan/sac-mau-van-coc' },
     ],
   },
   {
@@ -104,32 +105,43 @@ export default function Header() {
           <button
             onClick={() => { setMobileOpen(!mobileOpen); setSearchOpen(false); }}
             className="p-2 rounded-lg hover:bg-gray-100 transition-colors lg:hidden"
-            aria-label="Toggle menu"
+            aria-label={mobileOpen ? 'Đóng menu' : 'Mở menu'}
+            aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X className="w-6 h-6 text-gray-700" /> : <Menu className="w-6 h-6 text-gray-700" />}
           </button>
 
           {/* Logo — mobile: giua, desktop: trai */}
-          <Link href="/" className="flex items-center gap-3 shrink-0 lg:mr-auto">
-            <div className="w-11 h-11 lg:w-12 lg:h-12 rounded-full bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center border-2 border-yellow-500 shadow-sm">
-              <span className="text-white font-bold text-sm leading-none">LQD</span>
-            </div>
-            <div className="hidden sm:block">
-              <p className="text-sm text-green-700 font-semibold uppercase tracking-wide leading-tight">
-                Hệ thống Trường liên cấp Lê Quý Đôn
-              </p>
-              <p className="text-sm lg:text-[15px] font-bold text-red-600 leading-tight tracking-tight">
-                Trường Tiểu học Lê Quý Đôn
-              </p>
-            </div>
+          <Link href="/" className="flex items-center shrink-0 lg:mr-auto" aria-label="Trang chủ Trường Tiểu học Vân Cốc">
+            <Image
+              src="/images/design/logo-header.png"
+              alt="Trường Tiểu học Vân Cốc"
+              width={280}
+              height={54}
+              priority
+              className="h-11 w-auto sm:h-[54px]"
+            />
           </Link>
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-0.5">
             {navigation.map((item) => (
-              <div key={item.href} className="relative group">
+              <div
+                key={item.href}
+                className="relative"
+                onMouseEnter={() => item.children && setOpenDropdown(item.href)}
+                onMouseLeave={() => item.children && setOpenDropdown(null)}
+                onFocus={() => item.children && setOpenDropdown(item.href)}
+                onBlur={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget as Node)) {
+                    setOpenDropdown(null);
+                  }
+                }}
+              >
                 <Link
                   href={item.children ? item.children[0].href : item.href}
+                  aria-haspopup={item.children ? 'menu' : undefined}
+                  aria-expanded={item.children ? openDropdown === item.href : undefined}
                   className={cn(
                     'flex items-center px-3 xl:px-4 py-2 text-sm font-bold uppercase tracking-wide transition-colors border-b-2',
                     isActive(item.href)
@@ -142,7 +154,12 @@ export default function Header() {
 
                 {/* Dropdown — nen xanh dam */}
                 {item.children && (
-                  <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <div
+                    className={cn(
+                      'absolute top-full left-0 pt-2 transition-all duration-200 z-50',
+                      openDropdown === item.href ? 'opacity-100 visible' : 'opacity-0 invisible',
+                    )}
+                  >
                     <div className="bg-[#1a5c2e] rounded-lg shadow-xl py-2 min-w-[240px]">
                       {item.children.map((child) => (
                         <Link

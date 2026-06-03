@@ -33,12 +33,12 @@ export const DEFAULT_HOMEPAGE_CONFIG: HomepageConfig = {
   blocks: [
     { id: 'hero', label: 'Banner chính', visible: true, variant: 'full-width', order: 0 },
     { id: 'news', label: 'Tin tức mới cập nhật', visible: true, variant: 'featured-grid', order: 1 },
-    { id: 'features', label: 'Chỉ có tại Lê Quý Đôn', visible: true, variant: 'two-column', order: 2 },
+    { id: 'features', label: 'Chỉ có tại Vân Cốc', visible: true, variant: 'two-column', order: 2 },
     { id: 'testimonial', label: 'Cảm nhận từ cộng đồng', visible: true, variant: 'year-banner', order: 3 },
   ],
   theme: {
-    primaryColor: '#2E7D32',
-    accentColor: '#D32F2F',
+    primaryColor: '#08760e',
+    accentColor: '#e82424',
     headingFont: 'system',
     bodyFont: 'system',
     logoUrl: null,

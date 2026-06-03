@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* ──────────────────────────────────────────
- * Google Drive Backup — LeQuyDon CMS
+ * Google Drive Backup — VanCoc CMS
  *
  * Standalone Node.js CLI upload:
  *  - Latest MySQL dump (.sql.gz) from BACKUP_DIR

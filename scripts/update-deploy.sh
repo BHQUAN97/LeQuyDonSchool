@@ -1,9 +1,9 @@
 #!/bin/bash
 # ============================================================
-# LeQuyDon — UPDATE DEPLOY
+# VanCoc — UPDATE DEPLOY
 # ============================================================
 # Chay tu may local — chi build + upload + restart
-# Nginx chay trong Docker (shared-nginx), config tai /opt/webphoto/nginx/conf.d/
+# Nginx chay trong Docker (shared-nginx), config tai /opt/infra/nginx/conf.d/
 #
 # Usage:
 #   bash scripts/update-deploy.sh <vps-ip>
@@ -29,7 +29,7 @@ ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$ROOT_DIR"
 
 echo ""
-echo "=== LeQuyDon — Update Deploy ==="
+echo "=== VanCoc — Update Deploy ==="
 echo "  VPS: ${VPS_HOST}"
 echo ""
 

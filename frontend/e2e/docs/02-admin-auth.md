@@ -14,7 +14,7 @@ Kiem tra he thong xac thuc admin: login form UI, input validation, redirect khi 
 User truy cap /admin (chua login)
   → Redirect ve /admin/login
     → Form: email input + password input + submit button
-    → Logo "LQ" + ten "Le Quy Don" + text "Dang nhap quan tri"
+    → Logo "LQ" + ten "Van Coc" + text "Dang nhap quan tri"
     → Submit voi sai credentials → error message
     → Submit → button disabled (loading state)
     → Enter key → trigger submit
@@ -35,7 +35,7 @@ Protected routes (chua auth):
 - Goto `/admin` → URL phai match `/admin/login`
 
 **TC-02: trang login hien thi form day du**
-- Ky vong: Logo "LQ", ten truong "Le Quy Don", text "Dang nhap quan tri"
+- Ky vong: Logo "LQ", ten truong "Van Coc", text "Dang nhap quan tri"
 - Input `#email`, `#password`, button submit co text "Dang nhap"
 
 **TC-03: input email co placeholder**

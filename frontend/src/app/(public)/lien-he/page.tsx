@@ -1,6 +1,7 @@
 import Breadcrumb from '@/components/public/Breadcrumb';
 import { MapPin, Phone, Mail, Globe } from 'lucide-react';
 import ContactForm from './ContactForm';
+import { BRAND } from '@/config/brand';
 
 /* Metadata da duoc export tu layout.tsx — khong can export lai o page */
 
@@ -34,7 +35,7 @@ export default function LienHePage() {
       {/* Thong tin lien he */}
       <section className="max-w-7xl mx-auto px-4 py-6 lg:py-8">
         <p className="text-base text-slate-800 font-medium mb-2">
-          Cảm ơn Quý vị đã quan tâm đến Trường Tiểu học Lê Quý Đôn.
+          Cảm ơn Quý vị đã quan tâm đến Trường Tiểu học Vân Cốc.
         </p>
         <p className="text-sm text-slate-600 mb-8 leading-relaxed">
           Quý phụ huynh có thể liên hệ trực tiếp với nhà trường qua các kênh thông tin dưới đây,
@@ -74,10 +75,10 @@ export default function LienHePage() {
             <div>
               <span className="text-sm font-semibold text-slate-900">Email: </span>
               <a
-                href="mailto:tuyensinh@lequydonhanoi.edu.vn"
+                href={`mailto:${BRAND.admissionEmail}`}
                 className="text-sm text-green-700 hover:underline"
               >
-                tuyensinh@lequydonhanoi.edu.vn
+                {BRAND.admissionEmail}
               </a>
             </div>
           </div>
@@ -118,7 +119,7 @@ export default function LienHePage() {
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Bản đồ Trường Tiểu học Lê Quý Đôn"
+            title="Bản đồ Trường Tiểu học Vân Cốc"
           />
         </div>
       </section>

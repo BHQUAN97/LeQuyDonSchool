@@ -1,6 +1,6 @@
 #!/bin/bash
 # ──────────────────────────────────────────
-# Docker Cleanup Script — LeQuyDon
+# Docker Cleanup Script — VanCoc
 # Run via cron: 0 3 * * 0  /opt/lqd/scripts/docker-cleanup.sh
 # ──────────────────────────────────────────
 

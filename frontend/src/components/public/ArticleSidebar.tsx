@@ -91,9 +91,15 @@ export default async function ArticleSidebar() {
         <h3 className="font-bold text-base text-gray-900 mb-4">Sự kiện sắp diễn ra</h3>
         {events.length > 0 ? (
           <div className="space-y-4">
-            {events.map((e: any) => (
+            {events.map((e: any) => {
+              const eventCover = imgUrl(e.image_url) || '/images/design/event-3-san-sang.png';
+              return (
               <div key={e.id} className="bg-green-700 rounded-lg overflow-hidden text-white">
-                <div className="p-4">
+                <div className="relative h-40 bg-green-100">
+                  <Image src={eventCover} alt={e.title} fill className="object-cover" sizes="320px" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-green-900/75 via-green-800/20 to-transparent" />
+                </div>
+                <div className="p-4 -mt-12 relative">
                   <p className="text-sm uppercase tracking-wider text-green-200 mb-1">
                     {e.category || 'Sự kiện'}
                   </p>
@@ -104,7 +110,8 @@ export default async function ArticleSidebar() {
                   </p>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <p className="text-sm text-gray-400">Chưa có sự kiện nào sắp diễn ra.</p>
@@ -127,7 +134,7 @@ export default async function ArticleSidebar() {
         <div className="mt-3 bg-green-700 rounded-lg p-3 text-white">
           <p className="text-sm font-bold mb-1">Hội thảo 3 SẴN SÀNG cùng con vào lớp 1</p>
           <p className="text-sm opacity-80">
-            Trường Tiểu học Lê Quý Đôn
+            Trường Tiểu học Vân Cốc
           </p>
         </div>
       </div>

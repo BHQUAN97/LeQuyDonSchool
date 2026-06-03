@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ──────────────────────────────────────────
-# MySQL Restore Script — LeQuyDon
+# MySQL Restore Script — VanCoc
 # Restore a gzipped SQL dump created by backup-mysql.sh into the MySQL container.
 #
 # Usage:

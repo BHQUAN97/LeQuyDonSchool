@@ -1,6 +1,6 @@
-# Scripts — LeQuyDon
+# Scripts — VanCoc
 
-Backup / restore / ops tooling cho LeQuyDon CMS. Tat ca script duoc viet bash + `set -euo pipefail`.
+Backup / restore / ops tooling cho VanCoc CMS. Tat ca script duoc viet bash + `set -euo pipefail`.
 
 ## Muc luc
 

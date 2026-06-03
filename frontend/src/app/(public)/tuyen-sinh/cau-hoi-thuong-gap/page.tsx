@@ -7,7 +7,7 @@ import { getInternalApiBase } from '@/lib/ssr-api';
 export const metadata: Metadata = buildPageMetadata({
   title: 'Câu hỏi thường gặp - Tuyển sinh',
   description:
-    'Giải đáp các câu hỏi thường gặp về tuyển sinh Trường Tiểu học Lê Quý Đôn: đối tượng, thời gian, hồ sơ, quy trình tuyển sinh.',
+    'Giải đáp các câu hỏi thường gặp về tuyển sinh Trường Tiểu học Vân Cốc: đối tượng, thời gian, hồ sơ, quy trình tuyển sinh.',
   path: '/tuyen-sinh/cau-hoi-thuong-gap',
 });
 

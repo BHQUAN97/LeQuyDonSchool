@@ -13,37 +13,37 @@ interface Category {
 
 const articles = [
   {
-    title: 'Hành Trình Khám Phá Của Doners Khối 5 Tại Bản Rôm',
+    title: 'Hành Trình Khám Phá Của học sinh Vân Cốc Khối 5 Tại Bản Rôm',
     slug: 'hanh-trinh-kham-pha-doners-khoi-5-ban-rom',
     thumbnailUrl: 'https://picsum.photos/seed/lqd-ngoaikhoa-1/800/500',
     publishedAt: '2026-01-10T08:00:00.000Z',
     excerpt:
-      'Học sinh khối 5 trường Tiểu học Lê Quý Đôn có chuyến dã ngoại đáng nhớ tại Bản Rôm, trải nghiệm văn hóa dân tộc và thiên nhiên vùng cao.',
+      'Học sinh khối 5 trường Tiểu học Vân Cốc có chuyến dã ngoại đáng nhớ tại Bản Rôm, trải nghiệm văn hóa dân tộc và thiên nhiên vùng cao.',
     content: `
 <h2>Hành trình đến Bản Rôm</h2>
-<p>Sáng ngày 10 tháng 1 năm 2026, gần 120 học sinh khối 5 trường Tiểu học Lê Quý Đôn đã háo hức lên xe để bắt đầu chuyến hành trình khám phá tại Bản Rôm — một bản làng truyền thống của người Mường nằm sâu trong thung lũng xanh mát thuộc tỉnh Hòa Bình. Các em được chia thành 6 nhóm, mỗi nhóm mang tên một loài hoa đặc trưng của vùng cao: Đào, Mai, Lan, Cúc, Hướng Dương và Ban.</p>
+<p>Sáng ngày 10 tháng 1 năm 2026, gần 120 học sinh khối 5 trường Tiểu học Vân Cốc đã háo hức lên xe để bắt đầu chuyến hành trình khám phá tại Bản Rôm — một bản làng truyền thống của người Mường nằm sâu trong thung lũng xanh mát thuộc tỉnh Hòa Bình. Các em được chia thành 6 nhóm, mỗi nhóm mang tên một loài hoa đặc trưng của vùng cao: Đào, Mai, Lan, Cúc, Hướng Dương và Ban.</p>
 
 <h2>Trải nghiệm văn hóa bản địa</h2>
-<p>Đến nơi, các Doners nhí được bà con dân bản chào đón nồng nhiệt với điệu múa cồng chiêng truyền thống. Các em được tận mắt chứng kiến cách người Mường dệt vải thổ cẩm, nấu cơm lam trong ống nứa và chế biến các món ăn đặc sản vùng cao. Nhiều em lần đầu tiên được thử giã gạo bằng cối đá, tay chân lóng ngóng nhưng tràn đầy tiếng cười.</p>
+<p>Đến nơi, các học sinh Vân Cốc nhí được bà con dân bản chào đón nồng nhiệt với điệu múa cồng chiêng truyền thống. Các em được tận mắt chứng kiến cách người Mường dệt vải thổ cẩm, nấu cơm lam trong ống nứa và chế biến các món ăn đặc sản vùng cao. Nhiều em lần đầu tiên được thử giã gạo bằng cối đá, tay chân lóng ngóng nhưng tràn đầy tiếng cười.</p>
 
 <h3>Khám phá thiên nhiên</h3>
 <p>Buổi chiều, các nhóm tham gia hoạt động trekking nhẹ dọc theo con suối trong vắt chảy quanh bản. Thầy cô hướng dẫn các em quan sát và ghi chép lại các loài thực vật, côn trùng gặp trên đường đi. Bộ sưu tập lá cây ép khô mà các em mang về đã trở thành tài liệu học tập quý giá cho môn Tự nhiên và Xã hội trong suốt học kỳ.</p>
 
 <p>Cô Nguyễn Thị Hồng Nhung — giáo viên chủ nhiệm lớp 5A3 — chia sẻ: <em>"Chuyến đi giúp các em hiểu hơn về giá trị văn hóa truyền thống, biết trân trọng thiên nhiên và sống hòa hợp với cộng đồng. Đây là bài học mà không sách vở nào có thể thay thế được."</em></p>
 
-<p>Kết thúc chuyến đi, mỗi Doner đều mang về một chiếc vòng tay thổ cẩm do chính tay mình đan, cùng những kỷ niệm đẹp không bao giờ quên. Ban Giám hiệu nhà trường cho biết sẽ tiếp tục tổ chức các chuyến trải nghiệm tương tự cho các khối lớp trong năm học tới.</p>
+<p>Kết thúc chuyến đi, mỗi học sinh Vân Cốc đều mang về một chiếc vòng tay thổ cẩm do chính tay mình đan, cùng những kỷ niệm đẹp không bao giờ quên. Ban Giám hiệu nhà trường cho biết sẽ tiếp tục tổ chức các chuyến trải nghiệm tương tự cho các khối lớp trong năm học tới.</p>
 `.trim(),
   },
   {
-    title: 'Đại phim kể của Doners Sao — Nhảy mí là cả thế giới',
+    title: 'Đại phim kể của học sinh Vân Cốc Sao — Nhảy mí là cả thế giới',
     slug: 'dai-phim-ke-doners-sao-nhay-mi-la-ca-the-gioi',
     thumbnailUrl: 'https://picsum.photos/seed/lqd-ngoaikhoa-2/800/500',
     publishedAt: '2026-01-25T08:00:00.000Z',
     excerpt:
-      'Dự án phim ngắn do chính học sinh Doners Sao thực hiện, kể câu chuyện về ước mơ và đam mê nhảy múa của các em nhỏ trường Lê Quý Đôn.',
+      'Dự án phim ngắn do chính học sinh học sinh Vân Cốc Sao thực hiện, kể câu chuyện về ước mơ và đam mê nhảy múa của các em nhỏ trường Vân Cốc.',
     content: `
 <h2>Khi các em nhỏ trở thành nhà làm phim</h2>
-<p>Trong khuôn khổ dự án "Đại phim kể" — chương trình giáo dục sáng tạo đặc biệt dành cho khối Doners Sao (lớp 1-2), các em học sinh trường Tiểu học Lê Quý Đôn đã lần đầu tiên được trải nghiệm quy trình sản xuất một bộ phim ngắn hoàn chỉnh. Chủ đề năm nay là "Nhảy mí là cả thế giới" — nơi các Doner nhỏ tuổi nhất kể câu chuyện về niềm đam mê nhảy múa của mình.</p>
+<p>Trong khuôn khổ dự án "Đại phim kể" — chương trình giáo dục sáng tạo đặc biệt dành cho khối học sinh Vân Cốc Sao (lớp 1-2), các em học sinh trường Tiểu học Vân Cốc đã lần đầu tiên được trải nghiệm quy trình sản xuất một bộ phim ngắn hoàn chỉnh. Chủ đề năm nay là "Nhảy mí là cả thế giới" — nơi các học sinh Vân Cốc nhỏ tuổi nhất kể câu chuyện về niềm đam mê nhảy múa của mình.</p>
 
 <h2>Từ kịch bản đến phim trường</h2>
 <p>Dưới sự hướng dẫn của thầy Trần Minh Đức — giáo viên nghệ thuật — và ê-kíp tình nguyện viên gồm các phụ huynh có kinh nghiệm trong lĩnh vực truyền thông, 45 em học sinh đã cùng nhau viết kịch bản, thiết kế bối cảnh, tự làm đạo cụ từ giấy bìa và vải vụn. Quá trình quay phim diễn ra trong 3 ngày tại sân trường và phòng nghệ thuật.</p>
@@ -57,7 +57,7 @@ const articles = [
 `.trim(),
   },
   {
-    title: 'Biệt đội nhí — Doners kể sứ hiệp câu chuyện xanh',
+    title: 'Biệt đội nhí — học sinh Vân Cốc kể sứ hiệp câu chuyện xanh',
     slug: 'biet-doi-nhi-doners-ke-su-hiep-cau-chuyen-xanh',
     thumbnailUrl: 'https://picsum.photos/seed/lqd-ngoaikhoa-3/800/500',
     publishedAt: '2026-02-14T08:00:00.000Z',
@@ -65,7 +65,7 @@ const articles = [
       'Dự án môi trường "Câu chuyện xanh" với sự tham gia của hơn 300 học sinh, biến khuôn viên trường thành không gian xanh mát.',
     content: `
 <h2>Sứ mệnh xanh của Biệt đội nhí</h2>
-<p>Nhân dịp Tết trồng cây đầu xuân 2026, trường Tiểu học Lê Quý Đôn đã phát động dự án "Biệt đội nhí — Câu chuyện xanh" với sự tham gia nhiệt tình của hơn 300 học sinh từ lớp 3 đến lớp 5. Mỗi lớp thành lập một "Biệt đội xanh" gồm 10 thành viên, chịu trách nhiệm chăm sóc một khu vực cây xanh trong khuôn viên trường suốt cả học kỳ.</p>
+<p>Nhân dịp Tết trồng cây đầu xuân 2026, trường Tiểu học Vân Cốc đã phát động dự án "Biệt đội nhí — Câu chuyện xanh" với sự tham gia nhiệt tình của hơn 300 học sinh từ lớp 3 đến lớp 5. Mỗi lớp thành lập một "Biệt đội xanh" gồm 10 thành viên, chịu trách nhiệm chăm sóc một khu vực cây xanh trong khuôn viên trường suốt cả học kỳ.</p>
 
 <h2>Hoạt động cụ thể</h2>
 <p>Dự án được chia thành 4 giai đoạn chính: Khảo sát và lập kế hoạch (tuần 1-2), Trồng cây và thiết kế vườn (tuần 3-4), Chăm sóc và theo dõi (tuần 5-12), và Tổng kết đánh giá (tuần 13). Các Biệt đội nhí không chỉ trồng cây mà còn tự thiết kế biển tên cây, viết nhật ký theo dõi sự phát triển và tạo video ngắn giới thiệu "người bạn xanh" của mình.</p>
@@ -79,7 +79,7 @@ const articles = [
 `.trim(),
   },
   {
-    title: 'Trại Xuân 2026 — Team Tên Trộm 3 Doners Mùa xuân ơi',
+    title: 'Trại Xuân 2026 — Team Tên Trộm 3 học sinh Vân Cốc Mùa xuân ơi',
     slug: 'trai-xuan-2026-team-ten-trom-3-doners-mua-xuan-oi',
     thumbnailUrl: 'https://picsum.photos/seed/lqd-ngoaikhoa-4/800/500',
     publishedAt: '2026-02-20T08:00:00.000Z',
@@ -87,7 +87,7 @@ const articles = [
       'Trại Xuân 2026 với chủ đề "Mùa xuân ơi" mang đến 2 ngày trải nghiệm đầy sắc màu cho toàn thể học sinh nhà trường.',
     content: `
 <h2>Trại Xuân rực rỡ sắc màu</h2>
-<p>Ngày 20-21 tháng 2 năm 2026, trường Tiểu học Lê Quý Đôn đã tổ chức chương trình Trại Xuân thường niên với chủ đề "Mùa xuân ơi" tại khuôn viên trường. Năm nay, gần 800 học sinh được chia thành 16 đội chơi, trong đó Team "Tên Trộm 3" của khối Doners lớp 3 đã trở thành hiện tượng với màn trình diễn sáng tạo và tinh thần đồng đội xuất sắc.</p>
+<p>Ngày 20-21 tháng 2 năm 2026, trường Tiểu học Vân Cốc đã tổ chức chương trình Trại Xuân thường niên với chủ đề "Mùa xuân ơi" tại khuôn viên trường. Năm nay, gần 800 học sinh được chia thành 16 đội chơi, trong đó Team "Tên Trộm 3" của khối học sinh Vân Cốc lớp 3 đã trở thành hiện tượng với màn trình diễn sáng tạo và tinh thần đồng đội xuất sắc.</p>
 
 <h2>Các hoạt động tại trại</h2>
 <p>Chương trình Trại Xuân bao gồm nhiều hoạt động phong phú: Thi gói bánh chưng mini, hội thi trang trí trại, trò chơi dân gian (kéo co, nhảy bao bố, đập niêu), cuộc thi hát dân ca, và thử thách giải mật thư tìm kho báu ẩn trong khuôn viên trường. Mỗi hoạt động mang lại những bài học và trải nghiệm khác nhau về văn hóa truyền thống Việt Nam.</p>
@@ -97,7 +97,7 @@ const articles = [
 
 <p>Cô Lê Thị Thanh Hương — Tổng phụ trách Đội — cho biết: <em>"Trại Xuân không chỉ là dịp vui chơi mà còn là cơ hội để các em được rèn luyện kỹ năng sống, hiểu thêm về phong tục tập quán ngày Tết. Năm nay các em tự chủ và sáng tạo hơn rất nhiều so với năm trước."</em></p>
 
-<p>Kết thúc Trại Xuân, Team "Tên Trộm 3" xuất sắc giành giải Nhất toàn đoàn với tổng điểm cao nhất ở cả 5 phần thi. Mỗi thành viên được nhận phần thưởng là bộ sách hay và huy hiệu "Doner xuất sắc Trại Xuân 2026".</p>
+<p>Kết thúc Trại Xuân, Team "Tên Trộm 3" xuất sắc giành giải Nhất toàn đoàn với tổng điểm cao nhất ở cả 5 phần thi. Mỗi thành viên được nhận phần thưởng là bộ sách hay và huy hiệu "học sinh Vân Cốc xuất sắc Trại Xuân 2026".</p>
 `.trim(),
   },
   {
@@ -109,7 +109,7 @@ const articles = [
       'Hơn 250 học sinh khối 4-5 có chuyến trải nghiệm một ngày tại Vườn Quốc gia Ba Vì với nhiều hoạt động giáo dục bổ ích.',
     content: `
 <h2>Một ngày tuyệt vời tại Ba Vì</h2>
-<p>Sáng thứ Bảy ngày 8 tháng 3, hơn 250 học sinh khối 4 và khối 5 trường Tiểu học Lê Quý Đôn đã khởi hành từ sân trường để đến Vườn Quốc gia Ba Vì — lá phổi xanh cách Hà Nội khoảng 60 km về phía Tây. Đây là chuyến dã ngoại kết hợp học tập thực địa thuộc chương trình "Trải nghiệm — Sáng tạo" của nhà trường trong năm học 2025-2026.</p>
+<p>Sáng thứ Bảy ngày 8 tháng 3, hơn 250 học sinh khối 4 và khối 5 trường Tiểu học Vân Cốc đã khởi hành từ sân trường để đến Vườn Quốc gia Ba Vì — lá phổi xanh cách Hà Nội khoảng 60 km về phía Tây. Đây là chuyến dã ngoại kết hợp học tập thực địa thuộc chương trình "Trải nghiệm — Sáng tạo" của nhà trường trong năm học 2025-2026.</p>
 
 <h2>Hành trình khám phá</h2>
 <p>Đến nơi, các em được chia thành các nhóm nhỏ, mỗi nhóm có một giáo viên và một hướng dẫn viên của Vườn Quốc gia đi cùng. Lộ trình bao gồm tham quan Vườn thực vật quốc gia với hơn 1.000 loài cây, trong đó có nhiều loài quý hiếm được ghi trong Sách Đỏ Việt Nam. Các em được hướng dẫn nhận biết các loại cây thuốc nam truyền thống, cách phân biệt cây lá rộng và cây lá kim.</p>
@@ -128,10 +128,10 @@ const articles = [
     thumbnailUrl: 'https://picsum.photos/seed/lqd-ngoaikhoa-6/800/500',
     publishedAt: '2026-03-22T08:00:00.000Z',
     excerpt:
-      'Đội tuyển Robotics trường Lê Quý Đôn xuất sắc giành giải Nhất cuộc thi STEM cấp Thành phố Hà Nội năm 2026.',
+      'Đội tuyển Robotics trường Vân Cốc xuất sắc giành giải Nhất cuộc thi STEM cấp Thành phố Hà Nội năm 2026.',
     content: `
 <h2>Chiến thắng xứng đáng</h2>
-<p>Ngày 22 tháng 3 năm 2026, đội tuyển CLB Robotics trường Tiểu học Lê Quý Đôn đã xuất sắc giành giải Nhất tại cuộc thi "STEM Challenge Hà Nội 2026" dành cho bậc Tiểu học, được tổ chức tại Cung Thiếu nhi Hà Nội với sự tham gia của 48 đội tuyển đến từ 35 trường trên toàn thành phố.</p>
+<p>Ngày 22 tháng 3 năm 2026, đội tuyển CLB Robotics trường Tiểu học Vân Cốc đã xuất sắc giành giải Nhất tại cuộc thi "STEM Challenge Hà Nội 2026" dành cho bậc Tiểu học, được tổ chức tại Cung Thiếu nhi Hà Nội với sự tham gia của 48 đội tuyển đến từ 35 trường trên toàn thành phố.</p>
 
 <h2>Đội tuyển và sản phẩm dự thi</h2>
 <p>Đội tuyển gồm 6 thành viên: Nguyễn Minh Anh, Phạm Đức Huy, Lê Thảo Nguyên, Trần Bảo Long, Vũ Khánh Chi và Đỗ Quang Minh — đều là học sinh lớp 4 và lớp 5. Sản phẩm dự thi mang tên "AquaGuard" — một hệ thống tưới cây tự động sử dụng cảm biến độ ẩm đất, được lập trình trên nền tảng Arduino và điều khiển qua ứng dụng di động do các em tự thiết kế.</p>
@@ -150,18 +150,18 @@ const articles = [
     thumbnailUrl: 'https://picsum.photos/seed/lqd-ngoaikhoa-7/800/500',
     publishedAt: '2026-04-01T08:00:00.000Z',
     excerpt:
-      'Lần đầu tiên trường Lê Quý Đôn triển khai chương trình trao đổi học sinh quốc tế với trường PLC Sydney, Australia.',
+      'Lần đầu tiên trường Vân Cốc triển khai chương trình trao đổi học sinh quốc tế với trường PLC Sydney, Australia.',
     content: `
 <h2>Cầu nối hữu nghị Việt — Úc</h2>
-<p>Từ ngày 1 đến ngày 7 tháng 4 năm 2026, trường Tiểu học Lê Quý Đôn đã vinh dự đón tiếp đoàn 15 học sinh và 4 giáo viên từ trường Presbyterian Ladies' College (PLC) Sydney, Australia trong khuôn khổ chương trình trao đổi học sinh quốc tế đầu tiên của nhà trường. Đồng thời, 12 học sinh lớp 5 của trường Lê Quý Đôn cũng đã được chọn để sang thăm PLC Sydney vào tháng 6 tới.</p>
+<p>Từ ngày 1 đến ngày 7 tháng 4 năm 2026, trường Tiểu học Vân Cốc đã vinh dự đón tiếp đoàn 15 học sinh và 4 giáo viên từ trường Presbyterian Ladies' College (PLC) Sydney, Australia trong khuôn khổ chương trình trao đổi học sinh quốc tế đầu tiên của nhà trường. Đồng thời, 12 học sinh lớp 5 của trường Vân Cốc cũng đã được chọn để sang thăm PLC Sydney vào tháng 6 tới.</p>
 
 <h2>Tuần lễ trải nghiệm đa văn hóa</h2>
-<p>Trong suốt 7 ngày, các bạn học sinh Australia đã được tham gia trực tiếp vào các tiết học cùng học sinh Lê Quý Đôn, từ môn Toán, Tiếng Việt cho đến Mỹ thuật và Thể dục. Điều đặc biệt là các bạn PLC Sydney tỏ ra rất hứng thú với tiết học Tiếng Việt — các em háo hức tập phát âm các thanh điệu và học viết chữ Việt bằng bút lông.</p>
+<p>Trong suốt 7 ngày, các bạn học sinh Australia đã được tham gia trực tiếp vào các tiết học cùng học sinh Vân Cốc, từ môn Toán, Tiếng Việt cho đến Mỹ thuật và Thể dục. Điều đặc biệt là các bạn PLC Sydney tỏ ra rất hứng thú với tiết học Tiếng Việt — các em háo hức tập phát âm các thanh điệu và học viết chữ Việt bằng bút lông.</p>
 
 <h3>Hoạt động giao lưu văn hóa</h3>
 <p>Chương trình còn bao gồm nhiều hoạt động giao lưu ý nghĩa: buổi "Culture Show" nơi hai nhóm học sinh trình diễn các tiết mục văn nghệ đặc trưng của mỗi quốc gia, workshop nấu phở và làm bánh lamington, tham quan Văn Miếu — Quốc Tử Giám và phố cổ Hà Nội. Đặc biệt, dự án "Friendship Mural" — bức tranh tường chung do học sinh hai trường cùng vẽ tại sảnh chính — đã trở thành biểu tượng đẹp cho tình hữu nghị giữa hai ngôi trường.</p>
 
-<p>Cô Sarah Thompson — trưởng đoàn PLC Sydney — xúc động chia sẻ: <em>"Chúng tôi ấn tượng sâu sắc với sự hiếu khách và thân thiện của thầy trò trường Lê Quý Đôn. Các em học sinh Việt Nam rất thông minh, năng động và có khả năng giao tiếp tiếng Anh tốt hơn chúng tôi kỳ vọng rất nhiều."</em></p>
+<p>Cô Sarah Thompson — trưởng đoàn PLC Sydney — xúc động chia sẻ: <em>"Chúng tôi ấn tượng sâu sắc với sự hiếu khách và thân thiện của thầy trò trường Vân Cốc. Các em học sinh Việt Nam rất thông minh, năng động và có khả năng giao tiếp tiếng Anh tốt hơn chúng tôi kỳ vọng rất nhiều."</em></p>
 
 <p>Em Lily Chen — học sinh lớp 5 PLC Sydney — viết trong nhật ký: <em>"Việt Nam đẹp hơn tôi tưởng rất nhiều. Tôi đã có thêm nhiều người bạn mới tuyệt vời. Tôi hứa sẽ quay lại."</em> Chương trình trao đổi sẽ được tổ chức thường niên, luân phiên giữa hai trường, nhằm thúc đẩy sự hiểu biết và tình hữu nghị quốc tế từ thuở nhỏ.</p>
 `.trim(),
@@ -175,7 +175,7 @@ const articles = [
       'Hội khỏe Phù Đổng cấp trường 2026 với sự tham gia của toàn bộ học sinh, thi đấu 12 môn thể thao trong 3 ngày sôi động.',
     content: `
 <h2>Ngày hội thể thao lớn nhất năm</h2>
-<p>Từ ngày 5 đến ngày 7 tháng 4 năm 2026, trường Tiểu học Lê Quý Đôn đã long trọng tổ chức Hội khỏe Phù Đổng cấp trường — sự kiện thể thao thường niên lớn nhất và được mong đợi nhất trong năm học. Với sự tham gia của toàn bộ hơn 1.200 học sinh từ khối 1 đến khối 5, Hội khỏe năm nay thi đấu 12 môn thể thao, vượt xa quy mô 8 môn của năm ngoái.</p>
+<p>Từ ngày 5 đến ngày 7 tháng 4 năm 2026, trường Tiểu học Vân Cốc đã long trọng tổ chức Hội khỏe Phù Đổng cấp trường — sự kiện thể thao thường niên lớn nhất và được mong đợi nhất trong năm học. Với sự tham gia của toàn bộ hơn 1.200 học sinh từ khối 1 đến khối 5, Hội khỏe năm nay thi đấu 12 môn thể thao, vượt xa quy mô 8 môn của năm ngoái.</p>
 
 <h2>Các nội dung thi đấu</h2>
 <p>Chương trình thi đấu được thiết kế phù hợp với từng độ tuổi: Khối 1-2 tham gia các môn vận động vui như chạy tiếp sức, nhảy bao bố và kéo co. Khối 3-4 tranh tài ở các môn cầu lông, bóng bàn, cờ vua và nhảy dây. Khối 5 thi đấu chính thức các môn điền kinh (chạy 60m, chạy 200m, nhảy xa), bóng đá mini, bóng rổ và bơi lội.</p>

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* ──────────────────────────────────────────
- * Google Drive Restore — LeQuyDon CMS
+ * Google Drive Restore — VanCoc CMS
  *
  * Tai file backup tu Google Drive ve local. Ho tro:
  *  - Liet ke file backup (DB hoac media) trong GDrive folder

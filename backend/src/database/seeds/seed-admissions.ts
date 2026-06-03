@@ -6,7 +6,7 @@ import { AdmissionRegistration, RegistrationStatus } from '../../modules/admissi
 import { generateUlid } from '../../common/utils/ulid';
 
 /**
- * Seed du lieu mau cho module Tuyển sinh — Trường Tiểu học Lê Quý Đôn.
+ * Seed du lieu mau cho module Tuyển sinh — Trường Tiểu học Vân Cốc.
  * Idempotent — kiem tra ton tai truoc khi insert.
  * Chay: npm run seed:admissions
  */
@@ -49,11 +49,11 @@ const admissionPostsData: AdmissionPostData[] = [
   {
     title: 'Thông báo tuyển sinh lớp 1 năm học 2025-2026',
     slug: 'thong-bao-tuyen-sinh-lop-1-nam-hoc-2025-2026',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-1/800/400',
+    thumbnail_url: '/images/design/admission-2025-list.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-02-01'),
     content: `<h2>Thông báo tuyển sinh lớp 1 năm học 2025-2026</h2>
-<p>Trường Tiểu học Lê Quý Đôn, Hà Nội trân trọng thông báo kế hoạch tuyển sinh lớp 1 năm học 2025-2026. Nhà trường tiếp tục thực hiện tuyển sinh theo chủ trương của Sở Giáo dục và Đào tạo Hà Nội, đảm bảo minh bạch, công bằng và thuận tiện cho phụ huynh học sinh.</p>
+<p>Trường Tiểu học Vân Cốc, Hà Nội trân trọng thông báo kế hoạch tuyển sinh lớp 1 năm học 2025-2026. Nhà trường tiếp tục thực hiện tuyển sinh theo chủ trương của Sở Giáo dục và Đào tạo Hà Nội, đảm bảo minh bạch, công bằng và thuận tiện cho phụ huynh học sinh.</p>
 <h3>Đối tượng tuyển sinh</h3>
 <ul>
   <li>Trẻ em sinh năm 2019, đủ 6 tuổi tính đến ngày 31/12/2025</li>
@@ -62,16 +62,16 @@ const admissionPostsData: AdmissionPostData[] = [
 </ul>
 <h3>Thời gian đăng ký</h3>
 <p>Nhà trường tiếp nhận hồ sơ từ ngày <strong>01/06/2025 đến 15/06/2025</strong>. Phụ huynh có thể đăng ký trực tuyến qua cổng tuyển sinh trực tuyến của thành phố hoặc nộp hồ sơ trực tiếp tại văn phòng nhà trường trong giờ hành chính.</p>
-<p>Mọi thắc mắc vui lòng liên hệ Ban tuyển sinh: <strong>024.3826.xxxx</strong> hoặc email <strong>tuyensinh@lequydonhanoi.edu.vn</strong>.</p>`,
+<p>Mọi thắc mắc vui lòng liên hệ Ban tuyển sinh: <strong>024.3826.xxxx</strong> hoặc email <strong>tuyensinh@vancoc.edu.vn</strong>.</p>`,
   },
   {
     title: 'Quy trình và hồ sơ đăng ký nhập học lớp 1',
     slug: 'quy-trinh-va-ho-so-dang-ky-nhap-hoc-lop-1',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-2/800/400',
+    thumbnail_url: '/images/design/admission-process.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-02-10'),
     content: `<h2>Quy trình và hồ sơ đăng ký nhập học lớp 1</h2>
-<p>Để giúp phụ huynh chuẩn bị đầy đủ và nộp hồ sơ thuận tiện, Trường Tiểu học Lê Quý Đôn hướng dẫn chi tiết quy trình đăng ký nhập học lớp 1 năm học 2025-2026.</p>
+<p>Để giúp phụ huynh chuẩn bị đầy đủ và nộp hồ sơ thuận tiện, Trường Tiểu học Vân Cốc hướng dẫn chi tiết quy trình đăng ký nhập học lớp 1 năm học 2025-2026.</p>
 <h3>Hồ sơ cần chuẩn bị</h3>
 <ul>
   <li>Đơn xin nhập học (theo mẫu của nhà trường, tải tại website)</li>
@@ -89,7 +89,7 @@ const admissionPostsData: AdmissionPostData[] = [
   {
     title: 'Học phí và các khoản thu năm học 2025-2026',
     slug: 'hoc-phi-va-cac-khoan-thu-nam-hoc-2025-2026',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-3/800/400',
+    thumbnail_url: '/images/design/admission-2026-list.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-02-15'),
     content: `<h2>Học phí và các khoản thu năm học 2025-2026</h2>
@@ -111,14 +111,14 @@ const admissionPostsData: AdmissionPostData[] = [
   {
     title: 'Chính sách học bổng và hỗ trợ học sinh khó khăn',
     slug: 'chinh-sach-hoc-bong-va-ho-tro-hoc-sinh-kho-khan',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-4/800/400',
+    thumbnail_url: '/images/design/news-award.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-02-20'),
     content: `<h2>Chính sách học bổng và hỗ trợ học sinh khó khăn</h2>
-<p>Trường Tiểu học Lê Quý Đôn cam kết tạo cơ hội học tập bình đẳng cho tất cả học sinh. Nhà trường có nhiều chính sách hỗ trợ học sinh có hoàn cảnh khó khăn và học sinh xuất sắc.</p>
+<p>Trường Tiểu học Vân Cốc cam kết tạo cơ hội học tập bình đẳng cho tất cả học sinh. Nhà trường có nhiều chính sách hỗ trợ học sinh có hoàn cảnh khó khăn và học sinh xuất sắc.</p>
 <h3>Học bổng dành cho học sinh xuất sắc</h3>
 <ul>
-  <li><strong>Học bổng Lê Quý Đôn:</strong> Miễn 100% học phí trong 1 năm học cho học sinh đạt danh hiệu Học sinh Xuất sắc, có hoàn cảnh khó khăn</li>
+  <li><strong>Học bổng Vân Cốc:</strong> Miễn 100% học phí trong 1 năm học cho học sinh đạt danh hiệu Học sinh Xuất sắc, có hoàn cảnh khó khăn</li>
   <li><strong>Học bổng Khuyến học:</strong> Giảm 50% học phí cho học sinh có thành tích học tập tốt, gia đình thuộc diện hộ nghèo, cận nghèo</li>
 </ul>
 <h3>Chính sách miễn giảm học phí</h3>
@@ -132,11 +132,11 @@ const admissionPostsData: AdmissionPostData[] = [
   {
     title: 'Đội ngũ giáo viên tận tâm — Nền tảng chất lượng giáo dục',
     slug: 'doi-ngu-giao-vien-tan-tam-nen-tang-chat-luong-giao-duc',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-5/800/400',
+    thumbnail_url: '/images/design/intro-classroom.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-03-01'),
     content: `<h2>Đội ngũ giáo viên tận tâm — Nền tảng chất lượng giáo dục</h2>
-<p>Một trong những điểm mạnh nổi bật nhất của Trường Tiểu học Lê Quý Đôn chính là đội ngũ giáo viên giàu kinh nghiệm, tận tâm và không ngừng học hỏi. Với hơn 50 giáo viên có trình độ đại học và sau đại học, nhà trường tự hào mang đến môi trường giảng dạy chuyên nghiệp và ấm áp.</p>
+<p>Một trong những điểm mạnh nổi bật nhất của Trường Tiểu học Vân Cốc chính là đội ngũ giáo viên giàu kinh nghiệm, tận tâm và không ngừng học hỏi. Với hơn 50 giáo viên có trình độ đại học và sau đại học, nhà trường tự hào mang đến môi trường giảng dạy chuyên nghiệp và ấm áp.</p>
 <h3>Thành tích đội ngũ giáo viên</h3>
 <ul>
   <li>100% giáo viên đạt chuẩn trình độ đào tạo theo quy định của Bộ GD&ĐT</li>
@@ -145,16 +145,16 @@ const admissionPostsData: AdmissionPostData[] = [
   <li>Thường xuyên tham gia các khóa đào tạo bồi dưỡng chuyên môn trong và ngoài nước</li>
 </ul>
 <h3>Triết lý giảng dạy</h3>
-<p>Giáo viên Lê Quý Đôn đặt học sinh làm trung tâm, khuyến khích tư duy sáng tạo và phát triển toàn diện. Mỗi học sinh được quan tâm cá nhân, giúp các em phát huy tối đa tiềm năng của bản thân.</p>`,
+<p>Giáo viên Vân Cốc đặt học sinh làm trung tâm, khuyến khích tư duy sáng tạo và phát triển toàn diện. Mỗi học sinh được quan tâm cá nhân, giúp các em phát huy tối đa tiềm năng của bản thân.</p>`,
   },
   {
     title: 'Cơ sở vật chất hiện đại — Môi trường học lý tưởng',
     slug: 'co-so-vat-chat-hien-dai-moi-truong-hoc-ly-tuong',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-6/800/400',
+    thumbnail_url: '/images/design/hero-admission-2026.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-03-05'),
     content: `<h2>Cơ sở vật chất hiện đại — Môi trường học lý tưởng</h2>
-<p>Trường Tiểu học Lê Quý Đôn đầu tư mạnh vào cơ sở hạ tầng và thiết bị giảng dạy, tạo môi trường học tập hiện đại, an toàn và kích thích sự sáng tạo của học sinh.</p>
+<p>Trường Tiểu học Vân Cốc đầu tư mạnh vào cơ sở hạ tầng và thiết bị giảng dạy, tạo môi trường học tập hiện đại, an toàn và kích thích sự sáng tạo của học sinh.</p>
 <h3>Phòng học và khu vui chơi</h3>
 <ul>
   <li>30 phòng học tiêu chuẩn, đầy đủ điều hòa, máy chiếu và bảng tương tác</li>
@@ -174,11 +174,11 @@ const admissionPostsData: AdmissionPostData[] = [
   {
     title: 'Chương trình học — Chuẩn quốc gia và hội nhập quốc tế',
     slug: 'chuong-trinh-hoc-chuan-quoc-gia-va-hoi-nhap-quoc-te',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-7/800/400',
+    thumbnail_url: '/images/design/event-3-san-sang.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-03-08'),
     content: `<h2>Chương trình học — Chuẩn quốc gia và hội nhập quốc tế</h2>
-<p>Trường Tiểu học Lê Quý Đôn thực hiện chương trình giáo dục phổ thông 2018 của Bộ GD&ĐT, đồng thời tích hợp nhiều yếu tố hiện đại để phát triển toàn diện năng lực học sinh trong bối cảnh hội nhập quốc tế.</p>
+<p>Trường Tiểu học Vân Cốc thực hiện chương trình giáo dục phổ thông 2018 của Bộ GD&ĐT, đồng thời tích hợp nhiều yếu tố hiện đại để phát triển toàn diện năng lực học sinh trong bối cảnh hội nhập quốc tế.</p>
 <h3>Chương trình cơ bản</h3>
 <ul>
   <li>Toán, Tiếng Việt, Đạo đức — nền tảng tư duy và nhân cách</li>
@@ -197,11 +197,11 @@ const admissionPostsData: AdmissionPostData[] = [
   {
     title: 'Chương trình tiếng Anh tăng cường — Cánh cửa ra thế giới',
     slug: 'chuong-trinh-tieng-anh-tang-cuong-canh-cua-ra-the-gioi',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-8/800/400',
+    thumbnail_url: '/images/design/testimonial-family.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-03-12'),
     content: `<h2>Chương trình tiếng Anh tăng cường — Cánh cửa ra thế giới</h2>
-<p>Chương trình tiếng Anh tăng cường của Trường Tiểu học Lê Quý Đôn được thiết kế bài bản, kết hợp phương pháp giảng dạy hiện đại với đội ngũ giáo viên bản ngữ và Việt Nam có kinh nghiệm, giúp học sinh phát triển 4 kỹ năng Nghe - Nói - Đọc - Viết một cách tự nhiên và hiệu quả.</p>
+<p>Chương trình tiếng Anh tăng cường của Trường Tiểu học Vân Cốc được thiết kế bài bản, kết hợp phương pháp giảng dạy hiện đại với đội ngũ giáo viên bản ngữ và Việt Nam có kinh nghiệm, giúp học sinh phát triển 4 kỹ năng Nghe - Nói - Đọc - Viết một cách tự nhiên và hiệu quả.</p>
 <h3>Nội dung chương trình</h3>
 <ul>
   <li>4 tiết tiếng Anh/tuần (2 tiết với GV Việt Nam + 2 tiết với GV bản ngữ)</li>
@@ -210,16 +210,16 @@ const admissionPostsData: AdmissionPostData[] = [
   <li>Cuối năm học sinh thi chứng chỉ Cambridge YLE (tùy chọn, không bắt buộc)</li>
 </ul>
 <h3>Kết quả đầu ra</h3>
-<p>Học sinh hoàn thành chương trình cấp tiểu học tại Lê Quý Đôn có thể giao tiếp tiếng Anh tự tin trong các tình huống hàng ngày, đạt trình độ tương đương A2-B1 theo khung CEFR. Đây là nền tảng vững chắc để tiếp tục học lên THCS và THPT chuyên Anh.</p>`,
+<p>Học sinh hoàn thành chương trình cấp tiểu học tại Vân Cốc có thể giao tiếp tiếng Anh tự tin trong các tình huống hàng ngày, đạt trình độ tương đương A2-B1 theo khung CEFR. Đây là nền tảng vững chắc để tiếp tục học lên THCS và THPT chuyên Anh.</p>`,
   },
   {
     title: 'Hoạt động ngoài giờ và câu lạc bộ phong phú',
     slug: 'hoat-dong-ngoai-gio-va-cau-lac-bo-phong-phu',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-9/800/400',
+    thumbnail_url: '/images/design/admission-2026-detail.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-03-15'),
     content: `<h2>Hoạt động ngoài giờ và câu lạc bộ phong phú</h2>
-<p>Bên cạnh chương trình học chính khóa, Trường Tiểu học Lê Quý Đôn tổ chức hơn 20 câu lạc bộ và hoạt động ngoại khóa đa dạng, giúp học sinh khám phá đam mê và phát triển kỹ năng toàn diện.</p>
+<p>Bên cạnh chương trình học chính khóa, Trường Tiểu học Vân Cốc tổ chức hơn 20 câu lạc bộ và hoạt động ngoại khóa đa dạng, giúp học sinh khám phá đam mê và phát triển kỹ năng toàn diện.</p>
 <h3>Câu lạc bộ thể thao</h3>
 <ul>
   <li>Bóng đá, bơi lội, cầu lông, bóng rổ, võ thuật (Taekwondo)</li>
@@ -236,11 +236,11 @@ const admissionPostsData: AdmissionPostData[] = [
   {
     title: 'Thể chất và dinh dưỡng — Sức khỏe là nền tảng học tập',
     slug: 'the-chat-va-dinh-duong-suc-khoe-la-nen-tang-hoc-tap',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-10/800/400',
+    thumbnail_url: '/images/design/admission-2025-list.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-03-18'),
     content: `<h2>Thể chất và dinh dưỡng — Sức khỏe là nền tảng học tập</h2>
-<p>Trường Tiểu học Lê Quý Đôn coi trọng sức khỏe thể chất và dinh dưỡng như một phần không thể thiếu trong giáo dục toàn diện. Nhà trường phối hợp chặt chẽ với chuyên gia dinh dưỡng và y tế để đảm bảo mỗi học sinh phát triển khỏe mạnh.</p>
+<p>Trường Tiểu học Vân Cốc coi trọng sức khỏe thể chất và dinh dưỡng như một phần không thể thiếu trong giáo dục toàn diện. Nhà trường phối hợp chặt chẽ với chuyên gia dinh dưỡng và y tế để đảm bảo mỗi học sinh phát triển khỏe mạnh.</p>
 <h3>Chương trình thể chất</h3>
 <ul>
   <li>2 tiết thể dục/tuần trong chương trình chính khóa</li>
@@ -259,12 +259,12 @@ const admissionPostsData: AdmissionPostData[] = [
   {
     title: 'Chương trình STEM — Chuẩn bị cho tương lai số',
     slug: 'chuong-trinh-stem-chuan-bi-cho-tuong-lai-so',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-11/800/400',
+    thumbnail_url: '/images/design/admission-process.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-03-20'),
     content: `<h2>Chương trình STEM — Chuẩn bị cho tương lai số</h2>
-<p>Trong bối cảnh cách mạng công nghiệp 4.0, giáo dục STEM (Khoa học, Công nghệ, Kỹ thuật, Toán học) đóng vai trò then chốt trong việc chuẩn bị thế hệ trẻ cho tương lai. Trường Tiểu học Lê Quý Đôn tự hào là một trong những trường tiểu học tiên phong đưa STEM vào chương trình giảng dạy tại Hà Nội.</p>
-<h3>Nội dung STEM tại Lê Quý Đôn</h3>
+<p>Trong bối cảnh cách mạng công nghiệp 4.0, giáo dục STEM (Khoa học, Công nghệ, Kỹ thuật, Toán học) đóng vai trò then chốt trong việc chuẩn bị thế hệ trẻ cho tương lai. Trường Tiểu học Vân Cốc tự hào là một trong những trường tiểu học tiên phong đưa STEM vào chương trình giảng dạy tại Hà Nội.</p>
+<h3>Nội dung STEM tại Vân Cốc</h3>
 <ul>
   <li>Phòng Lab STEM hiện đại với robot giáo dục Lego Spike, micro:bit</li>
   <li>Lập trình Scratch từ lớp 3, Python cơ bản từ lớp 5</li>
@@ -272,16 +272,16 @@ const admissionPostsData: AdmissionPostData[] = [
   <li>Tham gia cuộc thi Khoa học kỹ thuật cấp quận, thành phố</li>
 </ul>
 <h3>Thành tích STEM nổi bật</h3>
-<p>Trong 3 năm gần đây, học sinh Lê Quý Đôn đã giành nhiều giải thưởng tại các cuộc thi STEM cấp quận và thành phố. Năm 2024, đội robot của trường đạt giải Nhì cuộc thi Robotics Hà Nội dành cho học sinh tiểu học.</p>`,
+<p>Trong 3 năm gần đây, học sinh Vân Cốc đã giành nhiều giải thưởng tại các cuộc thi STEM cấp quận và thành phố. Năm 2024, đội robot của trường đạt giải Nhì cuộc thi Robotics Hà Nội dành cho học sinh tiểu học.</p>`,
   },
   {
     title: 'Dịch vụ xe đưa đón — An toàn và tiện lợi',
     slug: 'dich-vu-xe-dua-don-an-toan-va-tien-loi',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-12/800/400',
+    thumbnail_url: '/images/design/intro-campus-sanitizing.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-03-22'),
     content: `<h2>Dịch vụ xe đưa đón — An toàn và tiện lợi</h2>
-<p>Hiểu được nỗi lo của các bậc phụ huynh về việc đưa đón con trong giờ cao điểm, Trường Tiểu học Lê Quý Đôn cung cấp dịch vụ xe đưa đón học sinh tận nhà với nhiều tuyến đường phủ khắp nội thành Hà Nội.</p>
+<p>Hiểu được nỗi lo của các bậc phụ huynh về việc đưa đón con trong giờ cao điểm, Trường Tiểu học Vân Cốc cung cấp dịch vụ xe đưa đón học sinh tận nhà với nhiều tuyến đường phủ khắp nội thành Hà Nội.</p>
 <h3>Thông tin dịch vụ</h3>
 <ul>
   <li>Xe 16-45 chỗ, có điều hòa, đạt tiêu chuẩn an toàn giao thông</li>
@@ -293,13 +293,13 @@ const admissionPostsData: AdmissionPostData[] = [
 <p>Phí xe đưa đón dao động từ <strong>500.000 - 800.000 đồng/tháng</strong> tùy theo tuyến đường. Phụ huynh đăng ký theo tháng hoặc theo học kỳ. Liên hệ nhà trường để biết tuyến xe gần nhà và mức phí cụ thể.</p>`,
   },
   {
-    title: 'Ngày Hội Mở — Cơ hội khám phá ngôi trường Lê Quý Đôn',
-    slug: 'ngay-hoi-mo-co-hoi-kham-pha-ngoi-truong-le-quy-don',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-13/800/400',
+    title: 'Ngày Hội Mở — Cơ hội khám phá ngôi trường Vân Cốc',
+    slug: 'ngay-hoi-mo-co-hoi-kham-pha-ngoi-truong-van-coc',
+    thumbnail_url: '/images/design/intro-lunch.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-03-25'),
-    content: `<h2>Ngày Hội Mở — Cơ hội khám phá ngôi trường Lê Quý Đôn</h2>
-<p>Trường Tiểu học Lê Quý Đôn tổ chức <strong>Ngày Hội Mở (Open Day)</strong> dành cho phụ huynh và các em học sinh tương lai. Đây là cơ hội tuyệt vời để gia đình trực tiếp tham quan trường, gặp gỡ Ban Giám hiệu, giáo viên và trải nghiệm các hoạt động học tập thú vị.</p>
+    content: `<h2>Ngày Hội Mở — Cơ hội khám phá ngôi trường Vân Cốc</h2>
+<p>Trường Tiểu học Vân Cốc tổ chức <strong>Ngày Hội Mở (Open Day)</strong> dành cho phụ huynh và các em học sinh tương lai. Đây là cơ hội tuyệt vời để gia đình trực tiếp tham quan trường, gặp gỡ Ban Giám hiệu, giáo viên và trải nghiệm các hoạt động học tập thú vị.</p>
 <h3>Lịch Open Day 2025</h3>
 <ul>
   <li><strong>Đợt 1:</strong> Thứ Bảy, ngày 15/03/2025 — 8:00 đến 11:00</li>
@@ -315,27 +315,27 @@ const admissionPostsData: AdmissionPostData[] = [
 <p>Phụ huynh vui lòng đăng ký trước tại website hoặc gọi điện để nhà trường chuẩn bị chu đáo nhất. Số lượng có hạn, đăng ký sớm để đảm bảo suất!</p>`,
   },
   {
-    title: 'Câu chuyện cựu học sinh — Hành trình từ Lê Quý Đôn',
-    slug: 'cau-chuyen-cuu-hoc-sinh-hanh-trinh-tu-le-quy-don',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-14/800/400',
+    title: 'Câu chuyện cựu học sinh — Hành trình từ Vân Cốc',
+    slug: 'cau-chuyen-cuu-hoc-sinh-hanh-trinh-tu-van-coc',
+    thumbnail_url: '/images/design/intro-healthcare.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-03-28'),
-    content: `<h2>Câu chuyện cựu học sinh — Hành trình từ Lê Quý Đôn</h2>
-<p>Nhiều thế hệ học sinh đã trưởng thành từ mái trường Tiểu học Lê Quý Đôn và tiếp tục ghi dấu ấn tại các trường THCS, THPT danh tiếng và đại học hàng đầu. Dưới đây là những câu chuyện truyền cảm hứng từ các cựu học sinh.</p>
+    content: `<h2>Câu chuyện cựu học sinh — Hành trình từ Vân Cốc</h2>
+<p>Nhiều thế hệ học sinh đã trưởng thành từ mái trường Tiểu học Vân Cốc và tiếp tục ghi dấu ấn tại các trường THCS, THPT danh tiếng và đại học hàng đầu. Dưới đây là những câu chuyện truyền cảm hứng từ các cựu học sinh.</p>
 <h3>Em Nguyễn Minh Khoa — Lớp 5B (2019-2020)</h3>
-<p>Hiện đang học tại THCS Nguyễn Tất Thành, Khoa chia sẻ: <em>"Những năm tháng ở Lê Quý Đôn cho mình nền tảng tiếng Anh rất tốt và kỹ năng tư duy logic. Mình yêu Toán hơn nhờ các thầy cô ở đây."</em></p>
+<p>Hiện đang học tại THCS Nguyễn Tất Thành, Khoa chia sẻ: <em>"Những năm tháng ở Vân Cốc cho mình nền tảng tiếng Anh rất tốt và kỹ năng tư duy logic. Mình yêu Toán hơn nhờ các thầy cô ở đây."</em></p>
 <h3>Em Trần Thị Bảo Châu — Lớp 5A (2020-2021)</h3>
-<p>Hiện học tại THCS Chu Văn An, Bảo Châu chia sẻ: <em>"Chương trình kỹ năng sống và các câu lạc bộ tại Lê Quý Đôn giúp mình tự tin, mạnh dạn hơn rất nhiều. Cô chủ nhiệm luôn quan tâm và lắng nghe từng học sinh."</em></p>
-<p>Trường Tiểu học Lê Quý Đôn tự hào khi hàng năm có trên 90% học sinh lớp 5 đỗ vào các trường THCS công lập chất lượng cao và các trường có tiếng ở Hà Nội.</p>`,
+<p>Hiện học tại THCS Chu Văn An, Bảo Châu chia sẻ: <em>"Chương trình kỹ năng sống và các câu lạc bộ tại Vân Cốc giúp mình tự tin, mạnh dạn hơn rất nhiều. Cô chủ nhiệm luôn quan tâm và lắng nghe từng học sinh."</em></p>
+<p>Trường Tiểu học Vân Cốc tự hào khi hàng năm có trên 90% học sinh lớp 5 đỗ vào các trường THCS công lập chất lượng cao và các trường có tiếng ở Hà Nội.</p>`,
   },
   {
     title: 'So sánh chương trình chuẩn và nâng cao — Phụ huynh cần biết gì?',
     slug: 'so-sanh-chuong-trinh-chuan-va-nang-cao-phu-huynh-can-biet-gi',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-15/800/400',
+    thumbnail_url: '/images/design/intro-medical-check.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-04-01'),
     content: `<h2>So sánh chương trình chuẩn và nâng cao — Phụ huynh cần biết gì?</h2>
-<p>Trường Tiểu học Lê Quý Đôn cung cấp hai luồng chương trình: <strong>Chương trình chuẩn</strong> theo quy định của Bộ GD&ĐT và <strong>Chương trình nâng cao</strong> với tiếng Anh tăng cường. Bài viết này giúp phụ huynh hiểu rõ sự khác biệt để lựa chọn phù hợp cho con.</p>
+<p>Trường Tiểu học Vân Cốc cung cấp hai luồng chương trình: <strong>Chương trình chuẩn</strong> theo quy định của Bộ GD&ĐT và <strong>Chương trình nâng cao</strong> với tiếng Anh tăng cường. Bài viết này giúp phụ huynh hiểu rõ sự khác biệt để lựa chọn phù hợp cho con.</p>
 <h3>Chương trình chuẩn</h3>
 <ul>
   <li>Thực hiện đúng theo CT GDPT 2018</li>
@@ -355,11 +355,11 @@ const admissionPostsData: AdmissionPostData[] = [
   {
     title: 'Thủ tục chuyển trường — Hướng dẫn cho phụ huynh',
     slug: 'thu-tuc-chuyen-truong-huong-dan-cho-phu-huynh',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-16/800/400',
+    thumbnail_url: '/images/design/intro-safety-training.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-04-02'),
     content: `<h2>Thủ tục chuyển trường — Hướng dẫn cho phụ huynh</h2>
-<p>Đối với học sinh đã đang học tại trường khác và muốn chuyển về Trường Tiểu học Lê Quý Đôn, nhà trường hướng dẫn thủ tục chuyển trường rõ ràng, đơn giản và nhanh chóng.</p>
+<p>Đối với học sinh đã đang học tại trường khác và muốn chuyển về Trường Tiểu học Vân Cốc, nhà trường hướng dẫn thủ tục chuyển trường rõ ràng, đơn giản và nhanh chóng.</p>
 <h3>Điều kiện chuyển trường</h3>
 <ul>
   <li>Nhà trường có chỉ tiêu còn trống ở lớp tương ứng</li>
@@ -378,11 +378,11 @@ const admissionPostsData: AdmissionPostData[] = [
   {
     title: 'Chính sách ưu đãi học phí cho anh chị em trong gia đình',
     slug: 'chinh-sach-uu-dai-hoc-phi-cho-anh-chi-em-trong-gia-dinh',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-17/800/400',
+    thumbnail_url: '/images/design/news-health-check.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-04-03'),
     content: `<h2>Chính sách ưu đãi học phí cho anh chị em trong gia đình</h2>
-<p>Trường Tiểu học Lê Quý Đôn có chính sách ưu đãi đặc biệt dành cho các gia đình có từ 2 con trở lên cùng học tại trường. Đây là cách nhà trường ghi nhận sự tin tưởng và gắn bó của các gia đình qua nhiều năm.</p>
+<p>Trường Tiểu học Vân Cốc có chính sách ưu đãi đặc biệt dành cho các gia đình có từ 2 con trở lên cùng học tại trường. Đây là cách nhà trường ghi nhận sự tin tưởng và gắn bó của các gia đình qua nhiều năm.</p>
 <h3>Mức ưu đãi</h3>
 <ul>
   <li>Con thứ hai cùng học tại trường: giảm <strong>10%</strong> học phí tháng</li>
@@ -397,11 +397,11 @@ const admissionPostsData: AdmissionPostData[] = [
   {
     title: 'Kết quả tuyển sinh năm học 2024-2025 — Nhìn lại để tiến xa hơn',
     slug: 'ket-qua-tuyen-sinh-nam-hoc-2024-2025-nhin-lai-de-tien-xa-hon',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-18/800/400',
+    thumbnail_url: '/images/design/news-food-safety.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-04-05'),
     content: `<h2>Kết quả tuyển sinh năm học 2024-2025 — Nhìn lại để tiến xa hơn</h2>
-<p>Năm học 2024-2025, Trường Tiểu học Lê Quý Đôn ghi nhận nhiều tín hiệu tích cực về công tác tuyển sinh. Nhà trường chia sẻ kết quả để phụ huynh hiểu rõ hơn về quy mô và chất lượng của trường.</p>
+<p>Năm học 2024-2025, Trường Tiểu học Vân Cốc ghi nhận nhiều tín hiệu tích cực về công tác tuyển sinh. Nhà trường chia sẻ kết quả để phụ huynh hiểu rõ hơn về quy mô và chất lượng của trường.</p>
 <h3>Số liệu tuyển sinh 2024-2025</h3>
 <ul>
   <li>Tổng số hồ sơ đăng ký: <strong>420 hồ sơ</strong> cho 6 lớp lớp 1 (180 chỉ tiêu)</li>
@@ -415,7 +415,7 @@ const admissionPostsData: AdmissionPostData[] = [
   {
     title: 'Tổng hợp câu hỏi thường gặp từ phụ huynh mùa tuyển sinh',
     slug: 'tong-hop-cau-hoi-thuong-gap-tu-phu-huynh-mua-tuyen-sinh',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-19/800/400',
+    thumbnail_url: '/images/design/news-doi-khoi.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-04-06'),
     content: `<h2>Tổng hợp câu hỏi thường gặp từ phụ huynh mùa tuyển sinh</h2>
@@ -430,13 +430,13 @@ const admissionPostsData: AdmissionPostData[] = [
 <p><strong>A:</strong> Cả hai hình thức đều được chấp nhận và xử lý như nhau. Đăng ký online tiện lợi hơn, nhưng phụ huynh vẫn cần đến nộp bản gốc hồ sơ trước ngày khai giảng.</p>`,
   },
   {
-    title: 'Tour tham quan ảo — Khám phá Lê Quý Đôn từ xa',
-    slug: 'tour-tham-quan-ao-kham-pha-le-quy-don-tu-xa',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-20/800/400',
+    title: 'Tour tham quan ảo — Khám phá Vân Cốc từ xa',
+    slug: 'tour-tham-quan-ao-kham-pha-van-coc-tu-xa',
+    thumbnail_url: '/images/design/news-award.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-04-07'),
-    content: `<h2>Tour tham quan ảo — Khám phá Lê Quý Đôn từ xa</h2>
-<p>Dành cho phụ huynh ở xa hoặc bận rộn chưa có điều kiện đến trực tiếp, Trường Tiểu học Lê Quý Đôn ra mắt <strong>Tour tham quan ảo 360°</strong> trên website, giúp gia đình khám phá toàn bộ khuôn viên ngay từ điện thoại hay máy tính.</p>
+    content: `<h2>Tour tham quan ảo — Khám phá Vân Cốc từ xa</h2>
+<p>Dành cho phụ huynh ở xa hoặc bận rộn chưa có điều kiện đến trực tiếp, Trường Tiểu học Vân Cốc ra mắt <strong>Tour tham quan ảo 360°</strong> trên website, giúp gia đình khám phá toàn bộ khuôn viên ngay từ điện thoại hay máy tính.</p>
 <h3>Những gì bạn sẽ thấy trong tour ảo</h3>
 <ul>
   <li>Khu vực đón trả học sinh, cổng trường và bãi đỗ xe</li>
@@ -448,28 +448,28 @@ const admissionPostsData: AdmissionPostData[] = [
 <p>Tour ảo có thể xem tại mục <strong>Về chúng tôi → Tham quan trường</strong> trên website. Chúng tôi cũng có video giới thiệu trường trên kênh YouTube chính thức. Phụ huynh xem xong nếu có thêm câu hỏi hãy liên hệ trực tiếp để được tư vấn thêm.</p>`,
   },
   {
-    title: 'Phụ huynh chia sẻ — Tại sao chọn Lê Quý Đôn cho con?',
-    slug: 'phu-huynh-chia-se-tai-sao-chon-le-quy-don-cho-con',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-21/800/400',
+    title: 'Phụ huynh chia sẻ — Tại sao chọn Vân Cốc cho con?',
+    slug: 'phu-huynh-chia-se-tai-sao-chon-van-coc-cho-con',
+    thumbnail_url: '/images/design/admission-2026-list.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-04-08'),
-    content: `<h2>Phụ huynh chia sẻ — Tại sao chọn Lê Quý Đôn cho con?</h2>
-<p>Không có lời giới thiệu nào chân thực hơn những chia sẻ từ chính các bậc phụ huynh đã và đang gửi con tại Trường Tiểu học Lê Quý Đôn. Dưới đây là những câu chuyện thực tế.</p>
+    content: `<h2>Phụ huynh chia sẻ — Tại sao chọn Vân Cốc cho con?</h2>
+<p>Không có lời giới thiệu nào chân thực hơn những chia sẻ từ chính các bậc phụ huynh đã và đang gửi con tại Trường Tiểu học Vân Cốc. Dưới đây là những câu chuyện thực tế.</p>
 <h3>Chị Nguyễn Thị Hà — Phụ huynh lớp 3B</h3>
-<p><em>"Mình chọn Lê Quý Đôn vì nghe nhiều người giới thiệu về thầy cô tận tâm. Và đúng thật, cô chủ nhiệm của con mình luôn nhắn tin báo cáo tình hình học tập hàng tuần. Cảm giác an tâm hơn rất nhiều."</em></p>
+<p><em>"Mình chọn Vân Cốc vì nghe nhiều người giới thiệu về thầy cô tận tâm. Và đúng thật, cô chủ nhiệm của con mình luôn nhắn tin báo cáo tình hình học tập hàng tuần. Cảm giác an tâm hơn rất nhiều."</em></p>
 <h3>Anh Trần Đức Bình — Phụ huynh lớp 2A</h3>
 <p><em>"Điều tôi ưng nhất là chương trình không áp lực, con vẫn vui chơi đủ nhưng học lực tốt. Con tôi tiến bộ tiếng Anh rất nhiều chỉ sau 1 năm học."</em></p>
 <h3>Chị Lê Phương Linh — Phụ huynh lớp 4C</h3>
 <p><em>"Trường sạch sẽ, bữa ăn ngon, giáo viên thân thiện. Quan trọng là con thích đi học, buổi sáng dậy sớm không kêu ca. Đó là điều tôi mong nhất."</em></p>`,
   },
   {
-    title: 'Giáo dục 4.0 tại Lê Quý Đôn — Học sinh của tương lai',
-    slug: 'giao-duc-4-0-tai-le-quy-don-hoc-sinh-cua-tuong-lai',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-22/800/400',
+    title: 'Giáo dục 4.0 tại Vân Cốc — Học sinh của tương lai',
+    slug: 'giao-duc-4-0-tai-van-coc-hoc-sinh-cua-tuong-lai',
+    thumbnail_url: '/images/design/admission-2025-list.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-04-09'),
-    content: `<h2>Giáo dục 4.0 tại Lê Quý Đôn — Học sinh của tương lai</h2>
-<p>Cách mạng công nghiệp 4.0 đang thay đổi mọi lĩnh vực, bao gồm cả giáo dục. Trường Tiểu học Lê Quý Đôn chủ động thích ứng và đổi mới, mang đến cho học sinh những trải nghiệm học tập hiện đại nhất phù hợp với lứa tuổi tiểu học.</p>
+    content: `<h2>Giáo dục 4.0 tại Vân Cốc — Học sinh của tương lai</h2>
+<p>Cách mạng công nghiệp 4.0 đang thay đổi mọi lĩnh vực, bao gồm cả giáo dục. Trường Tiểu học Vân Cốc chủ động thích ứng và đổi mới, mang đến cho học sinh những trải nghiệm học tập hiện đại nhất phù hợp với lứa tuổi tiểu học.</p>
 <h3>Ứng dụng công nghệ trong dạy học</h3>
 <ul>
   <li>Bảng tương tác thông minh (Interactive Whiteboard) tại tất cả phòng học</li>
@@ -483,11 +483,11 @@ const admissionPostsData: AdmissionPostData[] = [
   {
     title: 'Kế hoạch mở rộng cơ sở mới — Đón đầu nhu cầu tuyển sinh tăng cao',
     slug: 'ke-hoach-mo-rong-co-so-moi-don-dau-nhu-cau-tuyen-sinh-tang-cao',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-23/800/400',
+    thumbnail_url: '/images/design/hero-admission-2026.png',
     status: AdmissionPostStatus.DRAFT,
     published_at: null,
     content: `<h2>Kế hoạch mở rộng cơ sở mới — Đón đầu nhu cầu tuyển sinh tăng cao</h2>
-<p>Trước nhu cầu ngày càng tăng của phụ huynh và học sinh, Trường Tiểu học Lê Quý Đôn đang trong giai đoạn lên kế hoạch mở rộng với cơ sở mới tại địa điểm thuận tiện hơn cho các gia đình phía Tây Hà Nội.</p>
+<p>Trước nhu cầu ngày càng tăng của phụ huynh và học sinh, Trường Tiểu học Vân Cốc đang trong giai đoạn lên kế hoạch mở rộng với cơ sở mới tại địa điểm thuận tiện hơn cho các gia đình phía Tây Hà Nội.</p>
 <h3>Dự kiến cơ sở mới</h3>
 <ul>
   <li>Vị trí: khu vực Cầu Giấy - Nam Từ Liêm (đang trong giai đoạn khảo sát)</li>
@@ -500,11 +500,11 @@ const admissionPostsData: AdmissionPostData[] = [
   {
     title: 'Gia hạn thời gian nộp hồ sơ tuyển sinh — Cơ hội cuối cho phụ huynh',
     slug: 'gia-han-thoi-gian-nop-ho-so-tuyen-sinh-co-hoi-cuoi-cho-phu-huynh',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-24/800/400',
+    thumbnail_url: '/images/design/admission-process.png',
     status: AdmissionPostStatus.DRAFT,
     published_at: null,
     content: `<h2>Gia hạn thời gian nộp hồ sơ tuyển sinh — Cơ hội cuối cho phụ huynh</h2>
-<p>Do một số phụ huynh chưa kịp hoàn thiện hồ sơ trong thời gian quy định, Trường Tiểu học Lê Quý Đôn xem xét gia hạn tiếp nhận hồ sơ tuyển sinh thêm 7 ngày. Thông báo chính thức sẽ được đăng sau khi có quyết định từ Ban Giám hiệu.</p>
+<p>Do một số phụ huynh chưa kịp hoàn thiện hồ sơ trong thời gian quy định, Trường Tiểu học Vân Cốc xem xét gia hạn tiếp nhận hồ sơ tuyển sinh thêm 7 ngày. Thông báo chính thức sẽ được đăng sau khi có quyết định từ Ban Giám hiệu.</p>
 <h3>Dự kiến thời gian gia hạn</h3>
 <ul>
   <li>Thời gian gia hạn (dự kiến): 16/06/2025 đến 22/06/2025</li>
@@ -516,14 +516,14 @@ const admissionPostsData: AdmissionPostData[] = [
   {
     title: 'Hướng dẫn đăng ký tuyển sinh trực tuyến năm 2025',
     slug: 'huong-dan-dang-ky-tuyen-sinh-truc-tuyen-nam-2025',
-    thumbnail_url: 'https://picsum.photos/seed/lqd-admission-25/800/400',
+    thumbnail_url: '/images/design/event-3-san-sang.png',
     status: AdmissionPostStatus.PUBLISHED,
     published_at: new Date('2025-04-10'),
     content: `<h2>Hướng dẫn đăng ký tuyển sinh trực tuyến năm 2025</h2>
-<p>Để tạo thuận lợi tối đa cho phụ huynh, Trường Tiểu học Lê Quý Đôn triển khai hệ thống đăng ký tuyển sinh trực tuyến. Phụ huynh có thể thực hiện hoàn toàn trên điện thoại hoặc máy tính mà không cần đến trường.</p>
+<p>Để tạo thuận lợi tối đa cho phụ huynh, Trường Tiểu học Vân Cốc triển khai hệ thống đăng ký tuyển sinh trực tuyến. Phụ huynh có thể thực hiện hoàn toàn trên điện thoại hoặc máy tính mà không cần đến trường.</p>
 <h3>Các bước đăng ký trực tuyến</h3>
 <ul>
-  <li><strong>Bước 1:</strong> Truy cập website nhà trường tại <em>lequydonhanoi.edu.vn</em>, chọn mục <strong>Tuyển sinh → Đăng ký online</strong></li>
+  <li><strong>Bước 1:</strong> Truy cập website nhà trường tại <em>vancoc.edu.vn</em>, chọn mục <strong>Tuyển sinh → Đăng ký online</strong></li>
   <li><strong>Bước 2:</strong> Điền đầy đủ thông tin học sinh và phụ huynh vào form đăng ký</li>
   <li><strong>Bước 3:</strong> Upload ảnh scan các giấy tờ cần thiết (giấy khai sinh, hộ khẩu)</li>
   <li><strong>Bước 4:</strong> Xác nhận và gửi form. Hệ thống sẽ gửi email xác nhận trong vòng 24 giờ</li>
@@ -575,7 +575,7 @@ interface AdmissionFaqData {
 const admissionFaqsData: AdmissionFaqData[] = [
   {
     question: 'Trường tiếp nhận học sinh từ lớp mấy đến lớp mấy?',
-    answer: 'Trường Tiểu học Lê Quý Đôn tiếp nhận học sinh từ lớp 1 đến lớp 5. Hàng năm nhà trường tổ chức tuyển sinh lớp 1 chính thức theo kế hoạch của Sở GD&ĐT Hà Nội, đồng thời tiếp nhận học sinh chuyển trường ở các khối lớp khác tùy theo chỉ tiêu còn trống.',
+    answer: 'Trường Tiểu học Vân Cốc tiếp nhận học sinh từ lớp 1 đến lớp 5. Hàng năm nhà trường tổ chức tuyển sinh lớp 1 chính thức theo kế hoạch của Sở GD&ĐT Hà Nội, đồng thời tiếp nhận học sinh chuyển trường ở các khối lớp khác tùy theo chỉ tiêu còn trống.',
     display_order: 1,
     is_visible: true,
   },
@@ -641,7 +641,7 @@ const admissionFaqsData: AdmissionFaqData[] = [
   },
   {
     question: 'Nhà trường có chính sách học bổng không?',
-    answer: 'Có, nhà trường có học bổng Lê Quý Đôn (miễn 100% học phí 1 năm) dành cho học sinh xuất sắc có hoàn cảnh khó khăn và học bổng Khuyến học (giảm 50%) cho học sinh học tốt thuộc hộ nghèo, cận nghèo. Học sinh diện chính sách nhà nước được miễn học phí theo quy định. Liên hệ Ban Giám hiệu để biết thêm chi tiết.',
+    answer: 'Có, nhà trường có học bổng Vân Cốc (miễn 100% học phí 1 năm) dành cho học sinh xuất sắc có hoàn cảnh khó khăn và học bổng Khuyến học (giảm 50%) cho học sinh học tốt thuộc hộ nghèo, cận nghèo. Học sinh diện chính sách nhà nước được miễn học phí theo quy định. Liên hệ Ban Giám hiệu để biết thêm chi tiết.',
     display_order: 12,
     is_visible: true,
   },

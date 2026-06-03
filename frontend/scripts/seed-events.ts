@@ -1,5 +1,5 @@
 /**
- * Seed 3 su kien (events) cho LeQuyDon.
+ * Seed 3 su kien (events) cho VanCoc.
  * Chay qua seed-runner.ts hoac truc tiep: npx tsx scripts/seed-events.ts
  */
 
@@ -7,12 +7,13 @@ import { apiPost, login } from './seed-helpers';
 
 const EVENTS = [
   {
-    title: 'Kỷ niệm 20 năm thành lập Hệ thống Trường Liên cấp Lê Quý Đôn',
+    title: 'Kỷ niệm 20 năm thành lập Hệ thống Trường Liên cấp Vân Cốc',
     startDate: '2025-08-04T08:00:00Z',
     endDate: '2025-08-04T17:00:00Z',
-    location: 'Trường TH Lê Quý Đôn',
+    location: 'Trường TH Vân Cốc',
     status: 'upcoming',
-    description: `<p>Hệ thống Trường Liên cấp Lê Quý Đôn trân trọng kính mời Quý Phụ huynh, các thế hệ học sinh và toàn thể cán bộ, giáo viên, nhân viên tham dự <strong>Lễ Kỷ niệm 20 năm thành lập</strong> (2005 — 2025).</p>
+    imageUrl: '/images/design/hero-admission-2026.png',
+    description: `<p>Hệ thống Trường Liên cấp Vân Cốc trân trọng kính mời Quý Phụ huynh, các thế hệ học sinh và toàn thể cán bộ, giáo viên, nhân viên tham dự <strong>Lễ Kỷ niệm 20 năm thành lập</strong> (2005 — 2025).</p>
 <h3>Chương trình</h3>
 <ul>
   <li><strong>08:00 — 08:30:</strong> Đón khách, ổn định vị trí</li>
@@ -31,9 +32,10 @@ const EVENTS = [
     title: 'Hội thảo 3 SẴN SÀNG cùng con vào lớp 1',
     startDate: '2026-03-21T08:30:00',
     endDate: '2026-03-21T11:30:00',
-    location: 'Hội trường Trường TH Lê Quý Đôn',
+    location: 'Hội trường Trường TH Vân Cốc',
     status: 'upcoming',
-    description: `<p>Trường Tiểu học Lê Quý Đôn tổ chức <strong>Hội thảo "3 SẴN SÀNG cùng con vào lớp 1"</strong> dành cho Phụ huynh có con chuẩn bị vào lớp 1 năm học 2026 — 2027.</p>
+    imageUrl: '/images/design/event-3-san-sang.png',
+    description: `<p>Trường Tiểu học Vân Cốc tổ chức <strong>Hội thảo "3 SẴN SÀNG cùng con vào lớp 1"</strong> dành cho Phụ huynh có con chuẩn bị vào lớp 1 năm học 2026 — 2027.</p>
 <h3>Nội dung chính</h3>
 <ol>
   <li><strong>Sẵn sàng về tâm lý:</strong> Giúp con tự tin, hứng khởi khi bước vào môi trường mới. Chuyên gia tâm lý chia sẻ cách đồng hành cùng con trong giai đoạn chuyển tiếp.</li>
@@ -43,19 +45,20 @@ const EVENTS = [
 <h3>Thông tin chi tiết</h3>
 <ul>
   <li><strong>Thời gian:</strong> 08:30 — 11:30, Thứ Bảy ngày 21/3/2026</li>
-  <li><strong>Địa điểm:</strong> Hội trường Trường TH Lê Quý Đôn</li>
+  <li><strong>Địa điểm:</strong> Hội trường Trường TH Vân Cốc</li>
   <li><strong>Đối tượng:</strong> Phụ huynh có con sinh năm 2020</li>
   <li><strong>Phí tham dự:</strong> Miễn phí</li>
 </ul>
-<p>Quý Phụ huynh vui lòng đăng ký trước ngày <strong>18/3/2026</strong> qua hotline <strong>024 3835 1466</strong> hoặc email <strong>tuyensinh@lequydonhanoi.edu.vn</strong>.</p>`,
+<p>Quý Phụ huynh vui lòng đăng ký trước ngày <strong>18/3/2026</strong> qua hotline <strong>024 3835 1466</strong> hoặc email <strong>tuyensinh@vancoc.edu.vn</strong>.</p>`,
   },
   {
     title: 'Ngày hội Open Day 2026',
     startDate: '2026-05-15T08:00:00Z',
     endDate: '2026-05-15T16:00:00Z',
-    location: 'Trường TH Lê Quý Đôn',
+    location: 'Trường TH Vân Cốc',
     status: 'upcoming',
-    description: `<p>Trường Tiểu học Lê Quý Đôn trân trọng kính mời Quý Phụ huynh và các em học sinh tham dự <strong>Ngày hội Open Day 2026</strong> — cơ hội để trải nghiệm trực tiếp môi trường học tập tại trường.</p>
+    imageUrl: '/images/design/hero-admission-2026.png',
+    description: `<p>Trường Tiểu học Vân Cốc trân trọng kính mời Quý Phụ huynh và các em học sinh tham dự <strong>Ngày hội Open Day 2026</strong> — cơ hội để trải nghiệm trực tiếp môi trường học tập tại trường.</p>
 <h3>Hoạt động trong ngày</h3>
 <ul>
   <li><strong>08:00 — 09:00:</strong> Đón tiếp, tham quan khuôn viên trường</li>
@@ -70,8 +73,8 @@ const EVENTS = [
 <p>Quý Phụ huynh đăng ký tham dự trước ngày <strong>10/5/2026</strong> qua:</p>
 <ul>
   <li>Hotline: <strong>024 3835 1466</strong></li>
-  <li>Email: <strong>tuyensinh@lequydonhanoi.edu.vn</strong></li>
-  <li>Website: <strong>lequydonhanoi.edu.vn</strong></li>
+  <li>Email: <strong>tuyensinh@vancoc.edu.vn</strong></li>
+  <li>Website: <strong>vancoc.edu.vn</strong></li>
 </ul>
 <p><em>Số lượng có hạn, vui lòng đăng ký sớm!</em></p>`,
   },

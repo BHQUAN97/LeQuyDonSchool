@@ -2,7 +2,7 @@
 
 ## Summary
 
-Kiem tra trang chu (/) — man hinh chinh cua website Truong Tieu hoc Le Quy Don. Test dam bao layout dung (header, main, footer), co nhieu sections noi dung, hinh anh, links dieu huong, page title, va day du SEO meta tags (description, Open Graph, viewport, charset, favicon).
+Kiem tra trang chu (/) — man hinh chinh cua website Truong Tieu hoc Van Coc. Test dam bao layout dung (header, main, footer), co nhieu sections noi dung, hinh anh, links dieu huong, page title, va day du SEO meta tags (description, Open Graph, viewport, charset, favicon).
 
 **File test:** `e2e/homepage.spec.ts`
 **So test:** 11 (6 Sections & Content + 5 SEO & Meta Tags)

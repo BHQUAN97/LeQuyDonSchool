@@ -242,12 +242,12 @@ const settingsData: SettingSeed[] = [
   // ── general (3) ──────────────────────────────────────────────
   {
     key: 'site_name',
-    value: 'Trường Tiểu học Lê Quý Đôn',
+    value: 'Trường Tiểu học Vân Cốc',
     group: 'general',
   },
   {
     key: 'site_description',
-    value: 'Trường Tiểu học Lê Quý Đôn Hà Nội — ngôi trường tiểu học tiên tiến, nơi ươm mầm tương lai cho thế hệ trẻ Việt Nam.',
+    value: 'Trường Tiểu học Vân Cốc — ngôi trường tiểu học tiên tiến, nơi ươm mầm tương lai cho thế hệ trẻ Việt Nam.',
     group: 'general',
   },
   {
@@ -259,7 +259,7 @@ const settingsData: SettingSeed[] = [
   // ── contact (4) ──────────────────────────────────────────────
   {
     key: 'contact_email',
-    value: 'info@lequydonhanoi.edu.vn',
+    value: 'info@vancoc.edu.vn',
     group: 'contact',
   },
   {
@@ -269,7 +269,7 @@ const settingsData: SettingSeed[] = [
   },
   {
     key: 'contact_address',
-    value: 'Phố Lê Quý Đôn, Phường Trung Phụng, Quận Đống Đa, Hà Nội',
+    value: 'Phố Vân Cốc, Phường Trung Phụng, Quận Đống Đa, Hà Nội',
     group: 'contact',
   },
   {
@@ -298,12 +298,12 @@ const settingsData: SettingSeed[] = [
   // ── seo (2) ──────────────────────────────────────────────────
   {
     key: 'seo_default_title',
-    value: 'Trường Tiểu học Lê Quý Đôn Hà Nội — Ngôi trường tiên tiến, nhân văn',
+    value: 'Trường Tiểu học Vân Cốc — Ngôi trường tiên tiến, nhân văn',
     group: 'seo',
   },
   {
     key: 'seo_default_description',
-    value: 'Trường Tiểu học Lê Quý Đôn Hà Nội cung cấp chương trình giáo dục tiên tiến, toàn diện với các chương trình Tiếng Anh tăng cường, STEM, kỹ năng sống cho học sinh tiểu học.',
+    value: 'Trường Tiểu học Vân Cốc cung cấp chương trình giáo dục tiên tiến, toàn diện với các chương trình Tiếng Anh tăng cường, STEM, kỹ năng sống cho học sinh tiểu học.',
     group: 'seo',
   },
 
@@ -377,15 +377,15 @@ const navigationData: NavParentSeed[] = [
         is_visible: true,
       },
       {
-        label: 'Ngôi nhà Lê Quý Đôn',
-        url: '/tong-quan/ngoi-nha-le-quy-don',
+        label: 'Ngôi nhà Vân Cốc',
+        url: '/tong-quan/ngoi-nha-van-coc',
         target: MenuTarget.SELF,
         display_order: 3,
         is_visible: true,
       },
       {
-        label: 'Sắc màu Lê Quý Đôn',
-        url: '/tong-quan/sac-mau-le-quy-don',
+        label: 'Sắc màu Vân Cốc',
+        url: '/tong-quan/sac-mau-van-coc',
         target: MenuTarget.SELF,
         display_order: 4,
         is_visible: true,

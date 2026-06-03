@@ -1,5 +1,5 @@
 /**
- * Main seed runner — tao demo data cho LeQuyDon.
+ * Main seed runner — tao demo data cho VanCoc.
  * Chay: npx tsx scripts/seed-runner.ts
  */
 

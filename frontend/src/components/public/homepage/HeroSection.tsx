@@ -25,14 +25,14 @@ function HeroWithSidebar() {
         <div>
           <div className="flex items-center gap-3 mb-6">
             <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center border-2 border-yellow-400 shrink-0">
-              <span className="text-white font-bold text-sm">LQD</span>
+              <span className="text-white font-bold text-sm">VC</span>
             </div>
             <div>
               <p className="text-sm uppercase tracking-wider text-green-200">
                 He thong Truong lien cap
               </p>
               <p className="text-sm font-bold leading-tight">
-                Truong Tieu hoc Le Quy Don
+                Truong Tieu hoc Van Coc
               </p>
             </div>
           </div>
@@ -96,7 +96,7 @@ function HeroMinimal() {
         </p>
         <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-4 leading-tight drop-shadow-lg">
           Truong Tieu hoc{' '}
-          <span className="text-yellow-300">Le Quy Don</span>
+          <span className="text-yellow-300">Van Coc</span>
         </h1>
         <p className="text-base lg:text-lg opacity-90 mb-8 drop-shadow max-w-xl mx-auto">
           Tu ky vong den tin yeu — moi ngay den truong la mot hanh trinh kham pha, sang tao va truong thanh.

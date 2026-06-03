@@ -8,6 +8,11 @@ vi.mock('next/link', () => ({
   ),
 }));
 
+vi.mock('next/image', () => ({
+  // eslint-disable-next-line @next/next/no-img-element
+  default: ({ src, alt, ...props }: any) => <img src={src} alt={alt} {...props} />,
+}));
+
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
   usePathname: () => '/',
@@ -27,7 +32,7 @@ import Header from '../public/Header';
 describe('Header', () => {
   it('should render the school name', () => {
     render(<Header />);
-    expect(screen.getByText('Trường Tiểu học Lê Quý Đôn')).toBeInTheDocument();
+    expect(screen.getByAltText('Trường Tiểu học Vân Cốc')).toBeInTheDocument();
   });
 
   it('should render logo link to homepage', () => {
@@ -53,7 +58,7 @@ describe('Header', () => {
 
   it('should render mobile menu toggle button', () => {
     render(<Header />);
-    const menuButton = screen.getByLabelText('Toggle menu');
+    const menuButton = screen.getByLabelText('Mở menu');
     expect(menuButton).toBeInTheDocument();
   });
 });

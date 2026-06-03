@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# DB CHANGELOG RUNNER (directory-versioned) — LeQuyDon
+# DB CHANGELOG RUNNER (directory-versioned) — VanCoc
 # Cau truc: db/changelog/{version}/{NNN}__mo_ta.sql
 #
 # Usage:
@@ -32,7 +32,7 @@ if [ ! -d "$CHANGELOG_DIR" ]; then
   exit 1
 fi
 
-# LeQuyDon dung chung shared-mysql nhung DB rieng (lqd)
+# VanCoc dung chung shared-mysql nhung DB rieng (lqd)
 LQD_DB_PWD=$(ssh "${VPS_HOST}" "grep '^LQD_DB_PASSWORD=' ${APP_DIR}/.env | cut -d= -f2-")
 if [ -z "$LQD_DB_PWD" ]; then
   echo -e "${RED}[ERR]${NC} Khong doc duoc LQD_DB_PASSWORD tu .env tren VPS"
@@ -42,7 +42,7 @@ fi
 MYSQL_CMD="docker exec -i shared-mysql mysql -u lqd -p${LQD_DB_PWD} lqd"
 
 echo ""
-echo "=== DB Changelog Runner (LeQuyDon) ==="
+echo "=== DB Changelog Runner (VanCoc) ==="
 echo "  VPS: ${VPS_HOST}"
 echo ""
 

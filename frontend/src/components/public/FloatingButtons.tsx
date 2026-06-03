@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Phone, MessageCircle, ArrowUp, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { BRAND } from '@/config/brand';
 
 export default function FloatingButtons() {
   const [showScroll, setShowScroll] = useState(false);
@@ -24,7 +25,7 @@ export default function FloatingButtons() {
       bg: 'bg-red-600 hover:bg-red-700',
     },
     {
-      href: 'https://m.me/TieuHocLeQuyDon',
+      href: BRAND.messengerUrl,
       icon: <MessageCircle className="w-5 h-5" />,
       label: 'Messenger',
       bg: 'bg-green-600 hover:bg-green-700',

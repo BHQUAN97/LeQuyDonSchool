@@ -27,6 +27,7 @@ export default function ContactForm() {
     // Client-side validation — chong spam va input doc hai
     const name = formData.name.trim();
     const email = formData.email.trim();
+    const address = formData.address.trim();
     const phone = formData.phone.trim();
     const message = formData.message.trim();
 
@@ -40,7 +41,12 @@ export default function ContactForm() {
       setLoading(false);
       return;
     }
-    if (phone && !/^[0-9+\-\s()]{8,15}$/.test(phone)) {
+    if (address.length < 5 || address.length > 255) {
+      setError('Địa chỉ phải từ 5-255 ký tự.');
+      setLoading(false);
+      return;
+    }
+    if (!/^[0-9+\-\s()]{8,15}$/.test(phone)) {
       setError('Số điện thoại không hợp lệ (8-15 ký tự, chỉ số và +-).');
       setLoading(false);
       return;

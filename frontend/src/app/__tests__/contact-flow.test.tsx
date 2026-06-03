@@ -1,181 +1,133 @@
-/**
- * Integration test — Contact form complete flow
- *
- * Tests the full LienHePage component behavior:
- * form rendering, validation, successful submission, error handling.
- */
-
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-// Mock lucide-react icons to avoid rendering issues in test
 vi.mock('lucide-react', () => ({
   MapPin: (props: any) => <span data-testid="icon-mappin" {...props} />,
   Phone: (props: any) => <span data-testid="icon-phone" {...props} />,
   Mail: (props: any) => <span data-testid="icon-mail" {...props} />,
-  Clock: (props: any) => <span data-testid="icon-clock" {...props} />,
-  Send: (props: any) => <span data-testid="icon-send" {...props} />,
+  Globe: (props: any) => <span data-testid="icon-globe" {...props} />,
+  ChevronRight: (props: any) => <span data-testid="icon-chevron-right" {...props} />,
   CheckCircle: (props: any) => <span data-testid="icon-check" {...props} />,
 }));
 
-// Mock PageBanner component
-vi.mock('@/components/public/PageBanner', () => ({
-  default: ({ title }: { title: string }) => <div data-testid="page-banner">{title}</div>,
-}));
-
-// Mock api function
 const mockApi = vi.fn();
+
 vi.mock('@/lib/api', () => ({
   api: (...args: any[]) => mockApi(...args),
 }));
 
-// Import component AFTER mocks
+vi.mock('@/lib/csrf', () => ({
+  getCsrfToken: vi.fn().mockResolvedValue('csrf-token'),
+}));
+
 import LienHePage from '../(public)/lien-he/page';
 
-describe('Contact Form — Complete Flow', () => {
+async function fillValidForm() {
+  await userEvent.type(screen.getByPlaceholderText('Nhập họ và tên'), 'Nguyen Van A');
+  await userEvent.type(screen.getByPlaceholderText('Nhập email'), 'test@test.com');
+  await userEvent.type(screen.getByPlaceholderText('Nhập địa chỉ'), 'Ha Noi');
+  await userEvent.type(screen.getByPlaceholderText('Nhập số điện thoại'), '0912345678');
+  await userEvent.type(screen.getByPlaceholderText('Nhập nội dung liên hệ...'), 'Noi dung lien he test');
+}
+
+describe('Contact Form complete flow', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  describe('Form renders with all fields', () => {
-    it('should render all required form fields', () => {
-      render(<LienHePage />);
+  it('renders all required form fields', () => {
+    render(<LienHePage />);
 
-      // Check labels and inputs present
-      expect(screen.getByPlaceholderText('Nguyễn Văn A')).toBeInTheDocument();
-      expect(screen.getByPlaceholderText('email@example.com')).toBeInTheDocument();
-      expect(screen.getByPlaceholderText('0912 345 678')).toBeInTheDocument();
-      expect(screen.getByPlaceholderText('Nhập nội dung tin nhắn...')).toBeInTheDocument();
-    });
-
-    it('should render submit button', () => {
-      render(<LienHePage />);
-      expect(screen.getByRole('button', { name: /gửi tin nhắn/i })).toBeInTheDocument();
-    });
-
-    it('should render contact info cards', () => {
-      render(<LienHePage />);
-      expect(screen.getByText('Địa chỉ')).toBeInTheDocument();
-      expect(screen.getByText('Điện thoại')).toBeInTheDocument();
-      expect(screen.getByText('Email')).toBeInTheDocument();
-      expect(screen.getByText('Giờ làm việc')).toBeInTheDocument();
-    });
+    expect(screen.getByPlaceholderText('Nhập họ và tên')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Nhập email')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Nhập địa chỉ')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Nhập số điện thoại')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Nhập nội dung liên hệ...')).toBeInTheDocument();
   });
 
-  describe('Successful submission flow', () => {
-    it('should call API with correct payload and show success message', async () => {
-      mockApi.mockResolvedValueOnce({ success: true });
-      render(<LienHePage />);
+  it('renders submit button and contact info', () => {
+    render(<LienHePage />);
 
-      // Fill form
-      await userEvent.type(screen.getByPlaceholderText('Nguyễn Văn A'), 'Nguyen Van A');
-      await userEvent.type(screen.getByPlaceholderText('email@example.com'), 'test@test.com');
-      await userEvent.type(screen.getByPlaceholderText('0912 345 678'), '0912345678');
-      await userEvent.type(screen.getByPlaceholderText('Nhập nội dung tin nhắn...'), 'Noi dung lien he test');
-
-      // Submit
-      fireEvent.click(screen.getByRole('button', { name: /gửi tin nhắn/i }));
-
-      await waitFor(() => {
-        expect(mockApi).toHaveBeenCalledWith('/contacts', {
-          method: 'POST',
-          body: JSON.stringify({
-            fullName: 'Nguyen Van A',
-            email: 'test@test.com',
-            phone: '0912345678',
-            content: 'Noi dung lien he test',
-          }),
-        });
-      });
-
-      // Success message shown
-      await waitFor(() => {
-        expect(screen.getByText(/cảm ơn bạn đã liên hệ/i)).toBeInTheDocument();
-      });
-
-      // Form should be cleared after success
-      expect(screen.getByPlaceholderText('Nguyễn Văn A')).toHaveValue('');
-      expect(screen.getByPlaceholderText('email@example.com')).toHaveValue('');
-      expect(screen.getByPlaceholderText('Nhập nội dung tin nhắn...')).toHaveValue('');
-    });
-
-    it('should send phone as undefined when empty', async () => {
-      mockApi.mockResolvedValueOnce({ success: true });
-      render(<LienHePage />);
-
-      await userEvent.type(screen.getByPlaceholderText('Nguyễn Văn A'), 'Test');
-      await userEvent.type(screen.getByPlaceholderText('email@example.com'), 'a@b.com');
-      await userEvent.type(screen.getByPlaceholderText('Nhập nội dung tin nhắn...'), 'Hello test');
-
-      fireEvent.click(screen.getByRole('button', { name: /gửi tin nhắn/i }));
-
-      await waitFor(() => {
-        const body = JSON.parse(mockApi.mock.calls[0][1].body);
-        expect(body.phone).toBeUndefined();
-      });
-    });
+    expect(screen.getByRole('button', { name: /gửi liên hệ/i })).toBeInTheDocument();
+    expect(screen.getByText(/Địa chỉ:/)).toBeInTheDocument();
+    expect(screen.getByText(/Số ĐT:/)).toBeInTheDocument();
+    expect(screen.getByText('Email:')).toBeInTheDocument();
+    expect(screen.getByText(/Facebook:/)).toBeInTheDocument();
   });
 
-  describe('Error handling', () => {
-    it('should show error message when API fails', async () => {
-      mockApi.mockRejectedValueOnce(new Error('Server error'));
-      render(<LienHePage />);
+  it('calls API with payload, CSRF header, and shows success', async () => {
+    mockApi.mockResolvedValueOnce({ success: true });
+    render(<LienHePage />);
 
-      await userEvent.type(screen.getByPlaceholderText('Nguyễn Văn A'), 'Test');
-      await userEvent.type(screen.getByPlaceholderText('email@example.com'), 'a@b.com');
-      await userEvent.type(screen.getByPlaceholderText('Nhập nội dung tin nhắn...'), 'Content here');
+    await fillValidForm();
+    fireEvent.click(screen.getByRole('button', { name: /gửi liên hệ/i }));
 
-      fireEvent.click(screen.getByRole('button', { name: /gửi tin nhắn/i }));
-
-      await waitFor(() => {
-        expect(screen.getByText('Server error')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(mockApi).toHaveBeenCalledWith('/contacts', {
+        method: 'POST',
+        headers: { 'x-csrf-token': 'csrf-token' },
+        body: JSON.stringify({
+          fullName: 'Nguyen Van A',
+          email: 'test@test.com',
+          phone: '0912345678',
+          address: 'Ha Noi',
+          content: 'Noi dung lien he test',
+        }),
       });
     });
 
-    it('should show fallback error for non-Error exceptions', async () => {
-      mockApi.mockRejectedValueOnce('unknown error');
-      render(<LienHePage />);
-
-      await userEvent.type(screen.getByPlaceholderText('Nguyễn Văn A'), 'Test');
-      await userEvent.type(screen.getByPlaceholderText('email@example.com'), 'a@b.com');
-      await userEvent.type(screen.getByPlaceholderText('Nhập nội dung tin nhắn...'), 'Content here');
-
-      fireEvent.click(screen.getByRole('button', { name: /gửi tin nhắn/i }));
-
-      await waitFor(() => {
-        expect(screen.getByText(/có lỗi xảy ra/i)).toBeInTheDocument();
-      });
-    });
+    expect(await screen.findByText(/cảm ơn bạn đã liên hệ/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Nhập họ và tên')).toHaveValue('');
   });
 
-  describe('Success banner resets on new submission', () => {
-    it('should clear success banner when submitting again', async () => {
-      // First submission succeeds
-      mockApi.mockResolvedValueOnce({ success: true });
-      render(<LienHePage />);
+  it('requires phone before submitting', async () => {
+    render(<LienHePage />);
 
-      await userEvent.type(screen.getByPlaceholderText('Nguyễn Văn A'), 'Test');
-      await userEvent.type(screen.getByPlaceholderText('email@example.com'), 'a@b.com');
-      await userEvent.type(screen.getByPlaceholderText('Nhập nội dung tin nhắn...'), 'Content here');
-      fireEvent.click(screen.getByRole('button', { name: /gửi tin nhắn/i }));
+    await userEvent.type(screen.getByPlaceholderText('Nhập họ và tên'), 'Nguyen Van A');
+    await userEvent.type(screen.getByPlaceholderText('Nhập email'), 'test@test.com');
+    await userEvent.type(screen.getByPlaceholderText('Nhập địa chỉ'), 'Ha Noi');
+    await userEvent.type(screen.getByPlaceholderText('Nhập nội dung liên hệ...'), 'Noi dung lien he test');
+    fireEvent.click(screen.getByRole('button', { name: /gửi liên hệ/i }));
 
-      await waitFor(() => {
-        expect(screen.getByText(/cảm ơn bạn đã liên hệ/i)).toBeInTheDocument();
-      });
+    expect(mockApi).not.toHaveBeenCalled();
+  });
 
-      // Second submission — success banner should reset during submission
-      mockApi.mockRejectedValueOnce(new Error('Fail'));
-      await userEvent.type(screen.getByPlaceholderText('Nguyễn Văn A'), 'Test2');
-      await userEvent.type(screen.getByPlaceholderText('email@example.com'), 'b@c.com');
-      await userEvent.type(screen.getByPlaceholderText('Nhập nội dung tin nhắn...'), 'More content');
-      fireEvent.click(screen.getByRole('button', { name: /gửi tin nhắn/i }));
+  it('shows API error messages', async () => {
+    mockApi.mockRejectedValueOnce(new Error('Server error'));
+    render(<LienHePage />);
 
-      await waitFor(() => {
-        // Success banner gone, error shown instead
-        expect(screen.queryByText(/cảm ơn bạn đã liên hệ/i)).not.toBeInTheDocument();
-        expect(screen.getByText('Fail')).toBeInTheDocument();
-      });
+    await fillValidForm();
+    fireEvent.click(screen.getByRole('button', { name: /gửi liên hệ/i }));
+
+    expect(await screen.findByText('Server error')).toBeInTheDocument();
+  });
+
+  it('shows fallback error for non-Error exceptions', async () => {
+    mockApi.mockRejectedValueOnce('unknown error');
+    render(<LienHePage />);
+
+    await fillValidForm();
+    fireEvent.click(screen.getByRole('button', { name: /gửi liên hệ/i }));
+
+    expect(await screen.findByText(/có lỗi xảy ra/i)).toBeInTheDocument();
+  });
+
+  it('clears success banner when submitting again', async () => {
+    mockApi.mockResolvedValueOnce({ success: true });
+    render(<LienHePage />);
+
+    await fillValidForm();
+    fireEvent.click(screen.getByRole('button', { name: /gửi liên hệ/i }));
+    expect(await screen.findByText(/cảm ơn bạn đã liên hệ/i)).toBeInTheDocument();
+
+    mockApi.mockRejectedValueOnce(new Error('Fail'));
+    await fillValidForm();
+    fireEvent.click(screen.getByRole('button', { name: /gửi liên hệ/i }));
+
+    await waitFor(() => {
+      expect(screen.queryByText(/cảm ơn bạn đã liên hệ/i)).not.toBeInTheDocument();
+      expect(screen.getByText('Fail')).toBeInTheDocument();
     });
   });
 });

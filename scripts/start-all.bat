@@ -1,9 +1,9 @@
 @echo off
-title LeQuyDon - Start All (Dev)
+title VanCoc - Start All (Dev)
 setlocal enabledelayedexpansion
 
 echo ========================================
-echo   LeQuyDon - Khoi dong dev moi truong
+echo   VanCoc - Khoi dong dev moi truong
 echo   (Docker full stack: MySQL + Redis + BE + FE)
 echo ========================================
 echo.
@@ -54,7 +54,7 @@ docker compose %COMPOSE% up -d backend frontend
 
 echo.
 echo ========================================
-echo   LeQuyDon Dev dang chay
+echo   VanCoc Dev dang chay
 echo ----------------------------------------
 echo   Frontend: http://localhost:3200
 echo   Backend:  http://localhost:4200/api

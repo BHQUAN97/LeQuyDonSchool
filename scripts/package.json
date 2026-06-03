@@ -1,7 +1,7 @@
 {
   "name": "lequydon-scripts",
   "version": "1.0.0",
-  "description": "Standalone ops scripts for LeQuyDon (backup, maintenance)",
+  "description": "Standalone ops scripts for VanCoc (backup, maintenance)",
   "private": true,
   "type": "commonjs",
   "scripts": {

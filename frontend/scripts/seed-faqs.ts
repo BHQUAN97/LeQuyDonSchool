@@ -1,5 +1,5 @@
 /**
- * Seed 8 FAQ tuyen sinh cho LeQuyDon.
+ * Seed 8 FAQ tuyen sinh cho VanCoc.
  * Chay qua seed-runner.ts hoac truc tiep: npx tsx scripts/seed-faqs.ts
  */
 
@@ -8,9 +8,9 @@ import { apiPost, login } from './seed-helpers';
 const FAQS = [
   {
     question: 'Đối tượng tuyển sinh?',
-    answer: `<p>Trường Tiểu học Lê Quý Đôn tuyển sinh các đối tượng sau:</p>
+    answer: `<p>Trường Tiểu học Vân Cốc tuyển sinh các đối tượng sau:</p>
 <ul>
-  <li><strong>Lớp 1:</strong> Trẻ em đủ 6 tuổi (sinh năm 2020), có hộ khẩu hoặc tạm trú tại Hà Nội. Ưu tiên trẻ đã học tại các trường Mầm non liên kết trong Hệ thống Lê Quý Đôn.</li>
+  <li><strong>Lớp 1:</strong> Trẻ em đủ 6 tuổi (sinh năm 2020), có hộ khẩu hoặc tạm trú tại Hà Nội. Ưu tiên trẻ đã học tại các trường Mầm non liên kết trong Hệ thống Vân Cốc.</li>
   <li><strong>Lớp 2 — Lớp 5:</strong> Học sinh chuyển trường từ các trường tiểu học khác, có học bạ đầy đủ và kết quả học tập đạt yêu cầu. Học sinh cần tham gia kiểm tra đánh giá năng lực đầu vào.</li>
 </ul>
 <p>Nhà trường xét tuyển dựa trên hồ sơ, kết quả đánh giá năng lực và phỏng vấn phụ huynh — học sinh.</p>`,
@@ -40,7 +40,7 @@ const FAQS = [
   <li><strong>Giấy chuyển trường</strong> (đối với học sinh chuyển từ trường khác đến)</li>
   <li><strong>Các giấy tờ ưu tiên</strong> (nếu có): Giấy xác nhận con em cán bộ công nhân viên, giấy xác nhận đối tượng chính sách...</li>
 </ol>
-<p>Phụ huynh nộp hồ sơ trực tiếp tại <strong>Phòng Tuyển sinh — Trường TH Lê Quý Đôn</strong> hoặc gửi bản scan qua email <strong>tuyensinh@lequydonhanoi.edu.vn</strong>.</p>`,
+<p>Phụ huynh nộp hồ sơ trực tiếp tại <strong>Phòng Tuyển sinh — Trường TH Vân Cốc</strong> hoặc gửi bản scan qua email <strong>tuyensinh@vancoc.edu.vn</strong>.</p>`,
     displayOrder: 3,
   },
   {
@@ -69,7 +69,7 @@ const FAQS = [
   },
   {
     question: 'Thời gian học?',
-    answer: `<p>Thời gian học tại Trường Tiểu học Lê Quý Đôn:</p>
+    answer: `<p>Thời gian học tại Trường Tiểu học Vân Cốc:</p>
 <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%">
 <thead><tr style="background:#1565c0;color:#fff"><th>Buổi</th><th>Thời gian</th><th>Nội dung</th></tr></thead>
 <tbody>
@@ -108,7 +108,7 @@ const FAQS = [
 <ul>
   <li>Kiểm tra thư mục <strong>Spam / Junk</strong> trong hộp thư</li>
   <li>Liên hệ Phòng Tuyển sinh qua hotline <strong>024 3835 1466</strong></li>
-  <li>Gửi email đến <strong>tuyensinh@lequydonhanoi.edu.vn</strong></li>
+  <li>Gửi email đến <strong>tuyensinh@vancoc.edu.vn</strong></li>
 </ul>`,
     displayOrder: 7,
   },
@@ -117,10 +117,10 @@ const FAQS = [
     answer: `<p>Quý Phụ huynh có thể liên hệ tư vấn tuyển sinh qua các kênh sau:</p>
 <ul>
   <li><strong>Điện thoại / Zalo:</strong> <a href="tel:02438351466">024 3835 1466</a> (Phòng Tuyển sinh, giờ hành chính Thứ Hai — Thứ Sáu, 08:00 — 17:00)</li>
-  <li><strong>Email:</strong> <a href="mailto:tuyensinh@lequydonhanoi.edu.vn">tuyensinh@lequydonhanoi.edu.vn</a></li>
-  <li><strong>Website:</strong> <a href="https://lequydonhanoi.edu.vn" target="_blank">lequydonhanoi.edu.vn</a> — mục Tuyển sinh</li>
-  <li><strong>Fanpage Facebook:</strong> Trường Tiểu học Lê Quý Đôn Hà Nội</li>
-  <li><strong>Trực tiếp:</strong> Phòng Tuyển sinh — Trường TH Lê Quý Đôn, Khu đô thị Văn Khê, Hà Đông, Hà Nội. Phụ huynh có thể đến tham quan trường và tư vấn trực tiếp vào giờ hành chính (vui lòng đặt lịch hẹn trước qua điện thoại).</li>
+  <li><strong>Email:</strong> <a href="mailto:tuyensinh@vancoc.edu.vn">tuyensinh@vancoc.edu.vn</a></li>
+  <li><strong>Website:</strong> <a href="https://vancoc.edu.vn" target="_blank">vancoc.edu.vn</a> — mục Tuyển sinh</li>
+  <li><strong>Fanpage Facebook:</strong> Trường Tiểu học Vân Cốc</li>
+  <li><strong>Trực tiếp:</strong> Phòng Tuyển sinh — Trường TH Vân Cốc, Khu đô thị Văn Khê, Hà Đông, Hà Nội. Phụ huynh có thể đến tham quan trường và tư vấn trực tiếp vào giờ hành chính (vui lòng đặt lịch hẹn trước qua điện thoại).</li>
 </ul>
 <p>Đội ngũ tư vấn tuyển sinh luôn sẵn sàng hỗ trợ Quý Phụ huynh!</p>`,
     displayOrder: 8,

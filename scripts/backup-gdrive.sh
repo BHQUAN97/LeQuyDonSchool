@@ -1,6 +1,6 @@
 #!/bin/bash
 # ──────────────────────────────────────────
-# Google Drive Backup Wrapper — LeQuyDon
+# Google Drive Backup Wrapper — VanCoc
 # Gọi Node script, load .env, log ra file.
 # Cron:  0 3 * * * /opt/lqd/scripts/backup-gdrive.sh
 # ──────────────────────────────────────────

@@ -30,14 +30,47 @@ interface Props {
   articles?: ArticleItem[];
 }
 
+const fallbackArticles: ArticleItem[] = [
+  {
+    title: 'Thư ngỏ V/v Đảm bảo an toàn thực phẩm tại Nhà trường',
+    slug: 'thu-ngo-vv-dam-bao-an-toan-thuc-pham-tai-nha-truong',
+    excerpt:
+      'Trước sự quan tâm và lo lắng về an toàn thực phẩm thời gian gần đây, Nhà trường thông tin tới CMHS về nguồn thực phẩm và công tác kiểm soát chất lượng.',
+    thumbnail_url: '/images/design/news-food-safety.png',
+    category: { name: 'Tin tức' },
+  },
+  {
+    title: 'Trường TH Vân Cốc chủ động kiểm chứng nguồn thịt cung cấp',
+    slug: 'truong-th-van-coc-chu-dong-kiem-chung-nguon-thit-cung-cap',
+    excerpt: 'BGH và đại diện Phụ huynh trực tiếp làm việc, kiểm chứng với nhà cung cấp thực phẩm.',
+    thumbnail_url: '/images/design/news-health-check.png',
+    category: { name: 'Tin tức' },
+  },
+  {
+    title: 'Lễ kết nạp Đội Khối 3: Dấu mốc đáng nhớ của học sinh Vân Cốc',
+    slug: 'le-ket-nap-doi-khoi-3-dau-moc-dang-nho',
+    excerpt: 'Học sinh Khối 3 tham gia lễ kết nạp Đội tại Quảng trường Ba Đình.',
+    thumbnail_url: '/images/design/news-doi-khoi.png',
+    category: { name: 'Sự kiện' },
+  },
+  {
+    title: 'Thành tích Tháng 3 | học sinh Vân Cốc Xuất Sắc Giành 1.536 Giải Cấp Thành phố',
+    slug: 'thanh-tich-thang-3-doners-xuat-sac',
+    excerpt: 'học sinh Vân Cốc ghi dấu ấn nổi bật với tổng cộng 1.536 giải thưởng cấp Thành phố.',
+    thumbnail_url: '/images/design/news-award.png',
+    category: { name: 'Học tập' },
+  },
+];
+
 /* ==========================================
  * Variant: featured-grid (default)
  * Featured article + Event sidebar + grid carousel
  * — copy tu page.tsx hien tai
  * ========================================== */
 function NewsFeaturedGrid({ articles = [] }: { articles: ArticleItem[] }) {
-  const featuredArticle = articles.length > 0 ? articles[0] : null;
-  const gridArticles = articles.length > 1 ? articles.slice(1) : [];
+  const displayArticles = articles.length > 0 ? articles : fallbackArticles;
+  const featuredArticle = displayArticles[0];
+  const gridArticles = displayArticles.slice(1);
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-12 lg:py-16">
@@ -130,39 +163,30 @@ function NewsFeaturedGrid({ articles = [] }: { articles: ArticleItem[] }) {
 
         {/* Event banner — 2 cot */}
         <div className="lg:col-span-2">
-          <div className="rounded-xl overflow-hidden h-full text-white relative" style={{ background: 'linear-gradient(to bottom right, var(--hp-primary, #15803d), color-mix(in srgb, var(--hp-primary, #15803d) 80%, black))' }}>
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-4 right-4 text-6xl font-black text-white/20">20</div>
-            </div>
+          <div className="rounded-xl overflow-hidden h-full text-white relative bg-[var(--hp-primary,#15803d)]">
+            <Image
+              src="/images/design/event-3-san-sang.png"
+              alt="Hội thảo 3 SẴN SÀNG cùng con vào lớp 1"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 32vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-green-800/95 via-green-800/25 to-transparent" />
             <div className="p-6 lg:p-8 flex flex-col justify-between h-full relative z-10">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-wider text-green-200 mb-3">
-                  Chao don 20 nam thanh lap
+                  Hội thảo
                 </p>
                 <h3 className="text-lg lg:text-xl font-bold mb-3 leading-snug">
-                  He thong Truong lien cap Le Quy Don
+                  Hội thảo 3 SẴN SÀNG cùng con vào lớp 1
                 </h3>
-                <div className="w-full h-40 lg:h-48 rounded-lg bg-white/10 flex items-center justify-center mb-4 overflow-hidden relative">
-                  <div className="text-center">
-                    <p className="text-5xl font-black text-white/30 mb-1">20</p>
-                    <p className="text-sm font-bold text-yellow-300 uppercase tracking-wider">
-                      From Building
-                    </p>
-                    <p className="text-sm font-bold text-yellow-300 uppercase tracking-wider">
-                      to Blooming
-                    </p>
-                    <p className="text-sm text-white/60 mt-2 italic">
-                      Dung xay ngan hoa
-                    </p>
-                  </div>
-                </div>
               </div>
               <div>
                 <p className="text-sm text-white/70 mb-1">
-                  &#128197; 04/08/2025 08:00 &nbsp;&bull;&nbsp; Truong Tieu hoc Le Quy Don
+                  &#128197; 21/03/2026 08:30 &nbsp;&bull;&nbsp; Trường Tiểu học Vân Cốc
                 </p>
                 <p className="text-sm text-white/90 leading-relaxed">
-                  Chao don Ky niem 20 nam thanh lap He thong Truong Lien cap Le Quy Don
+                  Hội thảo với sự tham gia của BGH Trường Tiểu học Vân Cốc và PGS.TS Trần Thành Nam.
                 </p>
               </div>
             </div>

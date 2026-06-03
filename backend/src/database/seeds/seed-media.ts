@@ -7,7 +7,7 @@ import { Media } from '../../modules/media/entities/media.entity';
 import { generateUlid } from '../../common/utils/ulid';
 
 /**
- * Seed anh minh hoa (Media) cho website truong tieu hoc Le Quy Don.
+ * Seed anh minh hoa (Media) cho website truong tieu hoc Van Coc.
  * Idempotent — kiem tra filename truoc khi insert.
  */
 
@@ -19,7 +19,7 @@ interface MediaSeedItem {
   alt_text: string;
 }
 
-// 25 records anh minh hoa truong Le Quy Don
+// 25 records anh minh hoa truong Van Coc
 const mediaItems: MediaSeedItem[] = [
   {
     filename: 'khai-giang-2025.jpg',
@@ -173,7 +173,7 @@ const mediaItems: MediaSeedItem[] = [
     original_name: 'Logo trường LQĐ.png',
     mime_type: 'image/png',
     size: 234_500,
-    alt_text: 'Logo trường Tiểu học Lê Quý Đôn',
+    alt_text: 'Logo trường Tiểu học Vân Cốc',
   },
   {
     filename: 'banner-tuyen-sinh.png',

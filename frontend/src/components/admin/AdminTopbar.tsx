@@ -62,7 +62,7 @@ export default function AdminTopbar({ onMenuClick }: Props) {
         <button
           onClick={onMenuClick}
           className="lg:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
-          aria-label="Toggle menu"
+          aria-label="Mở menu quản trị"
         >
           <Menu className="w-5 h-5" />
         </button>

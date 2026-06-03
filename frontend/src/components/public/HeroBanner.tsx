@@ -11,15 +11,25 @@ interface HeroSlide {
   description: string;
   cta: { label: string; href: string };
   bgImage?: string;
+  designReplica?: boolean;
 }
 
 const defaultSlides: HeroSlide[] = [
   {
+    title: 'Thông báo tuyển sinh năm học 2026 - 2027',
+    highlight: 'Tuyển sinh 2026 - 2027',
+    subtitle: 'Đợt 2: 21/03/2026',
+    description: 'Thông tin tuyển sinh năm học 2026 - 2027',
+    cta: { label: 'Xem chi tiết', href: '/tuyen-sinh/thong-tin' },
+    bgImage: '/images/design/hero-admission-2026.png',
+    designReplica: true,
+  },
+  {
     title: 'Từ kỳ vọng đến tin yêu',
-    highlight: 'Tiểu học Lê Quý Đôn',
+    highlight: 'Tiểu học Vân Cốc',
     subtitle: 'qua lời Cha Mẹ',
     description:
-      'Với Tiểu học Lê Quý Đôn, mỗi ngày đến trường là một hành trình khám phá, sáng tạo và trưởng thành đồng hành cùng con.',
+      'Với Tiểu học Vân Cốc, mỗi ngày đến trường là một hành trình khám phá, sáng tạo và trưởng thành đồng hành cùng con.',
     cta: { label: 'Xem chi tiết', href: '/tong-quan/tam-nhin-su-menh' },
     bgImage: '/images/hero-bg.jpg',
   },
@@ -29,7 +39,7 @@ const defaultSlides: HeroSlide[] = [
     subtitle: 'Tiếng Anh tăng cường',
     description:
       'Chương trình Quốc gia nâng cao kết hợp Tiếng Anh tăng cường theo chuẩn PLC Sydney, giúp học sinh tự tin hội nhập quốc tế.',
-    cta: { label: 'Tìm hiểu thêm', href: '/chuong-trinh-hoc' },
+    cta: { label: 'Tìm hiểu thêm', href: '/chuong-trinh/quoc-gia-nang-cao' },
     bgImage: '/images/hero-bg-2.jpg',
   },
   {
@@ -38,7 +48,7 @@ const defaultSlides: HeroSlide[] = [
     subtitle: 'tại KĐT Mỹ Đình',
     description:
       'Cơ sở vật chất hiện đại với sân bóng, bể bơi, phòng lab, thư viện — môi trường lý tưởng để các con phát triển toàn diện.',
-    cta: { label: 'Khám phá', href: '/tong-quan/co-so-vat-chat' },
+    cta: { label: 'Khám phá', href: '/co-so-vat-chat' },
     bgImage: '/images/hero-bg-3.jpg',
   },
   {
@@ -56,12 +66,27 @@ export default function HeroBanner() {
   return (
     <Carousel
       total={defaultSlides.length}
-      autoInterval={3000}
+      autoInterval={6000}
       showDots={true}
       showArrows={true}
       className="min-h-[360px] sm:min-h-[420px] lg:min-h-[520px] overflow-hidden"
       renderSlide={(index) => {
         const slide = defaultSlides[index];
+        if (slide.designReplica) {
+          return (
+            <section
+              className="relative min-h-[360px] sm:min-h-[420px] lg:min-h-[520px] bg-cover bg-center"
+              style={{ backgroundImage: `url('${slide.bgImage}')` }}
+              aria-label={slide.title}
+            >
+              <Link
+                href={slide.cta.href}
+                className="absolute left-[18%] top-[58%] h-12 w-36 rounded-lg focus:outline-none focus:ring-4 focus:ring-white/80"
+                aria-label={slide.cta.label}
+              />
+            </section>
+          );
+        }
         return (
           <section className="relative min-h-[360px] sm:min-h-[420px] lg:min-h-[520px]">
             {/* Background */}
@@ -103,14 +128,14 @@ export default function HeroBanner() {
                   <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm transform rotate-1 hover:rotate-0 transition-transform">
                     <div className="flex items-center gap-3 mb-5">
                       <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center border-2 border-yellow-500">
-                        <span className="text-white font-bold text-sm">LQD</span>
+                        <span className="text-white font-bold text-sm">VC</span>
                       </div>
                       <div>
                         <p className="text-sm text-green-700 font-semibold uppercase tracking-wide leading-tight">
-                          Hệ thống Trường liên cấp Lê Quý Đôn
+                          Hệ thống Trường liên cấp Vân Cốc
                         </p>
                         <p className="text-sm font-bold text-red-600 leading-tight">
-                          Trường Tiểu học Lê Quý Đôn
+                          Trường Tiểu học Vân Cốc
                         </p>
                       </div>
                     </div>

@@ -17,7 +17,7 @@ async function isBackendAvailable(): Promise<boolean> {
 /** Login helper — su dung seed admin account */
 async function loginAsAdmin(page: Page) {
   await page.goto('/admin/login');
-  await page.locator('#email').fill('admin@lequydon.edu.vn');
+  await page.locator('#email').fill('admin@vancoc.edu.vn');
   await page.locator('#password').fill('admin123');
   await page.locator('button[type="submit"]').click();
   // Cho redirect ve dashboard

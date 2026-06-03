@@ -1,6 +1,6 @@
 #!/bin/bash
 # ──────────────────────────────────────────
-# MySQL Daily Backup Script — LeQuyDon
+# MySQL Daily Backup Script — VanCoc
 # Run via cron: 0 2 * * * /opt/lqd/scripts/backup-mysql.sh
 # ──────────────────────────────────────────
 

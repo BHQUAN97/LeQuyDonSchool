@@ -66,7 +66,7 @@ const sections: GuideSection[] = [
     content: (
       <>
         <p className="text-sm text-slate-700 leading-relaxed">
-          He thong quan tri website Truong Tieu hoc Le Quy Don cho phep ban quan ly toan bo noi dung
+          He thong quan tri website Truong Tieu hoc Van Coc cho phep ban quan ly toan bo noi dung
           hien thi tren website cong khai cua truong. Tu trang chu, bai dang, danh muc, den thuc don,
           su kien, tuyen sinh — tat ca deu duoc chinh sua truc tiep tai day.
         </p>

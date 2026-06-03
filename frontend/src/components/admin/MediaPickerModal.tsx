@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
-import { X, Upload, Check, Search, Image as ImageIcon } from 'lucide-react';
+import { X, Upload, Check, Search, Image as ImageIcon, FileText } from 'lucide-react';
 import { api, getAccessToken } from '@/lib/api';
 import type { Media, PaginatedResponse } from '@/types';
 
@@ -17,7 +17,7 @@ function mediaUrl(url: string) {
 interface MediaPickerModalProps {
   open: boolean;
   onClose: () => void;
-  onSelect: (url: string) => void;
+  onSelect: (url: string, media?: Media) => void;
   /** Chi hien anh (image/*) hoac tat ca */
   filterImages?: boolean;
 }
@@ -88,7 +88,7 @@ export default function MediaPickerModal({
         const json = await res.json();
         if (json.success && json.data) {
           // Chon luon file vua upload
-          onSelect(mediaUrl(json.data.url));
+          onSelect(mediaUrl(json.data.url), json.data);
           onClose();
           return;
         }
@@ -105,7 +105,8 @@ export default function MediaPickerModal({
 
   const handleConfirm = () => {
     if (selected) {
-      onSelect(selected);
+      const media = items.find((item) => mediaUrl(item.url) === selected);
+      onSelect(selected, media);
       onClose();
     }
   };
@@ -150,7 +151,7 @@ export default function MediaPickerModal({
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/*"
+              accept={filterImages ? 'image/*' : 'image/*,application/pdf,.doc,.docx,.xls,.xlsx'}
               className="hidden"
               onChange={handleUpload}
               disabled={uploading}
@@ -179,21 +180,30 @@ export default function MediaPickerModal({
                   <button
                     key={m.id}
                     onClick={() => setSelected(url)}
-                    onDoubleClick={() => { onSelect(url); onClose(); }}
+                    onDoubleClick={() => { onSelect(url, m); onClose(); }}
                     className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${
                       isSelected
                         ? 'border-green-600 ring-2 ring-green-200'
                         : 'border-transparent hover:border-gray-300'
                     }`}
                   >
-                    <Image
-                      src={url}
-                      alt={m.alt_text || m.original_name}
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-full h-full object-cover"
-                    />
+                    {m.mime_type.startsWith('image/') ? (
+                      <Image
+                        src={url}
+                        alt={m.alt_text || m.original_name}
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-full flex-col items-center justify-center bg-slate-50 px-2 text-slate-500">
+                        <FileText size={28} className="mb-2" />
+                        <span className="text-xs font-semibold uppercase">
+                          {m.mime_type.includes('pdf') ? 'PDF' : m.mime_type.includes('word') ? 'DOC' : m.mime_type.includes('sheet') || m.mime_type.includes('excel') ? 'XLS' : 'FILE'}
+                        </span>
+                      </div>
+                    )}
                     {isSelected && (
                       <div className="absolute inset-0 bg-green-600/20 flex items-center justify-center">
                         <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">

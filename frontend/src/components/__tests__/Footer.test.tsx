@@ -20,14 +20,14 @@ import Footer from '../public/Footer';
 describe('Footer', () => {
   it('should render school name', () => {
     render(<Footer />);
-    expect(screen.getByText('Trường Tiểu học Lê Quý Đôn')).toBeInTheDocument();
+    expect(screen.getByText('Trường Tiểu học Vân Cốc')).toBeInTheDocument();
   });
 
   it('should render contact section with phone and email', () => {
     render(<Footer />);
     expect(screen.getByText('Liên hệ')).toBeInTheDocument();
     expect(screen.getByText('024 .6287.2079')).toBeInTheDocument();
-    expect(screen.getByText('c1_admin@lequydonhanoi.edu.vn')).toBeInTheDocument();
+    expect(screen.getByText('c1_admin@vancoc.edu.vn')).toBeInTheDocument();
   });
 
   it('should render address', () => {

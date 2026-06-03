@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
 import { getInternalApiBase } from '@/lib/ssr-api';
+import { BRAND } from '@/config/brand';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://demo.remoteterminal.online';
+const SITE_URL = BRAND.siteUrl;
 const API_URL = getInternalApiBase();
 
 interface ApiItem {
@@ -41,8 +42,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/tong-quan/tam-nhin-su-menh`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${SITE_URL}/tong-quan/cot-moc-phat-trien`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${SITE_URL}/tong-quan/gia-dinh-doners`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${SITE_URL}/tong-quan/ngoi-nha-le-quy-don`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${SITE_URL}/tong-quan/sac-mau-le-quy-don`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${SITE_URL}/tong-quan/ngoi-nha-van-coc`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${SITE_URL}/tong-quan/sac-mau-van-coc`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
 
     // Chuong trinh giao duc
     { url: `${SITE_URL}/chuong-trinh/quoc-gia-nang-cao`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },

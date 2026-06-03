@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# LeQuyDon — SEED PRODUCTION DATA
+# VanCoc — SEED PRODUCTION DATA
 # ============================================================
 # Chay tu may local — seed du lieu vao production
 #
@@ -24,7 +24,7 @@ err() { echo -e "${RED}[ERR]${NC} $1"; exit 1; }
 warn() { echo -e "${YELLOW}[!!]${NC} $1"; }
 
 echo ""
-echo "=== LeQuyDon — Seed Production Data ==="
+echo "=== VanCoc — Seed Production Data ==="
 echo "  VPS: ${VPS_HOST}"
 echo ""
 

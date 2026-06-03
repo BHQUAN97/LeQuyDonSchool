@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
 import { toast } from 'sonner';
 import { api } from '@/lib/api';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
@@ -87,6 +88,18 @@ export default function AdmissionsPage() {
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold text-slate-900">Tuyển sinh</h1>
+
+      <div className="flex flex-col gap-3 rounded-xl border border-green-200 bg-green-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm text-green-900">
+          Bài tuyển sinh hiển thị ở trang public nên đăng qua danh mục Tuyển sinh.
+        </p>
+        <Link
+          href="/admin/articles/create?category=tuyen-sinh&type=admission"
+          className="inline-flex items-center justify-center rounded-lg bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800"
+        >
+          + Đăng bài tuyển sinh public
+        </Link>
+      </div>
 
       {/* Tab navigation */}
       <div className="flex gap-1 bg-white rounded-xl border border-slate-200 p-1">

@@ -96,10 +96,15 @@ export default async function DynamicPage({
   return (
     <>
       {/* Hero banner */}
-      <section className="bg-gradient-to-r from-[#1a5276] to-[#2e86c1] text-white">
+      <section className="bg-gradient-to-r from-[#08760e] to-[#0b8d18] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <Breadcrumb items={breadcrumbs} variant="light" />
           <div className="pb-8 pt-2">
+            <div className="mb-3 flex gap-1">
+              <span className="h-1 w-10 rounded-full bg-white" />
+              <span className="h-1 w-10 rounded-full bg-[#e82424]" />
+              <span className="h-1 w-10 rounded-full bg-white" />
+            </div>
             <h1 className="text-2xl md:text-3xl font-bold">{page.title}</h1>
           </div>
         </div>
@@ -109,7 +114,7 @@ export default async function DynamicPage({
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12">
         <SafeHtml
           html={page.content}
-          className="prose prose-slate prose-lg max-w-none
+          className="lqd-rich prose prose-slate prose-lg max-w-none
             prose-headings:text-slate-900 prose-headings:font-bold
             prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4
             prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-3

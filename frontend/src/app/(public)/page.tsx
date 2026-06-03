@@ -5,11 +5,26 @@ import { DEFAULT_HOMEPAGE_CONFIG } from '@/types/homepage';
 import { getInternalApiBase } from '@/lib/ssr-api';
 
 const INTERNAL_API = getInternalApiBase();
+const API_TIMEOUT_MS = 3500;
+
+type NextFetchInit = RequestInit & {
+  next?: { revalidate?: number };
+};
+
+async function fetchWithTimeout(input: string, init: NextFetchInit = {}) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+  try {
+    return await fetch(input, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
 
 /** Fetch homepage config tu Settings API */
 async function getHomepageConfig() {
   try {
-    const res = await fetch(`${INTERNAL_API}/settings/homepage`, {
+    const res = await fetchWithTimeout(`${INTERNAL_API}/settings/homepage`, {
       next: { revalidate: 60 },
     });
     if (!res.ok) return null;
@@ -23,7 +38,7 @@ async function getHomepageConfig() {
 /** Fetch bai viet moi nhat tu API (server-side) */
 async function getLatestArticles() {
   try {
-    const res = await fetch(
+    const res = await fetchWithTimeout(
       `${INTERNAL_API}/articles/public?limit=10&sort=published_at&order=DESC`,
       { next: { revalidate: 300 } },
     );
@@ -38,7 +53,7 @@ async function getLatestArticles() {
 /** Fetch preview config bang token */
 async function getPreviewConfig(token: string) {
   try {
-    const res = await fetch(`${INTERNAL_API}/settings/homepage/preview/${token}`, {
+    const res = await fetchWithTimeout(`${INTERNAL_API}/settings/homepage/preview/${token}`, {
       cache: 'no-store',
     });
     if (!res.ok) return null;
@@ -53,9 +68,9 @@ async function getPreviewConfig(token: string) {
 const DEFAULT_CONFIG = DEFAULT_HOMEPAGE_CONFIG;
 
 export const metadata: Metadata = buildPageMetadata({
-  title: 'Trường Tiểu học Lê Quý Đôn - Hà Nội',
+  title: 'Trường Tiểu học Vân Cốc - Hà Nội',
   description:
-    'Trường Tiểu học Lê Quý Đôn - Hệ thống giáo dục liên cấp hàng đầu tại Nam Từ Liêm, Hà Nội. Chương trình Quốc gia nâng cao, Tiếng Anh tăng cường, hợp tác PLC Sydney.',
+    'Trường Tiểu học Vân Cốc - Hệ thống giáo dục liên cấp hàng đầu tại Nam Từ Liêm, Hà Nội. Chương trình Quốc gia nâng cao, Tiếng Anh tăng cường, hợp tác PLC Sydney.',
   path: '/',
   type: 'website',
 });

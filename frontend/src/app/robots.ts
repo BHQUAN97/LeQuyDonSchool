@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
+import { BRAND } from '@/config/brand';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://demo.remoteterminal.online';
+const SITE_URL = BRAND.siteUrl;
 
 export default function robots(): MetadataRoute.Robots {
   return {

@@ -1,11 +1,13 @@
 /**
- * Seed demo data cho LeQuyDon school website
+ * Seed demo data cho VanCoc school website
  * Tao categories, articles, events, FAQs qua backend API
  *
  * Usage: npx ts-node scripts/seed-demo.ts
  */
 
-const API_BASE = 'http://localhost:4200/api';
+const API_BASE = process.env.API_URL || 'http://localhost:4200/api';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@lequydon.edu.vn';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Admin@123456';
 
 let accessToken = '';
 
@@ -35,8 +37,8 @@ async function login() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      email: 'admin@lequydon.edu.vn',
-      password: 'Admin@123456',
+      email: ADMIN_EMAIL,
+      password: ADMIN_PASSWORD,
     }),
   });
 
@@ -93,7 +95,7 @@ const ARTICLES: Record<string, ArticleDef[]> = {
       slug: 'thu-ngo-an-toan-thuc-pham',
       excerpt: 'Nhà trường cam kết đảm bảo an toàn vệ sinh thực phẩm cho toàn bộ học sinh.',
       daysAgo: 5,
-      content: `<h2>Kính gửi Quý Phụ huynh Trường Tiểu học Lê Quý Đôn</h2>
+      content: `<h2>Kính gửi Quý Phụ huynh Trường Tiểu học Vân Cốc</h2>
 <p>Nhà trường xin trân trọng gửi tới Quý Phụ huynh lời chào trân trọng và lời cảm ơn sâu sắc vì đã tin tưởng gửi gắm con em theo học tại trường.</p>
 <p>Trước những lo ngại chính đáng của Quý Phụ huynh về vấn đề an toàn thực phẩm, Ban Giám hiệu nhà trường xin thông báo một số biện pháp đã và đang được thực hiện nhằm đảm bảo sức khỏe cho các con:</p>
 <ul>
@@ -102,15 +104,15 @@ const ARTICLES: Record<string, ArticleDef[]> = {
   <li>Đội ngũ nhân viên bếp được khám sức khỏe định kỳ 6 tháng/lần</li>
   <li>Mẫu thức ăn được lưu giữ 24h theo đúng quy định</li>
 </ul>
-<p>Nhà trường luôn đặt sức khỏe của các con lên hàng đầu. Mọi phản hồi xin gửi về email: info@lequydonhanoi.edu.vn</p>`,
+<p>Nhà trường luôn đặt sức khỏe của các con lên hàng đầu. Mọi phản hồi xin gửi về email: info@vancoc.edu.vn</p>`,
     },
     {
-      title: 'Lễ kết nạp Đội Khối 3: Dấu mốc đáng nhớ của học sinh Lê Quý Đôn',
+      title: 'Lễ kết nạp Đội Khối 3: Dấu mốc đáng nhớ của học sinh Vân Cốc',
       slug: 'le-ket-nap-doi-khoi-3',
       excerpt: 'Buổi lễ kết nạp Đội viên thiếu niên Tiền phong Hồ Chí Minh cho học sinh Khối 3.',
       daysAgo: 10,
       content: `<h2>Lễ kết nạp Đội TNTP Hồ Chí Minh — Khối 3</h2>
-<p>Sáng ngày 26/3/2026, Liên đội Trường Tiểu học Lê Quý Đôn đã long trọng tổ chức Lễ kết nạp Đội viên Thiếu niên Tiền phong Hồ Chí Minh cho 120 học sinh Khối 3.</p>
+<p>Sáng ngày 26/3/2026, Liên đội Trường Tiểu học Vân Cốc đã long trọng tổ chức Lễ kết nạp Đội viên Thiếu niên Tiền phong Hồ Chí Minh cho 120 học sinh Khối 3.</p>
 <p>Trong không khí trang nghiêm và xúc động, các em học sinh đã tuyên thệ trước cờ Đội, hứa sẽ chăm ngoan, học giỏi, xứng đáng là con ngoan trò giỏi.</p>
 <h3>Điểm nhấn buổi lễ</h3>
 <ul>
@@ -121,24 +123,24 @@ const ARTICLES: Record<string, ArticleDef[]> = {
 <p>Đây là dấu mốc quan trọng trong hành trình trưởng thành của mỗi học sinh, giúp các em thêm tự hào và có trách nhiệm hơn với bản thân, gia đình và nhà trường.</p>`,
     },
     {
-      title: 'Trường TH Lê Quý Đôn chủ động kiểm chứng nguồn thịt bàn trù',
+      title: 'Trường TH Vân Cốc chủ động kiểm chứng nguồn thịt bàn trù',
       slug: 'kiem-chung-nguon-thit',
       excerpt: 'Nhà trường phối hợp với cơ quan chức năng kiểm tra nguồn gốc thực phẩm phục vụ bữa ăn.',
       daysAgo: 15,
       content: `<h2>Minh bạch nguồn gốc thực phẩm — Cam kết từ Nhà trường</h2>
-<p>Trường Tiểu học Lê Quý Đôn vừa phối hợp cùng Chi cục An toàn vệ sinh thực phẩm Quận Ba Đình tiến hành kiểm tra toàn diện nguồn cung cấp thịt cho bếp ăn nhà trường.</p>
+<p>Trường Tiểu học Vân Cốc vừa phối hợp cùng Chi cục An toàn vệ sinh thực phẩm Quận Ba Đình tiến hành kiểm tra toàn diện nguồn cung cấp thịt cho bếp ăn nhà trường.</p>
 <p>Kết quả kiểm tra cho thấy 100% các mẫu thịt đều đạt tiêu chuẩn về vệ sinh an toàn thực phẩm, có đầy đủ giấy tờ chứng nhận nguồn gốc xuất xứ và tem kiểm dịch.</p>
 <h3>Các biện pháp kiểm soát</h3>
 <p>Nhà trường đã ký hợp đồng dài hạn với các đơn vị cung cấp thực phẩm uy tín, có chứng nhận VietGAP. Mỗi lô hàng nhập về đều được kiểm tra nghiêm ngặt trước khi đưa vào chế biến.</p>
 <p>Ban Giám hiệu khuyến khích Phụ huynh tham gia giám sát bếp ăn vào bất kỳ thời điểm nào trong giờ chế biến.</p>`,
     },
     {
-      title: 'Chào đón 20 năm thành lập Hệ thống Trường Liên cấp Lê Quý Đôn',
+      title: 'Chào đón 20 năm thành lập Hệ thống Trường Liên cấp Vân Cốc',
       slug: 'chao-don-20-nam-thanh-lap',
-      excerpt: 'Kỷ niệm 20 năm xây dựng và phát triển Hệ thống Trường Liên cấp Lê Quý Đôn.',
+      excerpt: 'Kỷ niệm 20 năm xây dựng và phát triển Hệ thống Trường Liên cấp Vân Cốc.',
       daysAgo: 25,
       content: `<h2>20 năm — Một chặng đường tự hào</h2>
-<p>Ngày 04/08/2025, Hệ thống Trường Liên cấp Lê Quý Đôn tròn 20 năm thành lập. Nhìn lại chặng đường đã qua, nhà trường tự hào với những thành tựu đã đạt được trong sự nghiệp trồng người.</p>
+<p>Ngày 04/08/2025, Hệ thống Trường Liên cấp Vân Cốc tròn 20 năm thành lập. Nhìn lại chặng đường đã qua, nhà trường tự hào với những thành tựu đã đạt được trong sự nghiệp trồng người.</p>
 <h3>Những con số ấn tượng</h3>
 <ul>
   <li>Hơn 10.000 học sinh đã tốt nghiệp</li>
@@ -154,7 +156,7 @@ const ARTICLES: Record<string, ArticleDef[]> = {
       excerpt: 'Lễ khai giảng năm học mới với nhiều hoạt động hấp dẫn chào đón các em học sinh.',
       daysAgo: 35,
       content: `<h2>Khai giảng năm học 2025-2026</h2>
-<p>Sáng ngày 05/09/2025, Trường Tiểu học Lê Quý Đôn đã tổ chức Lễ khai giảng năm học 2025-2026 trong không khí trang trọng và vui tươi.</p>
+<p>Sáng ngày 05/09/2025, Trường Tiểu học Vân Cốc đã tổ chức Lễ khai giảng năm học 2025-2026 trong không khí trang trọng và vui tươi.</p>
 <p>Hơn 1.200 học sinh cùng toàn thể giáo viên, nhân viên nhà trường và đông đảo phụ huynh đã tham dự buổi lễ. Đặc biệt, các em học sinh lớp 1 lần đầu tiên bước vào ngôi trường mới với niềm háo hức và phấn khởi.</p>
 <h3>Điểm nhấn</h3>
 <ul>
@@ -180,12 +182,12 @@ const ARTICLES: Record<string, ArticleDef[]> = {
 <p>Hơn 500 phụ huynh đã tham gia cổ vũ và thi đấu cùng con em mình, tạo nên một ngày hội đầy tiếng cười và kỷ niệm đẹp.</p>`,
     },
     {
-      title: 'Ngày hội sách Lê Quý Đôn lần thứ 5',
+      title: 'Ngày hội sách Vân Cốc lần thứ 5',
       slug: 'ngay-hoi-sach-lan-5',
       excerpt: 'Ngày hội sách với nhiều hoạt động khuyến đọc hấp dẫn cho học sinh toàn trường.',
       daysAgo: 30,
       content: `<h2>Ngày hội sách lần thứ 5 — "Sách là người bạn tốt"</h2>
-<p>Ngày hội sách Lê Quý Đôn lần thứ 5 đã diễn ra thành công tốt đẹp với sự tham gia của toàn bộ học sinh từ lớp 1 đến lớp 5.</p>
+<p>Ngày hội sách Vân Cốc lần thứ 5 đã diễn ra thành công tốt đẹp với sự tham gia của toàn bộ học sinh từ lớp 1 đến lớp 5.</p>
 <p>Các hoạt động chính bao gồm: triển lãm sách, trao đổi sách cũ, thi kể chuyện theo sách, và giao lưu với nhà văn Nguyễn Nhật Ánh qua video call.</p>
 <h3>Kết quả</h3>
 <ul>
@@ -200,7 +202,7 @@ const ARTICLES: Record<string, ArticleDef[]> = {
       excerpt: 'Lễ tổng kết và trao thưởng học kỳ I năm học 2025-2026.',
       daysAgo: 60,
       content: `<h2>Tổng kết học kỳ I năm học 2025-2026</h2>
-<p>Ngày 15/01/2026, Trường Tiểu học Lê Quý Đôn đã tổ chức Lễ tổng kết học kỳ I năm học 2025-2026 và trao thưởng cho các em học sinh có thành tích xuất sắc.</p>
+<p>Ngày 15/01/2026, Trường Tiểu học Vân Cốc đã tổ chức Lễ tổng kết học kỳ I năm học 2025-2026 và trao thưởng cho các em học sinh có thành tích xuất sắc.</p>
 <h3>Kết quả nổi bật</h3>
 <ul>
   <li>Tỷ lệ học sinh đạt Xuất sắc: 45%</li>
@@ -213,10 +215,10 @@ const ARTICLES: Record<string, ArticleDef[]> = {
     {
       title: 'Chương trình "Tết yêu thương" trao quà cho trẻ em vùng cao',
       slug: 'tet-yeu-thuong-2026',
-      excerpt: 'Học sinh Lê Quý Đôn quyên góp và trao quà Tết cho trẻ em có hoàn cảnh khó khăn.',
+      excerpt: 'Học sinh Vân Cốc quyên góp và trao quà Tết cho trẻ em có hoàn cảnh khó khăn.',
       daysAgo: 70,
       content: `<h2>Tết yêu thương — Chia sẻ niềm vui</h2>
-<p>Nhân dịp Tết Nguyên đán 2026, Trường Tiểu học Lê Quý Đôn đã tổ chức chương trình "Tết yêu thương" quyên góp quà Tết cho trẻ em có hoàn cảnh khó khăn tại huyện Mộc Châu, Sơn La.</p>
+<p>Nhân dịp Tết Nguyên đán 2026, Trường Tiểu học Vân Cốc đã tổ chức chương trình "Tết yêu thương" quyên góp quà Tết cho trẻ em có hoàn cảnh khó khăn tại huyện Mộc Châu, Sơn La.</p>
 <p>Với sự tham gia nhiệt tình của phụ huynh và học sinh, chương trình đã thu được hơn 200 phần quà bao gồm áo ấm, sách vở, đồ chơi và bánh kẹo.</p>
 <h3>Hoạt động tại điểm trao quà</h3>
 <p>Đoàn tình nguyện gồm giáo viên và đại diện phụ huynh đã trực tiếp lên Mộc Châu trao quà tại 2 điểm trường. Các em học sinh vùng cao rất vui mừng và xúc động khi nhận quà từ các bạn nhỏ Hà Nội.</p>`,
@@ -224,7 +226,7 @@ const ARTICLES: Record<string, ArticleDef[]> = {
   ],
   'ngoai-khoa': [
     {
-      title: 'Hành Trình Khám Phá Của Doners Khối 5 Tại Bản Rôm',
+      title: 'Hành Trình Khám Phá Của học sinh Vân Cốc Khối 5 Tại Bản Rôm',
       slug: 'hanh-trinh-kham-pha-ban-rom',
       excerpt: 'Chuyến trải nghiệm văn hóa bản địa tại Bản Rôm, Sơn La dành cho học sinh Khối 5.',
       daysAgo: 8,
@@ -240,12 +242,12 @@ const ARTICLES: Record<string, ArticleDef[]> = {
 <p>Chuyến đi giúp các em hiểu thêm về văn hóa các dân tộc Việt Nam, rèn luyện kỹ năng tự lập và biết yêu thương, chia sẻ với cộng đồng.</p>`,
     },
     {
-      title: 'Đại phim kể về Doners Sao "Nhảy mí" là cả thế giới',
+      title: 'Đại phim kể về học sinh Vân Cốc Sao "Nhảy mí" là cả thế giới',
       slug: 'dai-phim-doners-sao-nhay-mi',
       excerpt: 'Dự án làm phim ngắn của học sinh về chủ đề tuổi thơ và ước mơ.',
       daysAgo: 12,
       content: `<h2>Dự án phim ngắn "Nhảy mí là cả thế giới"</h2>
-<p>CLB Điện ảnh nhí Lê Quý Đôn vừa hoàn thành dự án phim ngắn "Nhảy mí là cả thế giới" — bộ phim kể về những khoảnh khắc đáng yêu trong cuộc sống hàng ngày của các Doners Sao (học sinh lớp 1).</p>
+<p>CLB Điện ảnh nhí Vân Cốc vừa hoàn thành dự án phim ngắn "Nhảy mí là cả thế giới" — bộ phim kể về những khoảnh khắc đáng yêu trong cuộc sống hàng ngày của các học sinh Vân Cốc Sao (học sinh lớp 1).</p>
 <p>Bộ phim dài 15 phút, được quay hoàn toàn bởi các "đạo diễn nhí" lớp 4-5 dưới sự hướng dẫn của thầy cô.</p>
 <h3>Thông tin sản xuất</h3>
 <ul>
@@ -256,11 +258,11 @@ const ARTICLES: Record<string, ArticleDef[]> = {
 <p>Phim sẽ được chiếu trong buổi lễ tổng kết năm học và phát trên kênh YouTube của nhà trường.</p>`,
     },
     {
-      title: '"Biệt đội nhí" – Doners kể sứ hiệp bao "câu chuyện xanh"',
+      title: '"Biệt đội nhí" – học sinh Vân Cốc kể sứ hiệp bao "câu chuyện xanh"',
       slug: 'biet-doi-nhi-cau-chuyen-xanh',
       excerpt: 'Dự án bảo vệ môi trường của các em học sinh — những "Biệt đội nhí" xanh.',
       daysAgo: 18,
-      content: `<h2>"Biệt đội nhí" — Câu chuyện xanh của Doners</h2>
+      content: `<h2>"Biệt đội nhí" — Câu chuyện xanh của học sinh Vân Cốc</h2>
 <p>Dự án "Câu chuyện xanh" là sáng kiến của các em học sinh Khối 3 và Khối 4 nhằm nâng cao ý thức bảo vệ môi trường trong cộng đồng nhà trường.</p>
 <h3>Hoạt động của Biệt đội nhí</h3>
 <ul>
@@ -272,7 +274,7 @@ const ARTICLES: Record<string, ArticleDef[]> = {
 <p>Sau 1 tháng triển khai, lượng rác thải nhựa trong trường đã giảm 40%. Dự án được Ban Giám hiệu đánh giá cao và sẽ nhân rộng ra toàn trường.</p>`,
     },
     {
-      title: 'Trại xuân 2026 "Mùa xuân ơi..." - Team Tên Trộm 3 Doners',
+      title: 'Trại xuân 2026 "Mùa xuân ơi..." - Team Tên Trộm 3 học sinh Vân Cốc',
       slug: 'trai-xuan-2026-mua-xuan-oi',
       excerpt: 'Trại xuân 2026 với nhiều hoạt động vui chơi, rèn luyện kỹ năng sống.',
       daysAgo: 22,
@@ -284,9 +286,9 @@ const ARTICLES: Record<string, ArticleDef[]> = {
   <li>Trạm 2: Viết thư pháp — Xin chữ đầu xuân</li>
   <li>Trạm 3: Trò chơi dân gian (ô ăn quan, nhảy dây, kéo co)</li>
   <li>Trạm 4: Làm thiệp chúc Tết handmade</li>
-  <li>Trạm 5: Hội chợ xuân mini — Doners bán hàng gây quỹ từ thiện</li>
+  <li>Trạm 5: Hội chợ xuân mini — học sinh Vân Cốc bán hàng gây quỹ từ thiện</li>
 </ul>
-<p>Team "Tên Trộm 3 Doners" (lớp 3C) đã xuất sắc giành giải Nhất toàn trại với số điểm cao nhất ở cả 5 trạm.</p>`,
+<p>Team "Tên Trộm 3 học sinh Vân Cốc" (lớp 3C) đã xuất sắc giành giải Nhất toàn trại với số điểm cao nhất ở cả 5 trạm.</p>`,
     },
     {
       title: 'Chuyến dã ngoại Ba Vì cho lớp 4-5',
@@ -308,8 +310,8 @@ const ARTICLES: Record<string, ArticleDef[]> = {
       slug: 'clb-robotics-giai-nhat-stem',
       excerpt: 'Đội Robotics nhà trường xuất sắc giành giải cao nhất cuộc thi STEM cấp thành phố.',
       daysAgo: 40,
-      content: `<h2>CLB Robotics Lê Quý Đôn — Giải Nhất STEM Hà Nội 2026</h2>
-<p>Đội Robotics của Trường Tiểu học Lê Quý Đôn đã xuất sắc giành giải Nhất cuộc thi STEM dành cho học sinh tiểu học do Sở GD&ĐT Hà Nội tổ chức ngày 25/02/2026.</p>
+      content: `<h2>CLB Robotics Vân Cốc — Giải Nhất STEM Hà Nội 2026</h2>
+<p>Đội Robotics của Trường Tiểu học Vân Cốc đã xuất sắc giành giải Nhất cuộc thi STEM dành cho học sinh tiểu học do Sở GD&ĐT Hà Nội tổ chức ngày 25/02/2026.</p>
 <h3>Dự án dự thi</h3>
 <p>Đội đã trình bày dự án "Robot thu gom rác thông minh" sử dụng Arduino và cảm biến siêu âm. Robot có khả năng tự di chuyển, phát hiện và thu gom rác trong phạm vi 5 mét.</p>
 <h3>Thành viên đội</h3>
@@ -326,7 +328,7 @@ const ARTICLES: Record<string, ArticleDef[]> = {
       excerpt: 'Học sinh tham gia chương trình trao đổi văn hóa với trường PLC Sydney, Australia.',
       daysAgo: 50,
       content: `<h2>Giao lưu quốc tế — PLC Sydney, Australia</h2>
-<p>Trong khuôn khổ hợp tác quốc tế, Trường Tiểu học Lê Quý Đôn đã đón tiếp đoàn 15 học sinh và 3 giáo viên từ trường PLC Sydney (Presbyterian Ladies' College), Australia.</p>
+<p>Trong khuôn khổ hợp tác quốc tế, Trường Tiểu học Vân Cốc đã đón tiếp đoàn 15 học sinh và 3 giáo viên từ trường PLC Sydney (Presbyterian Ladies' College), Australia.</p>
 <h3>Chương trình giao lưu 5 ngày</h3>
 <ul>
   <li>Ngày 1-2: Học sinh PLC tham gia lớp học cùng các bạn Việt Nam</li>
@@ -356,12 +358,12 @@ const ARTICLES: Record<string, ArticleDef[]> = {
   ],
   'hoc-tap': [
     {
-      title: 'Thành Tích Tháng 3 | Doners Xuất Sắc Giành 1.536 Giải',
+      title: 'Thành Tích Tháng 3 | học sinh Vân Cốc Xuất Sắc Giành 1.536 Giải',
       slug: 'thanh-tich-thang-3-1536-giai',
       excerpt: 'Tổng hợp thành tích học tập tháng 3/2026 với 1.536 giải thưởng các cấp.',
       daysAgo: 3,
       content: `<h2>Thành tích tháng 3/2026 — Con số ấn tượng</h2>
-<p>Tháng 3/2026, học sinh Trường Tiểu học Lê Quý Đôn tiếp tục ghi dấu ấn với 1.536 giải thưởng từ các cuộc thi, kỳ thi ở nhiều cấp độ.</p>
+<p>Tháng 3/2026, học sinh Trường Tiểu học Vân Cốc tiếp tục ghi dấu ấn với 1.536 giải thưởng từ các cuộc thi, kỳ thi ở nhiều cấp độ.</p>
 <h3>Phân bố giải thưởng</h3>
 <ul>
   <li>Giải Quốc tế: 12 giải (IMAS, SASMO, Kangaroo Math)</li>
@@ -501,10 +503,10 @@ const ARTICLES: Record<string, ArticleDef[]> = {
     {
       title: 'Thông báo Tuyển sinh năm học 2026-2027',
       slug: 'thong-bao-tuyen-sinh-2026-2027',
-      excerpt: 'Trường Tiểu học Lê Quý Đôn thông báo tuyển sinh lớp 1 và các khối lớp năm học 2026-2027.',
+      excerpt: 'Trường Tiểu học Vân Cốc thông báo tuyển sinh lớp 1 và các khối lớp năm học 2026-2027.',
       daysAgo: 2,
       content: `<h2>Tuyển sinh năm học 2026-2027</h2>
-<p>Trường Tiểu học Lê Quý Đôn trân trọng thông báo kế hoạch tuyển sinh năm học 2026-2027 cho các khối lớp từ lớp 1 đến lớp 5.</p>
+<p>Trường Tiểu học Vân Cốc trân trọng thông báo kế hoạch tuyển sinh năm học 2026-2027 cho các khối lớp từ lớp 1 đến lớp 5.</p>
 <h3>Đối tượng tuyển sinh</h3>
 <ul>
   <li><strong>Lớp 1:</strong> Trẻ sinh năm 2020 (đủ 6 tuổi tính đến 31/12/2026)</li>
@@ -513,7 +515,7 @@ const ARTICLES: Record<string, ArticleDef[]> = {
 <h3>Thời gian đăng ký</h3>
 <p>Từ ngày 01/04/2026 đến hết ngày 30/06/2026. Hồ sơ nộp trực tiếp tại Phòng Tuyển sinh hoặc đăng ký online tại website nhà trường.</p>
 <h3>Liên hệ</h3>
-<p>Hotline: 024 3762 1234 | Email: tuyensinh@lequydonhanoi.edu.vn</p>`,
+<p>Hotline: 024 3762 1234 | Email: tuyensinh@vancoc.edu.vn</p>`,
     },
     {
       title: 'Thông báo Tuyển sinh năm học 2025-2026',
@@ -521,7 +523,7 @@ const ARTICLES: Record<string, ArticleDef[]> = {
       excerpt: 'Thông tin tuyển sinh lớp 1 và các khối lớp năm học 2025-2026.',
       daysAgo: 75,
       content: `<h2>Tuyển sinh năm học 2025-2026</h2>
-<p>Trường Tiểu học Lê Quý Đôn trân trọng thông báo kế hoạch tuyển sinh năm học 2025-2026.</p>
+<p>Trường Tiểu học Vân Cốc trân trọng thông báo kế hoạch tuyển sinh năm học 2025-2026.</p>
 <h3>Chỉ tiêu tuyển sinh</h3>
 <ul>
   <li>Lớp 1: 8 lớp × 30 học sinh = 240 học sinh</li>
@@ -541,7 +543,7 @@ const ARTICLES: Record<string, ArticleDef[]> = {
       excerpt: 'Chương trình CLB Ngôi nhà mơ ước dành cho trẻ 5 tuổi chuẩn bị vào lớp 1.',
       daysAgo: 7,
       content: `<h2>CLB Ngôi nhà mơ ước 2026</h2>
-<p>CLB "Ngôi nhà mơ ước" là chương trình trải nghiệm dành cho các bé 5 tuổi chuẩn bị vào lớp 1, giúp các con làm quen với môi trường học tập tại Trường Tiểu học Lê Quý Đôn.</p>
+<p>CLB "Ngôi nhà mơ ước" là chương trình trải nghiệm dành cho các bé 5 tuổi chuẩn bị vào lớp 1, giúp các con làm quen với môi trường học tập tại Trường Tiểu học Vân Cốc.</p>
 <h3>Nội dung chương trình</h3>
 <ul>
   <li>Làm quen với lớp học, thầy cô và bạn bè</li>
@@ -559,7 +561,7 @@ const ARTICLES: Record<string, ArticleDef[]> = {
       excerpt: 'CLB Ngôi nhà mơ ước năm 2025 — chương trình làm quen trước khi vào lớp 1.',
       daysAgo: 80,
       content: `<h2>CLB Ngôi nhà mơ ước 2025</h2>
-<p>Trường Tiểu học Lê Quý Đôn tiếp tục tổ chức CLB "Ngôi nhà mơ ước" năm 2025 dành cho các bé sinh năm 2019 chuẩn bị vào lớp 1 năm học 2025-2026.</p>
+<p>Trường Tiểu học Vân Cốc tiếp tục tổ chức CLB "Ngôi nhà mơ ước" năm 2025 dành cho các bé sinh năm 2019 chuẩn bị vào lớp 1 năm học 2025-2026.</p>
 <h3>Thông tin đăng ký</h3>
 <ul>
   <li>Đối tượng: Trẻ sinh năm 2019</li>
@@ -609,7 +611,7 @@ const ARTICLES: Record<string, ArticleDef[]> = {
       excerpt: 'Thông báo chương trình học bổng dành cho học sinh có thành tích xuất sắc.',
       daysAgo: 48,
       content: `<h2>Chương trình học bổng năm 2026</h2>
-<p>Trường Tiểu học Lê Quý Đôn trân trọng thông báo Chương trình Học bổng năm 2026 nhằm khuyến khích và hỗ trợ các em học sinh có thành tích học tập xuất sắc.</p>
+<p>Trường Tiểu học Vân Cốc trân trọng thông báo Chương trình Học bổng năm 2026 nhằm khuyến khích và hỗ trợ các em học sinh có thành tích học tập xuất sắc.</p>
 <h3>Các loại học bổng</h3>
 <ul>
   <li><strong>Học bổng Toàn phần (100%):</strong> Dành cho học sinh đạt giải Nhất cấp Thành phố trở lên</li>
@@ -625,7 +627,7 @@ const ARTICLES: Record<string, ArticleDef[]> = {
       excerpt: 'Lịch tham quan trường hàng tuần dành cho phụ huynh quan tâm đến môi trường học tập.',
       daysAgo: 53,
       content: `<h2>Lịch tham quan trường</h2>
-<p>Nhà trường tổ chức các buổi tham quan (Open House) hàng tuần dành cho Quý Phụ huynh muốn tìm hiểu về môi trường học tập và chương trình giáo dục tại Lê Quý Đôn.</p>
+<p>Nhà trường tổ chức các buổi tham quan (Open House) hàng tuần dành cho Quý Phụ huynh muốn tìm hiểu về môi trường học tập và chương trình giáo dục tại Vân Cốc.</p>
 <h3>Lịch tham quan</h3>
 <ul>
   <li><strong>Thứ 3 hàng tuần:</strong> 9h00 - 11h00 (Cơ sở 1 — Đội Cấn)</li>
@@ -850,7 +852,7 @@ const ARTICLES: Record<string, ArticleDef[]> = {
 
 const EVENTS = [
   {
-    title: 'Kỷ niệm 20 năm thành lập Hệ thống Trường Liên cấp Lê Quý Đôn',
+    title: 'Kỷ niệm 20 năm thành lập Hệ thống Trường Liên cấp Vân Cốc',
     description: 'Lễ kỷ niệm 20 năm thành lập với sự tham gia của các thế hệ cựu học sinh, phụ huynh và đối tác giáo dục.',
     startDate: '2025-08-04T08:00:00.000Z',
     endDate: '2025-08-04T17:00:00.000Z',
@@ -883,7 +885,7 @@ const EVENTS = [
 const FAQS = [
   {
     question: 'Đối tượng tuyển sinh?',
-    answer: 'Trường Tiểu học Lê Quý Đôn tuyển sinh học sinh từ lớp 1 đến lớp 5. Đối với lớp 1, trẻ phải đủ 6 tuổi tính đến ngày 31/12 của năm nhập học (sinh năm 2020 cho năm học 2026-2027). Đối với lớp 2-5, nhà trường tuyển bổ sung học sinh chuyển trường khi còn chỉ tiêu.',
+    answer: 'Trường Tiểu học Vân Cốc tuyển sinh học sinh từ lớp 1 đến lớp 5. Đối với lớp 1, trẻ phải đủ 6 tuổi tính đến ngày 31/12 của năm nhập học (sinh năm 2020 cho năm học 2026-2027). Đối với lớp 2-5, nhà trường tuyển bổ sung học sinh chuyển trường khi còn chỉ tiêu.',
     displayOrder: 1,
   },
   {
@@ -918,7 +920,7 @@ const FAQS = [
   },
   {
     question: 'Tôi cần tư vấn chi tiết hơn thì liên hệ ở đâu?',
-    answer: 'Quý Phụ huynh có thể liên hệ qua các kênh sau:\n- Hotline: 024 3762 1234 (giờ hành chính)\n- Email: tuyensinh@lequydonhanoi.edu.vn\n- Fanpage Facebook: Trường Tiểu học Lê Quý Đôn Hà Nội\n- Trực tiếp tại Phòng Tuyển sinh, Cơ sở 1 — Đội Cấn, Ba Đình, Hà Nội\n\nNhân viên tuyển sinh sẵn sàng hỗ trợ từ thứ 2 đến thứ 7 (8h00 - 17h00).',
+    answer: 'Quý Phụ huynh có thể liên hệ qua các kênh sau:\n- Hotline: 024 3762 1234 (giờ hành chính)\n- Email: tuyensinh@vancoc.edu.vn\n- Fanpage Facebook: Trường Tiểu học Vân Cốc\n- Trực tiếp tại Phòng Tuyển sinh, Cơ sở 1 — Đội Cấn, Ba Đình, Hà Nội\n\nNhân viên tuyển sinh sẵn sàng hỗ trợ từ thứ 2 đến thứ 7 (8h00 - 17h00).',
     displayOrder: 8,
   },
 ];
@@ -926,7 +928,7 @@ const FAQS = [
 // ─── MAIN ─────────────────────────────────────────────────
 
 async function main() {
-  console.log('=== SEED DEMO DATA — LeQuyDon ===\n');
+  console.log('=== SEED DEMO DATA — VanCoc ===\n');
 
   // 1. Login
   await login();
