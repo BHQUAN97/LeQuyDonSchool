@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import Breadcrumb from '@/components/public/Breadcrumb';
 import ArticleSidebar from '@/components/public/ArticleSidebar';
+import PageBanner from '@/components/public/PageBanner';
 import SafeHtml from '@/components/public/SafeHtml';
 import { Calendar, Tag } from 'lucide-react';
 import { buildPageMetadata } from '@/lib/seo-helpers';
@@ -99,28 +99,20 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
 
   return (
     <div>
-      {/* Breadcrumb — V2 style: nen trang, khong co banner xanh */}
-      <div className="border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4">
-          <Breadcrumb
-            items={[
-              { label: 'Trang chủ', href: '/' },
-              { label: 'Tin tức', href: '/tin-tuc/su-kien' },
-              { label: article.category, href: `/tin-tuc/${article.categorySlug}` },
-              { label: article.title },
-            ]}
-          />
-        </div>
-      </div>
+      <PageBanner
+        title={article.title}
+        breadcrumbItems={[
+          { label: 'Trang chủ', href: '/' },
+          { label: 'Tin tức', href: '/tin-tuc/su-kien' },
+          { label: article.category, href: `/tin-tuc/${article.categorySlug}` },
+          { label: article.title },
+        ]}
+      />
 
       <div className="max-w-7xl mx-auto px-4 py-8 lg:py-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main content — 2/3 */}
           <article className="lg:col-span-2">
-            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4 leading-snug">
-              {article.title}
-            </h1>
-
             {/* Meta */}
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6">
               <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-50 text-green-700 rounded text-sm font-medium">

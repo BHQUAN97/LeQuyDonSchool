@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import Breadcrumb from './Breadcrumb';
 import ArticleCard from './ArticleCard';
 import ArticleSidebar from './ArticleSidebar';
+import PageBanner from './PageBanner';
 import Pagination from './Pagination';
 
 interface ArticleListItem {
@@ -55,14 +55,10 @@ export default function ArticleListLayout({
 }: ArticleListLayoutProps) {
   return (
     <div>
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4">
-          <Breadcrumb items={breadcrumbs} />
-        </div>
-      </div>
+      <PageBanner title={title} breadcrumbItems={breadcrumbs} />
 
       <section className="max-w-7xl mx-auto px-4 pt-8 pb-14">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-8">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="text-sm font-semibold uppercase tracking-wider text-slate-500">{eyebrow}</span>
@@ -72,7 +68,6 @@ export default function ArticleListLayout({
                 <span className="w-6 h-1 bg-green-700 rounded-full" />
               </div>
             </div>
-            <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
           </div>
 
           {tabs.length > 0 && (
