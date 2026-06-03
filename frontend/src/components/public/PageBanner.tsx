@@ -18,7 +18,7 @@ export default function PageBanner({
   title,
   description,
   breadcrumbItems,
-  bgClass = 'bg-gradient-to-r from-green-700 to-green-600',
+  bgClass = 'bg-gradient-to-r from-[#1a5276] to-[#2e86c1]',
 }: PageBannerProps) {
   return (
     <section className={`${bgClass} text-white`}>

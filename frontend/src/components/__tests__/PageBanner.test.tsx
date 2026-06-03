@@ -53,11 +53,11 @@ describe('PageBanner', () => {
     expect(descP).toBeNull();
   });
 
-  it('should use default green gradient background', () => {
+  it('should use default blue gradient background', () => {
     const { container } = render(<PageBanner {...defaultProps} />);
     const section = container.querySelector('section');
     expect(section?.className).toContain('bg-gradient-to-r');
-    expect(section?.className).toContain('from-green-700');
+    expect(section?.className).toContain('from-[#1a5276]');
   });
 
   it('should use custom bgClass when provided', () => {

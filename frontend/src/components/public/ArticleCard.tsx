@@ -106,7 +106,7 @@ export default function ArticleCard({
   if (variant === 'list') {
     return (
       <Link href={href || `/tin-tuc/${slug}`} className="group">
-        <article className="bg-white rounded-lg border border-slate-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col sm:flex-row">
+        <article className="bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col sm:flex-row">
           <ArticleImage
             src={cover}
             alt={title}
@@ -131,7 +131,7 @@ export default function ArticleCard({
 
   return (
     <Link href={href || `/tin-tuc/${slug}`} className="group">
-      <article className="bg-white rounded-lg border border-slate-200 overflow-hidden hover:shadow-md transition-shadow h-full flex flex-col">
+      <article className="bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow h-full flex flex-col">
         <ArticleImage
           src={cover}
           alt={title}

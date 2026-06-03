@@ -63,8 +63,6 @@ export default async function ThucDonPage({ searchParams }: { searchParams: Prom
       totalPages={totalPages}
       basePath="/dich-vu-hoc-duong/thuc-don"
       tabs={tabs}
-      withSidebar={false}
-      grid
       imageFit="contain"
     />
   );
